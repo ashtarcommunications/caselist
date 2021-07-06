@@ -1,0 +1,65 @@
+{
+  "scripts": {
+    "start": "NODE_ENV='production' NODE_OPTIONS='--max_old_space_size=8000' node --use_strict index.js",
+    "dev": "NODE_ENV='development' nodemon --require esm --use-strict index.js",
+    "test": "NODE_ENV='test' mocha 'v1/**/*.test.js'",
+    "cover": "rm -fr ./node_modules/.cache; NODE_ENV='test' nyc mocha 'v1/**/*.test.js'",
+    "lint": "eslint --ignore-path .gitignore ."
+  },
+  "name": "caselist-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Caselist API",
+  "keywords": [],
+  "homepage": "https://paperlessdebate.com",
+  "author": "Aaron Hardy <support@paperlessdebate.com> (https://paperlessdebate.com)",
+  "license": "GPL3",
+  "main": "index.js",
+  "engines": {
+    "node": ">= 15.11.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "bottleneck": "^2.19.0",
+    "cookie-parser": "^1.4.4",
+    "crypto-js": "^4.0.0",
+    "dotenv": "^8.2.0",
+    "esm": "^3.2.22",
+    "express": "^4.16.4",
+    "express-openapi": "^4.6.1",
+    "express-rate-limit": "^3.4.1",
+    "express-winston": "^3.1.0",
+    "helmet": "^3.16.0",
+    "isomorphic-fetch": "^2.2.1",
+    "moment-timezone": "^0.5.25",
+    "mysql2": "^1.6.5",
+    "sql-template-strings": "^2.2.2",
+    "uuid": "^3.3.2",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "@speechanddebate/eslint-config-nsda": "^1.0.9",
+    "chai": "^4.2.0",
+    "eslint": "^7.21.0",
+    "eslint-plugin-import": "^2.22.1",
+    "mocha": "^6.2.2",
+    "nock": "^10.0.6",
+    "node-mocks-http": "^1.7.3",
+    "nodemon": "^1.18.11",
+    "nyc": "^14.0.0",
+    "sinon": "^7.3.1",
+    "supertest": "^4.0.2"
+  },
+  "mocha": {
+    "use_strict": true,
+    "require": [
+      "esm",
+      "./config/nocks.js"
+    ],
+    "exit": true
+  },
+  "eslintConfig": {
+    "extends": "@speechanddebate/eslint-config-nsda"
+  },
+  "_id": "caselist-api@1.0.0"
+}
