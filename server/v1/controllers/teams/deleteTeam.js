@@ -9,7 +9,7 @@ const deleteTeam = {
             INNER JOIN caselists C ON C.caselist_id = S.caselist_id
             WHERE S.name = ${req.params.school}
             AND C.slug = ${req.params.caselist}
-            AND T.name = ${req.params.team}
+            AND T.code = ${req.params.team}
         `);
         await query(SQL`
             UPDATE teams SET deleted = 1 WHERE team_id = ${teamId}

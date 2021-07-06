@@ -53,8 +53,7 @@
   "mocha": {
     "use_strict": true,
     "require": [
-      "esm",
-      "./config/nocks.js"
+      "esm"
     ],
     "exit": true
   },

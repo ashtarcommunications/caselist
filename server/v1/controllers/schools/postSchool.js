@@ -4,8 +4,8 @@ import { query } from '../../helpers/mysql';
 const postSchool = {
     POST: async (req, res) => {
         await query(SQL`
-            INSERT INTO schools (caselist_id, name, state)
-                SELECT caselist_id, ${req.body.name}, ${req.body.state}
+            INSERT INTO schools (caselist_id, name, display_name, state)
+                SELECT caselist_id, ${req.body.name}, ${req.body.display_name}, ${req.body.state}
                 FROM caselists WHERE slug = ${req.params.caselist}
         `);
 

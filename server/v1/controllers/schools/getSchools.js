@@ -4,7 +4,7 @@ import { query } from '../../helpers/mysql';
 const getSchools = {
     GET: async (req, res) => {
         const sql = (SQL`
-            SELECT * FROM schools S
+            SELECT S.* FROM schools S
             INNER JOIN caselists C ON S.caselist_id = C.caselist_id
             wHERE C.slug = ${req.params.caselist}
         `);

@@ -15,6 +15,6 @@ export default [
 
     { path: '/{caselist}/schools', module: { ...getSchools, ...postSchool } },
 
-    { path: '/{caselist}/{school}', module: { ...getTeams, ...postTeam } },
-    { path: '/{caselist}/{school}/{team}', module: deleteTeam },
+    { path: '/{caselist}/schools/{school}/teams', module: { ...getTeams, ...postTeam } },
+    { path: '/{caselist}/schools/{school}/teams/{team}', module: deleteTeam },
 ];
