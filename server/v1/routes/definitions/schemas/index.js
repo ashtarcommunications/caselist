@@ -1,7 +1,11 @@
 import Err from './Err';
-import Wiki from './Wiki';
+import Caselist from './Caselist';
+import School from './School';
+import Team from './Team';
 
 export default {
     Err,
-    Wiki,
+    Caselist,
+    School,
+    Team,
 };
