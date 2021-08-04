@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import './Sidebar.css';
 
 const loadSchools = async () => {
@@ -32,6 +33,7 @@ function Sidebar() {
 
             <h2>Schools</h2>
             <ul>
+                <li><Link to="/school">School</Link></li>
                 {
                     schools.map(s => {
                         return <li key={s.school_id}>{s.display_name}</li>;
