@@ -8,8 +8,12 @@ import getTeams from '../controllers/teams/getTeams';
 import postTeam from '../controllers/teams/postTeam';
 import deleteTeam from '../controllers/teams/deleteTeam';
 
+import postLogin from '../controllers/login/postLogin';
+
 export default [
     { path: '/status', module: status },
+
+    { path: '/login', module: postLogin },
 
     { path: '/caselists', module: getCaselists },
 

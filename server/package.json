@@ -31,6 +31,7 @@
     "express-winston": "^3.1.0",
     "helmet": "^3.16.0",
     "isomorphic-fetch": "^2.2.1",
+    "ldapjs": "^2.3.1",
     "moment-timezone": "^0.5.25",
     "mysql2": "^1.6.5",
     "sql-template-strings": "^2.2.2",
