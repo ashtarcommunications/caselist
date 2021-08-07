@@ -1,21 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { loadSchools } from './api';
 import './Sidebar.css';
-
-const loadSchools = async () => {
-    const response = await fetch(
-        'http://localhost:10010/v1/ndtceda21/schools',
-        { headers: { 'Content-Type': 'application/json' } },
-    );
-    return response.json();
-};
 
 function Sidebar() {
     const [schools, setSchools] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
             try {
-                setSchools(await loadSchools());
+                setSchools(await loadSchools('ndtceda21'));
             } catch (err) {
                 console.log(err);
             }

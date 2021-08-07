@@ -1,20 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { loadTeams } from './api';
 import './TeamList.css';
-
-const loadTeams = async () => {
-    const response = await fetch(
-        'http://localhost:10010/v1/ndtceda21/schools/Northwestern/teams',
-        { headers: { 'Content-Type': 'application/json' } },
-    );
-    return response.json();
-};
 
 function TeamList() {
     const [teams, setTeams] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
             try {
-                setTeams(await loadTeams());
+                setTeams(await loadTeams('ndtceda21', 'Northwestern'));
             } catch (err) {
                 console.log(err);
             }
@@ -24,13 +17,24 @@ function TeamList() {
 
     return (
         <div className="teamlist">
-            <ul>
-                {
-                    teams.map(t => {
-                        return <li key={t.team_id}>{t.name}</li>;
-                    })
-                }
-            </ul>
+            <h2>Northwestern</h2>
+            <table>
+                <tbody>
+                    <th>Team</th><th>Code</th><th>Aff</th><th>Neg</th>
+                    {
+                        teams.map(t => {
+                            return (
+                                <tr key={t.team_id}>
+                                    <td>{t.name}</td>
+                                    <td>{t.code}</td>
+                                    <td>Aff</td>
+                                    <td>Neg</td>
+                                </tr>
+                            );
+                        })
+                    }
+                </tbody>
+            </table>
         </div>
     );
 }
