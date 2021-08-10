@@ -9,15 +9,21 @@ const postLogin = {
             url: ['ldaps://ldap.tabroom.com:636'],
         });
 
-        client.bind(`uid=${username},ou=users,dc=tabroom,dc=com}`, password, (err) => {
-            if (err) { console.log(err); }
-            return res.status(201).json({ message: 'Successfully logged in' });
-        });
+        // TODO - better error handling
+        try {
+            client.bind(`uid=${username},ou=users,dc=tabroom,dc=com`, password, (err) => {
+                if (err) { throw err; }
+                return res.status(201).json({ message: 'Successfully logged in' });
+            });
+        } catch (err) {
+            console.log(`LDAP error: ${err}`);
+            return res.status(401).json({ message: 'Authentication failed', error: err });
+        }
 
-        client.on('error', (err) => {
-            console.log(err);
-            return res.status(400).json({ message: 'LDAP error', error: err });
-        });
+        // client.on('error', (err) => {
+        //     console.log(err);
+        //     return res.status(500).json({ message: 'Error connecting to LDAP', error: err });
+        // });
     },
 };
 
