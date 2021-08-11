@@ -34,3 +34,11 @@ export const loadTeams = async (wiki, school) => {
 export const addTeam = async (wiki, school, team) => {
     return fetchBase(`${wiki}/schools/${school}/teams`, { method: 'POST' }, team);
 };
+
+export const loadRounds = async (wiki, school, team, side) => {
+    return fetchBase(`${wiki}/schools/${school}/teams/${team}/rounds?side=${side}`);
+};
+
+export const addRound = async (wiki, school, team, round) => {
+    return fetchBase(`${wiki}/schools/${school}/teams/rounds`, { method: 'POST' }, round);
+};

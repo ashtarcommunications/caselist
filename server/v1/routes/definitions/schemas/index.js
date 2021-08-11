@@ -3,6 +3,7 @@ import Caselist from './Caselist';
 import Login from './Login';
 import School from './School';
 import Team from './Team';
+import Round from './Round';
 
 export default {
     Err,
@@ -10,4 +11,5 @@ export default {
     Login,
     School,
     Team,
+    Round,
 };

@@ -18,3 +18,7 @@ INSERT INTO teams (team_id, school_id, name, code, debater1_first, debater1_last
     (3, 3, 'LD XaXb', 'LDXaXb', 'XaFirst', 'XaLast', 'XbFirst', 'XbLast'),
     (4, 4, 'PF XaXb', 'PFXaXb', 'XaFirst', 'XaLast', 'XbFirst', 'XbLast'),
     (5, 5, 'NFA XaXb', 'NFAXaXb', 'XaFirst', 'XaLast', 'XbFirst', 'XbLast');
+
+INSERT INTO rounds (round_id, team_id, side, tournament, round, opponent, judge, report, tourn_id, external_id) VALUES
+    (1, 1, 'Aff', 'Test Tournament', 'Round 1', 'Evil Empire XX', 'Hardy', 'Report', 1234, 1234),
+    (2, 1, 'Neg', 'Test Tournament', 'Round 2', 'Evil Empire YY', 'Hardy', 'Report', 1234, 1234);

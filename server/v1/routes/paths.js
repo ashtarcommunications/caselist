@@ -8,6 +8,8 @@ import getTeams from '../controllers/teams/getTeams';
 import postTeam from '../controllers/teams/postTeam';
 import deleteTeam from '../controllers/teams/deleteTeam';
 
+import getRounds from '../controllers/rounds/getRounds';
+
 import postLogin from '../controllers/login/postLogin';
 
 export default [
@@ -21,4 +23,5 @@ export default [
 
     { path: '/{caselist}/schools/{school}/teams', module: { ...getTeams, ...postTeam } },
     { path: '/{caselist}/schools/{school}/teams/{team}', module: deleteTeam },
+    { path: '/{caselist}/schools/{school}/teams/{team}/rounds', module: getRounds },
 ];

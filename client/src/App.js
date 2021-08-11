@@ -6,6 +6,7 @@ import Sidebar from './Sidebar';
 import AddSchool from './AddSchool';
 import TeamList from './TeamList';
 import AddTeam from './AddTeam';
+import TeamRounds from './TeamRounds';
 
 function App() {
     return (
@@ -23,6 +24,9 @@ function App() {
                             <Route exact path="/school">
                                 <TeamList />
                                 <AddTeam />
+                            </Route>
+                            <Route exact path="/rounds">
+                                <TeamRounds />
                             </Route>
                         </Switch>
                     </main>
