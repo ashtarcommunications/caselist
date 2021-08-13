@@ -62,11 +62,9 @@ app.use(expressWinston.logger({
     },
 }));
 
-// Parse body
+// Parse body and cookies
 app.use(bodyParser.json({ type: ['json', 'application/*json'], limit: '10mb' }));
 app.use(bodyParser.text({ type: '*/*', limit: '10mb' }));
-
-// Parse cookies as a fallback to basic auth
 app.use(cookieParser());
 
 // Initialize OpenAPI middleware

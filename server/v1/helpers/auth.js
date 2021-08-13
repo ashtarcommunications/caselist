@@ -14,9 +14,9 @@ const auth = async (req) => {
         return true;
     }
 
+    // Default to unauthorized
     const err = new Error('Not Authorized');
     err.status = 401;
-    // Default to unauthorized
     debugLogger.error(`Authorization failed: ${err.message}`);
     throw err;
 };
