@@ -19,6 +19,10 @@ export const fetchBase = (path, options = {}, body = {}) => {
     return fetch(`${base}${path}`, fetchOptions).then(r => r.json());
 };
 
+export const login = async (username, password) => {
+    return fetchBase(`login`, { method: 'POST' }, { username, password });
+};
+
 export const loadSchools = async (wiki) => {
     return fetchBase(`${wiki}/schools`);
 };

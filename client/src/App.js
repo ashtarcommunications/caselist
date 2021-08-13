@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
+import Home from './Home';
+import Login from './Login';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import AddSchool from './AddSchool';
@@ -9,6 +11,18 @@ import AddTeam from './AddTeam';
 import TeamRounds from './TeamRounds';
 
 function App() {
+    // Check for API credentials or redirect to the login page
+    const cookies = `; ${document.cookie}`;
+    let token = null;
+    const parts = cookies.split('; caselist_token=');
+    if (parts.length === 2) {
+        token = parts.pop().split(';').shift();
+    }
+
+    if (!token || typeof sessionToken !== 'string') {
+        return <Login />;
+    }
+
     return (
         <Router>
             <div>
@@ -18,7 +32,7 @@ function App() {
                     <main className="main">
                         <Switch>
                             <Route exact path="/">
-                                <p>Home</p>
+                                <Home />
                                 <AddSchool />
                             </Route>
                             <Route exact path="/school">
