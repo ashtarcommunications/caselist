@@ -41,7 +41,8 @@ const postLogin = {
             VALUES (${hash}, ${user.uidNumber}, ${req.ip}, DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 1 MONTH))
         `);
 
-        return res.status(201).json({ message: 'Successfully logged in', token: hash });
+        res.cookie('caselist_token', nonce, { maxAge: 900000, httpOnly: true });
+        return res.status(201).json({ message: 'Successfully logged in', token: nonce });
     },
 };
 
@@ -60,6 +61,7 @@ postLogin.POST.apiDoc = {
         },
         default: { $ref: '#/components/responses/ErrorResponse' },
     },
+    security: [],
 };
 
 export default postLogin;

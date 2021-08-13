@@ -11,8 +11,10 @@ const apiDoc = {
     components: {
         schemas,
         responses,
+        securitySchemes: { cookie: { type: 'apiKey', in: 'cookie', name: 'caselist_token' } },
     },
     paths: {},
+    security: [{ cookie: [] }],
 };
 
 export default apiDoc;

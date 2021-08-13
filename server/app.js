@@ -78,7 +78,7 @@ initialize({
     promiseMode: true,
     errorMiddleware: errorHandler,
     securityHandlers: {
-        basic: auth,
+        cookie: auth,
     },
 });
 
