@@ -1,4 +1,5 @@
 import React from 'react';
+import Cookies from 'js-cookie';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
 import Home from './Home';
@@ -12,14 +13,9 @@ import TeamRounds from './TeamRounds';
 
 function App() {
     // Check for API credentials or redirect to the login page
-    const cookies = `; ${document.cookie}`;
-    let token = null;
-    const parts = cookies.split('; caselist_token=');
-    if (parts.length === 2) {
-        token = parts.pop().split(';').shift();
-    }
-
-    if (!token || typeof sessionToken !== 'string') {
+    const token = Cookies.get('caselist_token');
+    console.log(token);
+    if (!token || typeof token !== 'string') {
         return <Login />;
     }
 
