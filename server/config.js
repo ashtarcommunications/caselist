@@ -15,7 +15,12 @@ const config = {
     DB_CONNECTION_TIMEOUT: 60000,
     DB_RETRIES: 5,
     DB_RETRY_DELAY: 100,
+    LDAP_URL: 'ldap://localhost:6363',
 };
+
+if (process.env.NODE_ENV === 'production') {
+    config.LDAP_URL = 'ldaps://ldap.tabroom.com:636';
+}
 
 // Override any config value if corresponding env var is set
 const configKeys = Object.keys(config);

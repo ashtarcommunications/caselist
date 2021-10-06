@@ -2,17 +2,29 @@ import { authenticate } from 'ldap-authentication';
 import crypto from 'crypto';
 import SQL from 'sql-template-strings';
 import { query } from '../../helpers/mysql';
+import config from '../../../config';
 
 const postLogin = {
     POST: async (req, res) => {
         const username = req.body.username;
         const password = req.body.password;
 
+        // TODO - figure out how to mock this
+        let auth = authenticate;
+        if (process.env.NODE_ENV !== 'production') {
+            auth = () => {
+                return {
+                    dn: 'uid=test@test.com,ou=users,dc=tabroom,dc=com',
+                    uidNumber: 1,
+                    displayName: 'Test User',
+                };
+            };
+        }
         // TODO - figure out error handling with correct codes
         let user;
         try {
-            user = await authenticate({
-                ldapOpts: { url: 'ldaps://ldap.tabroom.com:636' },
+            user = await auth({
+                ldapOpts: { url: config.LDAP_URL },
                 userDn: `uid=${username},ou=users,dc=tabroom,dc=com`,
                 userPassword: password,
                 userSearchBase: 'ou=users,dc=tabroom,dc=com',
