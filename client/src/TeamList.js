@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { loadTeams } from './api';
+import Table from './Table';
 import './TeamList.css';
 
 function TeamList() {
@@ -15,26 +16,18 @@ function TeamList() {
         fetchData();
     }, []);
 
+    const data = useMemo(() => teams, [teams]);
+    const columns = useMemo(() => [
+        { Header: 'Team', accessor: 'name' },
+        { Header: 'Code', accessor: 'code' },
+        { Header: 'Aff', accessor: null },
+        { Header: 'Neg', accessor: null },
+    ], []);
+
     return (
         <div className="teamlist">
             <h2>Northwestern</h2>
-            <table>
-                <tbody>
-                    <th>Team</th><th>Code</th><th>Aff</th><th>Neg</th>
-                    {
-                        teams.map(t => {
-                            return (
-                                <tr key={t.team_id}>
-                                    <td>{t.name}</td>
-                                    <td>{t.code}</td>
-                                    <td>Aff</td>
-                                    <td>Neg</td>
-                                </tr>
-                            );
-                        })
-                    }
-                </tbody>
-            </table>
+            <Table columns={columns} data={data} />
         </div>
     );
 }

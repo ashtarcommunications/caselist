@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { loadRounds } from './api';
+import Table from './Table';
 
 function TeamRounds() {
     const [rounds, setRounds] = useState([]);
@@ -14,35 +15,21 @@ function TeamRounds() {
         fetchData();
     }, []);
 
+    const data = useMemo(() => rounds, [rounds]);
+    const columns = useMemo(() => [
+        { Header: 'Side', accessor: 'side' },
+        { Header: 'Tournament', accessor: 'tournament' },
+        { Header: 'Round', accessor: 'round' },
+        { Header: 'Opponent', accessor: 'opponent' },
+        { Header: 'Judge', accessor: 'judge' },
+        { Header: 'Cites', accessor: 'cites' },
+        { Header: 'Round Report', accessor: 'report' },
+    ], []);
+
     return (
         <div className="roundlist">
             <h2>Rounds</h2>
-            <table>
-                <tbody>
-                    <th>Side</th>
-                    <th>Tournament</th>
-                    <th>Round</th>
-                    <th>Opponent</th>
-                    <th>Judge</th>
-                    <th>Cites</th>
-                    <th>Round Report</th>
-                    {
-                        rounds.map(r => {
-                            return (
-                                <tr key={r.round_id}>
-                                    <td>{r.side}</td>
-                                    <td>{r.tournament}</td>
-                                    <td>{r.round}</td>
-                                    <td>{r.opponent}</td>
-                                    <td>{r.judge}</td>
-                                    <td>{r.cites}</td>
-                                    <td>{r.report}</td>
-                                </tr>
-                            );
-                        })
-                    }
-                </tbody>
-            </table>
+            <Table columns={columns} data={data} />
         </div>
     );
 }
