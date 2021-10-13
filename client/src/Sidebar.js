@@ -8,9 +8,11 @@ function Sidebar() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                setSchools(await loadSchools('ndtceda21'));
+                const schoolData = await loadSchools('ndtceda21');
+                setSchools(schoolData || []);
             } catch (err) {
                 console.log(err);
+                setSchools([]);
             }
         };
         fetchData();

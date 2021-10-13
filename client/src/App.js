@@ -1,6 +1,6 @@
 import React from 'react';
-import Cookies from 'js-cookie';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { ProvideAuth, PrivateRoute } from './auth';
 import './App.css';
 import Home from './Home';
 import Login from './Login';
@@ -12,37 +12,39 @@ import AddTeam from './AddTeam';
 import TeamRounds from './TeamRounds';
 
 function App() {
-    // Check for API credentials or redirect to the login page
-    const token = Cookies.get('caselist_token');
-    console.log(token);
-    if (!token || typeof token !== 'string') {
-        return <Login />;
-    }
-
     return (
-        <Router>
-            <div>
-                <Header />
-                <div className="wrapper">
-                    <Sidebar />
-                    <main className="main">
+        <ProvideAuth>
+            <Router>
+                <div>
+                    <Header />
+                    <div className="wrapper">
                         <Switch>
-                            <Route exact path="/">
-                                <Home />
-                                <AddSchool />
+                            <Route exact path="/login">
+                                <Login />
                             </Route>
-                            <Route exact path="/school">
-                                <TeamList />
-                                <AddTeam />
-                            </Route>
-                            <Route exact path="/rounds">
-                                <TeamRounds />
-                            </Route>
+                            <PrivateRoute>
+                                <Sidebar />
+                                <main className="main">
+                                    <Switch>
+                                        <PrivateRoute exact path="/">
+                                            <Home />
+                                            <AddSchool />
+                                        </PrivateRoute>
+                                        <PrivateRoute exact path="/school">
+                                            <TeamList />
+                                            <AddTeam />
+                                        </PrivateRoute>
+                                        <PrivateRoute exact path="/rounds">
+                                            <TeamRounds />
+                                        </PrivateRoute>
+                                    </Switch>
+                                </main>
+                            </PrivateRoute>
                         </Switch>
-                    </main>
+                    </div>
                 </div>
-            </div>
-        </Router>
+            </Router>
+        </ProvideAuth>
     );
 }
 

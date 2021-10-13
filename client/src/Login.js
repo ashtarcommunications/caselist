@@ -1,14 +1,18 @@
 import React from 'react';
-import Cookies from 'js-cookie';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { login } from './api';
+import { useProvideAuth } from './auth';
 
 function Login() {
     const { register, handleSubmit } = useForm();
+    const history = useHistory();
+    const location = useLocation();
+    const auth = useProvideAuth();
     const onSubmit = async (data) => {
         try {
-            const response = await login(data.username, data.password);
-            Cookies.set('caselist_token', response.token);
+            await auth.handleLogin(data.username, data.password);
+            const { from } = location.state || { from: { pathname: '/' } };
+            history.replace(from);
         } catch (err) {
             console.log(err);
         }

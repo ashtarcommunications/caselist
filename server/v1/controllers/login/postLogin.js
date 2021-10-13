@@ -34,7 +34,10 @@ const postLogin = {
         } catch (err) {
             console.log(`LDAP error: ${err}`);
             return res.status(401).json({ message: 'Invalid username or password' });
-            // return res.status(500).json({ message: 'Failure with authentication service', error: err });
+            // return res.status(500).json({
+            //     message: 'Failure with authentication service',
+            //     error: err
+            // });
         }
 
         if (!user || !user.uidNumber) {
@@ -55,7 +58,7 @@ const postLogin = {
             VALUES (${hash}, ${user.uidNumber}, ${req.ip}, DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 1 MONTH))
         `);
 
-        res.cookie('caselist_token', nonce, { maxAge: 900000, httpOnly: true, path: '/' });
+        res.cookie('caselist_token', nonce, { maxAge: 1209600000, httpOnly: false, path: '/' });
         return res.status(201).json({ message: 'Successfully logged in', token: nonce });
     },
 };
