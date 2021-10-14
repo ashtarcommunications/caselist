@@ -7,6 +7,7 @@ import Home from './Home';
 import Login from './Login';
 import Logout from './Logout';
 import Header from './Header';
+import Footer from './Footer';
 import Sidebar from './Sidebar';
 import AddSchool from './AddSchool';
 import TeamList from './TeamList';
@@ -48,6 +49,7 @@ function App() {
                             </PrivateRoute>
                         </Switch>
                     </div>
+                    <Footer />
                 </div>
             </Router>
         </ProvideAuth>

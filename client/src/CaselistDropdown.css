@@ -1,0 +1,6 @@
+.form {
+    display: flex;
+}
+.form select {
+    margin-right: 10px;
+}

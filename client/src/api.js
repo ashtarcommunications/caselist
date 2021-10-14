@@ -23,6 +23,10 @@ export const login = async (username, password) => {
     return fetchBase(`login`, { method: 'POST' }, { username, password });
 };
 
+export const loadCaselists = async (archived) => {
+    return fetchBase(`caselists?archived=${archived ? 'true' : 'false'}`);
+};
+
 export const loadSchools = async (wiki) => {
     return fetchBase(`${wiki}/schools`);
 };

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { loadSchools } from './api';
 import './Sidebar.css';
 
-function Sidebar() {
+const Sidebar = () => {
     const [schools, setSchools] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
@@ -36,6 +36,6 @@ function Sidebar() {
             </ul>
         </div>
     );
-}
+};
 
 export default Sidebar;

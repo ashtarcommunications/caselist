@@ -1,8 +1,8 @@
 .header {
     display: flex;
     align-items: center;
-    justify-content: space-around;
-    flex-wrap: nowrap;
+    justify-content: space-between;
+    flex-wrap: wrap;
     background-color: #316098;
     color: white;
 }
@@ -17,9 +17,11 @@
 }
 .menu {
     font-size: 16px;
-    text-align: right;
     margin-right: 20px;
 }
 .menu ul {
     list-style-type: none;
+}
+.header form {
+    display: flex;
 }

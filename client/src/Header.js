@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from './auth';
+import CaselistDropdown from './CaselistDropdown';
 import './Header.css';
 
 function Header() {
@@ -8,7 +9,8 @@ function Header() {
     return (
         <header className="header">
             <h1><Link to="/">openCaselist</Link></h1>
-            <div className="menu pure-menu pure-menu-horizontal">
+            <CaselistDropdown />
+            <div className="menu pure-menu">
                 <ul>
                     {
                     auth && auth.user?.loggedIn
