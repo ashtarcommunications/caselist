@@ -26,14 +26,19 @@ const Sidebar = () => {
                 <li>Recently Modified</li>
             </ul>
 
-            <h2>Schools</h2>
-            <ul>
-                {
-                    schools.map(s => {
-                        return <li key={s.school_id}><Link to="/school">{s.display_name}</Link></li>;
-                    })
-                }
-            </ul>
+            {
+                schools && schools.length > 0 &&
+                    <div>
+                        <h2>Schools</h2>
+                        <ul>
+                            {
+                                schools.map(s => {
+                                    return <li key={s.school_id}><Link to="/school">{s.display_name}</Link></li>;
+                                })
+                            }
+                        </ul>
+                    </div>
+            }
         </div>
     );
 };

@@ -44,6 +44,9 @@ function App() {
                                         <PrivateRoute exact path="/rounds">
                                             <TeamRounds />
                                         </PrivateRoute>
+                                        <PrivateRoute path="/:caselist">
+                                            <Home />
+                                        </PrivateRoute>
                                     </Switch>
                                 </main>
                             </PrivateRoute>
