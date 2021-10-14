@@ -2,6 +2,7 @@ import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useProvideAuth } from './auth';
+import './Login.css';
 
 function Login() {
     const { register, handleSubmit } = useForm();
@@ -22,10 +23,10 @@ function Login() {
         <div className="login">
             <h1>Login</h1>
             <p>Login with your Tabroom.com username and password</p>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form className="pure-form pure-form-stacked" onSubmit={handleSubmit(onSubmit)}>
                 Username:<input type="text" {...register('username')} />
                 Password:<input type="password" {...register('password')} />
-                <button type="submit">Login</button>
+                <button className="pure-button pure-button-primary" type="submit">Login</button>
             </form>
         </div>
     );

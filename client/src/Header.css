@@ -2,8 +2,21 @@
     text-align: left;
     background-color: #316098;
     color: white;
-    padding: 1px 20px;
+    padding: 0px 20px;
     margin: 0;
     font-size: 24px;
-    line-height: 0.1em;
+    height: 50px;
+}
+.header a {
+    color: white;
+    text-decoration: none;
+    vertical-align: middle;
+}
+.menu {
+    display: inline;
+    font-size: 16px;
+    vertical-align: middle;
+    padding: 0px 20px;
+    margin: 0;
+
 }

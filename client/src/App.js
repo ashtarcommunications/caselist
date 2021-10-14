@@ -1,9 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import 'purecss/build/pure-min.css';
 import { ProvideAuth, PrivateRoute } from './auth';
 import './App.css';
 import Home from './Home';
 import Login from './Login';
+import Logout from './Logout';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import AddSchool from './AddSchool';
@@ -21,6 +23,9 @@ function App() {
                         <Switch>
                             <Route exact path="/login">
                                 <Login />
+                            </Route>
+                            <Route exact path="/logout">
+                                <Logout />
                             </Route>
                             <PrivateRoute>
                                 <Sidebar />
