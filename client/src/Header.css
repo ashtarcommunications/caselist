@@ -1,21 +1,25 @@
 .header {
-    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: nowrap;
     background-color: #316098;
     color: white;
-    padding: 0px 20px;
-    margin: 0;
+}
+.header h1 {
+    margin: 0px 20px;
     font-size: 24px;
-    height: 50px;
+    font-weight: 400;
 }
 .header a {
     color: white;
     text-decoration: none;
-    vertical-align: middle;
 }
 .menu {
-    display: inline;
     font-size: 16px;
-    vertical-align: middle;
-    padding: 0px 20px;
-    margin: 0;
+    text-align: right;
+    margin-right: 20px;
+}
+.menu ul {
+    list-style-type: none;
 }

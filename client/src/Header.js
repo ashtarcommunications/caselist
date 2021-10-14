@@ -7,7 +7,7 @@ function Header() {
     const auth = useAuth();
     return (
         <header className="header">
-            <span><Link to="/">openCaselist</Link></span>
+            <h1><Link to="/">openCaselist</Link></h1>
             <div className="menu pure-menu pure-menu-horizontal">
                 <ul>
                     {
