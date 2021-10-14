@@ -37,6 +37,7 @@ function App() {
                                         </PrivateRoute>
                                         <PrivateRoute exact path="/school">
                                             <TeamList />
+                                            <hr />
                                             <AddTeam />
                                         </PrivateRoute>
                                         <PrivateRoute exact path="/rounds">

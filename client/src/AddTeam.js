@@ -13,7 +13,7 @@ function AddTeam() {
 
     return (
         <div>
-            <form onSubmit={addTeamHandler}>
+            <form onSubmit={addTeamHandler} className="pure-form pure-form-stacked">
                 Team Name: <input type="text" />
                 <button type="submit">Add</button>
             </form>

@@ -13,7 +13,7 @@ function AddSchool() {
 
     return (
         <div>
-            <form onSubmit={addSchoolHandler}>
+            <form onSubmit={addSchoolHandler} className="pure-form pure-form-stacked">
                 School Name: <input type="text" />
                 <button type="submit">Add</button>
             </form>

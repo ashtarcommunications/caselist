@@ -26,7 +26,8 @@ function TeamList() {
 
     return (
         <div className="teamlist">
-            <h2>Northwestern</h2>
+            <h1>Northwestern</h1>
+            <hr />
             <Table columns={columns} data={data} />
         </div>
     );

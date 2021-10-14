@@ -28,10 +28,9 @@ function Sidebar() {
 
             <h2>Schools</h2>
             <ul>
-                <li><Link to="/school">School</Link></li>
                 {
                     schools.map(s => {
-                        return <li key={s.school_id}>{s.display_name}</li>;
+                        return <li key={s.school_id}><Link to="/school">{s.display_name}</Link></li>;
                     })
                 }
             </ul>

@@ -1,7 +1,8 @@
 .table table {
-    border: 1px solid black;
+    width: 100%;
+    margin: 20px 0px;
 }
+
 .table td, .table th {
-    padding: 20px;
-    border: 1px solid black;
+    padding: 5px;
 }

@@ -16,7 +16,7 @@ const Table = ({ columns = [], data = [] }) => {
 
     return (
         <div className="table">
-            <table {...getTableProps()}>
+            <table {...getTableProps()} className="pure-table pure-table-bordered">
                 <thead>
                     {
                         headerGroups.map(headerGroup => (

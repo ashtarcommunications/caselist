@@ -17,7 +17,7 @@ function AddRound() {
 
     return (
         <div>
-            <form onSubmit={addRoundHandler}>
+            <form onSubmit={addRoundHandler} className="pure-form pure-form-stacked">
                 Tournament: <input type="text" />
                 Round: <input type="text" />
                 Opponent: <input type="text" />
