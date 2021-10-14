@@ -1,7 +1,7 @@
 import React from 'react';
 import { addSchool } from './api';
 
-function AddSchool() {
+const AddSchool = () => {
     const addSchoolHandler = async (e) => {
         e.preventDefault();
         try {
@@ -19,6 +19,6 @@ function AddSchool() {
             </form>
         </div>
     );
-}
+};
 
 export default AddSchool;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { addRound } from './api';
 
-function AddRound() {
+const AddRound = () => {
     const addRoundHandler = async (e) => {
         e.preventDefault();
         try {
@@ -29,6 +29,6 @@ function AddRound() {
             </form>
         </div>
     );
-}
+};
 
 export default AddRound;

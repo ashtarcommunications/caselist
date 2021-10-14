@@ -38,7 +38,14 @@ const Table = ({ columns = [], data = [] }) => {
                                 <tr {...row.getRowProps()}>
                                     {
                                         row.cells.map(cell => {
-                                            return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
+                                            return (
+                                                <td
+                                                    className={cell.column.className ?? ''}
+                                                    {...cell.getCellProps()}
+                                                >
+                                                    {cell.render('Cell')}
+                                                </td>
+                                            );
                                         })
                                     }
                                 </tr>

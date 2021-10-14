@@ -1,3 +1,11 @@
 .teamlist ul {
     list-style-type: none;
 }
+.center {
+    text-align: center;
+}
+
+.trash {
+    color: rgb(211, 31, 31);
+    cursor: pointer;
+}

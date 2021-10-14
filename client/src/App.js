@@ -13,8 +13,9 @@ import AddSchool from './AddSchool';
 import TeamList from './TeamList';
 import AddTeam from './AddTeam';
 import TeamRounds from './TeamRounds';
+import AddRound from './AddRound';
 
-function App() {
+const App = () => {
     return (
         <ProvideAuth>
             <Router>
@@ -43,6 +44,7 @@ function App() {
                                         </PrivateRoute>
                                         <PrivateRoute exact path="/rounds">
                                             <TeamRounds />
+                                            <AddRound />
                                         </PrivateRoute>
                                         <PrivateRoute path="/:caselist">
                                             <Home />
@@ -57,6 +59,6 @@ function App() {
             </Router>
         </ProvideAuth>
     );
-}
+};
 
 export default App;

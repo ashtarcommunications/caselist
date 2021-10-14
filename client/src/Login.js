@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useProvideAuth } from './auth';
 import './Login.css';
 
-function Login() {
+const Login = () => {
     const { register, handleSubmit } = useForm();
     const history = useHistory();
     const location = useLocation();
@@ -30,6 +30,6 @@ function Login() {
             </form>
         </div>
     );
-}
+};
 
 export default Login;

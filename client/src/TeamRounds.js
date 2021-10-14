@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { loadRounds } from './api';
 import Table from './Table';
 
-function TeamRounds() {
+const TeamRounds = () => {
     const [rounds, setRounds] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
@@ -32,6 +32,6 @@ function TeamRounds() {
             <Table columns={columns} data={data} />
         </div>
     );
-}
+};
 
 export default TeamRounds;

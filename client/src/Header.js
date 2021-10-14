@@ -4,7 +4,7 @@ import { useAuth } from './auth';
 import CaselistDropdown from './CaselistDropdown';
 import './Header.css';
 
-function Header() {
+const Header = () => {
     const auth = useAuth();
     return (
         <header className="header">
@@ -21,6 +21,6 @@ function Header() {
             </div>
         </header>
     );
-}
+};
 
 export default Header;
