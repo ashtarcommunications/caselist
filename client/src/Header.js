@@ -1,19 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from './auth';
+import { AuthContext } from './auth';
 import CaselistDropdown from './CaselistDropdown';
 import './Header.css';
 
 const Header = () => {
-    const auth = useAuth();
+    const auth = useContext(AuthContext);
     return (
         <header className="header">
             <h1><Link to="/">openCaselist</Link></h1>
-            <CaselistDropdown />
+            {auth.user?.loggedIn && <CaselistDropdown />}
             <div className="menu pure-menu">
                 <ul>
                     {
-                    auth && auth.user?.loggedIn
+                    auth.user?.loggedIn
                         ? <li className="pure-menu-item"><Link to="/logout">Logout</Link></li>
                         : <li className="pure-menu-item"><Link to="/login">Login</Link></li>
                     }

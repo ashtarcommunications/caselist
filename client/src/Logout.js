@@ -1,14 +1,12 @@
-// import React from 'react';
-// import { Redirect } from 'react-router-dom';
-import { useProvideAuth } from './auth';
+import React, { useContext } from 'react';
+import { Redirect } from 'react-router-dom';
+import { AuthContext } from './auth';
 
-const Logout = async () => {
-    /// const history = useHistory();
-    const auth = useProvideAuth();
-    await auth.handleLogout();
-    // history.replace({ from: { pathname: '/' } });
+const Logout = () => {
+    const auth = useContext(AuthContext);
+    auth.handleLogout();
 
-    // return <Redirect to="/" />;
+    return <Redirect to="/" />;
 };
 
 export default Logout;

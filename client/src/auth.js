@@ -1,10 +1,11 @@
-import React, { useContext, createContext, useState } from 'react';
+import React, { createContext, useState, useContext } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { login } from './api';
 
 // Hook to track user state and log in or out
-export const useProvideAuth = () => {
+export const useAuth = () => {
+    console.log('providing auth');
     const [user, setUser] = useState(null);
 
     // Set any token from cookies
@@ -33,6 +34,7 @@ export const useProvideAuth = () => {
         }
     };
 
+    console.log(user);
     return {
         user,
         handleLogin,
@@ -43,14 +45,9 @@ export const useProvideAuth = () => {
 // Create a context for auth info
 export const AuthContext = createContext();
 
-// Hook to access the auth context
-export const useAuth = () => {
-    return useContext(AuthContext);
-};
-
 // Auth Context provider
 export const ProvideAuth = ({ children }) => {
-    const auth = useProvideAuth();
+    const auth = useAuth();
     return (
         <AuthContext.Provider value={auth}>
             {children}
@@ -61,7 +58,8 @@ export const ProvideAuth = ({ children }) => {
 // Private route - redirect to login without auth info
 export const PrivateRoute = ({ children, ...rest }) => {
     // Get the auth info from context hook
-    const auth = useAuth();
+    const auth = useContext(AuthContext);
+    console.log(auth);
     return (
         <Route
             {...rest}

@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import * as mammoth from 'mammoth/mammoth.browser';
+// import MarkdownIt from 'markdown-it';
 import { addRound } from './api';
 import './AddRound.css';
 
@@ -28,8 +29,14 @@ const AddRound = () => {
                 // Do whatever you want with the file contents
                 const binaryStr = reader.result;
                 console.log(binaryStr);
-                const result = await mammoth.convertToMarkdown({ arrayBuffer: binaryStr });
+                const result = await mammoth.convertToHtml({ arrayBuffer: binaryStr });
+                const html = result.value;
+                const arr = html.split('<h1>').map(x => `<h1>${x}`).filter(x => x !== '<h1>');
+                // const md = new MarkdownIt();
+                // const json = md.parse(result.value, {});
                 console.log(result.value);
+                console.log(arr);
+                // console.log(json);
             };
             reader.readAsArrayBuffer(file);
         });
