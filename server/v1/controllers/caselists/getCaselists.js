@@ -1,5 +1,6 @@
 import SQL from 'sql-template-strings';
 import { query } from '../../helpers/mysql';
+import { startOfYear } from '../../helpers/common';
 
 const getCaselists = {
     GET: async (req, res) => {
@@ -7,7 +8,7 @@ const getCaselists = {
         if (req.query.archived) {
             sql = (SQL`SELECT * FROM caselists`);
         } else {
-            sql = (SQL`SELECT * FROM caselists WHERE year = 2021`);
+            sql = (SQL`SELECT * FROM caselists WHERE year = ${startOfYear}`);
         }
 
         const caselists = await query(sql);

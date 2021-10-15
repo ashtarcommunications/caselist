@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useDropzone } from 'react-dropzone';
+import * as mammoth from 'mammoth/mammoth.browser';
 import { addRound } from './api';
+import './AddRound.css';
 
 const AddRound = () => {
     const addRoundHandler = async (e) => {
@@ -15,6 +18,24 @@ const AddRound = () => {
         }
     };
 
+    const onDrop = useCallback((acceptedFiles) => {
+        acceptedFiles.forEach((file) => {
+            const reader = new FileReader();
+
+            reader.onabort = () => console.log('file reading was aborted');
+            reader.onerror = () => console.log('file reading has failed');
+            reader.onload = async () => {
+                // Do whatever you want with the file contents
+                const binaryStr = reader.result;
+                console.log(binaryStr);
+                const result = await mammoth.convertToMarkdown({ arrayBuffer: binaryStr });
+                console.log(result.value);
+            };
+            reader.readAsArrayBuffer(file);
+        });
+    }, []);
+    const { getRootProps, getInputProps } = useDropzone({ onDrop });
+
     return (
         <div>
             <form onSubmit={addRoundHandler} className="pure-form pure-form-stacked">
@@ -27,6 +48,10 @@ const AddRound = () => {
                 Cites: <input type="text" />
                 <button type="submit">Add</button>
             </form>
+            <div className="dropzone" {...getRootProps()}>
+                <input {...getInputProps()} />
+                <p>Drag and drop some files here, or click to select files</p>
+            </div>
         </div>
     );
 };

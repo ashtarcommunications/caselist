@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import uniqBy from 'lodash/uniqBy';
 import { useHistory } from 'react-router-dom';
 import { loadCaselists } from './api';
+import { startOfYear } from './common';
 import './CaselistDropdown.css';
 
 const CaselistDropdown = () => {
@@ -9,8 +10,7 @@ const CaselistDropdown = () => {
 
     const [caselists, setCaselists] = useState([]);
     const [years, setYears] = useState([]);
-    const currentYear = new Date().getFullYear();
-    const [year, setYear] = useState(currentYear);
+    const [year, setYear] = useState(startOfYear);
     useEffect(() => {
         const fetchData = async () => {
             try {

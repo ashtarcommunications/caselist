@@ -27,26 +27,30 @@ export const loadCaselists = async (archived) => {
     return fetchBase(`caselists?archived=${archived ? 'true' : 'false'}`);
 };
 
-export const loadSchools = async (wiki) => {
-    return fetchBase(`${wiki}/schools`);
+export const loadSchools = async (caselist) => {
+    return fetchBase(`${caselist}/schools`);
 };
 
-export const addSchool = async (wiki, school) => {
-    return fetchBase(`${wiki}/schools`, { method: 'POST' }, school);
+export const loadSchool = async (caselist, school) => {
+    return fetchBase(`${caselist}/schools/${school}`);
 };
 
-export const loadTeams = async (wiki, school) => {
-    return fetchBase(`${wiki}/schools/${school}/teams`);
+export const addSchool = async (caselist, school) => {
+    return fetchBase(`${caselist}/schools`, { method: 'POST' }, school);
 };
 
-export const addTeam = async (wiki, school, team) => {
-    return fetchBase(`${wiki}/schools/${school}/teams`, { method: 'POST' }, team);
+export const loadTeams = async (caselist, school) => {
+    return fetchBase(`${caselist}/schools/${school}/teams`);
 };
 
-export const loadRounds = async (wiki, school, team, side) => {
-    return fetchBase(`${wiki}/schools/${school}/teams/${team}/rounds?side=${side}`);
+export const addTeam = async (caselist, school, team) => {
+    return fetchBase(`${caselist}/schools/${school}/teams`, { method: 'POST' }, team);
 };
 
-export const addRound = async (wiki, school, team, round) => {
-    return fetchBase(`${wiki}/schools/${school}/teams/rounds`, { method: 'POST' }, round);
+export const loadRounds = async (caselist, school, team, side) => {
+    return fetchBase(`${caselist}/schools/${school}/teams/${team}/rounds?side=${side}`);
+};
+
+export const addRound = async (caselist, school, team, round) => {
+    return fetchBase(`${caselist}/schools/${school}/teams/rounds`, { method: 'POST' }, round);
 };
