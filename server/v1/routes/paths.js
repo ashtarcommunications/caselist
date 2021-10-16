@@ -1,6 +1,7 @@
 import status from '../controllers/status/status';
 
 import getCaselists from '../controllers/caselists/getCaselists';
+import getCaselist from '../controllers/caselists/getCaselist';
 import getSchool from '../controllers/schools/getSchool';
 import getSchools from '../controllers/schools/getSchools';
 import postSchool from '../controllers/schools/postSchool';
@@ -19,6 +20,7 @@ export default [
     { path: '/login', module: postLogin },
 
     { path: '/caselists', module: getCaselists },
+    { path: '/caselists/{caselist}', module: getCaselist },
 
     { path: '/{caselist}/schools', module: { ...getSchools, ...postSchool } },
 

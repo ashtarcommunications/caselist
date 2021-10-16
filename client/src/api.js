@@ -27,6 +27,10 @@ export const loadCaselists = async (archived) => {
     return fetchBase(`caselists?archived=${archived ? 'true' : 'false'}`);
 };
 
+export const loadCaselist = async (caselist) => {
+    return fetchBase(`caselists/${caselist}`);
+};
+
 export const loadSchools = async (caselist) => {
     return fetchBase(`${caselist}/schools`);
 };

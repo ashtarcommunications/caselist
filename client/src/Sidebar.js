@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { StoreContext } from './store';
 import { loadSchools } from './api';
 import './Sidebar.css';
 
@@ -18,8 +19,11 @@ const Sidebar = () => {
         fetchData();
     }, []);
 
+    const store = useContext(StoreContext);
+
     return (
         <div className="sidebar">
+            <h1>Current Caselist: {JSON.stringify(store.caselist)}</h1>
             <h2>Quick Links</h2>
             <ul>
                 <li>Archived Caselists</li>
