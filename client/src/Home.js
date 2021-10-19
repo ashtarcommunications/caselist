@@ -6,7 +6,6 @@ const Home = () => {
     const [caselistData, setCaselistData] = useState({});
 
     const { caselist } = useParams();
-    console.log(caselist);
 
     useEffect(() => {
         const fetchData = async () => {

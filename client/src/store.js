@@ -4,11 +4,9 @@ import { loadCaselist } from './api';
 
 // Hook to track store state
 export const useStore = () => {
-    console.log('running store');
     const [caselistData, setCaselistData] = useState({});
 
     const { caselist } = useParams();
-    console.log(caselist);
 
     useEffect(() => {
         const fetchData = async () => {

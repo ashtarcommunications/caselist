@@ -12,10 +12,8 @@ const Header = () => {
             {auth.user?.loggedIn && <CaselistDropdown />}
             <div className="menu pure-menu">
                 <ul>
-                    {
-                    auth.user?.loggedIn
-                        ? <li className="pure-menu-item"><Link to="/logout">Logout</Link></li>
-                        : <li className="pure-menu-item"><Link to="/login">Login</Link></li>
+                    {auth.user?.loggedIn
+                        && <li className="pure-menu-item"><Link to="/logout">Logout</Link></li>
                     }
                 </ul>
             </div>

@@ -25,7 +25,7 @@ const Login = () => {
         <div className="login">
             <h1>Welcome to openCaselist</h1>
             <p>Login with your <a href="https://tabroom.com">Tabroom.com</a> username and password</p>
-            <form className="pure-form pure-form-stacked" onSubmit={handleSubmit(onSubmit)}>
+            <form className="login-form pure-form pure-form-stacked" onSubmit={handleSubmit(onSubmit)}>
                 <div>
                     <label htmlFor="username">Username</label>
                     <input id="username" type="text" {...register('username')} />

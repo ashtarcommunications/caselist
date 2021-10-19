@@ -1,15 +1,18 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { StoreContext } from './store';
 import { loadSchools } from './api';
 import './Sidebar.css';
 
 const Sidebar = () => {
     const [schools, setSchools] = useState([]);
+
+    const { caselist } = useParams();
+
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const schoolData = await loadSchools('ndtceda21');
+                const schoolData = await loadSchools(caselist);
                 setSchools(schoolData || []);
             } catch (err) {
                 console.log(err);
@@ -17,7 +20,7 @@ const Sidebar = () => {
             }
         };
         fetchData();
-    }, []);
+    }, [caselist]);
 
     const store = useContext(StoreContext);
 
