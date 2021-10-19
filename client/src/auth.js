@@ -1,5 +1,4 @@
-import React, { createContext, useState, useContext } from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import React, { createContext, useState } from 'react';
 import Cookies from 'js-cookie';
 import { login } from './api';
 
@@ -52,24 +51,5 @@ export const ProvideAuth = ({ children }) => {
         <AuthContext.Provider value={auth}>
             {children}
         </AuthContext.Provider>
-    );
-};
-
-// Private route - redirect to login without auth info
-export const PrivateRoute = ({ children, ...rest }) => {
-    // Get the auth info from context hook
-    const auth = useContext(AuthContext);
-    console.log(auth);
-    return (
-        <Route
-            {...rest}
-            render={
-                ({ location }) => {
-                    return auth.user && auth.user?.loggedIn
-                        ? children
-                        : <Redirect to={{ pathname: '/login', state: { from: location } }} />;
-                }
-            }
-        />
     );
 };
