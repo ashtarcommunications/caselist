@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faLink } from '@fortawesome/free-solid-svg-icons';
@@ -35,7 +35,7 @@ const TeamList = () => {
         fetchData();
     }, [caselist, school]);
 
-    const handleDelete = async (e) => {
+    const handleDelete = useCallback(async (e) => {
         // eslint-disable-next-line no-alert
         alert(`Deleting team ${e.currentTarget.dataset.code}`);
         try {
@@ -43,7 +43,7 @@ const TeamList = () => {
         } catch (err) {
             console.log(err);
         }
-    };
+    }, [caselist, school]);
 
     const handleLink = (e) => {
         e.preventDefault();
