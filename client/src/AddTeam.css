@@ -2,3 +2,12 @@
     display: block;
     font-size: 12px;
 }
+
+.add-team input,
+.add-team select {
+    margin: 0 10px;
+}
+
+.add-team button {
+    margin: 20px 10px;
+}

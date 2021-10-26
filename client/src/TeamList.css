@@ -9,3 +9,9 @@
     color: rgb(211, 31, 31);
     cursor: pointer;
 }
+
+.link {
+    font-size: 18px;
+    color: blue;
+    cursor: pointer;
+}

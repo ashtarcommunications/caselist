@@ -1,11 +1,16 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import { addSchool } from './api';
 
 const AddSchool = () => {
-    const addSchoolHandler = async (e) => {
-        e.preventDefault();
+    const { caselist } = useParams();
+
+    const { register, handleSubmit } = useForm();
+
+    const addSchoolHandler = async (data) => {
         try {
-            await addSchool('ndtceda21', { name: 'Test School', display_name: 'Test School' });
+            await addSchool(caselist, { name: data.name, display_name: data.display_name });
         } catch (err) {
             console.log(err);
         }
@@ -13,9 +18,10 @@ const AddSchool = () => {
 
     return (
         <div>
-            <form onSubmit={addSchoolHandler} className="pure-form pure-form-stacked">
-                School Name: <input type="text" />
-                <button type="submit">Add</button>
+            <form onSubmit={handleSubmit(addSchoolHandler)} className="pure-form pure-form-stacked">
+                School Name: <input id="name" type="text" {...register('name')} />
+                Display Name: <input id="display_name" type="text" {...register('display_name')} />
+                <button type="submit" className="pure-button pure-button-primary">Add</button>
             </form>
         </div>
     );

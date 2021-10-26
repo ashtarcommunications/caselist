@@ -1,12 +1,21 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import { addTeam } from './api';
 import './AddTeam.css';
 
 const AddTeam = () => {
-    const addTeamHandler = async (e) => {
-        e.preventDefault();
+    const { caselist, school } = useParams();
+    const { register, handleSubmit } = useForm();
+
+    const addTeamHandler = async (data) => {
         try {
-            await addTeam('ndtceda21', 'Northwestern', { name: 'Test Team', code: 'TestXaXb' });
+            await addTeam(caselist, school, {
+                debater1_first: data.debater1_first,
+                debater1_last: data.debater1_last,
+                debater2_first: data.debater2_first,
+                debater2_last: data.debater2_last,
+            });
         } catch (err) {
             console.log(err);
         }
@@ -14,43 +23,30 @@ const AddTeam = () => {
 
     return (
         <div>
-            <form onSubmit={addTeamHandler} className="add-team pure-form">
+            <form onSubmit={handleSubmit(addTeamHandler)} className="add-team pure-form">
                 <div>
-                    <label htmlFor="auto-teams">Auto-detected Teams</label>
+                    <p>Auto-detected Teams</p>
                     <select id="auto-teams">
-                        <option value="">Choose a team</option>
+                        <option value="" {...register('auto-team')}>Choose a team</option>
                     </select>
                 </div>
                 <p>Or...</p>
                 <div>
-                    <label htmlFor="auto-debater1">Debater #1</label>
+                    <p>Debater #1</p>
                     <select id="auto-debater1">
-                        <option value="">Choose a debater</option>
+                        <option value="" {...register('auto-debater1')}>Choose a debater</option>
                     </select>
-                </div>
-                <div>
-                    <label htmlFor="debater1-first">First Name</label>
-                    <input type="text" id="debater1-first" />
-                </div>
-                <div>
-                    <label htmlFor="debater1-last">Last Name</label>
-                    <input type="text" id="debater1-last" />
+                    <input type="text" id="debater1-first" placeholder="First Name" {...register('debater1_first')} />
+                    <input type="text" id="debater1-last" placeholder="Last Name" {...register('debater1_last')} />
                 </div>
                 <br />
-
                 <div>
-                    <label htmlFor="auto-debater2">Debater #2</label>
+                    <p>Debater #2</p>
                     <select id="auto-debater2">
                         <option value="">Choose a debater</option>
                     </select>
-                </div>
-                <div>
-                    <label htmlFor="debater2-first">First Name</label>
-                    <input type="text" id="debater2-first" />
-                </div>
-                <div>
-                    <label htmlFor="debater2-last">Last Name</label>
-                    <input type="text" id="debater2-last" />
+                    <input type="text" id="debater2-first" placeholder="First Name" {...register('debater2_first')} />
+                    <input type="text" id="debater2-last" placeholder="Last Name" {...register('debater2_last')} />
                 </div>
                 <button className="pure-button pure-button-primary" type="submit">Add</button>
             </form>

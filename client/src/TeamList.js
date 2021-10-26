@@ -1,41 +1,48 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faLink } from '@fortawesome/free-solid-svg-icons';
-import { loadTeams, loadSchool } from './api';
+import { loadTeams, loadSchool, deleteTeam } from './api';
 import Table from './Table';
 import './TeamList.css';
 
 const TeamList = () => {
-    const [school, setSchool] = useState({});
+    const { caselist, school } = useParams();
+
+    const [schoolData, setSchoolData] = useState({});
     useEffect(() => {
         const fetchData = async () => {
             try {
-                setSchool(await loadSchool('ndtceda21', 'Northwestern'));
+                setSchoolData(await loadSchool(caselist, school));
             } catch (err) {
-                setSchool({});
+                setSchoolData({});
                 console.log(err);
             }
         };
         fetchData();
-    }, []);
+    }, [caselist, school]);
 
     const [teams, setTeams] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
             try {
-                setTeams(await loadTeams('ndtceda21', 'Northwestern'));
+                setTeams(await loadTeams(caselist, school));
             } catch (err) {
                 setTeams([]);
                 console.log(err);
             }
         };
         fetchData();
-    }, []);
+    }, [caselist, school]);
 
-    const handleDelete = (e) => {
-        console.log(e.currentTarget.id);
-        alert('You sure yo');
+    const handleDelete = async (e) => {
+        // eslint-disable-next-line no-alert
+        alert(`Deleting team ${e.currentTarget.dataset.code}`);
+        try {
+            await deleteTeam(caselist, school, e.currentTarget.dataset.code);
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     const handleLink = (e) => {
@@ -47,12 +54,21 @@ const TeamList = () => {
     const columns = useMemo(() => [
         {
             Header: 'Team',
-            accessor: 'name',
-            Cell: (row) => { return <Link to="/rounds">{row.value}</Link>; },
+            accessor: row => row,
+            Cell: (row) => {
+                return (
+                    <Link to={`/${caselist}/${school}/${row.value?.code}`}>
+                        {row.value.name} (
+                        <span>{row.value.debater1_first} </span>
+                        <span>{row.value.debater1_last} </span>
+                        <span>- </span>
+                        <span>{row.value.debater2_first} </span>
+                        <span>{row.value.debater2_last}</span>
+                        )
+                    </Link>
+                );
+            },
         },
-        { Header: 'Code', accessor: 'code' },
-        { Header: 'Aff', accessor: null },
-        { Header: 'Neg', accessor: null },
         {
             id: 'delete',
             Header: '',
@@ -62,21 +78,21 @@ const TeamList = () => {
                 <FontAwesomeIcon
                     className="trash"
                     icon={faTrash}
-                    id={row.value?.team_id}
+                    data-code={row.value?.code}
                     onClick={e => handleDelete(e)}
                 />
             ),
         },
-    ], []);
+    ], [caselist, school, handleDelete]);
 
     return (
         <div className="teamlist">
-            <h1>{school.display_name}</h1>
+            <h1>{schoolData.display_name}</h1>
             <hr />
             <Table columns={columns} data={data} />
             {
-                school.chapter_id
-                ? <p>Linked to Tabroom chapter #{school.chapter_id}</p>
+                schoolData.chapter_id
+                ? <p>Linked to Tabroom chapter #{schoolData.chapter_id}</p>
                 : (
                     <p>
                         Link to Tabroom

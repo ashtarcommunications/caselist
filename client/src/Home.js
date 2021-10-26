@@ -25,7 +25,7 @@ const Home = () => {
     return (
         <div className="home">
             <h1>openCaselist</h1>
-            <h2>Current Caselist: {JSON.stringify(caselistData)}</h2>
+            <h2>Current Caselist: {caselistData.name}</h2>
         </div>
     );
 };

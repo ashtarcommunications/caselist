@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useContext } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { StoreContext } from './store';
 import { loadSchools } from './api';
 import './Sidebar.css';
 
@@ -22,11 +23,8 @@ const Sidebar = () => {
         fetchData();
     }, [caselist]);
 
-    const store = useContext(StoreContext);
-
     return (
         <div className="sidebar">
-            <h1>Current Caselist: {JSON.stringify(store.caselist)}</h1>
             <h2>Quick Links</h2>
             <ul>
                 <li>Archived Caselists</li>
@@ -36,11 +34,19 @@ const Sidebar = () => {
             {
                 schools && schools.length > 0 &&
                     <div>
-                        <h2>Schools</h2>
+                        <h2>
+                            <span>Schools </span>
+                            <Link to={`${caselist}/add`}>
+                                <button type="button" className="pure-button pure-button-primary">
+                                    <FontAwesomeIcon className="plus" icon={faPlus} />
+                                    <span> Add</span>
+                                </button>
+                            </Link>
+                        </h2>
                         <ul>
                             {
                                 schools.map(s => {
-                                    return <li key={s.school_id}><Link to="/school">{s.display_name}</Link></li>;
+                                    return <li key={s.school_id}><Link to={`/${caselist}/${s.name}`}>{s.display_name}</Link></li>;
                                 })
                             }
                         </ul>

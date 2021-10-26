@@ -51,6 +51,10 @@ export const addTeam = async (caselist, school, team) => {
     return fetchBase(`${caselist}/schools/${school}/teams`, { method: 'POST' }, team);
 };
 
+export const deleteTeam = async (caselist, school, team) => {
+    return fetchBase(`${caselist}/schools/${school}/teams/${team}`, { method: 'DELETE' });
+};
+
 export const loadRounds = async (caselist, school, team, side) => {
     return fetchBase(`${caselist}/schools/${school}/teams/${team}/rounds?side=${side}`);
 };

@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { useParams } from 'react-router-dom';
 import { useDropzone } from 'react-dropzone';
 import * as mammoth from 'mammoth/mammoth.browser';
 // import MarkdownIt from 'markdown-it';
@@ -6,13 +7,15 @@ import { addRound } from './api';
 import './AddRound.css';
 
 const AddRound = () => {
+    const { caselist, school, team } = useParams();
+
     const addRoundHandler = async (e) => {
         e.preventDefault();
         try {
             await addRound(
-                'ndtceda21',
-                'Northwestern',
-                'XaXb',
+                caselist,
+                school,
+                team,
                 { side: 'Aff', tournament: 'Test Tournament' });
         } catch (err) {
             console.log(err);
@@ -53,7 +56,7 @@ const AddRound = () => {
                 Round Report: <input type="text" />
                 Video: <input type="text" />
                 Cites: <input type="text" />
-                <button type="submit">Add</button>
+                <button type="submit" className="pure-button pure-button-primary">Add</button>
             </form>
             <div className="dropzone" {...getRootProps()}>
                 <input {...getInputProps()} />

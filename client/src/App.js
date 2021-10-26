@@ -28,16 +28,19 @@ const App = () => {
                         </RouteWrapper>
                         <RouteWrapper exact path="/" privateRoute>
                             <Home />
+                        </RouteWrapper>
+                        <RouteWrapper path="/:caselist/add" privateRoute>
                             <AddSchool />
                         </RouteWrapper>
-                        <RouteWrapper exact path="/school" privateRoute>
+                        <RouteWrapper path="/:caselist/:school/:team?" privateRoute>
+                            <TeamRounds />
+                            <hr />
+                            <AddRound />
+                        </RouteWrapper>
+                        <RouteWrapper path="/:caselist/:school" privateRoute>
                             <TeamList />
                             <hr />
                             <AddTeam />
-                        </RouteWrapper>
-                        <RouteWrapper exact path="/rounds" privateRoute>
-                            <TeamRounds />
-                            <AddRound />
                         </RouteWrapper>
                         <RouteWrapper path="/:caselist" privateRoute>
                             <Home />
