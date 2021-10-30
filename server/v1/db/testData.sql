@@ -13,11 +13,11 @@ INSERT INTO schools (school_id, caselist_id, name, display_name, state, chapter_
     (5, 5, 'NFA', 'NFA', NULL, 1);
 
 INSERT INTO teams (team_id, school_id, name, code, debater1_first, debater1_last, debater2_first, debater2_last) VALUES
-    (1, 1, 'Northwestern XaXb', 'NorthwesternXaXb', 'XaFirst', 'XaLast', 'XbFirst', 'XbLast'),
-    (2, 2, 'Policy XaXb', 'PolicyXaXb', 'XaFirst', 'XaLast', 'XbFirst', 'XbLast'),
-    (3, 3, 'LD XaXb', 'LDXaXb', 'XaFirst', 'XaLast', 'XbFirst', 'XbLast'),
-    (4, 4, 'PF XaXb', 'PFXaXb', 'XaFirst', 'XaLast', 'XbFirst', 'XbLast'),
-    (5, 5, 'NFA XaXb', 'NFAXaXb', 'XaFirst', 'XaLast', 'XbFirst', 'XbLast');
+    (1, 1, 'Northwestern XaXb', 'XaXb', 'XaFirst', 'XaLast', 'XbFirst', 'XbLast'),
+    (2, 2, 'Policy XaXb', 'XaXb', 'XaFirst', 'XaLast', 'XbFirst', 'XbLast'),
+    (3, 3, 'LD XaXb', 'XaXb', 'XaFirst', 'XaLast', 'XbFirst', 'XbLast'),
+    (4, 4, 'PF XaXb', 'XaXb', 'XaFirst', 'XaLast', 'XbFirst', 'XbLast'),
+    (5, 5, 'NFA XaXb', 'XaXb', 'XaFirst', 'XaLast', 'XbFirst', 'XbLast');
 
 INSERT INTO rounds (round_id, team_id, side, tournament, round, opponent, judge, report, tourn_id, external_id) VALUES
     (1, 1, 'Aff', 'Test Tournament', 'Round 1', 'Evil Empire XX', 'Hardy', 'Report', 1234, 1234),
