@@ -6,6 +6,8 @@ import RouteWrapper from './layout';
 import { ProvideStore } from './store';
 import './App.css';
 import Home from './Home';
+import CaselistHome from './CaselistHome';
+import Recent from './Recent';
 import Login from './Login';
 import Logout from './Logout';
 import AddSchool from './AddSchool';
@@ -29,10 +31,16 @@ const App = () => {
                         <RouteWrapper exact path="/" privateRoute>
                             <Home />
                         </RouteWrapper>
+                        <RouteWrapper exact path="/donate" privateRoute>
+                            <h2>Donate</h2>
+                        </RouteWrapper>
                         <RouteWrapper path="/:caselist/add" privateRoute>
                             <AddSchool />
                         </RouteWrapper>
-                        <RouteWrapper path="/:caselist/:school/:team?" privateRoute>
+                        <RouteWrapper path="/:caselist/recent" privateRoute>
+                            <Recent />
+                        </RouteWrapper>
+                        <RouteWrapper path="/:caselist/:school/:team/:side?" privateRoute>
                             <TeamRounds />
                             <hr />
                             <AddRound />
@@ -43,7 +51,7 @@ const App = () => {
                             <AddTeam />
                         </RouteWrapper>
                         <RouteWrapper path="/:caselist" privateRoute>
-                            <Home />
+                            <CaselistHome />
                         </RouteWrapper>
                     </Switch>
                 </ProvideStore>

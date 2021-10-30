@@ -2,15 +2,21 @@ import status from '../controllers/status/status';
 
 import getCaselists from '../controllers/caselists/getCaselists';
 import getCaselist from '../controllers/caselists/getCaselist';
+import getRecent from '../controllers/caselists/getRecent';
 import getSchool from '../controllers/schools/getSchool';
 import getSchools from '../controllers/schools/getSchools';
 import postSchool from '../controllers/schools/postSchool';
 
+import getTeam from '../controllers/teams/getTeam';
 import getTeams from '../controllers/teams/getTeams';
 import postTeam from '../controllers/teams/postTeam';
 import deleteTeam from '../controllers/teams/deleteTeam';
 
+import getRound from '../controllers/rounds/getRound';
 import getRounds from '../controllers/rounds/getRounds';
+import postRound from '../controllers/rounds/postRound';
+import putRound from '../controllers/rounds/putRound';
+import deleteRound from '../controllers/rounds/deleteRound';
 
 import postLogin from '../controllers/login/postLogin';
 
@@ -21,12 +27,15 @@ export default [
 
     { path: '/caselists', module: getCaselists },
     { path: '/caselists/{caselist}', module: getCaselist },
+    { path: '/caselists/{caselist}/recent', module: getRecent },
 
-    { path: '/{caselist}/schools', module: { ...getSchools, ...postSchool } },
+    { path: '/caselists/{caselist}/schools', module: { ...getSchools, ...postSchool } },
 
-    { path: '/{caselist}/schools/{school}', module: getSchool },
+    { path: '/caselists/{caselist}/schools/{school}', module: getSchool },
 
-    { path: '/{caselist}/schools/{school}/teams', module: { ...getTeams, ...postTeam } },
-    { path: '/{caselist}/schools/{school}/teams/{team}', module: deleteTeam },
-    { path: '/{caselist}/schools/{school}/teams/{team}/rounds', module: getRounds },
+    { path: '/caselists/{caselist}/schools/{school}/teams', module: { ...getTeams, ...postTeam } },
+    { path: '/caselists/{caselist}/schools/{school}/teams/{team}', module: { ...getTeam, ...deleteTeam } },
+    { path: '/caselists/{caselist}/schools/{school}/teams/{team}/rounds', module: { ...getRounds, ...postRound } },
+
+    { path: '/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{round}', module: { ...getRound, ...putRound, ...deleteRound } },
 ];

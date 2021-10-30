@@ -19,11 +19,11 @@ const postRound = {
                 INNER JOIN schools S ON S.team_id = T.team_id
                 INNER JOIN caselists C ON S.caselist_id = C.caselist_id
                 WHERE C.slug = ${req.params.caselist}
-                AND S.name = ${req.params.school}
-                AND T.code = ${req.params.team}
+                AND LOWER(S.name) = LOWER(${req.params.school})
+                AND LOWER(T.code) = LOWER(${req.params.team})
         `);
 
-        return res.status(201).json({ message: 'Team successfully created' });
+        return res.status(201).json({ message: 'Round successfully created' });
     },
 };
 

@@ -31,34 +31,54 @@ export const loadCaselist = async (caselist) => {
     return fetchBase(`caselists/${caselist}`);
 };
 
-export const loadSchools = async (caselist) => {
-    return fetchBase(`${caselist}/schools`);
+export const loadRecent = async (caselist) => {
+    return fetchBase(`caselists/${caselist}/recent`);
 };
 
-export const loadSchool = async (caselist, school) => {
-    return fetchBase(`${caselist}/schools/${school}`);
+export const loadSchools = async (caselist) => {
+    return fetchBase(`caselists/${caselist}/schools`);
 };
 
 export const addSchool = async (caselist, school) => {
-    return fetchBase(`${caselist}/schools`, { method: 'POST' }, school);
+    return fetchBase(`caselists/${caselist}/schools`, { method: 'POST' }, school);
+};
+
+export const loadSchool = async (caselist, school) => {
+    return fetchBase(`caselists/${caselist}/schools/${school}`);
 };
 
 export const loadTeams = async (caselist, school) => {
-    return fetchBase(`${caselist}/schools/${school}/teams`);
+    return fetchBase(`caselists/${caselist}/schools/${school}/teams`);
 };
 
 export const addTeam = async (caselist, school, team) => {
-    return fetchBase(`${caselist}/schools/${school}/teams`, { method: 'POST' }, team);
+    return fetchBase(`caselists/${caselist}/schools/${school}/teams`, { method: 'POST' }, team);
+};
+
+export const loadTeam = async (caselist, school, team) => {
+    return fetchBase(`caselists/${caselist}/schools/${school}/teams/${team}`);
 };
 
 export const deleteTeam = async (caselist, school, team) => {
-    return fetchBase(`${caselist}/schools/${school}/teams/${team}`, { method: 'DELETE' });
+    return fetchBase(`caselists/${caselist}/schools/${school}/teams/${team}`, { method: 'DELETE' });
 };
 
 export const loadRounds = async (caselist, school, team, side) => {
-    return fetchBase(`${caselist}/schools/${school}/teams/${team}/rounds?side=${side}`);
+    return fetchBase(`caselists/${caselist}/schools/${school}/teams/${team}/rounds?side=${side}`);
 };
 
 export const addRound = async (caselist, school, team, round) => {
-    return fetchBase(`${caselist}/schools/${school}/teams/rounds`, { method: 'POST' }, round);
+    return fetchBase(`caselists/${caselist}/schools/${school}/teams/rounds`, { method: 'POST' }, round);
+};
+
+export const loadRound = async (caselist, school, team, round) => {
+    return fetchBase(`caselists/${caselist}/schools/${school}/teams/${team}/rounds/${round}`);
+};
+
+export const updateRound = async (caselist, school, team, round, body) => {
+    return fetchBase(`caselists/${caselist}/schools/${school}/teams/rounds/${body}`, { method: 'PUT' }, body);
+};
+
+export const deleteRound = async (caselist, school, team, round) => {
+    return fetchBase(`caselists/${caselist}/schools/${school}/teams/${team}/rounds/${round}`, { method: 'DELETE' });
 };

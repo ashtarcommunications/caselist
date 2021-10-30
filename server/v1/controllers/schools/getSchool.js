@@ -7,7 +7,7 @@ const getSchool = {
             SELECT S.* FROM schools S
             INNER JOIN caselists C ON S.caselist_id = C.caselist_id
             wHERE C.slug = ${req.params.caselist}
-            AND S.name = ${req.params.school}
+            AND LOWER(S.name) = LOWER(${req.params.school})
         `);
         const [school] = await query(sql);
 

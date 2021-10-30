@@ -9,24 +9,23 @@ const TeamRounds = () => {
     const { caselist, school, team, side } = useParams();
 
     const [rounds, setRounds] = useState([]);
+    const [selectedSide, setSelectedSide] = useState(null);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 setRounds(await loadRounds(caselist, school, team));
+                if (side) { setSelectedSide(side); }
             } catch (err) {
                 console.log(err);
             }
         };
         fetchData();
-    }, [caselist, school, team]);
-
-    const [selectedSide, setSelectedSide] = useState(null);
+    }, [caselist, school, team, side]);
 
     const handleChangeSide = (e) => {
         setSelectedSide(e.currentTarget.value);
     };
-
-    if (side) { setSelectedSide(side); }
 
     const handleDelete = (e) => {
         // eslint-disable-next-line no-alert

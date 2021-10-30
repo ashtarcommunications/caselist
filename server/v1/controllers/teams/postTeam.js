@@ -12,8 +12,8 @@ const postTeam = {
                 INNER JOIN schools S ON S.school_id = T.school_id
                 INNER JOIN caselists C ON S.caselist_id = C.caselist_id
                 WHERE C.slug = ${req.params.caselist}
-                AND S.name = ${req.params.school}
-                AND T.code = ${code}
+                AND LOWER(S.name) = LOWER(${req.params.school})
+                AND LOWER(T.code) = LOWER(${code})
         `));
         if (team && team.length > 0) {
             return res.status(400).json({ message: 'Team already exists' });
@@ -33,7 +33,7 @@ const postTeam = {
                 FROM schools S
                 INNER JOIN caselists C ON S.caselist_id = C.caselist_id
                 WHERE C.slug = ${req.params.caselist}
-                AND S.name = ${req.params.school}
+                AND LOWER(S.name) = LOWER(${req.params.school})
         `);
 
         return res.status(201).json({ message: 'Team successfully created' });
