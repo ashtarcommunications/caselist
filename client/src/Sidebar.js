@@ -14,6 +14,7 @@ const Sidebar = () => {
         const fetchData = async () => {
             try {
                 const schoolData = await loadSchools(caselist);
+                schoolData.sort((a, b) => a.name?.localeCompare(b.name));
                 setSchools(schoolData || []);
             } catch (err) {
                 console.log(err);

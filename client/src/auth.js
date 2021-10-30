@@ -4,7 +4,6 @@ import { login } from './api';
 
 // Hook to track user state and log in or out
 export const useAuth = () => {
-    console.log('providing auth');
     const [user, setUser] = useState(null);
 
     // Set any token from cookies

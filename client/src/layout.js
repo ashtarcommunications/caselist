@@ -12,7 +12,7 @@ const RouteWrapper = ({ privateRoute, location, children, ...rest }) => {
         <Route {...rest}>
             <Header />
             <div className="wrapper">
-                {privateRoute && auth.user?.loggedIn && <Sidebar />}
+                {privateRoute && location.pathname !== '/' && auth.user?.loggedIn && <Sidebar />}
                 <div className="main">
                     {
                         // eslint-disable-next-line no-nested-ternary
