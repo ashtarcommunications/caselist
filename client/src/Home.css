@@ -1,3 +1,15 @@
 .home {
     text-align: center;
 }
+
+.caselists {
+    display: flex;
+    justify-content: space-around;
+}
+
+.caselist {
+    background-color: #dddddd;
+    width: 100px;
+    height: 100px;
+    color: white;
+}
