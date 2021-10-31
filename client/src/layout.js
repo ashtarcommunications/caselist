@@ -12,14 +12,14 @@ const RouteWrapper = ({ privateRoute, location, children, ...rest }) => {
         <Route {...rest}>
             <Header />
             <div className="wrapper">
-                {privateRoute && location.pathname !== '/' && auth.user?.loggedIn && <Sidebar />}
+                {privateRoute && auth.user?.loggedIn && <Sidebar />}
                 <div className="main">
                     {
                         // eslint-disable-next-line no-nested-ternary
                         !privateRoute ? children :
                             auth.user?.loggedIn
                             ? children
-                            : <Redirect to={{ pathname: '/login', state: { from: location } }} />
+                            : <Redirect to={{ pathname: '/', state: { from: location } }} />
                     }
                 </div>
             </div>

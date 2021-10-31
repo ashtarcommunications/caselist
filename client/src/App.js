@@ -28,7 +28,7 @@ const App = () => {
                         <RouteWrapper exact path="/logout">
                             <Logout />
                         </RouteWrapper>
-                        <RouteWrapper exact path="/" privateRoute>
+                        <RouteWrapper exact path="/">
                             <Home />
                         </RouteWrapper>
                         <RouteWrapper exact path="/donate" privateRoute>
