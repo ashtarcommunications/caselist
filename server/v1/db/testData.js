@@ -4,12 +4,12 @@ import { pool, query } from '../helpers/mysql';
 const years = [2017, 2018, 2019, 2020];
 years.forEach(async (y) => {
     await query(SQL`
-        INSERT INTO caselists (slug, name, year, event) VALUES
-            ('ndtceda${y}', 'NDT/CEDA ${y}', ${y}, 'cx'),
-            ('hspolicy${y}', 'HS Policy ${y}', ${y}, 'cx'),
-            ('hsld${y}', 'HS LD ${y}', ${y}, 'ld'),
-            ('hspf${y}', 'HS Public Forum ${y}', ${y}, 'pf'),
-            ('nfald${y}', 'NFA LD ${y}', ${y}, 'ld');
+        INSERT INTO caselists (slug, name, year, event, level, team_size) VALUES
+            ('ndtceda${y}', 'NDT/CEDA ${y}', ${y}, 'cx', 'college', 2),
+            ('hspolicy${y}', 'HS Policy ${y}', ${y}, 'cx', 'hs', 2),
+            ('hsld${y}', 'HS LD ${y}', ${y}, 'ld', 'hs', 1),
+            ('hspf${y}', 'HS Public Forum ${y}', ${y}, 'pf', 'hs', 2),
+            ('nfald${y}', 'NFA LD ${y}', ${y}, 'ld', 'college', 1);
     `);
 });
 
