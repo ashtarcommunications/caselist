@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import 'purecss/build/pure-min.css';
+import 'react-toastify/dist/ReactToastify.min.css';
 import { ProvideAuth } from './auth';
 import RouteWrapper from './layout';
 import { ProvideStore } from './store';
@@ -56,6 +58,7 @@ const App = () => {
                     </Switch>
                 </ProvideStore>
             </Router>
+            <ToastContainer />
         </ProvideAuth>
     );
 };

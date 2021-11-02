@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import { StoreContext, useStore } from './store';
 import { addSchool } from './api';
 import StatesDropdown from './StatesDropdown';
@@ -13,7 +14,8 @@ const AddSchool = () => {
 
     const addSchoolHandler = async (data) => {
         try {
-            await addSchool(caselist, { name: data.name, display_name: data.display_name });
+            await addSchool(caselist, { display_name: data.name });
+            toast.success('Successfully added school');
         } catch (err) {
             console.log(err);
         }
@@ -78,7 +80,7 @@ const AddSchool = () => {
                 {errors.name?.type === 'maxLength' && <p>Max 255 characters</p>}
                 {errors.name && <p>{errors.name?.message}</p>}
 
-                {store.caselist?.event === 'cx' && <StatesDropdown emptyOptionText="" />}
+                {store.caselist?.level === 'hs' && <StatesDropdown emptyOptionText="" />}
                 <button type="submit" className="pure-button pure-button-primary">Add</button>
             </form>
         </div>
