@@ -67,7 +67,11 @@ const AddSchool = () => {
                             minLength: 3,
                             maxLength: 255,
                             validate: {
-                                noHs: v => (v.toLowerCase().indexOf(' hs') === -1 && v.toLowerCase().indexOf(' high') === -1) || 'Invalid school name, do not include words like "HS" or "High School"',
+                                noHs: v => (
+                                    v.toLowerCase().indexOf(' hs') === -1
+                                    && v.toLowerCase().indexOf(' high') === -1
+                                )
+                                    || 'Invalid school name, do not include words like "HS" or "High School"',
                                 titleCase: v => !notTitleCase.test(v) || 'School name should be title case',
                                 alpha: v => alpha.test(v) || 'Only letters allowed',
                                 length: v => v.length === v.trim().length || 'No leading/trailing spaces allowed',
