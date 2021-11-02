@@ -20,6 +20,8 @@ import deleteRound from '../controllers/rounds/deleteRound';
 
 import postLogin from '../controllers/login/postLogin';
 
+import getTabroomSchools from '../controllers/tabroom/getTabroomSchools';
+
 export default [
     { path: '/status', module: status },
 
@@ -38,4 +40,6 @@ export default [
     { path: '/caselists/{caselist}/schools/{school}/teams/{team}/rounds', module: { ...getRounds, ...postRound } },
 
     { path: '/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{round}', module: { ...getRound, ...putRound, ...deleteRound } },
+
+    { path: '/tabroom/schools', module: getTabroomSchools },
 ];
