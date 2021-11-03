@@ -32,7 +32,6 @@ export const useAuth = () => {
         }
     };
 
-    console.log(user);
     return {
         user,
         handleLogin,

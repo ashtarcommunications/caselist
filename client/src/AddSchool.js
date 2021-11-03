@@ -15,6 +15,7 @@ const AddSchool = () => {
     const addSchoolHandler = async (data) => {
         try {
             await addSchool(caselist, { display_name: data.name });
+            store.fetchSchools();
             toast.success('Successfully added school');
         } catch (err) {
             console.log(err);

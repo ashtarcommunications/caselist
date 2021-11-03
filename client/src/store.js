@@ -1,6 +1,6 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { loadCaselist } from './api';
+import { loadCaselist, loadSchools } from './api';
 
 // Hook to track store state
 export const useStore = () => {
@@ -23,8 +23,27 @@ export const useStore = () => {
         fetchData();
     }, [caselist]);
 
+    const [schools, setSchools] = useState([]);
+
+    const fetchSchools = useCallback(async () => {
+        try {
+            const schoolData = await loadSchools(caselist);
+            schoolData.sort((a, b) => a.name?.localeCompare(b.name));
+            setSchools(schoolData || []);
+        } catch (err) {
+            console.log(err);
+            setSchools([]);
+        }
+    }, [caselist]);
+
+    useEffect(() => {
+        fetchSchools();
+    }, [caselist, fetchSchools]);
+
     return {
         caselist: caselistData,
+        schools,
+        fetchSchools,
     };
 };
 

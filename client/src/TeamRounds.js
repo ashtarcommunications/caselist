@@ -4,6 +4,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useParams } from 'react-router-dom';
 import { loadRounds } from './api';
 import Table from './Table';
+import './TeamRounds.css';
 
 const TeamRounds = () => {
     const { caselist, school, team, side } = useParams();
@@ -46,7 +47,15 @@ const TeamRounds = () => {
         { Header: 'Judge', accessor: 'judge' },
         { Header: 'Cites', accessor: 'cites' },
         { Header: 'Open Source', accessor: 'opensource' },
-        { Header: 'Round Report', accessor: 'report' },
+        {
+            id: 'report',
+            Header: 'Round Report',
+            accessor: 'report',
+            className: 'report',
+            Cell: (row) => (
+                <p className="report">{row.value}</p>
+            ),
+        },
         {
             id: 'delete',
             Header: '',

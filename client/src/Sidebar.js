@@ -1,28 +1,13 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { loadSchools } from './api';
+import { StoreContext, useStore } from './store';
 import './Sidebar.css';
 
 const Sidebar = () => {
-    const [schools, setSchools] = useState([]);
-
     const { caselist } = useParams();
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const schoolData = await loadSchools(caselist);
-                schoolData.sort((a, b) => a.name?.localeCompare(b.name));
-                setSchools(schoolData || []);
-            } catch (err) {
-                console.log(err);
-                setSchools([]);
-            }
-        };
-        fetchData();
-    }, [caselist]);
+    const { schools } = useStore(StoreContext);
 
     return (
         <div className="sidebar">
