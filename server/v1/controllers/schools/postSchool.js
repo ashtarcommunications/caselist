@@ -12,7 +12,7 @@ const postSchool = {
             AND LOWER(S.name) = LOWER(${name})
         `);
         if (school && school.length > 0) {
-            return res.status(400).json({ message: 'School already exists' });
+            return res.status(400).json({ message: 'School with the same name already exists' });
         }
         await query(SQL`
             INSERT INTO schools (caselist_id, name, display_name, state)

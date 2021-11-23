@@ -20,3 +20,8 @@
     color: #416098;
     font-size: 12px;
 } 
+
+.green {
+    background-color: green;
+    color: white;
+}

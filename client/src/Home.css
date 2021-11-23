@@ -4,12 +4,15 @@
 
 .caselists {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-around;
+    align-items: center;
 }
 
 .caselist {
-    background-color: #dddddd;
-    width: 100px;
-    height: 100px;
+    background-color: #316A85;
+    width: 200px;
+    margin: 20px;
+    padding: 20px;
     color: white;
 }

@@ -17,7 +17,7 @@ const Sidebar = () => {
                         <h2>
                             <span>Schools </span>
                             <Link to={`/${caselist}/add`}>
-                                <button type="button" className="pure-button pure-button-primary">
+                                <button type="button" className="green pure-button">
                                     <FontAwesomeIcon className="plus" icon={faPlus} />
                                     <span> Add</span>
                                 </button>

@@ -19,6 +19,7 @@ const AddSchool = () => {
             toast.success('Successfully added school');
         } catch (err) {
             console.log(err);
+            toast.error(err.message);
         }
     };
 
@@ -86,7 +87,7 @@ const AddSchool = () => {
                 {errors.name && <p>{errors.name?.message}</p>}
 
                 {store.caselist?.level === 'hs' && <StatesDropdown emptyOptionText="" />}
-                <button type="submit" className="pure-button pure-button-primary">Add</button>
+                <button type="submit" className="green pure-button">Add</button>
             </form>
         </div>
     );
