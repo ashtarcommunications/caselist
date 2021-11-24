@@ -9,3 +9,42 @@
     color: white;
     font-size: 14px;
 }
+
+.donate a {
+    color: white;
+}
+
+.spinner {
+    display: inline-block;
+    animation: fadeslideup 1s linear 0s 1;
+}
+
+@keyframes fadeslideup {
+    0% {
+      opacity: 0.25;
+      -moz-transform: translateY(40%); 
+      transform: translateY(20%); 
+    }
+    25% {
+      opacity: 0.5;
+      -moz-transform: translateY(20%); 
+      transform: translateY(10%); 
+    }
+    50% {
+      opacity: 1;
+    }
+    75% {
+      opacity: 0.5;
+      -moz-transform: translateY(-20%);
+      transform: translateY(-20%);
+    }
+    100% {
+      opacity: 0.25;
+      -moz-transform: translateY(-40%);
+      transform: translateY(-40%);
+    }
+}
+
+.bullet {
+    margin: 0px 10px;
+}

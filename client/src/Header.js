@@ -1,13 +1,20 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from './auth';
+import { useStore } from './store';
 import CaselistDropdown from './CaselistDropdown';
 import './Header.css';
 
 const Header = () => {
     const auth = useContext(AuthContext);
+    const { caselist } = useStore();
+
+    // TODO - doesn't work, there's no "type" for a caselist to map to a color
+    // and need an !important
+    const className = `header ${caselist.event}`;
+
     return (
-        <header className="header">
+        <header className={className}>
             <h1><Link to="/">openCaselist</Link></h1>
             {auth.user?.loggedIn && <CaselistDropdown />}
             <div className="menu pure-menu">

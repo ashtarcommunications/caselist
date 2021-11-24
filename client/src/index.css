@@ -14,5 +14,14 @@ h2 {
 
 a {
     text-decoration: none;
-    color: aqua;
+    color: rgb(49, 115, 181);
+}
+
+:root {
+    --ndt: #316098;
+    --policy: #769BC7;
+    --ld: #4B75A8;
+    --pf: #6FC7AE;
+    --nfa: #42A88C;
+    --openev: #108665;
 }

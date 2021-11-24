@@ -10,9 +10,42 @@
 }
 
 .caselist {
-    background-color: #316A85;
+    background-color: #eee;
     width: 200px;
+    height: 100px;
     margin: 20px;
     padding: 20px;
     color: white;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border-radius: 25px;
+}
+
+.caselist:hover {
+    filter: brightness(110%);
+    cursor: pointer;
+}
+
+.caselist a {
+    color: white;
+}
+
+.ndt {
+    background-color: var(--ndt);
+}
+.policy {
+    background-color: var(--policy);
+}
+.ld {
+    background-color: var(--ld);
+}
+.pf {
+    background-color: var(--pf);
+}
+.nfa {
+    background-color: var(--nfa);
+}
+.openev {
+    background-color: var(--openev);
 }

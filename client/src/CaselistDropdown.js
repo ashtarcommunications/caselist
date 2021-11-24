@@ -13,6 +13,9 @@ const CaselistDropdown = () => {
 
     // TODO - dropdowns not setting default value correctly
     const selectedCaselist = caselists.find(c => c.slug === caselist) || {};
+    if (selectedCaselist.name) {
+        document.title = `openCaselist - ${selectedCaselist.name}`;
+    }
     const defaultYear = selectedCaselist.year || startOfYear;
 
     const [years, setYears] = useState([]);
@@ -42,6 +45,8 @@ const CaselistDropdown = () => {
 
     const handleChangeCaselist = (e) => {
         history.push(`/${e.currentTarget.value}`);
+        const selected = caselists.find(c => c.slug === e.currentTarget.value) || {};
+        document.title = `openCaselist - ${selected.name}`;
     };
 
     return (

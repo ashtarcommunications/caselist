@@ -14,14 +14,18 @@ const Home = () => {
                 !auth.user?.loggedIn
                 ? <Login />
                 :
-                <div className="caselists">
-                    <div className="caselist"><span><Link to="/ndtceda21">NDT-CEDA 2021-2022</Link></span></div>
-                    <div className="caselist"><span><Link to="/hspolicy21">HS Policy 2021-2022</Link></span></div>
-                    <div className="caselist"><span><Link to="/hsld21">HS LD 2021-2022</Link></span></div>
-                    <div className="caselist"><span><Link to="/hspf21">HS PF 2021-2022</Link></span></div>
-                    <div className="caselist"><span><Link to="/nfald21">NFA-LD 2021-2022</Link></span></div>
-                    <div className="caselist"><span><Link to="/openev">Open Evidence Project</Link></span></div>
-                </div>
+                <>
+                    <div className="caselists">
+                        <Link to="/ndtceda21"><div className="caselist ndt">NDT-CEDA 2021-2022</div></Link>
+                        <Link to="/hspolicy21"><div className="caselist policy">HS Policy 2021-2022</div></Link>
+                        <Link to="/hsld21"><div className="caselist ld">HS LD 2021-2022</div></Link>
+                    </div>
+                    <div className="caselists">
+                        <Link to="/hspf21"><div className="caselist pf">HS PF 2021-2022</div></Link>
+                        <Link to="/nfald21"><div className="caselist nfa">NFA-LD 2021-2022</div></Link>
+                        <Link to="/openev"><div className="caselist openev">Open Evidence Project</div></Link>
+                    </div>
+                </>
             }
         </div>
     );

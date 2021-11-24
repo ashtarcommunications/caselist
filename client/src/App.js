@@ -17,6 +17,7 @@ import TeamList from './TeamList';
 import AddTeam from './AddTeam';
 import TeamRounds from './TeamRounds';
 import AddRound from './AddRound';
+import Breadcrumbs from './Breadcrumbs';
 
 const App = () => {
     return (
@@ -43,11 +44,13 @@ const App = () => {
                             <Recent />
                         </RouteWrapper>
                         <RouteWrapper path="/:caselist/:school/:team/:side?" privateRoute>
+                            <Breadcrumbs />
                             <TeamRounds />
                             <hr />
                             <AddRound />
                         </RouteWrapper>
                         <RouteWrapper path="/:caselist/:school" privateRoute>
+                            <Breadcrumbs />
                             <TeamList />
                             <hr />
                             <AddTeam />
