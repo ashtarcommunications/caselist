@@ -1,26 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { loadCaselist } from './api';
+import { useStore } from './store';
 
 const CaselistHome = () => {
-    const [caselistData, setCaselistData] = useState({});
-
     const { caselist } = useParams();
-
+    const { caselist: caselistData, fetchCaselist } = useStore();
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                if (caselist) {
-                    const response = await loadCaselist(caselist);
-                    setCaselistData(response || {});
-                }
-            } catch (err) {
-                setCaselistData({});
-                console.log(err);
-            }
-        };
-        fetchData();
-    }, [caselist]);
+        fetchCaselist(caselist);
+    }, [caselist, fetchCaselist]);
 
     return (
         <div className="home">

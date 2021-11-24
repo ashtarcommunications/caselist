@@ -1,22 +1,20 @@
-// import config from '../../../config';
+import fetch from 'isomorphic-fetch';
+import config from '../../../config';
 
-const getTabroomSchools = {
+const getTabroomChapters = {
     GET: async (req, res) => {
-        // const schools = await fetch(`${config.TABROOM_API_URL}/schools`);
-        const schools = [
-            { name: 'Test School', chapter_id: 1 },
-        ];
+        const chapters = await fetch(`${config.TABROOM_API_URL}/caselist/chapters?person_id=${req.user.id}`);
 
-        return res.status(200).json(schools);
+        return res.status(200).json(chapters);
     },
 };
 
-getTabroomSchools.GET.apiDoc = {
-    summary: 'Returns list of schools linked to a user on Tabroom',
-    operationId: 'getTabroomSchools',
+getTabroomChapters.GET.apiDoc = {
+    summary: 'Returns list of chapters linked to a user on Tabroom',
+    operationId: 'getTabroomChapters',
     responses: {
         200: {
-            description: 'Schools',
+            description: 'Chapters',
             content: {
                 '*/*': {
                     schema: {
@@ -30,4 +28,4 @@ getTabroomSchools.GET.apiDoc = {
     },
 };
 
-export default getTabroomSchools;
+export default getTabroomChapters;

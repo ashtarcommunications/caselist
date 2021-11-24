@@ -16,6 +16,7 @@ const config = {
     DB_RETRIES: 5,
     DB_RETRY_DELAY: 100,
     LDAP_URL: 'ldap://localhost:6363',
+    TABROOM_API_URL: 'http://localhost:10011',
 };
 
 if (process.env.NODE_ENV === 'production') {

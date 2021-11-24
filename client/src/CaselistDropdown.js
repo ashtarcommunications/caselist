@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import uniqBy from 'lodash/uniqBy';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { loadCaselists } from './api';
 import { startOfYear } from './common';
 import './CaselistDropdown.css';
 
 const CaselistDropdown = () => {
     const history = useHistory();
+    const { caselist } = useParams();
 
     const [caselists, setCaselists] = useState([]);
+
+    // TODO - dropdowns not setting default value correctly
+    const selectedCaselist = caselists.find(c => c.slug === caselist) || {};
+    const defaultYear = selectedCaselist.year || startOfYear;
+
     const [years, setYears] = useState([]);
-    const [year, setYear] = useState(startOfYear);
+    const [year, setYear] = useState(defaultYear);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -40,7 +47,10 @@ const CaselistDropdown = () => {
     return (
         <div>
             <form className="form pure-form">
-                <select onChange={handleChangeYear}>
+                <select
+                    onChange={handleChangeYear}
+                    value={year}
+                >
                     {
                         years.map(y => {
                             return (
@@ -54,7 +64,7 @@ const CaselistDropdown = () => {
                         })
                     }
                 </select>
-                <select onChange={handleChangeCaselist}>
+                <select onChange={handleChangeCaselist} value={caselist}>
                     <option value="">Choose a Caselist</option>
                     {
                         filteredCaselists.map(c => {

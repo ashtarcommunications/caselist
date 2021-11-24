@@ -1,31 +1,28 @@
-import React, { createContext, useState, useEffect, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { createContext, useState, useContext, useCallback } from 'react';
 import { loadCaselist, loadSchools } from './api';
 
-// Hook to track store state
-export const useStore = () => {
+// Create a context for the store
+export const StoreContext = createContext();
+
+// Store Context provider
+export const ProvideStore = ({ children }) => {
     const [caselistData, setCaselistData] = useState({});
 
-    const { caselist } = useParams();
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                if (caselist) {
-                    const response = await loadCaselist(caselist);
-                    setCaselistData(response || {});
-                }
-            } catch (err) {
-                setCaselistData({});
-                console.log(err);
+    const fetchCaselist = useCallback(async (caselist) => {
+        try {
+            if (caselist) {
+                const response = await loadCaselist(caselist);
+                setCaselistData(response || {});
             }
-        };
-        fetchData();
-    }, [caselist]);
+        } catch (err) {
+            setCaselistData({});
+            console.log(err);
+        }
+    }, []);
 
     const [schools, setSchools] = useState([]);
 
-    const fetchSchools = useCallback(async () => {
+    const fetchSchools = useCallback(async (caselist) => {
         try {
             if (caselist) {
                 const schoolData = await loadSchools(caselist);
@@ -36,28 +33,20 @@ export const useStore = () => {
             console.log(err);
             setSchools([]);
         }
-    }, [caselist]);
+    }, []);
 
-    useEffect(() => {
-        fetchSchools();
-    }, [caselist, fetchSchools]);
-
-    return {
+    const store = {
         caselist: caselistData,
+        fetchCaselist,
         schools,
         fetchSchools,
     };
-};
 
-// Create a context for the store
-export const StoreContext = createContext();
-
-// Store Context provider
-export const ProvideStore = ({ children }) => {
-    const store = useStore();
     return (
         <StoreContext.Provider value={store}>
             {children}
         </StoreContext.Provider>
     );
 };
+
+export const useStore = () => useContext(StoreContext);

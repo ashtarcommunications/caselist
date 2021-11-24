@@ -1,22 +1,27 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { StoreContext, useStore } from './store';
+import { useStore } from './store';
 import { addSchool } from './api';
 import StatesDropdown from './StatesDropdown';
+import './AddSchool.css';
 
 const AddSchool = () => {
+    const history = useHistory();
     const { caselist } = useParams();
-    const store = useStore(StoreContext);
+    const { caselist: caselistData, fetchSchools } = useStore();
 
-    const { register, formState: { errors }, handleSubmit } = useForm();
+    const { register, formState: { errors }, handleSubmit, reset } = useForm({ mode: 'all' });
 
     const addSchoolHandler = async (data) => {
         try {
             await addSchool(caselist, { display_name: data.name });
-            store.fetchSchools();
+            fetchSchools(caselist);
+            reset();
             toast.success('Successfully added school');
+            // TODO - use the returned slug, not the display name
+            history.push(`/${caselist}/${data.name}`);
         } catch (err) {
             console.log(err);
             toast.error(err.message);
@@ -28,7 +33,7 @@ const AddSchool = () => {
 
     return (
         <div>
-            <h1>Add a school to {store.caselist?.name}</h1>
+            <h1>Add a school to {caselistData.name}</h1>
             <p>
                 Use the form below to add a school to the caselist. School names should conform
                 to the following rules:
@@ -72,8 +77,10 @@ const AddSchool = () => {
                                 noHs: v => (
                                     v.toLowerCase().indexOf(' hs') === -1
                                     && v.toLowerCase().indexOf(' high') === -1
+                                    && v.toLowerCase().indexOf(' university') === -1
+                                    && v.toLowerCase().indexOf(' college') === -1
                                 )
-                                    || 'Invalid school name, do not include words like "HS" or "High School"',
+                                    || 'Invalid school name, use a short version without a school designation',
                                 titleCase: v => !notTitleCase.test(v) || 'School name should be title case',
                                 alpha: v => alpha.test(v) || 'Only letters allowed',
                                 length: v => v.length === v.trim().length || 'No leading/trailing spaces allowed',
@@ -81,13 +88,15 @@ const AddSchool = () => {
                         }
                     )}
                 />
-                {errors.name?.type === 'required' && <p>This field is required</p>}
-                {errors.name?.type === 'minLength' && <p>At least 3 characters</p>}
-                {errors.name?.type === 'maxLength' && <p>Max 255 characters</p>}
-                {errors.name && <p>{errors.name?.message}</p>}
+                <div className="error">
+                    {errors.name?.type === 'required' && <p>This field is required</p>}
+                    {errors.name?.type === 'minLength' && <p>At least 3 characters</p>}
+                    {errors.name?.type === 'maxLength' && <p>Max 255 characters</p>}
+                    {errors.name && <p>{errors.name?.message}</p>}
+                </div>
 
-                {store.caselist?.level === 'hs' && <StatesDropdown emptyOptionText="" />}
-                <button type="submit" className="green pure-button">Add</button>
+                {caselistData.level === 'hs' && <StatesDropdown emptyOptionText="" />}
+                <button type="submit" className="green pure-button" disabled={errors.name}>Add</button>
             </form>
         </div>
     );
