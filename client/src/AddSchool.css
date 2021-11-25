@@ -1,3 +1,7 @@
 .error {
-    color: red;
+    color: #F03342;
+}
+
+.instructions ul li {
+    line-height: 1.5em;
 }

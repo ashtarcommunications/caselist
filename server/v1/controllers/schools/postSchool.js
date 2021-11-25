@@ -1,4 +1,5 @@
 import SQL from 'sql-template-strings';
+import { startOfYear } from '../../helpers/common';
 import { query } from '../../helpers/mysql';
 
 const postSchool = {
@@ -14,6 +15,17 @@ const postSchool = {
         if (school && school.length > 0) {
             return res.status(400).json({ message: 'School with the same name already exists' });
         }
+
+        const caselist = await query(SQL`
+            SELECT * FROM caselists C WHERE C.slug = ${req.params.caselist}
+        `);
+        if (!caselist || caselist.length < 1) {
+            return res.status(400).json({ message: 'Invalid caselist' });
+        }
+        if (caselist[0].year < startOfYear) {
+            return res.status(400).json({ message: 'This caselist is archived, no modifications allowed' });
+        }
+
         await query(SQL`
             INSERT INTO schools (caselist_id, name, display_name, state)
                 SELECT caselist_id, ${name}, ${req.body.display_name}, ${req.body.state || null}

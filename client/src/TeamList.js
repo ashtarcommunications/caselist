@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faLink } from '@fortawesome/free-solid-svg-icons';
 import { loadTeams, loadSchool, deleteTeam } from './api';
+import TabroomChaptersDropdown from './TabroomChaptersDropdown';
 import Table from './Table';
 import './TeamList.css';
 
@@ -88,6 +89,7 @@ const TeamList = () => {
     return (
         <div className="teamlist">
             <h1>{schoolData.display_name}</h1>
+            <TabroomChaptersDropdown />
             <hr />
             <Table columns={columns} data={data} />
             {

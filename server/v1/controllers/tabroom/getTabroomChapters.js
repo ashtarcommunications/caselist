@@ -1,9 +1,15 @@
-import fetch from 'isomorphic-fetch';
-import config from '../../../config';
+// import fetch from 'isomorphic-fetch';
+// import config from '../../../config';
 
 const getTabroomChapters = {
     GET: async (req, res) => {
-        const chapters = await fetch(`${config.TABROOM_API_URL}/caselist/chapters?person_id=${req.user.id}`);
+        // const chapters = await fetch(
+        //     `${config.TABROOM_API_URL}/caselist/chapters?person_id=${req.user.id}`
+        // );
+        const chapters = [
+            { id: 6, name: 'Lexington HS', state: 'MA' },
+            { id: 958, name: 'NFA', state: 'NY' },
+        ];
 
         return res.status(200).json(chapters);
     },

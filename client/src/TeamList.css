@@ -6,12 +6,12 @@
 }
 
 .trash {
-    color: rgb(211, 31, 31);
+    color: #F03342;
     cursor: pointer;
 }
 
 .link {
     font-size: 18px;
-    color: blue;
+    color: #42B0E2;
     cursor: pointer;
 }

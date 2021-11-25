@@ -32,7 +32,7 @@ const AddSchool = () => {
     const alpha = /^[a-zA-Z ]+$/;
 
     return (
-        <div>
+        <div className="instructions">
             <h1>Add a school to {caselistData.name}</h1>
             <p>
                 Use the form below to add a school to the caselist. School names should conform
@@ -46,18 +46,18 @@ const AddSchool = () => {
                 </li>
                 <li>
                     Do not include words like &quot;High School&quot;, &quot;HS&quot;,
-                    &quot;Academy&quot;, &quot;School&quot;, etc. We know it&apos;s a school.
+                    &quot;Academy&quot;, &quot;School&quot;, etc. - we know it&apos;s a school
                 </li>
                 <li>
-                    Use Title Case, e.g. &quot;North Lincoln,&quot; not &quot;north lincoln&quot;.
+                    Use Title Case, e.g. &quot;North Lincoln,&quot; not &quot;north lincoln&quot;
                 </li>
-                <li>Only add one instance of each school.</li>
+                <li>Only add one instance of each school</li>
                 <li>
                     If a school with the same name exists in another state, add your state
-                    code at the end, like &quot;Lincoln MN&quot;.
+                    code at the end, like &quot;Lincoln MN&quot;
                 </li>
             </ul>
-            <p>
+            <p className="error">
                 Abusing the wiki (e.g. posting joke schools, using profanity, purposefully
                 breaking the above rules, etc.) will not be tolerated and may result in
                 banning. Please note that everything you do on the site is logged.

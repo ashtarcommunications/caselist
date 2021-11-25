@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
-import { loadRounds } from './api';
+import { loadRounds, addTabroomTeamLink } from './api';
 import Table from './Table';
 import './TeamRounds.css';
 
@@ -31,6 +32,15 @@ const TeamRounds = () => {
     const handleDelete = (e) => {
         // eslint-disable-next-line no-alert
         alert(`Deleting ${e.currentTarget.id}`);
+    };
+
+    const handleLinkPage = async () => {
+        try {
+            const response = await addTabroomTeamLink(window.location.pathname);
+            toast.success(response.message);
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     const data = useMemo(() => {
@@ -75,6 +85,7 @@ const TeamRounds = () => {
     return (
         <div className="roundlist">
             <h2>{team}</h2>
+            <button type="button" className="pure-button pure-button-primary" onClick={handleLinkPage}>Link</button>
             <button type="button" className="pure-button pure-button-primary" onClick={handleChangeSide} value="Aff">Aff</button>
             <button type="button" className="pure-button pure-button-primary" onClick={handleChangeSide} value="Neg">Neg</button>
             <button type="button" className="pure-button pure-button-primary" onClick={handleChangeSide} value="">Both</button>

@@ -20,7 +20,10 @@ import deleteRound from '../controllers/rounds/deleteRound';
 
 import postLogin from '../controllers/login/postLogin';
 
-import getTabroomSchools from '../controllers/tabroom/getTabroomSchools';
+import getTabroomChapters from '../controllers/tabroom/getTabroomChapters';
+import getTabroomTeams from '../controllers/tabroom/getTabroomTeams';
+import getTabroomRounds from '../controllers/tabroom/getTabroomRounds';
+import postTabroomTeamLink from '../controllers/tabroom/postTabroomTeamLink';
 
 export default [
     { path: '/status', module: status },
@@ -41,5 +44,7 @@ export default [
 
     { path: '/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{round}', module: { ...getRound, ...putRound, ...deleteRound } },
 
-    { path: '/tabroom/schools', module: getTabroomSchools },
+    { path: '/tabroom/chapters', module: getTabroomChapters },
+    { path: '/tabroom/teams', module: { ...getTabroomTeams, ...postTabroomTeamLink } },
+    { path: '/tabroom/rounds', module: getTabroomRounds },
 ];

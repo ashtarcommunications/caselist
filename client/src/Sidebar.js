@@ -14,21 +14,21 @@ const Sidebar = () => {
 
     return (
         <div className="sidebar">
+            <h2>
+                <span>Schools </span>
+                <Link to={`/${caselist}/add`}>
+                    <button type="button" className="green pure-button">
+                        <FontAwesomeIcon className="plus" icon={faPlus} />
+                        <span> Add</span>
+                    </button>
+                </Link>
+            </h2>
+            <p>
+                <Link to={`/${caselist}/recent`}>Recently Modified</Link>
+            </p>
             {
                 schools && schools.length > 0 &&
                     <div>
-                        <h2>
-                            <span>Schools </span>
-                            <Link to={`/${caselist}/add`}>
-                                <button type="button" className="green pure-button">
-                                    <FontAwesomeIcon className="plus" icon={faPlus} />
-                                    <span> Add</span>
-                                </button>
-                            </Link>
-                        </h2>
-                        <p>
-                            <Link to={`/${caselist}/recent`}>Recently Modified</Link>
-                        </p>
                         <ul>
                             {
                                 schools.map(s => {

@@ -82,3 +82,19 @@ export const updateRound = async (caselist, school, team, round, body) => {
 export const deleteRound = async (caselist, school, team, round) => {
     return fetchBase(`caselists/${caselist}/schools/${school}/teams/${team}/rounds/${round}`, { method: 'DELETE' });
 };
+
+export const loadTabroomChapters = async () => {
+    return fetchBase(`tabroom/chapters`);
+};
+
+export const loadTabroomTeams = async () => {
+    return fetchBase(`tabroom/teams`);
+};
+
+export const loadTabroomRounds = async (slug) => {
+    return fetchBase(`tabroom/rounds?slug=${slug}`);
+};
+
+export const addTabroomTeamLink = async (link) => {
+    return fetchBase(`tabroom/teams`, { method: 'POST' }, { link });
+};
