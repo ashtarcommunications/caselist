@@ -3,11 +3,13 @@ import uniqBy from 'lodash/uniqBy';
 import { useHistory, useParams } from 'react-router-dom';
 import { loadCaselists } from './api';
 import { startOfYear } from './common';
+import { useStore } from './store';
 import './CaselistDropdown.css';
 
 const CaselistDropdown = () => {
     const history = useHistory();
     const { caselist } = useParams();
+    const { fetchCaselist } = useStore();
 
     const [caselists, setCaselists] = useState([]);
 
@@ -47,6 +49,7 @@ const CaselistDropdown = () => {
         history.push(`/${e.currentTarget.value}`);
         const selected = caselists.find(c => c.slug === e.currentTarget.value) || {};
         document.title = `openCaselist - ${selected.name}`;
+        fetchCaselist(e.currentTarget.value);
     };
 
     return (

@@ -16,7 +16,8 @@ const config = {
     DB_RETRIES: 5,
     DB_RETRY_DELAY: 100,
     LDAP_URL: 'ldap://localhost:6363',
-    TABROOM_API_URL: 'http://localhost:10011',
+    TABROOM_API_URL: 'http://localhost:10011/v1',
+    TABROOM_CASELIST_KEY: 'caselist-key',
 };
 
 if (process.env.NODE_ENV === 'production') {

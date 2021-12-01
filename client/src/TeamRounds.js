@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
+import Markdown from 'react-markdown';
 import { loadRounds, addTabroomTeamLink } from './api';
 import Table from './Table';
 import './TeamRounds.css';
@@ -55,7 +56,17 @@ const TeamRounds = () => {
         { Header: 'Round', accessor: 'round' },
         { Header: 'Opponent', accessor: 'opponent' },
         { Header: 'Judge', accessor: 'judge' },
-        { Header: 'Cites', accessor: 'cites' },
+        {
+            id: 'cites',
+            Header: 'Cites',
+            accessor: 'cites',
+            className: 'center',
+            Cell: (row) => {
+                return row.value && <FontAwesomeIcon
+                    icon={faCheck}
+                />;
+            },
+        },
         { Header: 'Open Source', accessor: 'opensource' },
         {
             id: 'report',
@@ -82,6 +93,20 @@ const TeamRounds = () => {
         },
     ], []);
 
+    const citeHeaders = useMemo(() => {
+        return [
+            {
+                id: 'cites',
+                Header: 'Cites',
+                accessor: 'cites',
+                className: 'cites',
+                Cell: (row) => (
+                    <Markdown>{row.value}</Markdown>
+                ),
+            },
+        ];
+    }, []);
+
     return (
         <div className="roundlist">
             <h2>{team}</h2>
@@ -90,6 +115,7 @@ const TeamRounds = () => {
             <button type="button" className="pure-button pure-button-primary" onClick={handleChangeSide} value="Neg">Neg</button>
             <button type="button" className="pure-button pure-button-primary" onClick={handleChangeSide} value="">Both</button>
             <Table columns={columns} data={data} />
+            <Table columns={citeHeaders} data={data} />
         </div>
     );
 };

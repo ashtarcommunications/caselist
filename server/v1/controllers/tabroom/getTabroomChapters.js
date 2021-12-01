@@ -1,17 +1,21 @@
-// import fetch from 'isomorphic-fetch';
+import fetch from 'isomorphic-fetch';
 // import config from '../../../config';
 
 const getTabroomChapters = {
     GET: async (req, res) => {
         // const chapters = await fetch(
-        //     `${config.TABROOM_API_URL}/caselist/chapters?person_id=${req.user.id}`
+        //     `${config.TABROOM_API_URL}/caselist/chapters?person_id=${req.user.id}&caselist_key=${config.TABROOM_CASELIST_KEY}`
         // );
-        const chapters = [
-            { id: 6, name: 'Lexington HS', state: 'MA' },
-            { id: 958, name: 'NFA', state: 'NY' },
-        ];
+        const chapters = await fetch(
+            'http://localhost:10011/v1/caselist/chapters?person_id=17145&caselist_key=caselist-key'
+        );
+        const json = await chapters.json();
+        // const chapters = [
+        //     { id: 6, name: 'Lexington HS', state: 'MA' },
+        //     { id: 958, name: 'NFA', state: 'NY' },
+        // ];
 
-        return res.status(200).json(chapters);
+        return res.status(200).json(json);
     },
 };
 
@@ -25,7 +29,7 @@ getTabroomChapters.GET.apiDoc = {
                 '*/*': {
                     schema: {
                         type: 'array',
-                        items: { $ref: '#/components/schemas/School' },
+                        items: { $ref: '#/components/schemas/TabroomChapter' },
                     },
                 },
             },

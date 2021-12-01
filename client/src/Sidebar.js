@@ -7,10 +7,15 @@ import './Sidebar.css';
 
 const Sidebar = () => {
     const { caselist } = useParams();
-    const { schools, fetchSchools } = useStore();
+    const { schools, fetchSchools, caselist: caselistData, fetchCaselist } = useStore();
     useEffect(() => {
         fetchSchools(caselist);
     }, [caselist, fetchSchools]);
+    useEffect(() => {
+        if (!caselistData || caselist !== caselistData.slug) {
+            fetchCaselist(caselist);
+        }
+    }, [caselist, caselistData, fetchCaselist]);
 
     return (
         <div className="sidebar">

@@ -6,8 +6,10 @@ const CaselistHome = () => {
     const { caselist } = useParams();
     const { caselist: caselistData, fetchCaselist } = useStore();
     useEffect(() => {
-        fetchCaselist(caselist);
-    }, [caselist, fetchCaselist]);
+        if (!caselistData || caselist !== caselistData.slug) {
+            fetchCaselist(caselist);
+        }
+    }, [caselist, caselistData, fetchCaselist]);
 
     return (
         <div className="home">

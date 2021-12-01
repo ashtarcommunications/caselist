@@ -4,7 +4,16 @@ import { query } from '../../helpers/mysql';
 const getRounds = {
     GET: async (req, res) => {
         let sql = (SQL`
-            SELECT R.* FROM rounds R 
+            SELECT
+                R.*,
+                (
+                    SELECT cites
+                    FROM cites
+                    WHERE round_id = R.round_id
+                    ORDER BY updated_at DESC
+                    LIMIT 1
+                ) AS 'cites'
+            FROM rounds R 
             INNER JOIN teams T ON T.team_id = R.team_id
             INNER JOIN schools S ON S.school_id = T.school_id
             INNER JOIN caselists C ON S.caselist_id = C.caselist_id

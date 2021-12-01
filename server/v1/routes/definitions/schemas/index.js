@@ -4,6 +4,7 @@ import Login from './Login';
 import School from './School';
 import Team from './Team';
 import Round from './Round';
+import TabroomChapter from './TabroomChapter';
 
 export default {
     Err,
@@ -12,4 +13,5 @@ export default {
     School,
     Team,
     Round,
+    TabroomChapter,
 };

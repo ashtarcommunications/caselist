@@ -25,3 +25,7 @@ a {
     --nfa: #42B0E2;
     --openev: #E48786;
 }
+
+.pure-form select {
+    height: auto !important;
+}
