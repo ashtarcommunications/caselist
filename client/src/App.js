@@ -3,21 +3,21 @@ import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'purecss/build/pure-min.css';
 import 'react-toastify/dist/ReactToastify.min.css';
-import { ProvideAuth } from './auth';
-import RouteWrapper from './layout';
-import { ProvideStore } from './store';
+import { ProvideAuth } from './helpers/auth';
+import RouteWrapper from './layout/layout';
+import Breadcrumbs from './layout/Breadcrumbs';
+import { ProvideStore } from './helpers/store';
 import './App.css';
-import Home from './Home';
-import CaselistHome from './CaselistHome';
-import Recent from './Recent';
-import Login from './Login';
-import Logout from './Logout';
-import AddSchool from './AddSchool';
-import TeamList from './TeamList';
-import AddTeam from './AddTeam';
-import TeamRounds from './TeamRounds';
-import AddRound from './AddRound';
-import Breadcrumbs from './Breadcrumbs';
+import Home from './home/Home';
+import CaselistHome from './caselist/CaselistHome';
+import Recent from './caselist/Recent';
+import Login from './login/Login';
+import Logout from './login/Logout';
+import AddSchool from './caselist/AddSchool';
+import TeamList from './school/TeamList';
+import AddTeam from './school/AddTeam';
+import TeamRounds from './team/TeamRounds';
+import AddRound from './team/AddRound';
 
 const App = () => {
     return (

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { AuthContext } from './auth';
+import { AuthContext } from '../helpers/auth';
 import './Login.css';
 
 const Login = () => {

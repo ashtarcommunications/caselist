@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { loadTabroomRounds } from './api';
+import { loadTabroomRounds } from '../helpers/api';
 
-const TabroomRoundsDropdown = () => {
+const TabroomRoundsDropdown = ({ handler }) => {
     const [rounds, setRounds] = useState([]);
 
     const fetchRounds = async () => {
@@ -17,6 +17,8 @@ const TabroomRoundsDropdown = () => {
 
     const handleChangeRound = (e) => {
         e.preventDefault();
+        const round = rounds.find(r => r.id === parseInt(e.currentTarget.value));
+        handler(round);
     };
 
     return (

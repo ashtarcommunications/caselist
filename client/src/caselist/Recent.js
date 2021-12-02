@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { loadRecent } from './api';
+import { loadRecent } from '../helpers/api';
 
 const Recent = () => {
     const [recentData, setRecentData] = useState([]);

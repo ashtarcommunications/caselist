@@ -1,27 +1,29 @@
 import React, { useCallback, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useHistory } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
 import * as mammoth from 'mammoth/mammoth.browser';
 import Turndown from 'turndown';
+import { toast } from 'react-toastify';
 import TabroomRoundsDropdown from './TabroomRoundsDropdown';
 import RoundNumberDropdown from './RoundNumberDropdown';
 // import MarkdownIt from 'markdown-it';
-import { addRound } from './api';
+import { addRound } from '../helpers/api';
 import './AddRound.css';
 
 const AddRound = () => {
     const { caselist, school, team } = useParams();
+    const history = useHistory();
+    const { register, formState: { errors }, handleSubmit, reset, setValue } = useForm({ mode: 'all' });
 
     const [cites, setCites] = useState(['']);
 
-    const addRoundHandler = async (e) => {
-        e.preventDefault();
+    const addRoundHandler = async (data) => {
         try {
-            await addRound(
-                caselist,
-                school,
-                team,
-                { side: 'Aff', tournament: 'Test Tournament' });
+            const response = await addRound(caselist, school, team, data);
+            toast.success(response);
+            reset();
+            history.push(`/${caselist}/${school}/${team}`);
         } catch (err) {
             console.log(err);
         }
@@ -68,17 +70,49 @@ const AddRound = () => {
         setCites(newCites);
     };
 
+    const handleSelectAutoDetected = (round) => {
+        setValue('tourn', round.tourn, { shouldvalidate: true });
+        setValue('side', round.side, { shouldvalidate: true });
+        setValue('round', round.round, { shouldvalidate: true });
+        setValue('opponent', round.opponent, { shouldvalidate: true });
+        setValue('judge', round.judge, { shouldvalidate: true });
+    };
+
     return (
         <div>
-            <form onSubmit={addRoundHandler} className="pure-form pure-form-stacked">
-                <TabroomRoundsDropdown />
-                Tournament: <input type="text" />
-                Side: <input type="text" />
-                Round: <RoundNumberDropdown />
-                Opponent: <input type="text" />
-                Judge: <input type="text" />
-                Round Report: <input type="text" />
-                Video: <input type="text" />
+            <h2>Add a round to {school} {team}</h2>
+            <form onSubmit={handleSubmit(addRoundHandler)} className="pure-form pure-form-stacked">
+                Auto-detected Rounds: <TabroomRoundsDropdown handler={handleSelectAutoDetected} />
+                Tournament: <input
+                    name="tourn"
+                    type="text"
+                    {...register('tourn', { required: true })}
+                />
+                Side: <input
+                    name="side"
+                    type="text"
+                    {...register('side', { required: true })}
+                />
+                Round: <RoundNumberDropdown register={register} />
+                Opponent: <input
+                    name="opponent"
+                    type="text"
+                    {...register('opponent', { required: true })}
+                />
+                Judge: <input
+                    name="judge"
+                    type="text"
+                    {...register('judge', { required: true })}
+                />
+                Round Report: <textarea
+                    name="report"
+                    {...register('report')}
+                />
+                Video: <input
+                    name="video"
+                    type="text"
+                    {...register('video')}
+                />
                 Cites:
                 {
                     cites.map((c, index) => {
@@ -99,6 +133,9 @@ const AddRound = () => {
                 <div className="dropzone" {...getRootProps()}>
                     <input {...getInputProps()} />
                     <p>Drag and drop a Verbatim file here, or click to select file</p>
+                </div>
+                <div className="error">
+                    {errors && <p>Errors in form</p>}
                 </div>
                 <button type="submit" className="pure-button pure-button-primary">Add</button>
                 <Link to={`/${caselist}/${school}/${team}`}>

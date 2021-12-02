@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useStore } from './store';
+import { useStore } from '../helpers/store';
 
 const CaselistHome = () => {
     const { caselist } = useParams();

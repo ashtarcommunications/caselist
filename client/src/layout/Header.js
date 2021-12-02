@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { AuthContext } from './auth';
-import { useStore } from './store';
+import { AuthContext } from '../helpers/auth';
+import { useStore } from '../helpers/store';
 import CaselistDropdown from './CaselistDropdown';
 import './Header.css';
 

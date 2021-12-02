@@ -2,8 +2,8 @@ import React from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { useStore } from './store';
-import { addSchool } from './api';
+import { useStore } from '../helpers/store';
+import { addSchool } from '../helpers/api';
 import StatesDropdown from './StatesDropdown';
 import './AddSchool.css';
 

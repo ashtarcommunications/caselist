@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { loadTabroomChapters } from './api';
+import { loadTabroomChapters } from '../helpers/api';
 
 const TabroomChaptersDropdown = () => {
     const [chapters, setChapters] = useState([]);

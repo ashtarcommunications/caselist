@@ -12,7 +12,7 @@ const postRound = {
         // const upload = multer({
         //     storage: multerS3({
         //         s3,
-        //         bucket: config.BUCKET,
+        //         bucket: config.S3_BUCKET,
         //         contentType: multerS3.AUTO_CONTENT_TYPE,
         //         key: (req, file, cb) => {
         //             cb(null, `${req.params.caselist}/${req.params.schools}/${req.params.team}/${filename}`);
@@ -26,7 +26,7 @@ const postRound = {
                 SELECT
                     T.team_id,
                     ${req.body.side},
-                    ${req.body.tournament},
+                    ${req.body.tourn},
                     ${req.body.round},
                     ${req.body.opponent},
                     ${req.body.judge},
@@ -34,8 +34,8 @@ const postRound = {
                     ${req.body.tourn_id},
                     ${req.body.external_id}
                 FROM teams T
-                INNER JOIN schools S ON S.team_id = T.team_id
-                INNER JOIN caselists C ON S.caselist_id = C.caselist_id
+                INNER JOIN schools S ON S.school_id = T.school_id
+                INNER JOIN caselists C ON C.caselist_id = S.caselist_id
                 WHERE C.slug = ${req.params.caselist}
                 AND LOWER(S.name) = LOWER(${req.params.school})
                 AND LOWER(T.code) = LOWER(${req.params.team})

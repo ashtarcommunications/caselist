@@ -2,8 +2,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useStore } from './store';
-import { startOfYear } from './common';
+import { useStore } from '../helpers/store';
+import { startOfYear } from '../helpers/common';
 import './Sidebar.css';
 
 const Sidebar = () => {

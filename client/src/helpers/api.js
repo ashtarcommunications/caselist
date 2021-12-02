@@ -68,7 +68,7 @@ export const loadRounds = async (caselist, school, team, side) => {
 };
 
 export const addRound = async (caselist, school, team, round) => {
-    return fetchBase(`caselists/${caselist}/schools/${school}/teams/rounds`, { method: 'POST' }, round);
+    return fetchBase(`caselists/${caselist}/schools/${school}/teams/${team}/rounds`, { method: 'POST' }, round);
 };
 
 export const loadRound = async (caselist, school, team, round) => {

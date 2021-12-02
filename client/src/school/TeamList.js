@@ -2,9 +2,9 @@ import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faLink } from '@fortawesome/free-solid-svg-icons';
-import { loadTeams, loadSchool, deleteTeam } from './api';
+import { loadTeams, loadSchool, deleteTeam } from '../helpers/api';
 import TabroomChaptersDropdown from './TabroomChaptersDropdown';
-import Table from './Table';
+import Table from '../tables/Table';
 import './TeamList.css';
 
 const TeamList = () => {

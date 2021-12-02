@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { AuthContext } from './auth';
+import { AuthContext } from '../helpers/auth';
 import Header from './Header';
 import Footer from './Footer';
 import Sidebar from './Sidebar';

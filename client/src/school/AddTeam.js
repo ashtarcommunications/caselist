@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { addTeam } from './api';
+import { addTeam } from '../helpers/api';
 import './AddTeam.css';
 
 const AddTeam = () => {

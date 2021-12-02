@@ -4,8 +4,8 @@ import { faTrash, faCheck, faLink, faAngleDown, faAngleUp, faSave, faCopy } from
 import { toast } from 'react-toastify';
 import { Link, useParams } from 'react-router-dom';
 import Markdown from 'react-markdown';
-import { loadRounds, addTabroomTeamLink } from './api';
-import Table from './Table';
+import { loadRounds, addTabroomTeamLink, deleteRound } from '../helpers/api';
+import Table from '../tables/Table';
 import './TeamRounds.css';
 
 const TeamRounds = () => {
@@ -24,10 +24,21 @@ const TeamRounds = () => {
         fetchData();
     }, [caselist, school, team]);
 
-    const handleDelete = (e) => {
-        // eslint-disable-next-line no-alert
-        alert(`Deleting ${e.currentTarget.id}`);
-    };
+    const handleDeleteRound = useCallback(async (id) => {
+        try {
+            const response = await deleteRound(caselist, school, team, id);
+            toast.success(response.message);
+        } catch (err) {
+            console.log(err);
+        }
+    }, [caselist, school, team]);
+
+    const handleDelete = useCallback((e) => {
+        toast(<ConfirmButton
+            message="Are you sure you want to delete this round and all linked cites?"
+            handler={handleDeleteRound(e.currentTarget.id)}
+        />);
+    }, [handleDeleteRound]);
 
     const handleLinkPage = async () => {
         try {
@@ -37,24 +48,23 @@ const TeamRounds = () => {
             console.log(err);
         }
     };
-    const ConfirmButton = () => (
+    const ConfirmButton = ({ message = 'Are you sure?', handler }) => (
         <div>
-            Are you sure you want to link this page to your Tabroom account?
+            <span>{message}</span>
             <button
                 type="button"
                 className="pure-button pure-button-primary"
-                onClick={handleLinkPage}
+                onClick={handler}
             >
                 Confirm
             </button>
         </div>
     );
     const handleShowConfirm = async () => {
-        try {
-            toast(<ConfirmButton />);
-        } catch (err) {
-            console.log(err);
-        }
+        toast(<ConfirmButton
+            message="Are you sure you want to link this page to your Tabroom account?"
+            handler={handleLinkPage}
+        />);
     };
 
     const handleToggleReport = useCallback((e) => {
@@ -178,7 +188,7 @@ const TeamRounds = () => {
                 />
             ),
         },
-    ], [handleToggleReport, handleToggleAll, allRoundsOpen]);
+    ], [handleToggleReport, handleToggleAll, allRoundsOpen, handleDelete]);
 
     const citeHeaders = useMemo(() => {
         return [
@@ -193,7 +203,7 @@ const TeamRounds = () => {
                             {
                                 !row.row?.original?.citesopen &&
                                 <span className="citetitle">
-                                    <Markdown>{row.value?.cites.split('\n')[0]}</Markdown>
+                                    <Markdown>{row.value?.cites?.split('\n')[0]}</Markdown>
                                 </span>
                             }
                             <span

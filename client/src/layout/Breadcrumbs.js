@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
-import { useStore } from './store';
+import { useStore } from '../helpers/store';
 import './Breadcrumbs.css';
 
 const Breadcrumbs = () => {

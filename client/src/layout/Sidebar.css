@@ -19,9 +19,12 @@
     text-decoration: none;
     color: #3173B5;
     font-size: 12px;
+    vertical-align: middle;
 } 
 
 .green {
     background-color: #0E9641;
     color: white;
+    font-size: 90%;
+    border-radius: 20px;
 }
