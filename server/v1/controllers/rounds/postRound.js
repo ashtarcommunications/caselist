@@ -1,8 +1,26 @@
 import SQL from 'sql-template-strings';
+// import AWS from 'aws-sdk';
+// import multer from 'multer';
+// import multerS3 from 'multer-s3';
+// import config from '../../../config';
 import { query } from '../../helpers/mysql';
 
 const postRound = {
     POST: async (req, res) => {
+        // const filename = `${req.params.school}-${req.params.team}-${req.body.side}.docx`;
+        // const s3 = new AWS.S3();
+        // const upload = multer({
+        //     storage: multerS3({
+        //         s3,
+        //         bucket: config.BUCKET,
+        //         contentType: multerS3.AUTO_CONTENT_TYPE,
+        //         key: (req, file, cb) => {
+        //             cb(null, `${req.params.caselist}/${req.params.schools}/${req.params.team}/${filename}`);
+        //         },
+        //     }),
+        // });
+        // upload.single(req.body.opensource);
+
         await query(SQL`
             INSERT INTO rounds (team_id, side, tournament, round, opponent, judge, report, tourn_id, external_id)
                 SELECT

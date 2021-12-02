@@ -1,9 +1,10 @@
 import React, { useCallback, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useDropzone } from 'react-dropzone';
 import * as mammoth from 'mammoth/mammoth.browser';
 import Turndown from 'turndown';
 import TabroomRoundsDropdown from './TabroomRoundsDropdown';
+import RoundNumberDropdown from './RoundNumberDropdown';
 // import MarkdownIt from 'markdown-it';
 import { addRound } from './api';
 import './AddRound.css';
@@ -72,7 +73,8 @@ const AddRound = () => {
             <form onSubmit={addRoundHandler} className="pure-form pure-form-stacked">
                 <TabroomRoundsDropdown />
                 Tournament: <input type="text" />
-                Round: <input type="text" />
+                Side: <input type="text" />
+                Round: <RoundNumberDropdown />
                 Opponent: <input type="text" />
                 Judge: <input type="text" />
                 Round Report: <input type="text" />
@@ -94,12 +96,15 @@ const AddRound = () => {
                     })
                 }
                 <button type="button" onClick={handleAddCite} className="pure-button pure-button-secondary">Add A Cite</button>
+                <div className="dropzone" {...getRootProps()}>
+                    <input {...getInputProps()} />
+                    <p>Drag and drop a Verbatim file here, or click to select file</p>
+                </div>
                 <button type="submit" className="pure-button pure-button-primary">Add</button>
+                <Link to={`/${caselist}/${school}/${team}`}>
+                    <button type="button" className="pure-button pure-button-primary">Cancel</button>
+                </Link>
             </form>
-            <div className="dropzone" {...getRootProps()}>
-                <input {...getInputProps()} />
-                <p>Drag and drop a Verbatim file here, or click to select file</p>
-            </div>
         </div>
     );
 };

@@ -43,11 +43,13 @@ const App = () => {
                         <RouteWrapper path="/:caselist/recent" privateRoute>
                             <Recent />
                         </RouteWrapper>
+                        <RouteWrapper path="/:caselist/:school/:team/add" privateRoute>
+                            <Breadcrumbs />
+                            <AddRound />
+                        </RouteWrapper>
                         <RouteWrapper path="/:caselist/:school/:team/:side?" privateRoute>
                             <Breadcrumbs />
                             <TeamRounds />
-                            <hr />
-                            <AddRound />
                         </RouteWrapper>
                         <RouteWrapper path="/:caselist/:school" privateRoute>
                             <Breadcrumbs />

@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faCheck, faLink, faAngleDown, faAngleUp, faSave } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Markdown from 'react-markdown';
 import { loadRounds, addTabroomTeamLink } from './api';
 import Table from './Table';
@@ -12,23 +12,17 @@ const TeamRounds = () => {
     const { caselist, school, team, side } = useParams();
 
     const [rounds, setRounds] = useState([]);
-    const [selectedSide, setSelectedSide] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 setRounds(await loadRounds(caselist, school, team));
-                if (side) { setSelectedSide(side); }
             } catch (err) {
                 console.log(err);
             }
         };
         fetchData();
-    }, [caselist, school, team, side]);
-
-    const handleChangeSide = (e) => {
-        setSelectedSide(e.currentTarget.value);
-    };
+    }, [caselist, school, team]);
 
     const handleDelete = (e) => {
         // eslint-disable-next-line no-alert
@@ -43,12 +37,51 @@ const TeamRounds = () => {
             console.log(err);
         }
     };
+    const ConfirmButton = () => (
+        <div>
+            Are you sure you want to link this page to your Tabroom account?
+            <button
+                type="button"
+                className="pure-button pure-button-primary"
+                onClick={handleLinkPage}
+            >
+                Confirm
+            </button>
+        </div>
+    );
+    const handleShowConfirm = async () => {
+        try {
+            toast(<ConfirmButton />);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const handleToggleReport = useCallback((e) => {
+        const newRounds = [...rounds];
+        newRounds.forEach(r => {
+            if (r.round_id === parseInt(e.currentTarget.id)) {
+                r.reportopen = !r.reportopen;
+            }
+        });
+        setRounds(newRounds);
+    }, [rounds]);
+
+    const allRoundsOpen = rounds.filter(r => r.reportopen).length === rounds.length;
+
+    const handleToggleAll = useCallback(() => {
+        const newRounds = [...rounds];
+        newRounds.forEach(r => {
+            r.reportopen = !allRoundsOpen;
+        });
+        setRounds(newRounds);
+    }, [allRoundsOpen, rounds]);
 
     const data = useMemo(() => {
-        return selectedSide
-        ? rounds.filter(r => r.side === selectedSide)
+        return side
+        ? rounds.filter(r => r.side === side)
         : rounds;
-    }, [rounds, selectedSide]);
+    }, [rounds, side]);
 
     const columns = useMemo(() => [
         { Header: 'Tournament', accessor: 'tournament' },
@@ -67,15 +100,54 @@ const TeamRounds = () => {
                 />;
             },
         },
-        { Header: 'Open Source', accessor: 'opensource' },
+        {
+            id: 'opensource',
+            Header: 'Open Source',
+            accessor: row => row,
+            className: 'center',
+            Cell: () => {
+                return (<FontAwesomeIcon
+                    icon={faSave}
+                />);
+            },
+        },
         {
             id: 'report',
-            Header: 'Round Report',
-            accessor: 'report',
-            className: 'report',
-            Cell: (row) => (
-                <p className="report">{row.value}</p>
-            ),
+            Header: () => {
+                return (
+                    <>
+                        <span className="report-header">Round Report</span>
+                        <button
+                            type="button"
+                            className="pure-button pure-button-primary toggleall"
+                            onClick={handleToggleAll}
+                        >
+                            {allRoundsOpen ? 'Collapse All' : 'Expand All'}
+                        </button>
+                    </>
+                );
+            },
+            accessor: row => row,
+            Cell: (row) => {
+                return (
+                    <div className="report">
+                        <p className={row.row?.original?.reportopen ? 'report reportopen' : 'report reportclosed'}>
+                            {row.value?.report}
+                        </p>
+                        <span className="caret">
+                            <FontAwesomeIcon
+                                icon={
+                                    row.row?.original?.reportopen
+                                    ? faAngleDown
+                                    : faAngleUp
+                                }
+                                id={row.row?.original?.round_id}
+                                onClick={e => handleToggleReport(e)}
+                            />
+                        </span>
+                    </div>
+                );
+            },
         },
         {
             id: 'delete',
@@ -86,12 +158,12 @@ const TeamRounds = () => {
                 <FontAwesomeIcon
                     className="trash"
                     icon={faTrash}
-                    id={row.value?.team_id}
+                    id={row.value?.round_id}
                     onClick={e => handleDelete(e)}
                 />
             ),
         },
-    ], []);
+    ], [handleToggleReport, handleToggleAll, allRoundsOpen]);
 
     const citeHeaders = useMemo(() => {
         return [
@@ -109,11 +181,25 @@ const TeamRounds = () => {
 
     return (
         <div className="roundlist">
-            <h2>{team}</h2>
-            <button type="button" className="pure-button pure-button-primary" onClick={handleLinkPage}>Link</button>
-            <button type="button" className="pure-button pure-button-primary" onClick={handleChangeSide} value="Aff">Aff</button>
-            <button type="button" className="pure-button pure-button-primary" onClick={handleChangeSide} value="Neg">Neg</button>
-            <button type="button" className="pure-button pure-button-primary" onClick={handleChangeSide} value="">Both</button>
+            <h2>
+                {school} {team}
+                <FontAwesomeIcon
+                    icon={faLink}
+                    onClick={handleShowConfirm}
+                />
+            </h2>
+            <Link to={`/${caselist}/${school}/${team}/Aff`}>
+                <button type="button" className="pure-button pure-button-primary aff">Aff</button>
+            </Link>
+            <Link to={`/${caselist}/${school}/${team}/Neg`}>
+                <button type="button" className="pure-button pure-button-primary neg">Neg</button>
+            </Link>
+            <Link to={`/${caselist}/${school}/${team}`}>
+                <button type="button" className="pure-button pure-button-primary both">Both</button>
+            </Link>
+            <Link to={`/${caselist}/${school}/${team}/add`}>
+                <button type="button" className="pure-button pure-button-primary add">+ Add Round</button>
+            </Link>
             <Table columns={columns} data={data} />
             <Table columns={citeHeaders} data={data} />
         </div>

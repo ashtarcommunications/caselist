@@ -3,6 +3,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useStore } from './store';
+import { startOfYear } from './common';
 import './Sidebar.css';
 
 const Sidebar = () => {
@@ -19,14 +20,21 @@ const Sidebar = () => {
 
     return (
         <div className="sidebar">
+            {
+                caselistData.year !== startOfYear &&
+                <h2>THIS CASELIST IS ARCHIVED, NO CHANGES ARE ALLOWED</h2>
+            }
             <h2>
                 <span>Schools </span>
-                <Link to={`/${caselist}/add`}>
-                    <button type="button" className="green pure-button">
-                        <FontAwesomeIcon className="plus" icon={faPlus} />
-                        <span> Add</span>
-                    </button>
-                </Link>
+                {
+                    caselistData.year === startOfYear &&
+                    <Link to={`/${caselist}/add`}>
+                        <button type="button" className="green pure-button">
+                            <FontAwesomeIcon className="plus" icon={faPlus} />
+                            <span> Add</span>
+                        </button>
+                    </Link>
+                }
             </h2>
             <p>
                 <Link to={`/${caselist}/recent`}>Recently Modified</Link>

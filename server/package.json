@@ -19,6 +19,7 @@
     "node": ">= 15.11.0"
   },
   "dependencies": {
+    "aws-sdk": "^2.1040.0",
     "body-parser": "^1.18.3",
     "bottleneck": "^2.19.0",
     "cookie-parser": "^1.4.4",
@@ -33,6 +34,8 @@
     "isomorphic-fetch": "^2.2.1",
     "ldap-authentication": "^2.2.7",
     "moment-timezone": "^0.5.25",
+    "multer": "^1.4.3",
+    "multer-s3": "^2.10.0",
     "mysql2": "^1.6.5",
     "sql-template-strings": "^2.2.2",
     "uuid": "^3.3.2",

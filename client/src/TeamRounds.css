@@ -1,6 +1,47 @@
 .report {
+    display: flex;
+    align-items: center;
+}
+.report p {
     width: 200px;
+    display: inline-block;
+}
+
+.reportclosed {
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
+}
+
+.report-header {
+    vertical-align: bottom;
+}
+
+.caret {
+    color: blue;
+    cursor: pointer;
+}
+
+.toggleall {
+    margin-left: 20px;
+    font-size: 60%;
+}
+
+.aff {
+    margin-right: 20px;
+    background-color: mediumblue;
+}
+
+.neg {
+    margin-right: 20px;
+    background-color: mediumvioletred;
+
+}
+
+.both {
+    background-color: mediumseagreen;
+}
+
+.add {
+    float: right;
 }
