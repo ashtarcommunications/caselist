@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faCheck, faLink, faAngleDown, faAngleUp, faSave } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faCheck, faLink, faAngleDown, faAngleUp, faSave, faCopy } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import { Link, useParams } from 'react-router-dom';
 import Markdown from 'react-markdown';
@@ -76,6 +76,21 @@ const TeamRounds = () => {
         });
         setRounds(newRounds);
     }, [allRoundsOpen, rounds]);
+
+    const handleToggleCites = useCallback((e) => {
+        const newRounds = [...rounds];
+        newRounds.forEach(r => {
+            if (r.round_id === parseInt(e.currentTarget.id)) {
+                r.citesopen = !r.citesopen;
+            }
+        });
+        setRounds(newRounds);
+    }, [rounds]);
+
+    const handleCopyCites = useCallback((e) => {
+        const round = rounds.find(r => r.round_id === parseInt(e.currentTarget.id));
+        toast.success(round.cites);
+    }, [rounds]);
 
     const data = useMemo(() => {
         return side
@@ -170,14 +185,46 @@ const TeamRounds = () => {
             {
                 id: 'cites',
                 Header: 'Cites',
-                accessor: 'cites',
+                accessor: row => row,
                 className: 'cites',
-                Cell: (row) => (
-                    <Markdown>{row.value}</Markdown>
-                ),
+                Cell: (row) => {
+                    return (
+                        <div className="cites">
+                            {
+                                !row.row?.original?.citesopen &&
+                                <span className="citetitle">
+                                    <Markdown>{row.value?.cites.split('\n')[0]}</Markdown>
+                                </span>
+                            }
+                            <span
+                                className={row.row?.original?.citesopen ? 'cites citesopen' : 'cites citesclosed'}
+                            >
+                                <Markdown>{row.value?.cites}</Markdown>
+                            </span>
+                            <span className="caret">
+                                <FontAwesomeIcon
+                                    icon={
+                                        row.row?.original?.citesopen
+                                        ? faAngleDown
+                                        : faAngleUp
+                                    }
+                                    onClick={e => handleToggleCites(e)}
+                                    id={row.row?.original?.round_id}
+                                />
+                            </span>
+                            <span className="copy">
+                                <FontAwesomeIcon
+                                    icon={faCopy}
+                                    onClick={e => handleCopyCites(e)}
+                                    id={row.row?.original?.round_id}
+                                />
+                            </span>
+                        </div>
+                    );
+                },
             },
         ];
-    }, []);
+    }, [handleToggleCites, handleCopyCites]);
 
     return (
         <div className="roundlist">

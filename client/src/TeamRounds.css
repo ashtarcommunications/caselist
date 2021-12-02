@@ -20,6 +20,7 @@
 .caret {
     color: blue;
     cursor: pointer;
+    margin-left: 5px;
 }
 
 .toggleall {
@@ -44,4 +45,34 @@
 
 .add {
     float: right;
+}
+
+.citesclosed {
+    display: none;
+}
+
+.cites h1 {
+    font-size: 14px;
+}
+.cites h2 {
+    font-size: 12px;
+}
+.cites h3 {
+    font-size: 11px;
+}
+.cites h4 {
+    font-size: 10px;
+    font-weight: bold;
+}
+.cites p {
+    font-size: 10px;
+}
+
+.citetitle {
+    display: inline-block;
+}
+.copy {
+    float: right;
+    color: blue;
+    cursor: pointer;
 }
