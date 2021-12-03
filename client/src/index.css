@@ -29,3 +29,11 @@ a {
 .pure-form select {
     height: auto !important;
 }
+
+.pure-table thead {
+    vertical-align: middle;
+}
+
+.pure-table tbody tr td {
+    font-size: 14px;
+}

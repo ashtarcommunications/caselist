@@ -1,16 +1,20 @@
 .report {
     display: flex;
     align-items: center;
+    line-height: 1.5em;
 }
-.report p {
-    width: 200px;
+.report div {
     display: inline-block;
+    width: 200px;
 }
 
 .reportclosed {
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
+}
+.reportopen {
+    white-space: pre-wrap !important;
 }
 
 .report-header {
@@ -43,10 +47,6 @@
     background-color: mediumseagreen;
 }
 
-.add {
-    float: right;
-}
-
 .citesclosed {
     display: none;
 }
@@ -75,4 +75,26 @@
     float: right;
     color: blue;
     cursor: pointer;
+}
+
+.buttons {
+    display: flex;
+}
+.claim {
+    margin-left: auto;
+    border-radius: 20px;
+    background-color: mediumorchid;
+}
+.add {
+    margin-left: 20px;
+    border-radius: 20px;
+}
+
+.save {
+    color: mediumaquamarine;
+    cursor: pointer;
+}
+
+.claim svg {
+    margin-right: 5px;
 }

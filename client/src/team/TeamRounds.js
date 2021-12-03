@@ -127,12 +127,13 @@ const TeamRounds = () => {
         },
         {
             id: 'opensource',
-            Header: 'Open Source',
+            Header: () => <span>Open<br />Source</span>,
             accessor: row => row,
             className: 'center',
             Cell: () => {
                 return (<FontAwesomeIcon
                     icon={faSave}
+                    className="save"
                 />);
             },
         },
@@ -156,20 +157,23 @@ const TeamRounds = () => {
             Cell: (row) => {
                 return (
                     <div className="report">
-                        <p className={row.row?.original?.reportopen ? 'report reportopen' : 'report reportclosed'}>
+                        <div className={row.row?.original?.reportopen ? 'report reportopen' : 'report reportclosed'}>
                             {row.value?.report}
-                        </p>
-                        <span className="caret">
-                            <FontAwesomeIcon
-                                icon={
-                                    row.row?.original?.reportopen
-                                    ? faAngleDown
-                                    : faAngleUp
-                                }
-                                id={row.row?.original?.round_id}
-                                onClick={e => handleToggleReport(e)}
-                            />
-                        </span>
+                        </div>
+                        {
+                            row.value?.report &&
+                            <span className="caret">
+                                <FontAwesomeIcon
+                                    icon={
+                                        row.row?.original?.reportopen
+                                        ? faAngleDown
+                                        : faAngleUp
+                                    }
+                                    id={row.row?.original?.round_id}
+                                    onClick={e => handleToggleReport(e)}
+                                />
+                            </span>
+                        }
                     </div>
                 );
             },
@@ -240,23 +244,27 @@ const TeamRounds = () => {
         <div className="roundlist">
             <h2>
                 {school} {team}
-                <FontAwesomeIcon
-                    icon={faLink}
-                    onClick={handleShowConfirm}
-                />
             </h2>
-            <Link to={`/${caselist}/${school}/${team}/Aff`}>
-                <button type="button" className="pure-button pure-button-primary aff">Aff</button>
-            </Link>
-            <Link to={`/${caselist}/${school}/${team}/Neg`}>
-                <button type="button" className="pure-button pure-button-primary neg">Neg</button>
-            </Link>
-            <Link to={`/${caselist}/${school}/${team}`}>
-                <button type="button" className="pure-button pure-button-primary both">Both</button>
-            </Link>
-            <Link to={`/${caselist}/${school}/${team}/add`}>
-                <button type="button" className="pure-button pure-button-primary add">+ Add Round</button>
-            </Link>
+            <div className="buttons">
+                <Link to={`/${caselist}/${school}/${team}/Aff`}>
+                    <button type="button" className="pure-button pure-button-primary aff">Aff</button>
+                </Link>
+                <Link to={`/${caselist}/${school}/${team}/Neg`}>
+                    <button type="button" className="pure-button pure-button-primary neg">Neg</button>
+                </Link>
+                <Link to={`/${caselist}/${school}/${team}`}>
+                    <button type="button" className="pure-button pure-button-primary both">Both</button>
+                </Link>
+                <button type="button" className="pure-button pure-button-primary claim" onClick={handleShowConfirm}>
+                    <FontAwesomeIcon
+                        icon={faLink}
+                    />
+                    Claim Page
+                </button>
+                <Link to={`/${caselist}/${school}/${team}/add`}>
+                    <button type="button" className="pure-button pure-button-primary add">+ Add Round</button>
+                </Link>
+            </div>
             <Table columns={columns} data={data} />
             <Table columns={citeHeaders} data={data} />
         </div>

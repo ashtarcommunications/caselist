@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faLink } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { loadTeams, loadSchool, deleteTeam } from '../helpers/api';
 import TabroomChaptersDropdown from './TabroomChaptersDropdown';
 import Table from '../tables/Table';
@@ -46,11 +46,6 @@ const TeamList = () => {
         }
     }, [caselist, school]);
 
-    const handleLink = (e) => {
-        e.preventDefault();
-        return false;
-    };
-
     const data = useMemo(() => teams, [teams]);
     const columns = useMemo(() => [
         {
@@ -92,20 +87,6 @@ const TeamList = () => {
             <TabroomChaptersDropdown />
             <hr />
             <Table columns={columns} data={data} />
-            {
-                schoolData.chapter_id
-                ? <p>Linked to Tabroom chapter #{schoolData.chapter_id}</p>
-                : (
-                    <p>
-                        Link to Tabroom
-                        <FontAwesomeIcon
-                            className="link"
-                            icon={faLink}
-                            onClick={e => handleLink(e)}
-                        />
-                    </p>
-                )
-            }
         </div>
     );
 };

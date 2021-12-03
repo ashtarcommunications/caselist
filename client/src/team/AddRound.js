@@ -139,7 +139,7 @@ const AddRound = () => {
                 </div>
                 <button type="submit" className="pure-button pure-button-primary">Add</button>
                 <Link to={`/${caselist}/${school}/${team}`}>
-                    <button type="button" className="pure-button pure-button-primary">Cancel</button>
+                    <button type="button" className="pure-button pure-button-primary cancel">Cancel</button>
                 </Link>
             </form>
         </div>
