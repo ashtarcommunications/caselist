@@ -2,8 +2,9 @@ import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import moment from 'moment';
 import { loadTeams, loadSchool, deleteTeam } from '../helpers/api';
-import TabroomChaptersDropdown from './TabroomChaptersDropdown';
+// import TabroomChaptersDropdown from './TabroomChaptersDropdown';
 import Table from '../tables/Table';
 import './TeamList.css';
 
@@ -81,11 +82,13 @@ const TeamList = () => {
         },
     ], [caselist, school, handleDelete]);
 
+    const timestamp = moment(schoolData.updated_at, 'YYYY-MM-DD HH:mm:ss').format('l');
+
     return (
         <div className="teamlist">
             <h1>{schoolData.display_name}</h1>
-            <TabroomChaptersDropdown />
-            <hr />
+            <p className="timestamp">Last updated by {schoolData.updated_by} on {timestamp}</p>
+            {/* <TabroomChaptersDropdown /> */}
             <Table columns={columns} data={data} />
         </div>
     );

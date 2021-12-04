@@ -2,9 +2,10 @@ import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faCheck, faLink, faAngleDown, faAngleUp, faSave, faCopy } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
+import moment from 'moment';
 import { Link, useParams } from 'react-router-dom';
 import Markdown from 'react-markdown';
-import { loadRounds, addTabroomTeamLink, deleteRound } from '../helpers/api';
+import { loadRounds, loadTeam, addTabroomTeamLink, deleteRound } from '../helpers/api';
 import Table from '../tables/Table';
 import './TeamRounds.css';
 
@@ -12,17 +13,38 @@ const TeamRounds = () => {
     const { caselist, school, team, side } = useParams();
 
     const [rounds, setRounds] = useState([]);
+    const [cites, setCites] = useState([]);
 
+    const [teamData, setTeamData] = useState({});
     useEffect(() => {
         const fetchData = async () => {
             try {
-                setRounds(await loadRounds(caselist, school, team));
+                setTeamData(await loadTeam(caselist, school, team));
             } catch (err) {
+                setTeamData({});
                 console.log(err);
             }
         };
         fetchData();
     }, [caselist, school, team]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await loadRounds(caselist, school, team);
+                setRounds(side ? response.filter(r => r.side === side) : response);
+                const newCites = [];
+                response.forEach(r => {
+                    const roundcites = JSON.parse(r.cites) || [];
+                    roundcites.forEach(c => { newCites.push({ ...c, round_id: r.round_id }); });
+                });
+                setCites(newCites);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetchData();
+    }, [caselist, school, team, side]);
 
     const handleDeleteRound = useCallback(async (id) => {
         try {
@@ -77,7 +99,7 @@ const TeamRounds = () => {
         setRounds(newRounds);
     }, [rounds]);
 
-    const allRoundsOpen = rounds.filter(r => r.reportopen).length === rounds.length;
+    const allRoundsOpen = rounds || [].filter(r => r.reportopen).length === rounds.length;
 
     const handleToggleAll = useCallback(() => {
         const newRounds = [...rounds];
@@ -88,55 +110,26 @@ const TeamRounds = () => {
     }, [allRoundsOpen, rounds]);
 
     const handleToggleCites = useCallback((e) => {
-        const newRounds = [...rounds];
-        newRounds.forEach(r => {
-            if (r.round_id === parseInt(e.currentTarget.id)) {
-                r.citesopen = !r.citesopen;
+        const newCites = [...cites];
+        newCites.forEach(c => {
+            if (c.round_id === parseInt(e.currentTarget.id)) {
+                c.citesopen = !c.citesopen;
             }
         });
-        setRounds(newRounds);
-    }, [rounds]);
+        setCites(newCites);
+    }, [cites]);
 
     const handleCopyCites = useCallback((e) => {
         const round = rounds.find(r => r.round_id === parseInt(e.currentTarget.id));
         toast.success(round.cites);
     }, [rounds]);
 
-    const data = useMemo(() => {
-        return side
-        ? rounds.filter(r => r.side === side)
-        : rounds;
-    }, [rounds, side]);
-
     const columns = useMemo(() => [
         { Header: 'Tournament', accessor: 'tournament' },
-        { Header: 'Side', accessor: 'side' },
         { Header: 'Round', accessor: 'round' },
+        { Header: 'Side', accessor: 'side' },
         { Header: 'Opponent', accessor: 'opponent' },
         { Header: 'Judge', accessor: 'judge' },
-        {
-            id: 'cites',
-            Header: 'Cites',
-            accessor: 'cites',
-            className: 'center',
-            Cell: (row) => {
-                return row.value && <FontAwesomeIcon
-                    icon={faCheck}
-                />;
-            },
-        },
-        {
-            id: 'opensource',
-            Header: () => <span>Open<br />Source</span>,
-            accessor: row => row,
-            className: 'center',
-            Cell: () => {
-                return (<FontAwesomeIcon
-                    icon={faSave}
-                    className="save"
-                />);
-            },
-        },
         {
             id: 'report',
             Header: () => {
@@ -179,6 +172,29 @@ const TeamRounds = () => {
             },
         },
         {
+            id: 'cites',
+            Header: 'Cites',
+            accessor: 'cites',
+            className: 'center',
+            Cell: (row) => {
+                return row.value && <FontAwesomeIcon
+                    icon={faCheck}
+                />;
+            },
+        },
+        {
+            id: 'opensource',
+            Header: () => <span>Open<br />Source</span>,
+            accessor: row => row,
+            className: 'center',
+            Cell: () => {
+                return (<FontAwesomeIcon
+                    icon={faSave}
+                    className="save"
+                />);
+            },
+        },
+        {
             id: 'delete',
             Header: '',
             accessor: (row) => row,
@@ -204,27 +220,25 @@ const TeamRounds = () => {
                 Cell: (row) => {
                     return (
                         <div className="cites">
-                            {
-                                !row.row?.original?.citesopen &&
-                                <span className="citetitle">
-                                    <Markdown>{row.value?.cites?.split('\n')[0]}</Markdown>
+                            <h1
+                                onClick={e => handleToggleCites(e)}
+                                id={row.row?.original?.round_id}
+                            >
+                                <span>{row.value?.title}</span>
+                                <span className="caret">
+                                    <FontAwesomeIcon
+                                        icon={
+                                            row.row?.original?.citesopen
+                                            ? faAngleDown
+                                            : faAngleUp
+                                        }
+                                    />
                                 </span>
-                            }
+                            </h1>
                             <span
                                 className={row.row?.original?.citesopen ? 'cites citesopen' : 'cites citesclosed'}
                             >
                                 <Markdown>{row.value?.cites}</Markdown>
-                            </span>
-                            <span className="caret">
-                                <FontAwesomeIcon
-                                    icon={
-                                        row.row?.original?.citesopen
-                                        ? faAngleDown
-                                        : faAngleUp
-                                    }
-                                    onClick={e => handleToggleCites(e)}
-                                    id={row.row?.original?.round_id}
-                                />
                             </span>
                             <span className="copy">
                                 <FontAwesomeIcon
@@ -240,11 +254,14 @@ const TeamRounds = () => {
         ];
     }, [handleToggleCites, handleCopyCites]);
 
+    const timestamp = moment(teamData.updated_at, 'YYYY-MM-DD HH:mm:ss').format('l');
+
     return (
         <div className="roundlist">
             <h2>
                 {school} {team}
             </h2>
+            <p className="timestamp">Last updated by {teamData.updated_by} on {timestamp}</p>
             <div className="buttons">
                 <Link to={`/${caselist}/${school}/${team}/Aff`}>
                     <button type="button" className="pure-button pure-button-primary aff">Aff</button>
@@ -265,8 +282,8 @@ const TeamRounds = () => {
                     <button type="button" className="pure-button pure-button-primary add">+ Add Round</button>
                 </Link>
             </div>
-            <Table columns={columns} data={data} />
-            <Table columns={citeHeaders} data={data} />
+            <Table columns={columns} data={rounds} />
+            <Table columns={citeHeaders} data={cites} />
         </div>
     );
 };

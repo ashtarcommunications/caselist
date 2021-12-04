@@ -15,3 +15,8 @@
     color: #42B0E2;
     cursor: pointer;
 }
+
+.timestamp {
+    font-size: 10px;
+    color: #666;
+}

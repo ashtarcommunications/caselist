@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
 import * as mammoth from 'mammoth/mammoth.browser';
 import Turndown from 'turndown';
+import Markdown from 'markdown-it';
 import { toast } from 'react-toastify';
 import TabroomRoundsDropdown from './TabroomRoundsDropdown';
 import RoundNumberDropdown from './RoundNumberDropdown';
@@ -78,6 +79,14 @@ const AddRound = () => {
         setValue('judge', round.judge, { shouldvalidate: true });
     };
 
+    const handleTogglePreview = (index) => {
+        const newCites = [...cites];
+        cites[index].preview = !cites[index.preview];
+        setCites(newCites);
+    };
+
+    const md = new Markdown();
+
     return (
         <div>
             <h2>Add a round to {school} {team}</h2>
@@ -118,13 +127,27 @@ const AddRound = () => {
                     cites.map((c, index) => {
                         return (
                             <>
-                                <textarea
-                                    // eslint-disable-next-line react/no-array-index-key
-                                    key={index}
-                                >
-                                    {c}
-                                </textarea>
-                                <button type="button" onClick={() => handleDeleteCite(index)} className="pure-button pure-button-seconday">Remove</button>
+                                <input
+                                    name="title"
+                                    type="text"
+                                    placeholder="Cite Title"
+                                    {...register('title')}
+                                />
+                                <button type="button" onClick={() => handleTogglePreview(index)} className="pure-button pure-button-secondary">Preview</button>
+                                {
+                                    c.preview
+                                    ? <div>{md.render(c)}</div>
+                                    :
+                                    <textarea
+                                        // eslint-disable-next-line react/no-array-index-key
+                                        key={index}
+                                        placeholder="Cites in Markdown Format"
+                                        {...register('cites')}
+                                    >
+                                        {c}
+                                    </textarea>
+                                }
+                                <button type="button" onClick={() => handleDeleteCite(index)} className="pure-button pure-button-secondary">Remove</button>
                             </>
                         );
                     })

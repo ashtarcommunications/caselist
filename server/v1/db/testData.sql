@@ -24,5 +24,5 @@ INSERT INTO rounds (round_id, team_id, side, tournament, round, opponent, judge,
     (2, 1, 'Neg', 'Test Tournament', 'Round 2', 'Evil Empire YY', 'Hardy', 'Report', 1234, 1234);
 
 INSERT INTO cites (cite_id, round_id, cites) VALUES
-    (1, 1, '# Test 1AC\n## Heading Two\nThis is some aff cites and stuff'),
-    (2, 2, '# Test 1NC\n## Heading Two\nThis is some neg cites and stuff');
+    (1, 1, '[{"title":"Test Aff Title","cites":"# Test 1AC\\n## Heading Two\\n ### This is some aff cites and stuff"}]'),
+    (2, 2, '[{"title":"Test Neg Title","cites":"# Test 1NC\\n## Heading Two\\n ### Neg cites and more stuff"}]');

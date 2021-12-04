@@ -4,8 +4,12 @@ import { query } from '../../helpers/mysql';
 const getSchool = {
     GET: async (req, res) => {
         const sql = (SQL`
-            SELECT S.* FROM schools S
+            SELECT
+                S.*,
+                U.display_name AS 'updated_by'
+            FROM schools S
             INNER JOIN caselists C ON S.caselist_id = C.caselist_id
+            LEFT JOIN users U ON U.user_id = S.updated_by_id
             wHERE C.slug = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${req.params.school})
         `);
