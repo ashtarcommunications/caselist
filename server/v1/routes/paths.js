@@ -17,6 +17,8 @@ import getRounds from '../controllers/rounds/getRounds';
 import postRound from '../controllers/rounds/postRound';
 import putRound from '../controllers/rounds/putRound';
 import deleteRound from '../controllers/rounds/deleteRound';
+import getCites from '../controllers/rounds/getCites';
+import deleteCite from '../controllers/rounds/deleteCite';
 
 import postLogin from '../controllers/login/postLogin';
 
@@ -43,6 +45,8 @@ export default [
     { path: '/caselists/{caselist}/schools/{school}/teams/{team}/rounds', module: { ...getRounds, ...postRound } },
 
     { path: '/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{round}', module: { ...getRound, ...putRound, ...deleteRound } },
+    { path: '/caselists/{caselist}/schools/{school}/teams/{team}/cites', module: { ...getCites } },
+    { path: '/caselists/{caselist}/schools/{school}/teams/{team}/cites/{cite}', module: { ...deleteCite } },
 
     { path: '/tabroom/chapters', module: getTabroomChapters },
     { path: '/tabroom/teams', module: { ...getTabroomTeams, ...postTabroomTeamLink } },

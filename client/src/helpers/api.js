@@ -83,6 +83,14 @@ export const deleteRound = async (caselist, school, team, round) => {
     return fetchBase(`caselists/${caselist}/schools/${school}/teams/${team}/rounds/${round}`, { method: 'DELETE' });
 };
 
+export const loadCites = async (caselist, school, team, side) => {
+    return fetchBase(`caselists/${caselist}/schools/${school}/teams/${team}/cites?side=${side}`);
+};
+
+export const deleteCite = async (caselist, school, team, cite) => {
+    return fetchBase(`caselists/${caselist}/schools/${school}/teams/${team}/cites/${cite}`, { method: 'DELETE' });
+};
+
 export const loadTabroomChapters = async () => {
     return fetchBase(`tabroom/chapters`);
 };
