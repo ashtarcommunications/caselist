@@ -1,5 +1,5 @@
 .error {
-    color: #F03342;
+    color: var(--red);
 }
 
 .instructions ul li {
