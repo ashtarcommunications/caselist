@@ -7,6 +7,7 @@ import { Link, useParams } from 'react-router-dom';
 import Markdown from 'react-markdown';
 import { loadRounds, loadTeam, addTabroomTeamLink, deleteRound, loadCites, deleteCite } from '../helpers/api';
 import Table from '../tables/Table';
+import { useDeviceDetect } from '../helpers/common';
 import './TeamRounds.css';
 
 const TeamRounds = () => {
@@ -295,6 +296,8 @@ const TeamRounds = () => {
 
     const timestamp = moment(teamData.updated_at, 'YYYY-MM-DD HH:mm:ss').format('l');
 
+    const { isMobile } = useDeviceDetect();
+
     return (
         <div className="roundlist">
             <h1 className="teamname">
@@ -321,8 +324,8 @@ const TeamRounds = () => {
                     <button type="button" className="pure-button pure-button-primary add">+ Add Round</button>
                 </Link>
             </div>
-            <Table columns={columns} data={rounds} />
-            <Table columns={citeHeaders} data={cites} />
+            <Table columns={columns} data={rounds} className={isMobile && 'mobile-table'} />
+            <Table columns={citeHeaders} data={cites} className={isMobile && 'mobile-table'} />
         </div>
     );
 };

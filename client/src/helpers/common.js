@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+
 const now = new Date();
 export { now as today };
 
@@ -21,6 +23,22 @@ export const academicYear = (year) => {
         return `${previousYear}-${currentYear}`;
     }
     return `${currentYear}-${nextYear}`;
+};
+
+export const useDeviceDetect = () => {
+    const [width, setWidth] = useState(window.innerWidth);
+
+    function handleWindowSizeChange() {
+        setWidth(window.innerWidth);
+    }
+    useEffect(() => {
+        window.addEventListener('resize', handleWindowSizeChange);
+        return () => {
+            window.removeEventListener('resize', handleWindowSizeChange);
+        };
+    }, []);
+
+    return { isMobile: width <= 768 };
 };
 
 export default null;

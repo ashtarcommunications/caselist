@@ -33,15 +33,35 @@ const AddTeam = () => {
             <h3>Add a {caselistData.team_size > 1 ? 'Team' : 'Debater'}</h3>
             <form onSubmit={handleSubmit(addTeamHandler)} className="add-team pure-form">
                 <div>
-                    <input type="text" id="debater1-first" placeholder="Debater #1 First Name" {...register('debater1_first')} />
-                    <input type="text" id="debater1-last" placeholder="Debater #1 Last Name" {...register('debater1_last')} />
+                    <input
+                        type="text"
+                        id="debater1-first"
+                        placeholder="Debater #1 First Name"
+                        {...register('debater1_first', { required: true, minLength: 2 })}
+                    />
+                    <input
+                        type="text"
+                        id="debater1-last"
+                        placeholder="Debater #1 Last Name"
+                        {...register('debater1_last', { required: true, minLength: 2 })}
+                    />
                 </div>
                 <br />
                 {
                     caselistData.team_size > 1 &&
                     <div>
-                        <input type="text" id="debater2-first" placeholder="Debater #2 First Name" {...register('debater2_first')} />
-                        <input type="text" id="debater2-last" placeholder="Debater #2 Last Name" {...register('debater2_last')} />
+                        <input
+                            type="text"
+                            id="debater2-first"
+                            placeholder="Debater #2 First Name"
+                            {...register('debater2_first', { required: true, minLength: 2 })}
+                        />
+                        <input
+                            type="text"
+                            id="debater2-last"
+                            placeholder="Debater #2 Last Name"
+                            {...register('debater2_last', { required: true, minLength: 2 })}
+                        />
                     </div>
                 }
                 <button className="pure-button pure-button-primary" type="submit">Add</button>

@@ -1,9 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useTable } from 'react-table';
 import './Table.css';
 
-const Table = ({ columns = [], data = [] }) => {
+const Table = ({ columns = [], data = [], className }) => {
     const {
         getTableProps,
         getTableBodyProps,
@@ -16,7 +15,7 @@ const Table = ({ columns = [], data = [] }) => {
 
     return (
         <div className="table">
-            <table {...getTableProps()} className="pure-table pure-table-bordered">
+            <table {...getTableProps()} className={`pure-table pure-table-bordered ${className}`}>
                 <thead>
                     {
                         headerGroups.map(headerGroup => (
@@ -56,11 +55,6 @@ const Table = ({ columns = [], data = [] }) => {
             </table>
         </div>
     );
-};
-
-Table.propTypes = {
-    columns: PropTypes.array.isRequired,
-    data: PropTypes.array.isRequired,
 };
 
 export default Table;
