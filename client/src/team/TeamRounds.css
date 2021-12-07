@@ -44,6 +44,7 @@
 }
 
 .both {
+    margin-right: 20px;
     background-color: mediumseagreen;
 }
 
@@ -80,13 +81,16 @@
 .buttons {
     display: flex;
 }
+
 .claim {
-    margin-left: auto;
     border-radius: 20px;
     background-color: mediumorchid;
+    font-size: 12px;
+    margin-left: 20px;
+
 }
 .add {
-    margin-left: 20px;
+    margin-left: auto;
     border-radius: 20px;
 }
 
@@ -97,4 +101,8 @@
 
 .claim svg {
     margin-right: 5px;
+}
+
+.teamname {
+    margin-bottom: 0;
 }

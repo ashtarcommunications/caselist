@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../helpers/auth';
 import { useStore } from '../helpers/store';
-import CaselistDropdown from './CaselistDropdown';
 import './Header.css';
 
 const Header = () => {
@@ -16,7 +15,6 @@ const Header = () => {
     return (
         <header className={className}>
             <h1><Link to="/">openCaselist</Link></h1>
-            {auth.user?.loggedIn && <CaselistDropdown />}
             <div className="menu pure-menu">
                 <ul>
                     {

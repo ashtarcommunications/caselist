@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useStore } from '../helpers/store';
 import { startOfYear } from '../helpers/common';
+import CaselistDropdown from './CaselistDropdown';
 import './Sidebar.css';
 
 const Sidebar = () => {
@@ -20,6 +21,7 @@ const Sidebar = () => {
 
     return (
         <div className="sidebar">
+            <CaselistDropdown />
             {
                 caselistData.year !== startOfYear &&
                 <h2>THIS CASELIST IS ARCHIVED, NO CHANGES ARE ALLOWED</h2>

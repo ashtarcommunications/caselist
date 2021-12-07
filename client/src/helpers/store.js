@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useCallback } from 'react';
-import { loadCaselist, loadSchools } from './api';
+import { loadCaselist, loadSchools, loadSchool, loadTeams } from './api';
 
 // Create a context for the store
 export const StoreContext = createContext();
@@ -35,11 +35,35 @@ export const ProvideStore = ({ children }) => {
         }
     }, []);
 
+    const [schoolData, setSchoolData] = useState({});
+    const fetchSchool = useCallback(async (caselist, school) => {
+        try {
+            setSchoolData(await loadSchool(caselist, school));
+        } catch (err) {
+            setSchoolData({});
+            console.log(err);
+        }
+    }, []);
+
+    const [teams, setTeams] = useState([]);
+    const fetchTeams = useCallback(async (caselist, school) => {
+        try {
+            setTeams(await loadTeams(caselist, school));
+        } catch (err) {
+            setTeams([]);
+            console.log(err);
+        }
+    }, []);
+
     const store = {
         caselist: caselistData,
         fetchCaselist,
         schools,
         fetchSchools,
+        school: schoolData,
+        fetchSchool,
+        teams,
+        fetchTeams,
     };
 
     return (

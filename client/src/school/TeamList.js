@@ -1,41 +1,24 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useMemo, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
-import { loadTeams, loadSchool, deleteTeam } from '../helpers/api';
+import { deleteTeam } from '../helpers/api';
+import { useStore } from '../helpers/store';
 // import TabroomChaptersDropdown from './TabroomChaptersDropdown';
+import Breadcrumbs from '../layout/Breadcrumbs';
 import Table from '../tables/Table';
 import './TeamList.css';
+import AddTeam from './AddTeam';
 
 const TeamList = () => {
     const { caselist, school } = useParams();
+    const { school: schoolData, teams, fetchSchool, fetchTeams } = useStore();
 
-    const [schoolData, setSchoolData] = useState({});
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                setSchoolData(await loadSchool(caselist, school));
-            } catch (err) {
-                setSchoolData({});
-                console.log(err);
-            }
-        };
-        fetchData();
-    }, [caselist, school]);
-
-    const [teams, setTeams] = useState([]);
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                setTeams(await loadTeams(caselist, school));
-            } catch (err) {
-                setTeams([]);
-                console.log(err);
-            }
-        };
-        fetchData();
-    }, [caselist, school]);
+        fetchSchool(caselist, school);
+        fetchTeams(caselist, school);
+    }, [caselist, school, fetchSchool, fetchTeams]);
 
     const handleDelete = useCallback(async (e) => {
         // eslint-disable-next-line no-alert
@@ -84,13 +67,20 @@ const TeamList = () => {
 
     const timestamp = moment(schoolData.updated_at, 'YYYY-MM-DD HH:mm:ss').format('l');
 
+    if (!schoolData.school_id) { return <p>School Not Found</p>; }
+
     return (
-        <div className="teamlist">
-            <h1>{schoolData.display_name}</h1>
-            <p className="timestamp">Last updated by {schoolData.updated_by} on {timestamp}</p>
-            {/* <TabroomChaptersDropdown /> */}
-            <Table columns={columns} data={data} />
-        </div>
+        <>
+            <div className="teamlist">
+                <Breadcrumbs />
+                <h1 className="schoolname">{schoolData.display_name}</h1>
+                <p className="timestamp">Last updated by {schoolData.updated_by} on {timestamp}</p>
+                {/* <TabroomChaptersDropdown /> */}
+                <Table columns={columns} data={data} />
+            </div>
+            <hr />
+            <AddTeam />
+        </>
     );
 };
 

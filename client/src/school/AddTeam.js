@@ -1,12 +1,15 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import { useStore } from '../helpers/store';
 import { addTeam } from '../helpers/api';
 import './AddTeam.css';
 
 const AddTeam = () => {
     const { caselist, school } = useParams();
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, reset } = useForm();
+    const { caselist: caselistData, fetchTeams } = useStore();
 
     const addTeamHandler = async (data) => {
         try {
@@ -16,26 +19,31 @@ const AddTeam = () => {
                 debater2_first: data.debater2_first,
                 debater2_last: data.debater2_last,
             });
+            toast.success('Team added');
+            reset();
+            fetchTeams(caselist, school);
         } catch (err) {
             console.log(err);
+            toast.error(err.message);
         }
     };
 
     return (
         <div>
-            <h3>Add a Team</h3>
+            <h3>Add a {caselistData.team_size > 1 ? 'Team' : 'Debater'}</h3>
             <form onSubmit={handleSubmit(addTeamHandler)} className="add-team pure-form">
                 <div>
-                    <p>Debater #1</p>
-                    <input type="text" id="debater1-first" placeholder="First Name" {...register('debater1_first')} />
-                    <input type="text" id="debater1-last" placeholder="Last Name" {...register('debater1_last')} />
+                    <input type="text" id="debater1-first" placeholder="Debater #1 First Name" {...register('debater1_first')} />
+                    <input type="text" id="debater1-last" placeholder="Debater #1 Last Name" {...register('debater1_last')} />
                 </div>
                 <br />
-                <div>
-                    <p>Debater #2</p>
-                    <input type="text" id="debater2-first" placeholder="First Name" {...register('debater2_first')} />
-                    <input type="text" id="debater2-last" placeholder="Last Name" {...register('debater2_last')} />
-                </div>
+                {
+                    caselistData.team_size > 1 &&
+                    <div>
+                        <input type="text" id="debater2-first" placeholder="Debater #2 First Name" {...register('debater2_first')} />
+                        <input type="text" id="debater2-last" placeholder="Debater #2 Last Name" {...register('debater2_last')} />
+                    </div>
+                }
                 <button className="pure-button pure-button-primary" type="submit">Add</button>
             </form>
         </div>

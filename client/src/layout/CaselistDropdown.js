@@ -54,7 +54,7 @@ const CaselistDropdown = () => {
 
     return (
         <div>
-            <form className="form pure-form">
+            <form className="form pure-form caselist-select">
                 <select
                     onChange={handleChangeYear}
                     value={year}

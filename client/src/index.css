@@ -6,6 +6,12 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 
+h1 {
+    font-weight: 400;
+    font-size: 24px;
+    color: rgb(77, 88, 96);
+}
+
 h2 {
     font-weight: 400;
     font-size: 20px;
@@ -32,8 +38,14 @@ a {
 
 .pure-table thead {
     vertical-align: middle;
+    background-color: #666 !important;
+    color: white !important;
 }
 
 .pure-table tbody tr td {
     font-size: 14px;
+}
+
+.pure-button {
+    border-radius: 20px !important;
 }

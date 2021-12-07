@@ -131,8 +131,8 @@ const TeamRounds = () => {
         setCites(newCites);
     }, [cites]);
 
-    const handleCopyCites = useCallback((e) => {
-        const cite = cites.find(c => c.cite_id === parseInt(e.currentTarget.id));
+    const handleCopyCites = useCallback((id) => {
+        const cite = cites.find(c => c.cite_id === parseInt(id));
         toast.success(cite);
     }, [cites]);
 
@@ -252,16 +252,26 @@ const TeamRounds = () => {
                             >
                                 <Markdown>{row.value?.cites}</Markdown>
                             </span>
-                            <span className="copy">
-                                <FontAwesomeIcon
-                                    icon={faCopy}
-                                    onClick={e => handleCopyCites(e)}
-                                    id={row.row?.original?.cite_id}
-                                />
-                            </span>
                         </div>
                     );
                 },
+            },
+            {
+                id: 'copy',
+                Header: '',
+                accessor: (row) => row,
+                className: 'center',
+                Cell: (row) => (
+                    <span
+                        id={row.row?.original?.cite_id}
+                        onClick={() => handleCopyCites(row.row?.original?.cite_id)}
+                        className="copy"
+                    >
+                        <FontAwesomeIcon
+                            icon={faCopy}
+                        />
+                    </span>
+                ),
             },
             {
                 id: 'delete',
@@ -287,9 +297,15 @@ const TeamRounds = () => {
 
     return (
         <div className="roundlist">
-            <h2>
+            <h1 className="teamname">
                 {school} {team}
-            </h2>
+                <button type="button" className="pure-button pure-button-primary claim" onClick={handleLinkConfirm}>
+                    <FontAwesomeIcon
+                        icon={faLink}
+                    />
+                    Claim Page
+                </button>
+            </h1>
             <p className="timestamp">Last updated by {teamData.updated_by} on {timestamp}</p>
             <div className="buttons">
                 <Link to={`/${caselist}/${school}/${team}/Aff`}>
@@ -301,13 +317,7 @@ const TeamRounds = () => {
                 <Link to={`/${caselist}/${school}/${team}`}>
                     <button type="button" className="pure-button pure-button-primary both">Both</button>
                 </Link>
-                <button type="button" className="pure-button pure-button-primary claim" onClick={handleLinkConfirm}>
-                    <FontAwesomeIcon
-                        icon={faLink}
-                    />
-                    Claim Page
-                </button>
-                <Link to={`/${caselist}/${school}/${team}/add`}>
+                <Link to={`/${caselist}/${school}/${team}/add`} className="add">
                     <button type="button" className="pure-button pure-button-primary add">+ Add Round</button>
                 </Link>
             </div>

@@ -15,7 +15,6 @@ import Login from './login/Login';
 import Logout from './login/Logout';
 import AddSchool from './caselist/AddSchool';
 import TeamList from './school/TeamList';
-import AddTeam from './school/AddTeam';
 import TeamRounds from './team/TeamRounds';
 import AddRound from './team/AddRound';
 
@@ -34,9 +33,6 @@ const App = () => {
                         <RouteWrapper exact path="/">
                             <Home />
                         </RouteWrapper>
-                        <RouteWrapper exact path="/donate" privateRoute>
-                            <h2>Donate</h2>
-                        </RouteWrapper>
                         <RouteWrapper path="/:caselist/add" privateRoute>
                             <AddSchool />
                         </RouteWrapper>
@@ -52,10 +48,7 @@ const App = () => {
                             <TeamRounds />
                         </RouteWrapper>
                         <RouteWrapper path="/:caselist/:school" privateRoute>
-                            <Breadcrumbs />
                             <TeamList />
-                            <hr />
-                            <AddTeam />
                         </RouteWrapper>
                         <RouteWrapper path="/:caselist" privateRoute>
                             <CaselistHome />

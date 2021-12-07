@@ -17,7 +17,7 @@ const AddRound = () => {
     const history = useHistory();
     const { register, formState: { errors }, handleSubmit, reset, setValue } = useForm({ mode: 'all' });
 
-    const [cites, setCites] = useState(['']);
+    const [cites, setCites] = useState([{}]);
 
     const addRoundHandler = async (data) => {
         try {
@@ -49,7 +49,7 @@ const AddRound = () => {
                 const newCites = [...cites];
                 arr.forEach((cite) => {
                     const markdown = turndown.turndown(cite);
-                    newCites.push(markdown);
+                    newCites.push({ title: markdown.split('\n')[0], cites: markdown });
                 });
                 setCites(newCites);
             };
@@ -61,7 +61,7 @@ const AddRound = () => {
 
     const handleAddCite = () => {
         const newCites = [...cites];
-        newCites.push('');
+        newCites.push({});
         setCites(newCites);
     };
 
@@ -132,6 +132,7 @@ const AddRound = () => {
                                     type="text"
                                     placeholder="Cite Title"
                                     {...register('title')}
+                                    defaultValue={c.title}
                                 />
                                 <button type="button" onClick={() => handleTogglePreview(index)} className="pure-button pure-button-secondary">Preview</button>
                                 {
@@ -143,9 +144,8 @@ const AddRound = () => {
                                         key={index}
                                         placeholder="Cites in Markdown Format"
                                         {...register('cites')}
-                                    >
-                                        {c}
-                                    </textarea>
+                                        defaultValue={c.cites}
+                                    />
                                 }
                                 <button type="button" onClick={() => handleDeleteCite(index)} className="pure-button pure-button-secondary">Remove</button>
                             </>

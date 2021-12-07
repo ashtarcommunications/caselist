@@ -1,6 +1,5 @@
-.form {
-    display: flex;
-}
-.form select {
-    margin-right: 10px;
+.caselist-select select {
+    margin-top: 10px;
+    width: 150px;
+    font-size: 12px;
 }

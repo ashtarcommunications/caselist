@@ -16,17 +16,24 @@ const Home = () => {
                 :
                 <>
                     <div className="caselists">
-                        <Link to="/ndtceda21"><div className="caselist ndt">NDT-CEDA 2021-2022</div></Link>
-                        <Link to="/hspolicy21"><div className="caselist policy">HS Policy 2021-2022</div></Link>
-                        <Link to="/hsld21"><div className="caselist ld">HS LD 2021-2022</div></Link>
+                        <Link to="/ndtceda21"><div className="caselist ndt">NDT-CEDA</div></Link>
+                        <Link to="/hspolicy21"><div className="caselist policy">NDCA HS Policy</div></Link>
+                        <Link to="/hsld21"><div className="caselist ld">NDCA HS LD</div></Link>
                     </div>
                     <div className="caselists">
-                        <Link to="/hspf21"><div className="caselist pf">HS PF 2021-2022</div></Link>
-                        <Link to="/nfald21"><div className="caselist nfa">NFA-LD 2021-2022</div></Link>
+                        <Link to="/hspf21"><div className="caselist pf">NDCA HS PF</div></Link>
+                        <Link to="/nfald21"><div className="caselist nfa">NFA-LD</div></Link>
                         <Link to="/openev"><div className="caselist openev">Open Evidence Project</div></Link>
                     </div>
                 </>
             }
+            <div>
+                <p>This site is supported by:</p>
+                <p>National Speech & Debate Association</p>
+                <p>National Debate Coaches Association</p>
+                <p>American Forensics Association</p>
+                <p>California National Debate Institute</p>
+            </div>
         </div>
     );
 };
