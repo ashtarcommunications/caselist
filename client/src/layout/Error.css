@@ -1,0 +1,20 @@
+.error {
+    padding-top: 20px;
+    text-align: center;
+}
+
+.flex {
+    display: flex;
+}
+
+.logo svg {
+    height: 300px;
+}
+
+.message {
+    width: 100%;
+}
+
+.message h3 {
+    font-size: 26px;
+}

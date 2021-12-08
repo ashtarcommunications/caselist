@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLink } from '@fortawesome/free-solid-svg-icons';
+import { faLink, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import { Link, useParams } from 'react-router-dom';
@@ -11,16 +11,21 @@ import ConfirmButton from '../helpers/ConfirmButton';
 import './TeamRounds.css';
 
 const TeamRounds = () => {
-    const { caselist, school, team } = useParams();
+    const { caselist, school, team, side } = useParams();
 
+    const [fetching, setFetching] = useState(false);
     const [teamData, setTeamData] = useState({});
     useEffect(() => {
         const fetchData = async () => {
             try {
+                setFetching(true);
                 setTeamData(await loadTeam(caselist, school, team));
+                setFetching(false);
             } catch (err) {
                 setTeamData({});
+                setFetching(false);
                 console.log(err);
+                toast.error(err.message);
             }
         };
         fetchData();
@@ -43,6 +48,11 @@ const TeamRounds = () => {
 
     const timestamp = moment(teamData.updated_at, 'YYYY-MM-DD HH:mm:ss').format('l');
 
+    if (fetching) { return <p>Loading...</p>; }
+    if (!fetching && !teamData.name) {
+        return <p>Error fethcing team!</p>;
+    }
+
     return (
         <div className="roundlist">
             <h1 className="teamname">
@@ -56,17 +66,35 @@ const TeamRounds = () => {
             </h1>
             <p className="timestamp">Last updated by {teamData.updated_by} on {timestamp}</p>
             <div className="buttons">
+                <Link to={`/${caselist}/${school}/${team}`}>
+                    <button
+                        type="button"
+                        className={`pure-button all ${!side && 'selected-side'}`}
+                    >
+                        All
+                    </button>
+                </Link>
                 <Link to={`/${caselist}/${school}/${team}/Aff`}>
-                    <button type="button" className="pure-button pure-button-primary aff">Aff</button>
+                    <button
+                        type="button"
+                        className={`pure-button aff ${side === 'Aff' && 'selected-side'}`}
+                    >
+                        Aff
+                    </button>
                 </Link>
                 <Link to={`/${caselist}/${school}/${team}/Neg`}>
-                    <button type="button" className="pure-button pure-button-primary neg">Neg</button>
+                    <button
+                        type="button"
+                        className={`pure-button neg ${side === 'Neg' && 'selected-side'}`}
+                    >
+                        Neg
+                    </button>
                 </Link>
-                <Link to={`/${caselist}/${school}/${team}`}>
-                    <button type="button" className="pure-button pure-button-primary both">Both</button>
-                </Link>
-                <Link to={`/${caselist}/${school}/${team}/add`} className="add">
-                    <button type="button" className="pure-button pure-button-primary add">+ Add Round</button>
+                <Link to={`/${caselist}/${school}/${team}/add`} className="add-round">
+                    <button type="button" className="pure-button add-round">
+                        <FontAwesomeIcon className="plus" icon={faPlus} />
+                        <span> Add Round</span>
+                    </button>
                 </Link>
             </div>
             <RoundsTable />

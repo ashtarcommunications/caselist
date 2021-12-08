@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useCallback } from 'react';
+import React, { useEffect, useMemo, useCallback, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -8,16 +8,20 @@ import { useStore } from '../helpers/store';
 // import TabroomChaptersDropdown from './TabroomChaptersDropdown';
 import Breadcrumbs from '../layout/Breadcrumbs';
 import Table from '../tables/Table';
+import Error from '../layout/Error';
 import './TeamList.css';
 import AddTeam from './AddTeam';
 
 const TeamList = () => {
     const { caselist, school } = useParams();
     const { school: schoolData, teams, fetchSchool, fetchTeams } = useStore();
+    const [fetching, setFetching] = useState(false);
 
     useEffect(() => {
+        setFetching(true);
         fetchSchool(caselist, school);
         fetchTeams(caselist, school);
+        setFetching(false);
     }, [caselist, school, fetchSchool, fetchTeams]);
 
     const handleDelete = useCallback(async (e) => {
@@ -67,7 +71,8 @@ const TeamList = () => {
 
     const timestamp = moment(schoolData.updated_at, 'YYYY-MM-DD HH:mm:ss').format('l');
 
-    if (!schoolData.school_id) { return <p>School Not Found</p>; }
+    if (fetching) { return <p>Loading...</p>; }
+    if (!fetching && !schoolData.school_id) { return <Error is404 />; }
 
     return (
         <>

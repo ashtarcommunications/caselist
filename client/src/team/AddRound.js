@@ -160,9 +160,9 @@ const AddRound = () => {
                 <div className="error">
                     {errors && <p>Errors in form</p>}
                 </div>
-                <button type="submit" className="pure-button pure-button-primary">Add</button>
+                <button type="submit" className="pure-button add">Add</button>
                 <Link to={`/${caselist}/${school}/${team}`}>
-                    <button type="button" className="pure-button pure-button-primary cancel">Cancel</button>
+                    <button type="button" className="pure-button cancel">Cancel</button>
                 </Link>
             </form>
         </div>

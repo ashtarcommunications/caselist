@@ -32,6 +32,7 @@ a {
     --openev: #E48786;
 
     --red: #F03342;
+    --green: green;
 }
 
 .pure-form select {
@@ -40,14 +41,9 @@ a {
 
 .pure-table thead {
     vertical-align: middle;
-    background-color: #666 !important;
-    color: white !important;
+    color: #333 !important;
 }
 
 .pure-table tbody tr td {
     font-size: 14px;
-}
-
-.pure-button {
-    border-radius: 20px !important;
 }

@@ -30,22 +30,32 @@
 .toggleall {
     margin-left: 20px;
     font-size: 60%;
+    background-color: #999;
+    color: white;
 }
 
 .aff {
     margin-right: 20px;
-    background-color: mediumblue;
+    background-color: #FFF;
+    color: #999;
 }
 
 .neg {
     margin-right: 20px;
-    background-color: mediumvioletred;
-
+    background-color: #FFF;
+    color: #999;
 }
 
-.both {
+.all {
     margin-right: 20px;
-    background-color: mediumseagreen;
+    background-color: #FFF;
+    color: #999;
+}
+
+.selected-side {
+    background-color: #FFF;
+    color: #3173B5;
+    border-bottom: 5px solid #3173B5;
 }
 
 .citesclosed {
@@ -84,14 +94,19 @@
 
 .claim {
     border-radius: 20px;
-    background-color: mediumorchid;
+    background-color: #999;
     font-size: 12px;
     margin-left: 20px;
 
 }
-.add {
+.add-round {
     margin-left: auto;
+}
+button.add-round {
     border-radius: 20px;
+    font-size: 14px !important;
+    background-color: var(--green);
+    color: white;
 }
 
 .save {

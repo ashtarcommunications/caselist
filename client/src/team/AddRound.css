@@ -2,7 +2,13 @@
     border: 1px dashed black;
 }
 
+.add {
+    background-color: var(--green);
+    color: white;
+}
+
 .cancel {
-    background-color: mediumvioletred;
+    background-color: var(--red);
+    color: white;
     margin-left: 20px;
 }

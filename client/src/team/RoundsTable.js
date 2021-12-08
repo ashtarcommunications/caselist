@@ -76,7 +76,7 @@ const RoundsTable = () => {
                         <span className="report-header">Round Report</span>
                         <button
                             type="button"
-                            className="pure-button pure-button-primary toggleall"
+                            className="pure-button toggleall"
                             onClick={handleToggleAll}
                         >
                             {allRoundsOpen ? 'Collapse All' : 'Expand All'}
