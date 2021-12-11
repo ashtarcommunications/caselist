@@ -6,19 +6,19 @@
 }
 
 .trash {
-    color: #F03342;
+    color: var(--red);
     cursor: pointer;
 }
 
 .link {
     font-size: 18px;
-    color: #42B0E2;
+    color: var(--brightblue);
     cursor: pointer;
 }
 
 .timestamp {
     font-size: 10px;
-    color: #666;
+    color: var(--darkgray);
 }
 
 .schoolname {

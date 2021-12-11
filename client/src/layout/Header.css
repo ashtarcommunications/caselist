@@ -3,8 +3,8 @@
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    background-color: #316098;
-    color: white;
+    background-color: var(--darkblue);
+    color: var(--white);
     min-height: 50px;
 }
 .header h1 {
@@ -13,7 +13,7 @@
     font-weight: 400;
 }
 .header a {
-    color: white;
+    color: var(--white);
     text-decoration: none;
 }
 .menu {

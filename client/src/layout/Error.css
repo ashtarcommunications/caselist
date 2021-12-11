@@ -1,20 +1,13 @@
-.error {
+.error-container {
     padding-top: 20px;
     text-align: center;
 }
 
-.flex {
-    display: flex;
-}
-
-.logo svg {
-    height: 300px;
-}
-
-.message {
+.error-message {
     width: 100%;
+    color: var(--red);
 }
 
-.message h3 {
+.error-message h3 {
     font-size: 26px;
 }

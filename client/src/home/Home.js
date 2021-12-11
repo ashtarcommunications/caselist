@@ -9,7 +9,7 @@ const Home = () => {
     return (
         <div className="home">
             <h1>Welcome to openCaselist</h1>
-            <h2>The home for collaborative disclosure for the debate community</h2>
+            <h2>Collaborative disclosure for the debate community</h2>
             {
                 !auth.user?.loggedIn
                 ? <Login />

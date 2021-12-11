@@ -50,7 +50,7 @@ const TeamRounds = () => {
 
     if (fetching) { return <p>Loading...</p>; }
     if (!fetching && !teamData.name) {
-        return <p>Error fethcing team!</p>;
+        return <p>Error fetching team!</p>;
     }
 
     return (

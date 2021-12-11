@@ -1,7 +1,7 @@
 .sidebar {
     text-align: left;
     width: 200px;
-    background: #EEE;
+    background: var(--lightgray);
     padding: 5px 20px 20px 20px;
 }
 
@@ -17,14 +17,14 @@
 
 .sidebar a {
     text-decoration: none;
-    color: #3173B5;
+    color: var(--brightblue);
     font-size: 12px;
     vertical-align: middle;
 } 
 
 .green {
-    background-color: #0E9641;
-    color: white;
+    background-color: var(--green);
+    color: var(--white);
     font-size: 90%;
     border-radius: 20px;
 }

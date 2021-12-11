@@ -1,14 +1,14 @@
 .dropzone {
-    border: 1px dashed black;
+    border: 1px dashed var(--black);
 }
 
 .add {
     background-color: var(--green);
-    color: white;
+    color: var(--white);
 }
 
 .cancel {
     background-color: var(--red);
-    color: white;
+    color: var(--white);
     margin-left: 20px;
 }

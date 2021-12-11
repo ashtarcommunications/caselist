@@ -64,7 +64,7 @@ const AddTeam = () => {
                         />
                     </div>
                 }
-                <button className="pure-button pure-button-primary" type="submit">Add</button>
+                <button className="pure-button green" type="submit">Add</button>
             </form>
         </div>
     );

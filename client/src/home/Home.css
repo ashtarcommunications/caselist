@@ -15,7 +15,7 @@
     height: 100px;
     margin: 20px;
     padding: 20px;
-    color: white;
+    color: var(--white);
     justify-content: center;
     align-items: center;
     display: flex;
@@ -28,24 +28,24 @@
 }
 
 .caselist a {
-    color: white;
+    color: var(--white);
 }
 
 .ndt {
-    background-color: var(--ndt);
+    background-color: var(--darkblue);
 }
 .policy {
-    background-color: var(--policy);
+    background-color: var(--blue);
 }
 .ld {
-    background-color: var(--ld);
+    background-color: var(--lightblue);
 }
 .pf {
-    background-color: var(--pf);
+    background-color: var(--green);
 }
 .nfa {
-    background-color: var(--nfa);
+    background-color: var(--lightgreen);
 }
 .openev {
-    background-color: var(--openev);
+    background-color: var(--magenta);
 }

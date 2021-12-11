@@ -5,7 +5,7 @@
     align-items: center;
     justify-content: space-around;
     flex-wrap: nowrap;
-    background-color: #316098;
+    background-color: var(--darkblue);
     color: white;
     font-size: 14px;
 }

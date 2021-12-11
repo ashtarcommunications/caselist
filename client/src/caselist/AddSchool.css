@@ -5,3 +5,8 @@
 .instructions ul li {
     line-height: 1.5em;
 }
+
+.green {
+    background-color: var(--green);
+    color: var(--white);
+}

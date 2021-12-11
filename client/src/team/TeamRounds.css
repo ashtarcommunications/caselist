@@ -22,7 +22,7 @@
 }
 
 .caret {
-    color: blue;
+    color: var(--blue);
     cursor: pointer;
     margin-left: 5px;
 }
@@ -30,32 +30,32 @@
 .toggleall {
     margin-left: 20px;
     font-size: 60%;
-    background-color: #999;
-    color: white;
+    background-color: var(--lightblue);
+    color: var(--white);
 }
 
 .aff {
     margin-right: 20px;
-    background-color: #FFF;
-    color: #999;
+    background-color: var(--white);
+    color: var(--darkgray);
 }
 
 .neg {
     margin-right: 20px;
-    background-color: #FFF;
-    color: #999;
+    background-color: var(--white);
+    color: var(--darkgray);
 }
 
 .all {
     margin-right: 20px;
-    background-color: #FFF;
-    color: #999;
+    background-color: var(--white);
+    color: var(--darkgray);
 }
 
 .selected-side {
-    background-color: #FFF;
-    color: #3173B5;
-    border-bottom: 5px solid #3173B5;
+    background-color: var(--white);
+    color: var(--brightblue);
+    border-bottom: 5px solid var(--brightblue);
 }
 
 .citesclosed {
@@ -84,7 +84,7 @@
 }
 .copy {
     float: right;
-    color: blue;
+    color: var(--brightblue);
     cursor: pointer;
 }
 
@@ -94,7 +94,7 @@
 
 .claim {
     border-radius: 20px;
-    background-color: #999;
+    background-color: var(--lightblue);
     font-size: 12px;
     margin-left: 20px;
 
@@ -110,7 +110,7 @@ button.add-round {
 }
 
 .save {
-    color: mediumaquamarine;
+    color: var(--brightblue);
     cursor: pointer;
 }
 
