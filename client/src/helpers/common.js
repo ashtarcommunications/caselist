@@ -41,4 +41,24 @@ export const useDeviceDetect = () => {
     return { isMobile: width <= 768 };
 };
 
+export const affName = (eventName) => {
+    if (eventName === 'pf') { return 'Pro'; }
+    return 'Aff';
+};
+export const negName = (eventName) => {
+    if (eventName === 'pf') { return 'Con'; }
+    return 'Neg';
+};
+export const normalizeSide = (side) => {
+    switch (side) {
+        case 'Aff': return 'Aff';
+        case 'A': return 'Aff';
+        case 'Pro': return 'Aff';
+        case 'Neg': return 'Neg';
+        case 'N': return 'Neg';
+        case 'Con': return 'Neg';
+        default: return side;
+    }
+};
+
 export default null;

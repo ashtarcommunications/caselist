@@ -4,8 +4,11 @@ import { useForm } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
 import * as mammoth from 'mammoth/mammoth.browser';
 import Turndown from 'turndown';
-import Markdown from 'markdown-it';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faAngleUp, faAngleDown, faPlus } from '@fortawesome/free-solid-svg-icons';
+// import Markdown from 'markdown-it';
 import { toast } from 'react-toastify';
+import MDEditor from '@uiw/react-md-editor';
 import TabroomRoundsDropdown from './TabroomRoundsDropdown';
 import RoundNumberDropdown from './RoundNumberDropdown';
 // import MarkdownIt from 'markdown-it';
@@ -46,10 +49,21 @@ const AddRound = () => {
                 // const json = md.parse(result.value, {});
                 console.log(result.value);
                 console.log(arr);
+                // TODO - this doesn't handle multi-para cards right yet
                 const newCites = [...cites];
                 arr.forEach((cite) => {
                     const markdown = turndown.turndown(cite);
-                    newCites.push({ title: markdown.split('\n')[0], cites: markdown });
+                    let m = markdown.split('\n');
+                    m = m.map(c => {
+                        let words = c.split(' ');
+                        if (words.length > 200) {
+                            words = words.splice(25, words.length - 25, ' AND ');
+                        }
+                        words = words.join(' ');
+                        return words;
+                    });
+                    m = m.join('\n');
+                    newCites.push({ title: markdown.split('\n')[0], cites: m });
                 });
                 setCites(newCites);
             };
@@ -79,13 +93,7 @@ const AddRound = () => {
         setValue('judge', round.judge, { shouldvalidate: true });
     };
 
-    const handleTogglePreview = (index) => {
-        const newCites = [...cites];
-        cites[index].preview = !cites[index.preview];
-        setCites(newCites);
-    };
-
-    const md = new Markdown();
+    // const md = new Markdown();
 
     return (
         <div>
@@ -122,45 +130,56 @@ const AddRound = () => {
                     type="text"
                     {...register('video')}
                 />
-                Cites:
-                {
-                    cites.map((c, index) => {
-                        return (
-                            <>
-                                <input
-                                    name="title"
-                                    type="text"
-                                    placeholder="Cite Title"
-                                    {...register('title')}
-                                    defaultValue={c.title}
-                                />
-                                <button type="button" onClick={() => handleTogglePreview(index)} className="pure-button pure-button-secondary">Preview</button>
-                                {
-                                    c.preview
-                                    ? <div>{md.render(c)}</div>
-                                    :
-                                    <textarea
-                                        // eslint-disable-next-line react/no-array-index-key
-                                        key={index}
-                                        placeholder="Cites in Markdown Format"
-                                        {...register('cites')}
-                                        defaultValue={c.cites}
-                                    />
-                                }
-                                <button type="button" onClick={() => handleDeleteCite(index)} className="pure-button pure-button-secondary">Remove</button>
-                            </>
-                        );
-                    })
-                }
-                <button type="button" onClick={handleAddCite} className="pure-button pure-button-secondary">Add A Cite</button>
+                Open Source:
+                <div>
+                    <input type="checkbox" /> Don&apos;t auto-detect cites
+                </div>
                 <div className="dropzone" {...getRootProps()}>
                     <input {...getInputProps()} />
                     <p>Drag and drop a Verbatim file here, or click to select file</p>
                 </div>
+                Cites:
+                {
+                    cites.map((c) => {
+                        return (
+                            <>
+                                <div className="citetitle">
+                                    <input type="checkbox" />
+                                    <input
+                                        name="title"
+                                        type="text"
+                                        placeholder="Cite Title"
+                                        {...register('title')}
+                                        defaultValue={c.title}
+                                    />
+                                    <span className="caret">
+                                        <FontAwesomeIcon
+                                            icon={
+                                                c.open
+                                                ? faAngleDown
+                                                : faAngleUp
+                                            }
+                                        />
+                                    </span>
+                                    <FontAwesomeIcon
+                                        className="trash"
+                                        icon={faTrash}
+                                        onClick={e => handleDeleteCite(e)}
+                                    />
+                                </div>
+                                <MDEditor className="hidden" value={c.cites} onChange={() => false} />
+                            </>
+                        );
+                    })
+                }
+                <button type="button" onClick={handleAddCite} className="pure-button add-cite">
+                    <FontAwesomeIcon className="plus" icon={faPlus} />
+                    <span> Add Cite</span>
+                </button>
                 <div className="error">
                     {errors && <p>Errors in form</p>}
                 </div>
-                <button type="submit" className="pure-button add">Add</button>
+                <button type="submit" className="pure-button add">Add Round</button>
                 <Link to={`/${caselist}/${school}/${team}`}>
                     <button type="button" className="pure-button cancel">Cancel</button>
                 </Link>

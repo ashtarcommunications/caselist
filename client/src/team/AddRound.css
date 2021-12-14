@@ -1,14 +1,51 @@
 .dropzone {
     border: 1px dashed var(--black);
+    margin: 20px 0px;
+    padding: 20px;
+}
+
+.add-cite {
+    background-color: var(--green);
+    color: var(--white);
+    border-radius: 20px;
+    font-size: 12px;
 }
 
 .add {
     background-color: var(--green);
     color: var(--white);
+    border-radius: 20px;
 }
 
 .cancel {
     background-color: var(--red);
     color: var(--white);
     margin-left: 20px;
+    border-radius: 20px;
+}
+
+.w-md-editor-preview h1 {
+    font-size: 14px;
+}
+.w-md-editor-preview h2 {
+    font-size: 12px;
+}
+.w-md-editor-preview h3 {
+    font-size: 11px;
+}
+.w-md-editor-preview h4 {
+    font-size: 10px;
+    font-weight: bold;
+}
+.w-md-editor-preview p {
+    font-size: 10px;
+}
+
+.citetitle {
+    display: flex;
+    align-items: center;
+}
+
+.citetitle svg {
+    margin-left: auto;
 }

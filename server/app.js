@@ -33,6 +33,30 @@ const limiter = rateLimiter({
 });
 app.use(limiter);
 
+// Rate limit modification requests to prevent abuse
+const modificationLimiter = rateLimiter({
+    windowMs: 60 * 1000, // 1 minute
+    max: 5, // limit each IP to 5 modifications/minute
+    delayMs: 0,
+    message: 'You have exceeded the allowed number of modifications per minute',
+});
+app.post(modificationLimiter);
+app.put(modificationLimiter);
+app.patch(modificationLimiter);
+app.delete(modificationLimiter);
+
+// Super rate limit modification requests to stop bot abuse
+const superModificationLimiter = rateLimiter({
+    windowMs: 1440 * 60 * 1000, // 1 day
+    max: 100, // limit each IP to 100 modifications/day
+    delayMs: 0,
+    message: 'You have exceeded the allowed number of modifications per day',
+});
+app.post(superModificationLimiter);
+app.put(superModificationLimiter);
+app.patch(superModificationLimiter);
+app.delete(superModificationLimiter);
+
 // Enable CORS
 app.use((req, res, next) => {
     // Can't use wildcard for CORS with credentials, so echo back the requesting domain

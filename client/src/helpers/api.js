@@ -99,6 +99,10 @@ export const loadTabroomTeams = async () => {
     return fetchBase(`tabroom/teams`);
 };
 
+export const loadTabroomStudents = async () => {
+    return fetchBase(`tabroom/students`);
+};
+
 export const loadTabroomRounds = async (slug) => {
     return fetchBase(`tabroom/rounds?slug=${slug}`);
 };

@@ -5,6 +5,8 @@ import School from './School';
 import Team from './Team';
 import Round from './Round';
 import TabroomChapter from './TabroomChapter';
+import TabroomStudent from './TabroomStudent';
+import TabroomRound from './TabroomRound';
 
 export default {
     Err,
@@ -14,4 +16,6 @@ export default {
     Team,
     Round,
     TabroomChapter,
+    TabroomStudent,
+    TabroomRound,
 };

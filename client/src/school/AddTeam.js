@@ -1,15 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import AutoSuggest from 'react-autosuggest';
 import { useStore } from '../helpers/store';
-import { addTeam } from '../helpers/api';
+import { addTeam, loadTabroomStudents } from '../helpers/api';
 import './AddTeam.css';
 
 const AddTeam = () => {
     const { caselist, school } = useParams();
     const { register, handleSubmit, reset } = useForm();
     const { caselist: caselistData, fetchTeams } = useStore();
+
+    const [students, setStudents] = useState([]);
+
+    useEffect(() => {
+        const fetchStudents = async () => {
+            try {
+                const response = await loadTabroomStudents();
+                setStudents(response || []);
+            } catch (err) {
+                setStudents({});
+                console.log(err);
+            }
+        };
+        fetchStudents();
+    }, []);
 
     const addTeamHandler = async (data) => {
         try {
@@ -33,6 +49,10 @@ const AddTeam = () => {
             <h3>Add a {caselistData.team_size > 1 ? 'Team' : 'Debater'}</h3>
             <form onSubmit={handleSubmit(addTeamHandler)} className="add-team pure-form">
                 <div>
+                    <AutoSuggest
+                        suggestions={students}
+                        inputProps={{ placeholder: 'Debater #1 First Name', value: '', onChange: () => false }}
+                    />
                     <input
                         type="text"
                         id="debater1-first"
