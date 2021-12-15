@@ -15,6 +15,9 @@ const Header = () => {
     return (
         <header className={className}>
             <h1><Link to="/">openCaselist</Link></h1>
+            <form className="pure-form search">
+                <input type="text" placeholder="Search" />
+            </form>
             <div className="menu pure-menu">
                 <ul>
                     {

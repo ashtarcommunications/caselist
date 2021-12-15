@@ -1,5 +1,7 @@
 import status from '../controllers/status/status';
 
+import getSearch from '../controllers/search/getSearch';
+
 import getCaselists from '../controllers/caselists/getCaselists';
 import getCaselist from '../controllers/caselists/getCaselist';
 import getRecent from '../controllers/caselists/getRecent';
@@ -32,6 +34,8 @@ export default [
     { path: '/status', module: status },
 
     { path: '/login', module: postLogin },
+
+    { path: '/search', module: getSearch },
 
     { path: '/caselists', module: getCaselists },
     { path: '/caselists/{caselist}', module: getCaselist },

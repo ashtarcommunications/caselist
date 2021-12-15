@@ -26,3 +26,7 @@
 .header form {
     display: flex;
 }
+
+.search {
+    margin-left: auto;
+}
