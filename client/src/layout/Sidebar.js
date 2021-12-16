@@ -29,7 +29,7 @@ const Sidebar = () => {
             <div className="toggle" onClick={handleToggleVisible} title="Click to toggle sidebar">
                 <span>{visible ? '«' : '»'}</span>
             </div>
-            <div className={!visible && 'sidebar-contents-collapsed'}>
+            <div className={!visible ? 'sidebar-contents-collapsed' : undefined}>
                 <CaselistDropdown />
                 {
                     caselistData.year !== startOfYear &&

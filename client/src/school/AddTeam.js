@@ -1,31 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import AutoSuggest from 'react-autosuggest';
+import Select from 'react-select';
 import { useStore } from '../helpers/store';
 import { addTeam, loadTabroomStudents } from '../helpers/api';
 import './AddTeam.css';
 
 const AddTeam = () => {
     const { caselist, school } = useParams();
-    const { register, handleSubmit, reset } = useForm();
+    const { register, handleSubmit, reset, control } = useForm();
     const { caselist: caselistData, fetchTeams } = useStore();
 
     const [students, setStudents] = useState([]);
 
-    useEffect(() => {
+    const loadStudents = () => {
         const fetchStudents = async () => {
             try {
                 const response = await loadTabroomStudents();
                 setStudents(response || []);
             } catch (err) {
-                setStudents({});
+                setStudents([]);
                 console.log(err);
             }
         };
-        fetchStudents();
-    }, []);
+        if (students.length < 1) {
+            fetchStudents();
+        }
+    };
 
     const addTeamHandler = async (data) => {
         try {
@@ -49,41 +51,51 @@ const AddTeam = () => {
             <h3>Add a {caselistData.team_size > 1 ? 'Team' : 'Debater'}</h3>
             <form onSubmit={handleSubmit(addTeamHandler)} className="add-team pure-form">
                 <div>
-                    <AutoSuggest
-                        suggestions={students}
-                        inputProps={{ placeholder: 'Debater #1 First Name', value: '', onChange: () => false }}
-                    />
-                    <input
-                        type="text"
-                        id="debater1-first"
-                        placeholder="Debater #1 First Name"
-                        {...register('debater1_first', { required: true, minLength: 2 })}
-                    />
-                    <input
-                        type="text"
-                        id="debater1-last"
-                        placeholder="Debater #1 Last Name"
-                        {...register('debater1_last', { required: true, minLength: 2 })}
-                    />
+                    {
+                        Array.from({ length: caselistData.team_size }).map((x, i) => (
+                            // eslint-disable-next-line react/no-array-index-key
+                            <React.Fragment key={i}>
+                                <Controller
+                                    control={control}
+                                    name={`debater${i + 1}-first`}
+                                    render={
+                                        ({ field: { onChange, onBlur, value } }) => (
+                                            <Select
+                                                id={`debater${i + 1}-first`}
+                                                options={
+                                                    students.map((s) => {
+                                                        return {
+                                                            value: s.first,
+                                                            label: `${s.first} ${s.last}`,
+                                                        };
+                                                    })
+                                                }
+                                                value={value}
+                                                onChange={onChange}
+                                                onBlur={onBlur}
+                                                onFocus={loadStudents}
+                                                required
+                                            />
+                                        )
+                                    }
+                                />
+                                <input
+                                    type="text"
+                                    id={`debater${i + 1}-first`}
+                                    placeholder={`Debater #${i + 1} First Name`}
+                                    {...register(`debater${i + 1}_first`, { required: true, minLength: 2 })}
+                                />
+                                <input
+                                    type="text"
+                                    id={`debater${i + 1}-last`}
+                                    placeholder={`Debater #${i + 1} Last Name`}
+                                    {...register(`debater${i + 1}_last`, { required: true, minLength: 2 })}
+                                />
+                                <br />
+                            </React.Fragment>
+                        ))
+                    }
                 </div>
-                <br />
-                {
-                    caselistData.team_size > 1 &&
-                    <div>
-                        <input
-                            type="text"
-                            id="debater2-first"
-                            placeholder="Debater #2 First Name"
-                            {...register('debater2_first', { required: true, minLength: 2 })}
-                        />
-                        <input
-                            type="text"
-                            id="debater2-last"
-                            placeholder="Debater #2 Last Name"
-                            {...register('debater2_last', { required: true, minLength: 2 })}
-                        />
-                    </div>
-                }
                 <button className="pure-button green" type="submit">Add</button>
             </form>
         </div>
