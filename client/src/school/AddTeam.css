@@ -3,11 +3,24 @@
     font-size: 12px;
 }
 
-.add-team input,
-.add-team select {
-    margin: 0 10px;
+.combo {
+    width: 250px !important;
+    margin-bottom: 20px;
+}
+.combo input {
+    border: none !important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
 }
 
-.add-team button {
-    margin: 20px 10px;
+.last {
+    margin-left: 20px;
+}
+
+.rw-combobox {
+    display: inline-block;
+}
+
+.add-team-button {
+    margin-top: 20px;
 }

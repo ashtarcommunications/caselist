@@ -1,0 +1,27 @@
+version: '2.4'
+services:
+  solr:
+    image: solr:latest
+    container_name: solr
+    restart: always
+    network_mode: "host"
+    ports: 
+      - 8389:8389
+    volumes:
+        - ~/solrdata:/var/solr
+  tika:
+    image: tika:latest
+    container_name: tika
+    restart: always
+    ports:
+        - 9998:9998
+  rclone:
+    image: pfidr/rclone:latest
+    container_name: rclone
+    restart: always
+    environment:
+      - SYNC_SRC=s3://places
+      - SYNC_DEST=/opt/
+      - CRON=/5 * * * *
+    volumes:
+      - /config:/config

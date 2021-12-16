@@ -1,8 +1,8 @@
 const getTabroomStudents = {
     GET: async (req, res) => {
         const students = [
-            { id: 1, first: 'Aaron', last: 'Hardy' },
-            { id: 2, first: 'Chris', last: 'Palmer' },
+            { id: 1, first: 'Aaron', last: 'Hardy', name: 'Aaron Hardy' },
+            { id: 2, first: 'Chris', last: 'Palmer', name: 'Chris Palmer' },
         ];
 
         return res.status(200).json(students);
