@@ -49,3 +49,34 @@
 .citetitle svg {
     margin-left: auto;
 }
+
+.switch {
+    vertical-align: middle;
+}
+.switch-label {
+    vertical-align: middle;
+    margin-left: 10px;
+}
+
+.form-group {
+  position: relative;
+  min-height: 3.5em;
+}
+
+.form-group input {
+  height: 3em;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.form-group label {
+  position: absolute;
+  font-size: .8em;
+  top: 5px;
+  left: 5px;
+  padding: 5px;
+  background-color: #FFF;
+  color: var(--black);
+  z-index: 2;
+}

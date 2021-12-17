@@ -24,3 +24,7 @@
 .add-team-button {
     margin-top: 20px;
 }
+
+.dirty {
+    border: 1px solid var(--red) !important;
+}

@@ -1,8 +1,8 @@
 import React from 'react';
 
-const RoundNumberDropdown = ({ register }) => {
+const RoundNumberDropdown = ({ value, onChange }) => {
     return (
-        <select name="round" {...register('round', { required: true })}>
+        <select name="round" value={value} onChange={onChange}>
             <option value="" />
             <option value="1">1</option>
             <option value="2">2</option>

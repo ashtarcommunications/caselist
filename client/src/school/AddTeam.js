@@ -10,7 +10,7 @@ import 'react-widgets/styles.css';
 
 const AddTeam = () => {
     const { caselist, school } = useParams();
-    const { handleSubmit, reset, control, setValue } = useForm();
+    const { handleSubmit, reset, control, setValue, formState: { errors } } = useForm({ mode: 'all' });
     const { caselist: caselistData, fetchTeams } = useStore();
 
     const [fetching, setFetching] = useState(false);
@@ -48,6 +48,8 @@ const AddTeam = () => {
         }
     };
 
+    console.log(errors);
+
     return (
         <div>
             <h3>Add a {caselistData.team_size > 1 ? 'Team' : 'Debater'}</h3>
@@ -62,9 +64,12 @@ const AddTeam = () => {
                                     name={`debater${i + 1}_first`}
                                     rules={{ required: true, minLength: 2 }}
                                     render={
-                                        ({ field: { onChange, onBlur, value } }) => (
+                                        ({
+                                            field: { onChange, onBlur, value },
+                                            fieldState: { invalid },
+                                        }) => (
                                             <Combobox
-                                                containerClassName="combo"
+                                                containerClassName={`combo ${invalid ? 'dirty' : ''}`}
                                                 busy={fetching}
                                                 hideCaret={fetching || students.length < 1}
                                                 data={students}
@@ -124,7 +129,7 @@ const AddTeam = () => {
                         ))
                     }
                 </div>
-                <button className="pure-button green add-team-button" type="submit">Add</button>
+                <button className="pure-button green add-team-button" type="submit" disabled={Object.keys(errors).length > 0}>Add</button>
             </form>
         </div>
     );

@@ -1,27 +1,44 @@
 import React, { useCallback, useState } from 'react';
 import { Link, useParams, useHistory } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
+import Combobox from 'react-widgets/Combobox';
 import * as mammoth from 'mammoth/mammoth.browser';
 import Turndown from 'turndown';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faAngleUp, faAngleDown, faPlus } from '@fortawesome/free-solid-svg-icons';
 // import Markdown from 'markdown-it';
 import { toast } from 'react-toastify';
+import Switch from 'react-switch';
 import MDEditor from '@uiw/react-md-editor';
-import TabroomRoundsDropdown from './TabroomRoundsDropdown';
 import RoundNumberDropdown from './RoundNumberDropdown';
 // import MarkdownIt from 'markdown-it';
-import { addRound } from '../helpers/api';
+import { addRound, loadTabroomRounds } from '../helpers/api';
 import './AddRound.css';
 
 const AddRound = () => {
     const { caselist, school, team } = useParams();
     const history = useHistory();
-    const { register, formState: { errors }, handleSubmit, reset, setValue } = useForm({ mode: 'all' });
+    const { register, formState: { errors }, handleSubmit, reset, setValue, control } = useForm({ mode: 'all' });
 
     const [cites, setCites] = useState([{}]);
 
+    const [rounds, setRounds] = useState([]);
+    const [fetchingRounds, setFetchingRounds] = useState(false);
+
+    const fetchRounds = async () => {
+        // Don't refetch on subsequent clicks
+        if (rounds.length > 0) { return false; }
+        try {
+            setFetchingRounds(true);
+            setRounds(await loadTabroomRounds(window.location.pathname) || []);
+            setFetchingRounds(false);
+        } catch (err) {
+            setFetchingRounds(false);
+            setRounds([]);
+            console.log(err);
+        }
+    };
     const addRoundHandler = async (data) => {
         try {
             const response = await addRound(caselist, school, team, data);
@@ -85,13 +102,13 @@ const AddRound = () => {
         setCites(newCites);
     };
 
-    const handleSelectAutoDetected = (round) => {
-        setValue('tourn', round.tourn, { shouldvalidate: true });
-        setValue('side', round.side, { shouldvalidate: true });
-        setValue('round', round.round, { shouldvalidate: true });
-        setValue('opponent', round.opponent, { shouldvalidate: true });
-        setValue('judge', round.judge, { shouldvalidate: true });
-    };
+    // const handleSelectAutoDetected = (round) => {
+    //     setValue('tourn', round.tourn, { shouldvalidate: true });
+    //     setValue('side', round.side, { shouldvalidate: true });
+    //     setValue('round', round.round, { shouldvalidate: true });
+    //     setValue('opponent', round.opponent, { shouldvalidate: true });
+    //     setValue('judge', round.judge, { shouldvalidate: true });
+    // };
 
     // const md = new Markdown();
 
@@ -99,46 +116,120 @@ const AddRound = () => {
         <div>
             <h2>Add a round to {school} {team}</h2>
             <form onSubmit={handleSubmit(addRoundHandler)} className="pure-form pure-form-stacked">
-                Auto-detected Rounds: <TabroomRoundsDropdown handler={handleSelectAutoDetected} />
-                Tournament: <input
+                Tournament
+                <br />
+                <Controller
+                    control={control}
                     name="tourn"
-                    type="text"
-                    {...register('tourn', { required: true })}
+                    rules={{ required: true, minLength: 2 }}
+                    render={
+                        ({
+                            field: { onChange, onBlur, value },
+                            fieldState: { invalid },
+                        }) => (
+                            <Combobox
+                                containerClassName={`combo combo-block ${invalid ? 'dirty' : ''}`}
+                                busy={fetchingRounds}
+                                hideCaret={fetchingRounds || rounds.length < 1}
+                                data={rounds}
+                                dataKey="id"
+                                textField="tourn"
+                                hideEmptyPopup
+                                filter="contains"
+                                value={value}
+                                onChange={
+                                    e => {
+                                        if (typeof e === 'string') { return onChange(e); }
+                                        setValue('side', e.side, { shouldValidate: true });
+                                        setValue('round', e.round, { shouldValidate: true });
+                                        setValue('opponent', e.opponent, { shouldValidate: true });
+                                        setValue('judge', e.judge, { shouldValidate: true });
+                                        return onChange(e.tourn);
+                                    }
+                                }
+                                inputProps={
+                                    { onFocus: fetchRounds, onBlur }
+                                }
+                            />
+                        )
+                    }
                 />
-                Side: <input
-                    name="side"
-                    type="text"
-                    {...register('side', { required: true })}
-                />
-                Round: <RoundNumberDropdown register={register} />
-                Opponent: <input
+                <br />
+                <div className="form-group">
+                    <label htmlFor="side">Side</label>
+                    <input
+                        id="side"
+                        name="side"
+                        type="text"
+                        {...register('side', { required: true })}
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="round">Round</label>
+                    <Controller
+                        control={control}
+                        name="round"
+                        render={
+                            ({
+                                field: { onChange, value },
+                            }) => (
+                                <RoundNumberDropdown value={value} onChange={onChange} />
+                            )
+                        }
+                    />
+                </div>
+
+                Opponent <input
                     name="opponent"
                     type="text"
                     {...register('opponent', { required: true })}
                 />
-                Judge: <input
+                Judge <input
                     name="judge"
                     type="text"
                     {...register('judge', { required: true })}
                 />
-                Round Report: <textarea
+                Round Report <textarea
                     name="report"
                     {...register('report')}
                 />
-                Video: <input
+                Video <input
                     name="video"
                     type="text"
                     {...register('video')}
                 />
-                Open Source:
-                <div>
-                    <input type="checkbox" /> Don&apos;t auto-detect cites
+                Open Source
+                <div style={{ display: 'flex' }}>
+                    <label htmlFor="autodetect-cites">
+                        <Controller
+                            control={control}
+                            name="autodetect-cites"
+                            render={
+                                ({
+                                    field: { onChange, value },
+                                }) => (
+                                    <Switch
+                                        className="switch"
+                                        onChange={onChange}
+                                        checked={value}
+                                        onColor="#8BBF56"
+                                        checkedIcon={false}
+                                        uncheckedIcon={false}
+                                        height={20}
+                                        width={40}
+                                        id="autodetect-cites"
+                                    />
+                                )
+                            }
+                        />
+                        <span className="switch-label">Auto-detect cites</span>
+                    </label>
                 </div>
                 <div className="dropzone" {...getRootProps()}>
                     <input {...getInputProps()} />
                     <p>Drag and drop a Verbatim file here, or click to select file</p>
                 </div>
-                Cites:
+                Cites
                 {
                     cites.map((c) => {
                         return (
