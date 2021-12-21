@@ -58,16 +58,19 @@
     margin-left: 10px;
 }
 
-.form-group {
+/* .form-group {
   position: relative;
   min-height: 3.5em;
 }
 
-.form-group input {
+.form-group input,
+.form-group select {
   height: 3em;
   position: absolute;
   top: 0;
   left: 0;
+  padding-left: 50px !important;
+  padding-top: 20px !important;
 }
 
 .form-group label {
@@ -79,4 +82,8 @@
   background-color: #FFF;
   color: var(--black);
   z-index: 2;
+} */
+
+.form-group label {
+    font-size: 0.7em;
 }

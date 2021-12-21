@@ -1,13 +1,12 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useParams, useHistory } from 'react-router-dom';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
 import Combobox from 'react-widgets/Combobox';
 import * as mammoth from 'mammoth/mammoth.browser';
 import Turndown from 'turndown';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faAngleUp, faAngleDown, faPlus } from '@fortawesome/free-solid-svg-icons';
-// import Markdown from 'markdown-it';
+import { faFile, faTrash, faAngleUp, faAngleDown, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import Switch from 'react-switch';
 import MDEditor from '@uiw/react-md-editor';
@@ -19,9 +18,25 @@ import './AddRound.css';
 const AddRound = () => {
     const { caselist, school, team } = useParams();
     const history = useHistory();
-    const { register, formState: { errors }, handleSubmit, reset, setValue, control } = useForm({ mode: 'all' });
+    const { register, watch, formState: { errors }, handleSubmit, reset, setValue, control } = useForm({ mode: 'all' });
+    const { fields, append, remove } = useFieldArray({ control, name: 'cites' });
+    const { fields: pendingCites, append: appendPending, remove: removePending } = useFieldArray({ control, name: 'cites' });
 
-    const [cites, setCites] = useState([{}]);
+    // Add a default cite
+    useEffect(() => {
+        if (fields.length < 1) {
+            append({ title: '', cites: '', open: false });
+        }
+    }, [append, fields.length]);
+
+    const watchFields = watch();
+    useEffect(() => {
+        console.log(watchFields);
+    }, [watchFields]);
+
+    const cites = watch('cites');
+
+    // const [cites, setCites] = useState([{}]);
 
     const [rounds, setRounds] = useState([]);
     const [fetchingRounds, setFetchingRounds] = useState(false);
@@ -50,7 +65,14 @@ const AddRound = () => {
         }
     };
 
+    const [files, setFiles] = useState([]);
+
+    const handleResetFiles = () => {
+        setFiles([]);
+    };
+
     const onDrop = useCallback((acceptedFiles) => {
+        setFiles(acceptedFiles);
         acceptedFiles.forEach((file) => {
             const reader = new FileReader();
             const turndown = new Turndown({ headingStyle: 'atx' });
@@ -67,7 +89,6 @@ const AddRound = () => {
                 console.log(result.value);
                 console.log(arr);
                 // TODO - this doesn't handle multi-para cards right yet
-                const newCites = [...cites];
                 arr.forEach((cite) => {
                     const markdown = turndown.turndown(cite);
                     let m = markdown.split('\n');
@@ -80,81 +101,63 @@ const AddRound = () => {
                         return words;
                     });
                     m = m.join('\n');
-                    newCites.push({ title: markdown.split('\n')[0], cites: m });
+                    appendPending({ title: markdown.split('\n')[0], cites: m, open: false });
                 });
-                setCites(newCites);
             };
             reader.readAsArrayBuffer(file);
         });
-    }, [cites]);
+    }, [appendPending]);
+
+    const handleApproveCite = (index) => {
+        append(pendingCites[index]);
+        removePending(index);
+    };
 
     const { getRootProps, getInputProps } = useDropzone({ onDrop, multiple: false, maxFiles: 1, maxSize: 10000000, acceptedFiles: '.docx,.doc,.txt,.rtf,.pdf' });
-
-    const handleAddCite = () => {
-        const newCites = [...cites];
-        newCites.push({});
-        setCites(newCites);
-    };
-
-    const handleDeleteCite = (index) => {
-        const newCites = [...cites];
-        newCites.splice(index, 1);
-        setCites(newCites);
-    };
-
-    // const handleSelectAutoDetected = (round) => {
-    //     setValue('tourn', round.tourn, { shouldvalidate: true });
-    //     setValue('side', round.side, { shouldvalidate: true });
-    //     setValue('round', round.round, { shouldvalidate: true });
-    //     setValue('opponent', round.opponent, { shouldvalidate: true });
-    //     setValue('judge', round.judge, { shouldvalidate: true });
-    // };
-
-    // const md = new Markdown();
 
     return (
         <div>
             <h2>Add a round to {school} {team}</h2>
             <form onSubmit={handleSubmit(addRoundHandler)} className="pure-form pure-form-stacked">
-                Tournament
-                <br />
-                <Controller
-                    control={control}
-                    name="tourn"
-                    rules={{ required: true, minLength: 2 }}
-                    render={
-                        ({
-                            field: { onChange, onBlur, value },
-                            fieldState: { invalid },
-                        }) => (
-                            <Combobox
-                                containerClassName={`combo combo-block ${invalid ? 'dirty' : ''}`}
-                                busy={fetchingRounds}
-                                hideCaret={fetchingRounds || rounds.length < 1}
-                                data={rounds}
-                                dataKey="id"
-                                textField="tourn"
-                                hideEmptyPopup
-                                filter="contains"
-                                value={value}
-                                onChange={
-                                    e => {
-                                        if (typeof e === 'string') { return onChange(e); }
-                                        setValue('side', e.side, { shouldValidate: true });
-                                        setValue('round', e.round, { shouldValidate: true });
-                                        setValue('opponent', e.opponent, { shouldValidate: true });
-                                        setValue('judge', e.judge, { shouldValidate: true });
-                                        return onChange(e.tourn);
+                <div className="form-group">
+                    <label htmlFor="tourn">Tournament</label>
+                    <Controller
+                        control={control}
+                        name="tourn"
+                        rules={{ required: true, minLength: 2 }}
+                        render={
+                            ({
+                                field: { onChange, onBlur, value },
+                                fieldState: { invalid },
+                            }) => (
+                                <Combobox
+                                    containerClassName={`combo combo-block ${invalid ? 'dirty' : ''}`}
+                                    busy={fetchingRounds}
+                                    hideCaret={fetchingRounds || rounds.length < 1}
+                                    data={rounds}
+                                    dataKey="id"
+                                    textField="tourn"
+                                    hideEmptyPopup
+                                    filter="contains"
+                                    value={value}
+                                    onChange={
+                                        e => {
+                                            if (typeof e === 'string') { return onChange(e); }
+                                            setValue('side', e.side, { shouldValidate: true });
+                                            setValue('round', e.round, { shouldValidate: true });
+                                            setValue('opponent', e.opponent, { shouldValidate: true });
+                                            setValue('judge', e.judge, { shouldValidate: true });
+                                            return onChange(e.tourn);
+                                        }
                                     }
-                                }
-                                inputProps={
-                                    { onFocus: fetchRounds, onBlur }
-                                }
-                            />
-                        )
-                    }
-                />
-                <br />
+                                    inputProps={
+                                        { onFocus: fetchRounds, onBlur }
+                                    }
+                                />
+                            )
+                        }
+                    />
+                </div>
                 <div className="form-group">
                     <label htmlFor="side">Side</label>
                     <input
@@ -179,31 +182,46 @@ const AddRound = () => {
                     />
                 </div>
 
-                Opponent <input
-                    name="opponent"
-                    type="text"
-                    {...register('opponent', { required: true })}
-                />
-                Judge <input
-                    name="judge"
-                    type="text"
-                    {...register('judge', { required: true })}
-                />
-                Round Report <textarea
-                    name="report"
-                    {...register('report')}
-                />
-                Video <input
-                    name="video"
-                    type="text"
-                    {...register('video')}
-                />
-                Open Source
+                <div className="form-group">
+                    <label htmlFor="opponent">Opponent</label>
+                    <input
+                        name="opponent"
+                        type="text"
+                        {...register('opponent', { required: true })}
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="judge">Judge</label>
+                    <input
+                        name="judge"
+                        type="text"
+                        {...register('judge', { required: true })}
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="report">Round Report</label>
+                    <textarea
+                        name="report"
+                        {...register('report')}
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="video">Video</label>
+                    <input
+                        name="video"
+                        type="text"
+                        {...register('video')}
+                    />
+                </div>
+
+                <hr />
+                <h4>Open Source</h4>
                 <div style={{ display: 'flex' }}>
                     <label htmlFor="autodetect-cites">
                         <Controller
                             control={control}
                             name="autodetect-cites"
+                            defaultValue
                             render={
                                 ({
                                     field: { onChange, value },
@@ -229,24 +247,100 @@ const AddRound = () => {
                     <input {...getInputProps()} />
                     <p>Drag and drop a Verbatim file here, or click to select file</p>
                 </div>
-                Cites
+                <div>
+                    {
+                        files.map(file => (
+                            <span>
+                                <FontAwesomeIcon
+                                    icon={faFile}
+                                />
+                                {file.path}
+                                <FontAwesomeIcon
+                                    className="trash"
+                                    icon={faTrash}
+                                    onClick={handleResetFiles}
+                                />
+                            </span>
+                        ))
+                    }
+                </div>
+                <div>
+                    {
+                        pendingCites.map((item, index) => {
+                            return (
+                                <React.Fragment key={item.id}>
+                                    <div className="citetitle">
+                                        <input type="checkbox" {...register(`pendingCites.${index}.approved`)} />
+                                        <div className="form-group">
+                                            <label htmlFor={item.id}>Cite Title</label>
+                                            <input
+                                                name="title"
+                                                type="text"
+                                                {...register(`pendingCites.${index}.title`)}
+                                                defaultValue={item.title}
+                                            />
+                                        </div>
+                                        <span className="caret">
+                                            <FontAwesomeIcon
+                                                icon={
+                                                    item.open
+                                                    ? faAngleDown
+                                                    : faAngleUp
+                                                }
+                                            />
+                                        </span>
+                                        <FontAwesomeIcon
+                                            icon={faPlus}
+                                            onClick={() => handleApproveCite(index)}
+                                        />
+                                        <FontAwesomeIcon
+                                            className="trash"
+                                            icon={faTrash}
+                                            onClick={() => removePending(index)}
+                                        />
+                                    </div>
+                                    <MDEditor className="hidden" value={item.cites} />
+                                </React.Fragment>
+                            );
+                        })
+                    }
+                </div>
+                <hr />
+                <h4>Cites</h4>
                 {
-                    cites.map((c) => {
+                    fields.map((item, index) => {
+                        console.log(item);
                         return (
-                            <>
+                            <React.Fragment key={item.id}>
                                 <div className="citetitle">
-                                    <input type="checkbox" />
-                                    <input
-                                        name="title"
-                                        type="text"
-                                        placeholder="Cite Title"
-                                        {...register('title')}
-                                        defaultValue={c.title}
+                                    <div className="form-group">
+                                        <label htmlFor={item.id}>Cite Title</label>
+                                        <input
+                                            name="title"
+                                            type="text"
+                                            {...register(`cites.${index}.title`)}
+                                            defaultValue={item.title}
+                                        />
+                                    </div>
+                                    <Controller
+                                        control={control}
+                                        name={`cites.${index}.open`}
+                                        render={
+                                            ({
+                                                field: { onChange, value },
+                                            }) => (
+                                                <input
+                                                    type="checkbox"
+                                                    onChange={onChange}
+                                                    checked={value}
+                                                />
+                                            )
+                                        }
                                     />
                                     <span className="caret">
                                         <FontAwesomeIcon
                                             icon={
-                                                c.open
+                                                item.open
                                                 ? faAngleDown
                                                 : faAngleUp
                                             }
@@ -255,15 +349,31 @@ const AddRound = () => {
                                     <FontAwesomeIcon
                                         className="trash"
                                         icon={faTrash}
-                                        onClick={e => handleDeleteCite(e)}
+                                        onClick={() => remove(index)}
                                     />
                                 </div>
-                                <MDEditor className="hidden" value={c.cites} onChange={() => false} />
-                            </>
+                                {
+                                    cites[index].open &&
+                                    <Controller
+                                        control={control}
+                                        name={`cites.${index}.cites`}
+                                        render={
+                                            ({
+                                                field: { onChange, value },
+                                            }) => (
+                                                <MDEditor
+                                                    onChange={onChange}
+                                                    value={value}
+                                                />
+                                            )
+                                        }
+                                    />
+                                }
+                            </React.Fragment>
                         );
                     })
                 }
-                <button type="button" onClick={handleAddCite} className="pure-button add-cite">
+                <button type="button" onClick={() => append({ title: '', cites: '', open: false })} className="pure-button add-cite">
                     <FontAwesomeIcon className="plus" icon={faPlus} />
                     <span> Add Cite</span>
                 </button>
