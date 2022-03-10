@@ -9,6 +9,7 @@ import { useStore } from '../helpers/store';
 import Breadcrumbs from '../layout/Breadcrumbs';
 import Table from '../tables/Table';
 import Error from '../layout/Error';
+import Loader from '../loader/Loader';
 import './TeamList.css';
 import AddTeam from './AddTeam';
 
@@ -71,7 +72,7 @@ const TeamList = () => {
 
     const timestamp = moment(schoolData.updated_at, 'YYYY-MM-DD HH:mm:ss').format('l');
 
-    if (fetching) { return <p>Loading...</p>; }
+    if (fetching) { return <Loader />; }
     if (!fetching && !schoolData.school_id) { return <Error is404 />; }
 
     return (

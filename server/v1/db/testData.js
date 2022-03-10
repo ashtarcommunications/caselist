@@ -8,7 +8,7 @@ years.forEach(async (y) => {
             ('ndtceda${y}', 'NDT/CEDA ${y}', ${y}, 'cx', 'college', 2),
             ('hspolicy${y}', 'HS Policy ${y}', ${y}, 'cx', 'hs', 2),
             ('hsld${y}', 'HS LD ${y}', ${y}, 'ld', 'hs', 1),
-            ('hspf${y}', 'HS Public Forum ${y}', ${y}, 'pf', 'hs', 2),
+            ('hspf${y}', 'HS PF ${y}', ${y}, 'pf', 'hs', 2),
             ('nfald${y}', 'NFA LD ${y}', ${y}, 'ld', 'college', 1);
     `);
 });

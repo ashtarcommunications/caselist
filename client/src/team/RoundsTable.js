@@ -52,7 +52,7 @@ const RoundsTable = () => {
         setRounds(newRounds);
     }, [rounds]);
 
-    const allRoundsOpen = rounds || [].filter(r => r.reportopen).length === rounds.length;
+    const allRoundsOpen = rounds?.filter(r => r.reportopen).length === rounds.length;
 
     const handleToggleAll = useCallback(() => {
         const newRounds = [...rounds];
@@ -88,7 +88,9 @@ const RoundsTable = () => {
             Cell: (row) => {
                 return (
                     <div className="report">
-                        <div className={row.row?.original?.reportopen ? 'report reportopen' : 'report reportclosed'}>
+                        <div
+                            className={row.row?.original?.reportopen ? 'report reportopen' : 'report reportclosed'}
+                        >
                             {row.value?.report}
                         </div>
                         {

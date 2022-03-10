@@ -23,7 +23,7 @@ const Footer = () => {
             <span>
                 <span>Created with </span>
                 <Emoji />
-                <span> by Ashtar Communications</span>
+                <span> by <a href="https://paperlessdebate.com">Ashtar</a></span>
                 <span className="bullet"> • </span>
                 <span className="donate"><a href="https://paperlessdebate.com/donate">Donate</a></span>
             </span>

@@ -10,10 +10,13 @@ import { faFile, faTrash, faAngleUp, faAngleDown, faPlus } from '@fortawesome/fr
 import { toast } from 'react-toastify';
 import Switch from 'react-switch';
 import MDEditor from '@uiw/react-md-editor';
+import { useStore } from '../helpers/store';
+import SideDropdown from './SideDropdown';
 import RoundNumberDropdown from './RoundNumberDropdown';
 // import MarkdownIt from 'markdown-it';
 import { addRound, loadTabroomRounds } from '../helpers/api';
 import './AddRound.css';
+import { affName, negName } from '../helpers/common';
 
 const AddRound = () => {
     const { caselist, school, team } = useParams();
@@ -21,6 +24,8 @@ const AddRound = () => {
     const { register, watch, formState: { errors }, handleSubmit, reset, setValue, control } = useForm({ mode: 'all' });
     const { fields, append, remove } = useFieldArray({ control, name: 'cites' });
     const { fields: pendingCites, append: appendPending, remove: removePending } = useFieldArray({ control, name: 'cites' });
+
+    const { caselist: caselistData } = useStore();
 
     // Add a default cite
     useEffect(() => {
@@ -136,7 +141,7 @@ const AddRound = () => {
                                     hideCaret={fetchingRounds || rounds.length < 1}
                                     data={rounds}
                                     dataKey="id"
-                                    textField="tourn"
+                                    textField={i => (typeof i === 'string' ? i : `${i.tourn} Round ${i.round} ${i.side === 'A' ? affName(caselistData.event) : negName(caselistData.event)} vs ${i.opponent}`)}
                                     hideEmptyPopup
                                     filter="contains"
                                     value={value}
@@ -160,11 +165,21 @@ const AddRound = () => {
                 </div>
                 <div className="form-group">
                     <label htmlFor="side">Side</label>
-                    <input
-                        id="side"
+                    <Controller
+                        control={control}
                         name="side"
-                        type="text"
-                        {...register('side', { required: true })}
+                        rules={{ required: true }}
+                        render={
+                            ({
+                                field: { onChange, value },
+                            }) => (
+                                <SideDropdown
+                                    value={value}
+                                    onChange={onChange}
+                                    event={caselistData?.event}
+                                />
+                            )
+                        }
                     />
                 </div>
                 <div className="form-group">
@@ -172,6 +187,7 @@ const AddRound = () => {
                     <Controller
                         control={control}
                         name="round"
+                        rules={{ required: true }}
                         render={
                             ({
                                 field: { onChange, value },
@@ -206,7 +222,7 @@ const AddRound = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="video">Video</label>
+                    <label htmlFor="video">Video URL</label>
                     <input
                         name="video"
                         type="text"

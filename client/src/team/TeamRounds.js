@@ -4,6 +4,7 @@ import { faLink, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import { Link, useParams } from 'react-router-dom';
+import Loader from '../loader/Loader';
 import { loadTeam, addTabroomTeamLink } from '../helpers/api';
 import RoundsTable from './RoundsTable';
 import CitesTable from './CitesTable';
@@ -41,14 +42,14 @@ const TeamRounds = () => {
     };
     const handleLinkConfirm = async () => {
         toast(<ConfirmButton
-            message="Are you sure you want to link this page to your Tabroom account?"
+            message="Are you sure? Claiming this page will link it to your Tabroom account to easily add rounds you have participated in. You should only claim your own page, not someone else's."
             handler={handleLinkPage}
         />);
     };
 
     const timestamp = moment(teamData.updated_at, 'YYYY-MM-DD HH:mm:ss').format('l');
 
-    if (fetching) { return <p>Loading...</p>; }
+    if (fetching) { return <Loader />; }
     if (!fetching && !teamData.name) {
         return <p>Error fetching team!</p>;
     }
