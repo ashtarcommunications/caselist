@@ -14,6 +14,7 @@ const Sidebar = () => {
         fetchSchools(caselist);
     }, [caselist, fetchSchools]);
     useEffect(() => {
+        if (caselistData.message) { return false; }
         if (!caselistData || caselist !== caselistData.slug) {
             fetchCaselist(caselist);
         }
@@ -24,6 +25,8 @@ const Sidebar = () => {
         setVisible(!visible);
     };
 
+    if (caselistData.message) { return false; }
+
     return (
         <div className={`sidebar ${!visible && 'sidebar-collapsed'}`}>
             <div className="toggle" onClick={handleToggleVisible} title="Click to toggle sidebar">
@@ -32,7 +35,7 @@ const Sidebar = () => {
             <div className={!visible ? 'sidebar-contents-collapsed' : undefined}>
                 <CaselistDropdown />
                 {
-                    caselistData.year !== startOfYear &&
+                    caselistData.year && caselistData.year !== startOfYear &&
                     <h2>THIS CASELIST IS ARCHIVED, NO CHANGES ARE ALLOWED</h2>
                 }
                 <h2>

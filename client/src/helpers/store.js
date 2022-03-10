@@ -15,7 +15,7 @@ export const ProvideStore = ({ children }) => {
                 setCaselistData(response || {});
             }
         } catch (err) {
-            setCaselistData({});
+            setCaselistData(new Error(err.message));
             console.log(err);
         }
     }, []);
@@ -40,7 +40,7 @@ export const ProvideStore = ({ children }) => {
         try {
             setSchoolData(await loadSchool(caselist, school));
         } catch (err) {
-            setSchoolData({});
+            setSchoolData(new Error(err.message));
             console.log(err);
         }
     }, []);

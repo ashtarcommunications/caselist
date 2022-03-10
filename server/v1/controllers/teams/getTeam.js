@@ -16,6 +16,7 @@ const getTeam = {
             AND LOWER(T.code) = LOWER(${req.params.team})
         `);
         const [team] = await query(sql);
+        if (!team) { return res.status(404).json({ message: 'Team not found' }); }
 
         return res.status(200).json(team);
     },

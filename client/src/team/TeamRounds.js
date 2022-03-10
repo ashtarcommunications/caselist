@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import moment from 'moment';
 import { Link, useParams } from 'react-router-dom';
 import Loader from '../loader/Loader';
+import Error from '../layout/Error';
 import { loadTeam, addTabroomTeamLink } from '../helpers/api';
 import RoundsTable from './RoundsTable';
 import CitesTable from './CitesTable';
@@ -23,10 +24,8 @@ const TeamRounds = () => {
                 setTeamData(await loadTeam(caselist, school, team));
                 setFetching(false);
             } catch (err) {
-                setTeamData({});
+                setTeamData({ message: 'Team not found' });
                 setFetching(false);
-                console.log(err);
-                toast.error(err.message);
             }
         };
         fetchData();
@@ -50,9 +49,7 @@ const TeamRounds = () => {
     const timestamp = moment(teamData.updated_at, 'YYYY-MM-DD HH:mm:ss').format('l');
 
     if (fetching) { return <Loader />; }
-    if (!fetching && !teamData.name) {
-        return <p>Error fetching team!</p>;
-    }
+    if (!fetching && teamData.message) { return <Error is404 />; }
 
     return (
         <div className="roundlist">

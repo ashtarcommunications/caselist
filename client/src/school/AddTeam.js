@@ -35,7 +35,6 @@ const AddTeam = () => {
     };
 
     const addTeamHandler = async (data) => {
-        console.log(data);
         try {
             if (data) { return false; }
             await addTeam(caselist, school, data);
@@ -47,8 +46,6 @@ const AddTeam = () => {
             toast.error(err.message);
         }
     };
-
-    console.log(errors);
 
     return (
         <div>

@@ -8,6 +8,7 @@ const getCaselist = {
             wHERE C.slug = ${req.params.caselist}
         `);
         const [caselist] = await query(sql);
+        if (!caselist) { return res.status(404).json({ message: 'Caselist not found' }); }
 
         return res.status(200).json(caselist);
     },

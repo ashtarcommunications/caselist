@@ -14,6 +14,7 @@ const getSchool = {
             AND LOWER(S.name) = LOWER(${req.params.school})
         `);
         const [school] = await query(sql);
+        if (!school) { return res.status(404).json({ message: 'School not found' }); }
 
         return res.status(200).json(school);
     },

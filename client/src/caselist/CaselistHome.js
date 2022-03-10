@@ -2,16 +2,20 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Markdown from 'react-markdown';
 import { useStore } from '../helpers/store';
+import Error from '../layout/Error';
 import './CaselistHome.css';
 
 const CaselistHome = () => {
     const { caselist } = useParams();
     const { caselist: caselistData, fetchCaselist } = useStore();
     useEffect(() => {
+        if (caselistData.message) { return false; }
         if (!caselistData || caselist !== caselistData.slug) {
             fetchCaselist(caselist);
         }
     }, [caselist, caselistData, fetchCaselist]);
+
+    if (caselistData.message) { return <Error is404 />; }
 
     const markdown = '# # This would create Heading 1 - Reserved for titles\n## ## This would create Heading 2 - Hat/Section\n### ### This would create Heading 3 - Block Title/Argument Title\n#### #### This would create Heading 4 - Tag';
 

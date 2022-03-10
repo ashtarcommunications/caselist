@@ -70,10 +70,10 @@ const TeamList = () => {
         },
     ], [caselist, school, handleDelete]);
 
-    const timestamp = moment(schoolData.updated_at, 'YYYY-MM-DD HH:mm:ss').format('l');
+    const timestamp = moment(schoolData?.updated_at, 'YYYY-MM-DD HH:mm:ss').format('l');
 
     if (fetching) { return <Loader />; }
-    if (!fetching && !schoolData.school_id) { return <Error is404 />; }
+    if (!fetching && schoolData.message) { return <Error is404 />; }
 
     return (
         <>
