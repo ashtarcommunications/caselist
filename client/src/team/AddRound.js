@@ -30,7 +30,7 @@ const AddRound = () => {
     // Add a default cite
     useEffect(() => {
         if (fields.length < 1) {
-            append({ title: '', cites: '', open: false });
+            append({ title: '', cites: '', open: true });
         }
     }, [append, fields.length]);
 
@@ -369,7 +369,7 @@ const AddRound = () => {
                                     />
                                 </div>
                                 {
-                                    cites[index].open &&
+                                    cites[index]?.open &&
                                     <Controller
                                         control={control}
                                         name={`cites.${index}.cites`}

@@ -7,6 +7,7 @@ import { ProvideAuth } from './helpers/auth';
 import RouteWrapper from './layout/layout';
 import Breadcrumbs from './layout/Breadcrumbs';
 import { ProvideStore } from './helpers/store';
+import ErrorBoundary from './layout/ErrorBoundary';
 import './App.css';
 import Home from './home/Home';
 import CaselistHome from './caselist/CaselistHome';
@@ -23,37 +24,39 @@ const App = () => {
         <ProvideAuth>
             <Router>
                 <ProvideStore>
-                    <Switch>
-                        <RouteWrapper exact path="/login">
-                            <Login />
-                        </RouteWrapper>
-                        <RouteWrapper exact path="/logout">
-                            <Logout />
-                        </RouteWrapper>
-                        <RouteWrapper exact path="/">
-                            <Home />
-                        </RouteWrapper>
-                        <RouteWrapper path="/:caselist/add" privateRoute>
-                            <AddSchool />
-                        </RouteWrapper>
-                        <RouteWrapper path="/:caselist/recent" privateRoute>
-                            <Recent />
-                        </RouteWrapper>
-                        <RouteWrapper path="/:caselist/:school/:team/add" privateRoute>
-                            <Breadcrumbs />
-                            <AddRound />
-                        </RouteWrapper>
-                        <RouteWrapper path="/:caselist/:school/:team/:side?" privateRoute>
-                            <Breadcrumbs />
-                            <TeamRounds />
-                        </RouteWrapper>
-                        <RouteWrapper path="/:caselist/:school" privateRoute>
-                            <TeamList />
-                        </RouteWrapper>
-                        <RouteWrapper path="/:caselist" privateRoute>
-                            <CaselistHome />
-                        </RouteWrapper>
-                    </Switch>
+                    <ErrorBoundary>
+                        <Switch>
+                            <RouteWrapper exact path="/login">
+                                <Login />
+                            </RouteWrapper>
+                            <RouteWrapper exact path="/logout">
+                                <Logout />
+                            </RouteWrapper>
+                            <RouteWrapper exact path="/">
+                                <Home />
+                            </RouteWrapper>
+                            <RouteWrapper path="/:caselist/add" privateRoute>
+                                <AddSchool />
+                            </RouteWrapper>
+                            <RouteWrapper path="/:caselist/recent" privateRoute>
+                                <Recent />
+                            </RouteWrapper>
+                            <RouteWrapper path="/:caselist/:school/:team/add" privateRoute>
+                                <Breadcrumbs />
+                                <AddRound />
+                            </RouteWrapper>
+                            <RouteWrapper path="/:caselist/:school/:team/:side?" privateRoute>
+                                <Breadcrumbs />
+                                <TeamRounds />
+                            </RouteWrapper>
+                            <RouteWrapper path="/:caselist/:school" privateRoute>
+                                <TeamList />
+                            </RouteWrapper>
+                            <RouteWrapper path="/:caselist" privateRoute>
+                                <CaselistHome />
+                            </RouteWrapper>
+                        </Switch>
+                    </ErrorBoundary>
                 </ProvideStore>
             </Router>
             <ToastContainer />
