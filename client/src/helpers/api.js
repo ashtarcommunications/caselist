@@ -55,6 +55,10 @@ export const addTeam = async (caselist, school, team) => {
     return fetchBase(`caselists/${caselist}/schools/${school}/teams`, { method: 'POST' }, team);
 };
 
+export const updateTeam = async (caselist, school, team, updates) => {
+    return fetchBase(`caselists/${caselist}/schools/${school}/teams/${team}`, { method: 'PATCH' }, updates);
+};
+
 export const loadTeam = async (caselist, school, team) => {
     return fetchBase(`caselists/${caselist}/schools/${school}/teams/${team}`);
 };

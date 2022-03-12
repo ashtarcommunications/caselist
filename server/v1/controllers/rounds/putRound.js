@@ -3,6 +3,21 @@ import { query } from '../../helpers/mysql';
 
 const putRound = {
     PUT: async (req, res) => {
+        const [result] = await query(SQL`
+            SELECT C.archived
+            FROM rounds R
+            INNER JOIN teams T ON T.team_id = R.team_id
+            INNER JOIN schools S ON S.school_id = T.school_id
+            INNER JOIN caselists C ON C.caselist_id = S.caselist_id
+            WHERE C.slug = ${req.params.caselist}
+            AND LOWER(S.name) = LOWER(${req.params.school})
+            AND LOWER(T.code) = LOWER(${req.params.team})
+            AND R.round_id = ${req.params.round}
+        `);
+
+        if (!result) { return res.status(400).json({ message: 'Caselist, school, or team not found' }); }
+        if (result.archived) { return res.status(401).json({ message: 'Caselist archived, no modifications allowed' }); }
+
         await query(SQL`
             UPDATE cites CT 
             INNER JOIN rounds R ON R.round_id = C.round_id
@@ -25,7 +40,7 @@ const putRound = {
             WHERE C.slug = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${req.params.school})
             AND LOWER(T.code) = LOWER(${req.params.team})
-            AND CT.round_id = ${req.params.round}
+            AND R.round_id = ${req.params.round}
         `);
 
         await query(SQL`

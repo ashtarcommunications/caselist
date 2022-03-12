@@ -15,11 +15,29 @@ const postRound = {
         //         bucket: config.S3_BUCKET,
         //         contentType: multerS3.AUTO_CONTENT_TYPE,
         //         key: (req, file, cb) => {
-        //             cb(null, `${req.params.caselist}/${req.params.schools}/${req.params.team}/${filename}`);
+        //             cb(
+        //                 null,
+        //                 `${req.params.caselist}/
+        //                  ${req.params.schools}/
+        //                  ${req.params.team}/${filename}`
+        //             );
         //         },
         //     }),
         // });
         // upload.single(req.body.opensource);
+
+        const [result] = await query(SQL`
+            SELECT C.archived
+            FROM teams T
+            INNER JOIN schools S ON S.school_id = T.school_id
+            INNER JOIN caselists C ON C.caselist_id = S.caselist_id
+            WHERE C.slug = ${req.params.caselist}
+            AND LOWER(S.name) = LOWER(${req.params.school})
+            AND LOWER(T.code) = LOWER(${req.params.team})
+        `);
+
+        if (!result) { return res.status(400).json({ message: 'Team not found' }); }
+        if (result.archived) { return res.status(401).json({ message: 'Caselist archived, no modifications allowed' }); }
 
         await query(SQL`
             INSERT INTO rounds (team_id, side, tournament, round, opponent, judge, report, tourn_id, external_id)

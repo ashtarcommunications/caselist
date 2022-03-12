@@ -7,7 +7,7 @@ const postTeam = {
         const code = `${req.body.debater1_last.slice(0, 2)}${req.body.debater2_last.slice(0, 2)}`;
 
         const team = await (query(SQL`
-                SELECT *
+                SELECT T.*
                 FROM teams T
                 INNER JOIN schools S ON S.school_id = T.school_id
                 INNER JOIN caselists C ON S.caselist_id = C.caselist_id
@@ -18,6 +18,17 @@ const postTeam = {
         if (team && team.length > 0) {
             return res.status(400).json({ message: 'Team already exists' });
         }
+
+        const [result] = await query(SQL`
+            SELECT C.archived
+            FROM schools S ON S.school_id = T.school_id
+            INNER JOIN caselists C ON C.caselist_id = S.caselist_id
+            WHERE C.slug = ${req.params.caselist}
+            AND LOWER(S.name) = LOWER(${req.params.school})
+        `);
+
+        if (!result) { return res.status(400).json({ message: 'School not found' }); }
+        if (result.archived) { return res.status(401).json({ message: 'Caselist archived, no modifications allowed' }); }
 
         await query(SQL`
             INSERT INTO teams

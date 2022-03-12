@@ -99,6 +99,15 @@
     margin-left: 20px;
 
 }
+
+.notes {
+    border-radius: 20px;
+    background-color: var(--lightgray);
+    font-size: 12px;
+    margin-left: 20px;
+
+}
+
 .add-round {
     margin-left: auto;
 }

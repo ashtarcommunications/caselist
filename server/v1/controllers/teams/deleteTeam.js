@@ -3,6 +3,19 @@ import { query } from '../../helpers/mysql';
 
 const deleteTeam = {
     DELETE: async (req, res) => {
+        const [result] = await query(SQL`
+            SELECT C.archived
+            FROM teams T
+            INNER JOIN schools S ON S.school_id = T.school_id
+            INNER JOIN caselists C ON C.caselist_id = S.caselist_id
+            WHERE C.slug = ${req.params.caselist}
+            AND LOWER(S.name) = LOWER(${req.params.school})
+            AND LOWER(T.code) = LOWER(${req.params.team})
+        `);
+
+        if (!result) { return res.status(400).json({ message: 'Team not found' }); }
+        if (result.archived) { return res.status(401).json({ message: 'Caselist archived, no modifications allowed' }); }
+
         const teamId = await query(SQL`
             SELECT team_id FROM teams T
             INNER JOIN schools S ON S.school_id = T.school_id

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLink, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faLink, faEnvelope, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import { Link, useParams } from 'react-router-dom';
+import MDEditor from '@uiw/react-md-editor';
 import Loader from '../loader/Loader';
 import Error from '../layout/Error';
 import { loadTeam, addTabroomTeamLink } from '../helpers/api';
@@ -17,6 +18,9 @@ const TeamRounds = () => {
 
     const [fetching, setFetching] = useState(false);
     const [teamData, setTeamData] = useState({});
+    const [showNotes, setShowNotes] = useState(false);
+    const [notes, setNotes] = useState(teamData.notes);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -46,6 +50,14 @@ const TeamRounds = () => {
         />);
     };
 
+    const handleToggleNotes = async () => {
+        setShowNotes(!showNotes);
+    };
+
+    const handleChangeNotes = async (e) => {
+        setNotes(e.value);
+    };
+
     const timestamp = moment(teamData.updated_at, 'YYYY-MM-DD HH:mm:ss').format('l');
 
     if (fetching) { return <Loader />; }
@@ -55,6 +67,11 @@ const TeamRounds = () => {
         <div className="roundlist">
             <h1 className="teamname">
                 {school} {team}
+                <button type="button" className="pure-button pure-button-secondary notes" onClick={handleToggleNotes}>
+                    <FontAwesomeIcon
+                        icon={faEnvelope}
+                    />
+                </button>
                 <button type="button" className="pure-button pure-button-primary claim" onClick={handleLinkConfirm}>
                     <FontAwesomeIcon
                         icon={faLink}
@@ -62,7 +79,16 @@ const TeamRounds = () => {
                     Claim Page
                 </button>
             </h1>
-            <p className="timestamp">Last updated by {teamData.updated_by} on {timestamp}</p>
+            <p className="timestamp">Last updated by {teamData.updated_by ? teamData.updated_by : 'unknown'} on {timestamp}</p>
+            <div className="notes">
+                {
+                    showNotes &&
+                        <MDEditor
+                            onChange={handleChangeNotes}
+                            value={notes}
+                        />
+                }
+            </div>
             <div className="buttons">
                 <Link to={`/${caselist}/${school}/${team}`}>
                     <button

@@ -12,6 +12,7 @@ import postSchool from '../controllers/schools/postSchool';
 import getTeam from '../controllers/teams/getTeam';
 import getTeams from '../controllers/teams/getTeams';
 import postTeam from '../controllers/teams/postTeam';
+import patchTeam from '../controllers/teams/patchTeam';
 import deleteTeam from '../controllers/teams/deleteTeam';
 
 import getRound from '../controllers/rounds/getRound';
@@ -46,7 +47,7 @@ export default [
     { path: '/caselists/{caselist}/schools/{school}', module: getSchool },
 
     { path: '/caselists/{caselist}/schools/{school}/teams', module: { ...getTeams, ...postTeam } },
-    { path: '/caselists/{caselist}/schools/{school}/teams/{team}', module: { ...getTeam, ...deleteTeam } },
+    { path: '/caselists/{caselist}/schools/{school}/teams/{team}', module: { ...getTeam, ...patchTeam, ...deleteTeam } },
     { path: '/caselists/{caselist}/schools/{school}/teams/{team}/rounds', module: { ...getRounds, ...postRound } },
 
     { path: '/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{round}', module: { ...getRound, ...putRound, ...deleteRound } },

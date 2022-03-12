@@ -1,5 +1,4 @@
 import SQL from 'sql-template-strings';
-import { startOfYear } from '../../helpers/common';
 import { query } from '../../helpers/mysql';
 
 const postSchool = {
@@ -22,8 +21,8 @@ const postSchool = {
         if (!caselist || caselist.length < 1) {
             return res.status(400).json({ message: 'Invalid caselist' });
         }
-        if (caselist[0].year < startOfYear) {
-            return res.status(400).json({ message: 'This caselist is archived, no modifications allowed' });
+        if (caselist[0].archived) {
+            return res.status(401).json({ message: 'Caselist archived, no modifications allowed' });
         }
 
         await query(SQL`
