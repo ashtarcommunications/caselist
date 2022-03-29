@@ -8,7 +8,7 @@ import Turndown from 'turndown';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFile, faTrash, faAngleUp, faAngleDown, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
-import Switch from 'react-switch';
+import Toggle from 'react-toggle';
 import MDEditor from '@uiw/react-md-editor';
 import { useStore } from '../helpers/store';
 import SideDropdown from './SideDropdown';
@@ -17,6 +17,7 @@ import RoundNumberDropdown from './RoundNumberDropdown';
 import { addRound, loadTabroomRounds } from '../helpers/api';
 import './AddRound.css';
 import { affName, negName } from '../helpers/common';
+import Loader from '../loader/Loader';
 
 const AddRound = () => {
     const { caselist, school, team } = useParams();
@@ -36,13 +37,12 @@ const AddRound = () => {
 
     const watchFields = watch();
     useEffect(() => {
-        console.log(watchFields);
+        // console.log(watchFields);
     }, [watchFields]);
 
     const cites = watch('cites');
 
-    // const [cites, setCites] = useState([{}]);
-
+    const [processing, setProcessing] = useState(false);
     const [rounds, setRounds] = useState([]);
     const [fetchingRounds, setFetchingRounds] = useState(false);
 
@@ -85,29 +85,104 @@ const AddRound = () => {
             reader.onabort = () => console.log('file reading was aborted');
             reader.onerror = () => console.log('file reading has failed');
             reader.onload = async () => {
+                // Show processing indicator
+                setProcessing(true);
+
+                // Convert the file contents into HTML
                 const binaryStr = reader.result;
-                const result = await mammoth.convertToHtml({ arrayBuffer: binaryStr });
-                const html = result.value;
-                const arr = html.split('<h1>').map(x => `<h1>${x}`).filter(x => x !== '<h1>');
-                // const md = new MarkdownIt();
-                // const json = md.parse(result.value, {});
-                console.log(result.value);
-                console.log(arr);
-                // TODO - this doesn't handle multi-para cards right yet
-                arr.forEach((cite) => {
-                    const markdown = turndown.turndown(cite);
-                    let m = markdown.split('\n');
-                    m = m.map(c => {
-                        let words = c.split(' ');
-                        if (words.length > 200) {
-                            words = words.splice(25, words.length - 25, ' AND ');
-                        }
-                        words = words.join(' ');
-                        return words;
-                    });
-                    m = m.join('\n');
-                    appendPending({ title: markdown.split('\n')[0], cites: m, open: false });
+                const result = await mammoth.convertToHtml({
+                    arrayBuffer: binaryStr,
+                    ignoreEmptyParagraphs: true,
                 });
+                const html = result.value;
+
+                // Put the HTML string into a DOM element so we can manipulate as an array
+                const div = document.createElement('div');
+                div.innerHTML = html;
+                const elements = [...div.children];
+
+                // Combine <p> tags so each cite + card is in one element
+                // Iterates through array backwards, merges <p> into previous element if also a <p>
+                for (let i = elements.length - 1; i >= 0; i--) {
+                    if (elements[i].tagName === 'P' && elements[i - 1] && elements[i - 1].tagName === 'P') {
+                        elements[i - 1].innerHTML = `${elements[i - 1].innerHTML}<br>${elements[i].innerHTML}`;
+                        elements.splice(i, 1);
+                    }
+                }
+
+                // Truncate the text of each card to keep them readable
+                elements.forEach(e => {
+                    // Skip headers, we only want to deal with the card text
+                    if (e.tagName !== 'P') { return false; }
+
+                    // Convert the cite + card text into an array of paragraphs
+                    // so we can identify the cite vs the card
+                    const paragraphs = e.innerHTML.split('<br>');
+
+                    // If there's less than 2 paragraphs, something is off and we don't have
+                    // a cite + card, so abort
+                    if (paragraphs.length < 2) { return false; }
+
+                    // Most people use 2-line cites, so default to card starting on 3rd paragraph
+                    let startOfCardIndex = 2;
+
+                    // If there are exactly two paragraphs, the first is almost always the cite,
+                    // so truncate the second paragraph as the card
+                    if (paragraphs.length === 2) {
+                        startOfCardIndex = 1;
+                    }
+
+                    // If the first paragraph has a URL, it's probably a one-line cite
+                    if (paragraphs[0].indexOf('http://') !== -1
+                        || paragraphs[0].indexOf('https://') !== -1
+                    ) {
+                        startOfCardIndex = 1;
+                    }
+
+                    // If the first paragraph has more than one double quote,
+                    // it's probably a one line cite
+                    if ((paragraphs[0].match(/"/g) || []).length > 1
+                        || (paragraphs[0].match(/”/g) || []).length > 1
+                    ) {
+                        startOfCardIndex = 1;
+                    }
+
+                    // Truncate the full card text to 25 words start/end
+                    let fullText = paragraphs.slice(startOfCardIndex).join(' ');
+                    const words = fullText.split(' ');
+                    if (words.length > 50) {
+                        fullText = words
+                            .slice(0, 25)
+                            .join(' ')
+                            .concat('<br />AND<br />')
+                            .concat(words.slice(-25).join(' '));
+                    }
+
+                    // Replace the card text with the truncated cite version and delete
+                    // the rest of the paragraphs
+                    paragraphs[startOfCardIndex] = fullText;
+                    paragraphs.length = startOfCardIndex + 1;
+
+                    // Put the card back together into the DOM element
+                    e.innerHTML = paragraphs.join('<br>');
+                });
+
+                // Convert the array of elements back to a string so we can split it into entries
+                const citeEntries = elements
+                    .map(e => e.outerHTML)
+                    .join('')
+                    .split('<h1>')
+                    .map(x => `<h1>${x}`)
+                    .filter(x => x !== '<h1>');
+
+                // Convert each entry into markdown
+                citeEntries.forEach((entry) => {
+                    const markdown = turndown.turndown(entry);
+                    appendPending({ title: markdown.split('\n')[0], cites: markdown, open: false });
+                });
+
+                // Stop showing processing indicator
+                setProcessing(false);
             };
             reader.readAsArrayBuffer(file);
         });
@@ -242,7 +317,7 @@ const AddRound = () => {
                                 ({
                                     field: { onChange, value },
                                 }) => (
-                                    <Switch
+                                    <Toggle
                                         className="switch"
                                         onChange={onChange}
                                         checked={value}
@@ -252,6 +327,10 @@ const AddRound = () => {
                                         height={20}
                                         width={40}
                                         id="autodetect-cites"
+                                        name="autodetect-cites"
+                                        value='yes'
+                                        icons={false}
+                                        aria-label="autodetect-cites"
                                     />
                                 )
                             }
@@ -260,8 +339,15 @@ const AddRound = () => {
                     </label>
                 </div>
                 <div className="dropzone" {...getRootProps()}>
-                    <input {...getInputProps()} />
-                    <p>Drag and drop a Verbatim file here, or click to select file</p>
+                    {
+                        processing
+                        ? <Loader />
+                        :
+                        <div>
+                            <input {...getInputProps()} />
+                            <p>Drag and drop a Verbatim file here, or click to select file</p>
+                        </div>
+                    }
                 </div>
                 <div>
                     {
@@ -325,7 +411,6 @@ const AddRound = () => {
                 <h4>Cites</h4>
                 {
                     fields.map((item, index) => {
-                        console.log(item);
                         return (
                             <React.Fragment key={item.id}>
                                 <div className="citetitle">
