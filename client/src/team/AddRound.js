@@ -168,12 +168,17 @@ const AddRound = () => {
                 });
 
                 // Convert the array of elements back to a string so we can split it into entries
-                const citeEntries = elements
+                const processedHTML = elements
                     .map(e => e.outerHTML)
-                    .join('')
-                    .split('<h1>')
-                    .map(x => `<h1>${x}`)
-                    .filter(x => x !== '<h1>');
+                    .join('');
+
+                // Split cites on the largest heading level in doc, or block titles by default
+                let headerToSplit = '<h3>';
+                if (processedHTML.indexOf('<h2>') > -1) { headerToSplit = '<h2>'; }
+                if (processedHTML.indexOf('<h1>') > -1) { headerToSplit = '<h1>'; }
+                const citeEntries = processedHTML.split(headerToSplit)
+                    .map(x => `${headerToSplit}${x}`)
+                    .filter(x => x !== headerToSplit);
 
                 // Convert each entry into markdown
                 citeEntries.forEach((entry) => {
