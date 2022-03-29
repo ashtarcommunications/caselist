@@ -178,7 +178,7 @@ const AddRound = () => {
                 // Convert each entry into markdown
                 citeEntries.forEach((entry) => {
                     const markdown = turndown.turndown(entry);
-                    appendPending({ title: markdown.split('\n')[0], cites: markdown, open: false });
+                    appendPending({ title: markdown.split('\n')[0].replace('#', '').trim(), cites: markdown, open: false });
                 });
 
                 // Stop showing processing indicator
