@@ -6,7 +6,7 @@ import Combobox from 'react-widgets/Combobox';
 import * as mammoth from 'mammoth/mammoth.browser';
 import Turndown from 'turndown';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFile, faTrash, faAngleUp, faAngleDown, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faAngleUp, faAngleDown, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import Toggle from 'react-toggle';
 import MDEditor from '@uiw/react-md-editor';
@@ -24,21 +24,24 @@ const AddRound = () => {
     const history = useHistory();
     const { register, watch, formState: { errors }, handleSubmit, reset, setValue, control } = useForm({ mode: 'all' });
     const { fields, append, remove } = useFieldArray({ control, name: 'cites' });
-    const { fields: pendingCites, append: appendPending, remove: removePending } = useFieldArray({ control, name: 'cites' });
 
     const { caselist: caselistData } = useStore();
 
     // Add a default cite
     useEffect(() => {
-        if (fields.length < 1) {
-            append({ title: '', cites: '', open: true });
-        }
-    }, [append, fields.length]);
+        append({ title: '', cites: '', open: true });
+    }, [append]);
+
+    const [filename, setFilename] = useState();
 
     const watchFields = watch();
     useEffect(() => {
-        // console.log(watchFields);
-    }, [watchFields]);
+        let computed = `${school} ${team} `;
+        computed += `${watchFields.side === 'A' ? affName(caselistData.event) : negName(caselistData.event)} `;
+        computed += `${watchFields.tourn?.trim()} `;
+        computed += parseInt(watchFields.round) ? `Round ${watchFields.round}` : watchFields.round;
+        setFilename(computed);
+    }, [watchFields, school, team, caselistData]);
 
     const cites = watch('cites');
 
@@ -82,19 +85,37 @@ const AddRound = () => {
             const reader = new FileReader();
             const turndown = new Turndown({ headingStyle: 'atx' });
 
-            reader.onabort = () => console.log('file reading was aborted');
-            reader.onerror = () => console.log('file reading has failed');
+            reader.onabort = () => console.log('File reading was aborted');
+            reader.onerror = () => console.log('File reading has failed');
             reader.onload = async () => {
+                if (!watchFields['autodetect-cites']) {
+                    setProcessing(false);
+                    return false;
+                }
+
+                // Remove placeholder cite
+                if (fields.length === 1 && fields[0].title === '' && fields[0].cites === '') {
+                    remove(0);
+                }
+
                 // Show processing indicator
                 setProcessing(true);
 
                 // Convert the file contents into HTML
                 const binaryStr = reader.result;
-                const result = await mammoth.convertToHtml({
-                    arrayBuffer: binaryStr,
-                    ignoreEmptyParagraphs: true,
-                });
-                const html = result.value;
+                let html;
+                try {
+                    const result = await mammoth.convertToHtml({
+                        arrayBuffer: binaryStr,
+                        ignoreEmptyParagraphs: true,
+                    });
+                    html = result.value;
+                } catch (err) {
+                    setProcessing(false);
+                    console.log(err);
+                    toast.error('File could not be processed for cites. Are you sure this is a Verbatim file?');
+                    return false;
+                }
 
                 // Put the HTML string into a DOM element so we can manipulate as an array
                 const div = document.createElement('div');
@@ -183,7 +204,7 @@ const AddRound = () => {
                 // Convert each entry into markdown
                 citeEntries.forEach((entry) => {
                     const markdown = turndown.turndown(entry);
-                    appendPending({ title: markdown.split('\n')[0].replace('#', '').trim(), cites: markdown, open: false });
+                    append({ title: markdown.split('\n')[0].replace('#', '').trim(), cites: markdown, open: false });
                 });
 
                 // Stop showing processing indicator
@@ -191,12 +212,7 @@ const AddRound = () => {
             };
             reader.readAsArrayBuffer(file);
         });
-    }, [appendPending]);
-
-    const handleApproveCite = (index) => {
-        append(pendingCites[index]);
-        removePending(index);
-    };
+    }, [append, watchFields, fields, remove]);
 
     const { getRootProps, getInputProps } = useDropzone({ onDrop, multiple: false, maxFiles: 1, maxSize: 10000000, acceptedFiles: '.docx,.doc,.txt,.rtf,.pdf' });
 
@@ -312,145 +328,122 @@ const AddRound = () => {
 
                 <hr />
                 <h4>Open Source</h4>
-                <div style={{ display: 'flex' }}>
-                    <label htmlFor="autodetect-cites">
-                        <Controller
-                            control={control}
-                            name="autodetect-cites"
-                            defaultValue
-                            render={
-                                ({
-                                    field: { onChange, value },
-                                }) => (
-                                    <Toggle
-                                        className="switch"
-                                        onChange={onChange}
-                                        checked={value}
-                                        onColor="#8BBF56"
-                                        checkedIcon={false}
-                                        uncheckedIcon={false}
-                                        height={20}
-                                        width={40}
-                                        id="autodetect-cites"
-                                        name="autodetect-cites"
-                                        value='yes'
-                                        icons={false}
-                                        aria-label="autodetect-cites"
-                                    />
-                                )
-                            }
-                        />
-                        <span className="switch-label">Auto-detect cites</span>
-                    </label>
-                </div>
-                <div className="dropzone" {...getRootProps()}>
-                    {
-                        processing
-                        ? <Loader />
-                        :
-                        <div>
-                            <input {...getInputProps()} />
-                            <p>Drag and drop a Verbatim file here, or click to select file</p>
-                        </div>
-                    }
-                </div>
-                <div>
-                    {
-                        files.map(file => (
-                            <span>
-                                <FontAwesomeIcon
-                                    icon={faFile}
-                                />
-                                {file.path}
-                                <FontAwesomeIcon
-                                    className="trash"
-                                    icon={faTrash}
-                                    onClick={handleResetFiles}
-                                />
-                            </span>
-                        ))
-                    }
-                </div>
-                <div>
-                    {
-                        pendingCites.map((item, index) => {
-                            return (
-                                <React.Fragment key={item.id}>
-                                    <div className="citetitle">
-                                        <input type="checkbox" {...register(`pendingCites.${index}.approved`)} />
-                                        <div className="form-group">
-                                            <label htmlFor={item.id}>Cite Title</label>
-                                            <input
-                                                name="title"
-                                                type="text"
-                                                {...register(`pendingCites.${index}.title`)}
-                                                defaultValue={item.title}
-                                            />
-                                        </div>
-                                        <span className="caret">
-                                            <FontAwesomeIcon
-                                                icon={
-                                                    item.open
-                                                    ? faAngleDown
-                                                    : faAngleUp
+                {
+                    processing
+                    ? <Loader />
+                    :
+                    <div>
+                        {
+                            files.length > 0 ?
+                                <div>
+                                    {
+                                        files.map(file => (
+                                            <>
+                                                <p>
+                                                    <span>Uploaded file: </span>
+                                                    {file.path}
+                                                    <FontAwesomeIcon
+                                                        className="trash"
+                                                        icon={faTrash}
+                                                        onClick={handleResetFiles}
+                                                    />
+                                                </p>
+                                                {
+                                                    Object.keys(errors).length === 0
+                                                    && <p>File will be renamed: {`${filename}.${file.path.split('.').pop() !== file.path ? file.path.split('.').pop() : null}`}</p>
+                                                }
+                                            </>
+                                        ))
+                                    }
+                                </div>
+                            :
+                                <>
+                                    <div style={{ display: 'flex' }}>
+                                        <label htmlFor="autodetect-cites">
+                                            <Controller
+                                                control={control}
+                                                name="autodetect-cites"
+                                                defaultValue
+                                                render={
+                                                    ({
+                                                        field: { onChange, value },
+                                                    }) => (
+                                                        <Toggle
+                                                            className="switch"
+                                                            onChange={onChange}
+                                                            checked={value}
+                                                            onColor="#8BBF56"
+                                                            checkedIcon={false}
+                                                            uncheckedIcon={false}
+                                                            height={20}
+                                                            width={40}
+                                                            id="autodetect-cites"
+                                                            name="autodetect-cites"
+                                                            value='yes'
+                                                            icons={false}
+                                                            aria-label="autodetect-cites"
+                                                        />
+                                                    )
                                                 }
                                             />
-                                        </span>
-                                        <FontAwesomeIcon
-                                            icon={faPlus}
-                                            onClick={() => handleApproveCite(index)}
-                                        />
-                                        <FontAwesomeIcon
-                                            className="trash"
-                                            icon={faTrash}
-                                            onClick={() => removePending(index)}
-                                        />
+                                            <span className="switch-label">
+                                                Auto-detect cites (works with <a href="https://paperlessdebate.com" target="_blank" rel="noopener noreferrer">Verbatim</a>)
+                                            </span>
+                                        </label>
                                     </div>
-                                    <MDEditor className="hidden" value={item.cites} />
-                                </React.Fragment>
-                            );
-                        })
-                    }
-                </div>
+                                    <div className="dropzone" {...getRootProps()}>
+                                        {
+                                            <div>
+                                                <input {...getInputProps()} />
+                                                <p>
+                                                    Drag and drop a file here,
+                                                    or click to select file
+                                                </p>
+                                            </div>
+                                        }
+                                    </div>
+                                </>
+                        }
+                    </div>
+                }
                 <hr />
-                <h4>Cites</h4>
+                <h4>
+                    Cites
+                    <button type="button" onClick={() => append({ title: '', cites: '', open: false })} className="pure-button add-cite">
+                        <FontAwesomeIcon className="plus" icon={faPlus} />
+                        <span> Add Cite</span>
+                    </button>
+                </h4>
                 {
                     fields.map((item, index) => {
                         return (
                             <React.Fragment key={item.id}>
                                 <div className="citetitle">
                                     <div className="form-group">
-                                        <label htmlFor={item.id}>Cite Title</label>
+                                        <label htmlFor={`title-${item.id}`}>Cite Title</label>
                                         <input
-                                            name="title"
+                                            name={`title-${item.id}`}
                                             type="text"
                                             {...register(`cites.${index}.title`)}
                                             defaultValue={item.title}
                                         />
                                     </div>
-                                    <Controller
-                                        control={control}
-                                        name={`cites.${index}.open`}
-                                        render={
-                                            ({
-                                                field: { onChange, value },
-                                            }) => (
-                                                <input
-                                                    type="checkbox"
-                                                    onChange={onChange}
-                                                    checked={value}
-                                                />
-                                            )
-                                        }
-                                    />
                                     <span className="caret">
-                                        <FontAwesomeIcon
-                                            icon={
-                                                item.open
-                                                ? faAngleDown
-                                                : faAngleUp
-                                            }
-                                        />
+                                        <label htmlFor={`cites.${index}.open`}>
+                                            <input
+                                                id={`cites.${index}.open`}
+                                                type="checkbox"
+                                                {...register(`cites.${index}.open`)}
+                                                defaultChecked={item.open}
+                                            />
+                                            <FontAwesomeIcon
+                                                icon={
+                                                    cites[index]?.open
+                                                    ? faAngleDown
+                                                    : faAngleUp
+                                                }
+                                            />
+                                        </label>
                                     </span>
                                     <FontAwesomeIcon
                                         className="trash"
@@ -479,17 +472,12 @@ const AddRound = () => {
                         );
                     })
                 }
-                <button type="button" onClick={() => append({ title: '', cites: '', open: false })} className="pure-button add-cite">
-                    <FontAwesomeIcon className="plus" icon={faPlus} />
-                    <span> Add Cite</span>
-                </button>
-                <div className="error">
-                    {errors && <p>Errors in form</p>}
+                <div className="buttons">
+                    <button type="submit" className="pure-button add" disabled={Object.keys(errors).length > 0}>Add Round</button>
+                    <Link to={`/${caselist}/${school}/${team}`}>
+                        <button type="button" className="pure-button cancel">Cancel</button>
+                    </Link>
                 </div>
-                <button type="submit" className="pure-button add">Add Round</button>
-                <Link to={`/${caselist}/${school}/${team}`}>
-                    <button type="button" className="pure-button cancel">Cancel</button>
-                </Link>
             </form>
         </div>
     );

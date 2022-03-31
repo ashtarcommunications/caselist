@@ -2,6 +2,7 @@
     border: 1px dashed var(--black);
     margin: 20px 0px;
     padding: 20px;
+    background-color: var(--lightgray);
 }
 
 .add-cite {
@@ -9,6 +10,7 @@
     color: var(--white);
     border-radius: 20px;
     font-size: 12px;
+    margin-left: 10px;
 }
 
 .add {
@@ -22,6 +24,10 @@
     color: var(--white);
     margin-left: 20px;
     border-radius: 20px;
+}
+
+.buttons {
+    margin-top: 20px;
 }
 
 .w-md-editor-preview h1 {
@@ -45,9 +51,21 @@
     display: flex;
     align-items: center;
 }
-
+.citetitle input {
+    min-width: 400px;
+}
 .citetitle svg {
     margin-left: auto;
+}
+
+.caret {
+    width: 100%;
+}
+.caret label {
+    cursor: pointer;
+}
+.caret label input {
+    display: none;
 }
 
 .switch {
