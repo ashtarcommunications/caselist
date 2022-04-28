@@ -124,7 +124,11 @@ const AddRound = () => {
                 div.innerHTML = html;
                 const elements = [...div.children];
 
-                if (elements[0].textContent.charAt(0) === '#' || elements[0].textContent.charAt(0) === '=') {
+                if (
+                    elements[0]?.textContent?.trim()?.charAt(0) === '#'
+                    || elements[0]?.textContent?.trim()?.charAt(0) === '='
+                ) {
+                    setProcessing(false);
                     toast.error('Aborting auto-detection - this file appears to have already been wikified in Verbatim! Auto-detection only works on unconverted files.');
                     return false;
                 }
@@ -459,7 +463,7 @@ const AddRound = () => {
                                     />
                                 </div>
                                 {
-                                    cites[index]?.cites.charAt(0) === '=' &&
+                                    cites[index]?.cites?.charAt(0) === '=' &&
                                     <p className="syntax">
                                         It looks like you&apos;re using outdated wiki syntax
                                         from an old version of Verbatim!
@@ -509,22 +513,21 @@ const AddRound = () => {
                                                             buttonProps: { title: 'Tag', 'aria-label': 'Tag' },
                                                         },
                                                         commands.divider,
-                                                        commands.bold,
-                                                        commands.italic,
-                                                        commands.link,
-                                                        commands.divider,
                                                         {
                                                             name: 'convert',
                                                             keyCommand: 'convert',
                                                             buttonProps: { 'aria-label': 'Convert' },
                                                             icon: <div style={{ fontSize: 12, textAlign: 'left' }}>Convert = to #</div>,
                                                             execute: (state, api) => {
+                                                                // Convert from old XWiki syntax
+                                                                // to markdown headings
                                                                 const converted = state.text
                                                                     .replace(/==== /g, '#### ')
                                                                     .replace(/=== /g, '### ')
                                                                     .replace(/== /g, '## ')
                                                                     .replace(/= /g, '# ');
-                                                                console.log(state);
+                                                                // Manually set the textarea range
+                                                                // to replace the whole contents
                                                                 api.setSelectionRange({
                                                                     start: 0,
                                                                     end: state.text?.length,
@@ -532,6 +535,10 @@ const AddRound = () => {
                                                                 api.replaceSelection(converted);
                                                             },
                                                         },
+                                                        commands.divider,
+                                                        commands.bold,
+                                                        commands.italic,
+                                                        commands.link,
                                                     ]}
                                                 />
                                             )
