@@ -9,7 +9,10 @@ const Round = {
         report: { type: 'string' },
         tourn_id: { type: 'integer' },
         external_id: { type: 'integer' },
-        cites: { type: 'string' },
+        cites: {
+            type: 'array',
+            items: { type: 'object' },
+        },
     },
 };
 
