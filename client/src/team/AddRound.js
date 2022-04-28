@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faAngleUp, faAngleDown, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import Toggle from 'react-toggle';
-import MDEditor from '@uiw/react-md-editor';
+import MDEditor, { commands } from '@uiw/react-md-editor';
 import { useStore } from '../helpers/store';
 import SideDropdown from './SideDropdown';
 import RoundNumberDropdown from './RoundNumberDropdown';
@@ -29,7 +29,9 @@ const AddRound = () => {
 
     // Add a default cite
     useEffect(() => {
-        append({ title: '', cites: '', open: true });
+        if (fields.length < 1) {
+            append({ title: '', cites: '', open: true });
+        }
     }, [append]);
 
     const [filename, setFilename] = useState();
@@ -121,6 +123,11 @@ const AddRound = () => {
                 const div = document.createElement('div');
                 div.innerHTML = html;
                 const elements = [...div.children];
+
+                if (elements[0].textContent.charAt(0) === '#' || elements[0].textContent.charAt(0) === '=') {
+                    toast.error('Aborting auto-detection - this file appears to have already been wikified in Verbatim! Auto-detection only works on unconverted files.');
+                    return false;
+                }
 
                 // Combine <p> tags so each cite + card is in one element
                 // Iterates through array backwards, merges <p> into previous element if also a <p>
@@ -452,6 +459,16 @@ const AddRound = () => {
                                     />
                                 </div>
                                 {
+                                    cites[index]?.cites.charAt(0) === '=' &&
+                                    <p className="syntax">
+                                        It looks like you&apos;re using outdated wiki syntax
+                                        from an old version of Verbatim!
+                                        Upgrade Verbatim, let the caselist autodetect cites,
+                                        use the convert button in the editor below, or
+                                        manually replace = with #.
+                                    </p>
+                                }
+                                {
                                     cites[index]?.open &&
                                     <Controller
                                         control={control}
@@ -463,6 +480,59 @@ const AddRound = () => {
                                                 <MDEditor
                                                     onChange={onChange}
                                                     value={value}
+                                                    commands={[
+                                                        {
+                                                            ...commands.title1,
+                                                            name: 'Pocket',
+                                                            icon: <div style={{ fontSize: 12, textAlign: 'left' }}>Pocket (H1)</div>,
+                                                            buttonProps: { title: 'Pocket', 'aria-label': 'Pocket' },
+                                                        },
+                                                        commands.divider,
+                                                        {
+                                                            ...commands.title2,
+                                                            name: 'Hat',
+                                                            icon: <div style={{ fontSize: 12, textAlign: 'left' }}>Hat (H2)</div>,
+                                                            buttonProps: { title: 'Hat', 'aria-label': 'Hat' },
+                                                        },
+                                                        commands.divider,
+                                                        {
+                                                            ...commands.title3,
+                                                            name: 'Block',
+                                                            icon: <div style={{ fontSize: 12, textAlign: 'left' }}>Block (H3)</div>,
+                                                            buttonProps: { title: 'Block', 'aria-label': 'Block' },
+                                                        },
+                                                        commands.divider,
+                                                        {
+                                                            ...commands.title4,
+                                                            name: 'Tag',
+                                                            icon: <div style={{ fontSize: 12, textAlign: 'left' }}>Tag (H4)</div>,
+                                                            buttonProps: { title: 'Tag', 'aria-label': 'Tag' },
+                                                        },
+                                                        commands.divider,
+                                                        commands.bold,
+                                                        commands.italic,
+                                                        commands.link,
+                                                        commands.divider,
+                                                        {
+                                                            name: 'convert',
+                                                            keyCommand: 'convert',
+                                                            buttonProps: { 'aria-label': 'Convert' },
+                                                            icon: <div style={{ fontSize: 12, textAlign: 'left' }}>Convert = to #</div>,
+                                                            execute: (state, api) => {
+                                                                const converted = state.text
+                                                                    .replace(/==== /g, '#### ')
+                                                                    .replace(/=== /g, '### ')
+                                                                    .replace(/== /g, '## ')
+                                                                    .replace(/= /g, '# ');
+                                                                console.log(state);
+                                                                api.setSelectionRange({
+                                                                    start: 0,
+                                                                    end: state.text?.length,
+                                                                });
+                                                                api.replaceSelection(converted);
+                                                            },
+                                                        },
+                                                    ]}
                                                 />
                                             )
                                         }
