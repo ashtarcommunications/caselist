@@ -129,7 +129,7 @@ const AddRound = () => {
                     || elements[0]?.textContent?.trim()?.charAt(0) === '='
                 ) {
                     setProcessing(false);
-                    toast.error('Aborting auto-detection - this file appears to have already been wikified in Verbatim! Auto-detection only works on unconverted files.');
+                    toast.warn('Auto-detecting cites failed - this file appears to have already been wikified in Verbatim! Auto-detection only works on unconverted files.');
                     return false;
                 }
 
