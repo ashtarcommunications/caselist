@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLink, faEnvelope, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faLink, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faFileLines } from '@fortawesome/free-regular-svg-icons';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import { Link, useParams } from 'react-router-dom';
@@ -67,9 +68,14 @@ const TeamRounds = () => {
         <div className="roundlist">
             <h1 className="teamname">
                 {school} {team}
-                <button type="button" className="pure-button pure-button-secondary notes" onClick={handleToggleNotes}>
+                <button
+                    type="button"
+                    className="pure-button pure-button-secondary notes"
+                    onClick={handleToggleNotes}
+                    title="Team notes"
+                >
                     <FontAwesomeIcon
-                        icon={faEnvelope}
+                        icon={faFileLines}
                     />
                 </button>
                 <button type="button" className="pure-button pure-button-primary claim" onClick={handleLinkConfirm}>
