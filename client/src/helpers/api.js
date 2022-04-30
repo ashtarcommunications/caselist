@@ -4,11 +4,11 @@ export const fetchBase = (path, options = {}, body = {}) => {
     const base = `http://localhost:10010/v1/`;
     const fetchOptions = {
         method: options.method ? options.method : 'GET',
-        body: JSON.stringify(body),
+        body: body instanceof FormData ? body : JSON.stringify(body),
         maxRetries: 3,
         retryDelay: process.env.NODE_ENV === 'test' ? 10 : 100,
         credentials: 'include',
-        headers: {
+        headers: body instanceof FormData ? {} : {
             'Content-Type': 'application/json',
         },
         ...options,

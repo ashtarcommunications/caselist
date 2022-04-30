@@ -64,9 +64,20 @@ const AddRound = () => {
             console.log(err);
         }
     };
+
+    const [files, setFiles] = useState([]);
+    // const [fileContent, setFileContent] = useState(null);
+
     const addRoundHandler = async (data) => {
+        const formData = new FormData();
+        Object.keys(data).forEach(d => {
+            formData.append(d, data[d]);
+        });
+        // if (data.opensource) {
+        //     formData.append('opensource', data.opensource, 'Test.docx');
+        // }
         try {
-            const response = await addRound(caselist, school, team, data);
+            const response = await addRound(caselist, school, team, formData);
             toast.success(response);
             reset();
             history.push(`/${caselist}/${school}/${team}`);
@@ -75,10 +86,9 @@ const AddRound = () => {
         }
     };
 
-    const [files, setFiles] = useState([]);
-
     const handleResetFiles = () => {
         setFiles([]);
+        // setFileContent(null);
     };
 
     const onDrop = useCallback((acceptedFiles) => {
@@ -105,6 +115,8 @@ const AddRound = () => {
 
                 // Convert the file contents into HTML
                 const binaryStr = reader.result;
+                // setFileContent(binaryStr);
+
                 let html;
                 try {
                     const result = await mammoth.convertToHtml({
@@ -230,7 +242,7 @@ const AddRound = () => {
     return (
         <div>
             <h2>Add a round to {school} {team}</h2>
-            <form onSubmit={handleSubmit(addRoundHandler)} className="pure-form pure-form-stacked">
+            <form onSubmit={handleSubmit(addRoundHandler)} encType="multipart/form-data" className="pure-form pure-form-stacked">
                 <div className="form-group">
                     <label htmlFor="tourn">Tournament</label>
                     <Controller
@@ -402,17 +414,27 @@ const AddRound = () => {
                                             </span>
                                         </label>
                                     </div>
-                                    <div className="dropzone" {...getRootProps()}>
-                                        {
-                                            <div>
-                                                <input {...getInputProps()} />
-                                                <p>
-                                                    Drag and drop a file here,
-                                                    or click to select file
-                                                </p>
+                                    <Controller
+                                        control={control}
+                                        name="opensource"
+                                        render={({ field: { onChange } }) => (
+                                            <div className="dropzone" {...getRootProps()}>
+                                                <div>
+                                                    <input
+                                                        {...getInputProps(
+                                                            { onChange: (e) => (
+                                                                onChange(e.target.files[0])
+                                                            ) },
+                                                        )}
+                                                    />
+                                                    <p>
+                                                        Drag and drop a file here,
+                                                        or click to select file
+                                                    </p>
+                                                </div>
                                             </div>
-                                        }
-                                    </div>
+                                        )}
+                                    />
                                 </>
                         }
                     </div>
