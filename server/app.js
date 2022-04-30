@@ -88,7 +88,7 @@ app.use(expressWinston.logger({
 
 // Parse body and cookies
 app.use(bodyParser.json({ type: ['json', 'application/*json'], limit: '10mb' }));
-app.use(bodyParser.text({ type: '*/*', limit: '10mb' }));
+// app.use(bodyParser.text({ type: '*/*', limit: '10mb' }));
 app.use(cookieParser());
 
 // Initialize OpenAPI middleware

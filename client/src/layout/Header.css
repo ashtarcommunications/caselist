@@ -35,3 +35,20 @@
     background-color: var(--brightblue);
     color: white;
 }
+
+.header-default,
+.header-college-cx {
+    background-color: var(--darkblue);
+}
+.header-hs-cx {
+    background-color: var(--blue);
+}
+.header-hs-ld {
+    background-color: var(--lightblue);
+}
+.header-hs-pf {
+    background-color: var(--green);
+}
+.header-college-ld {
+    background-color: var(--lightgreen);
+}

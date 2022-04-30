@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faAngleUp, faAngleDown, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import Toggle from 'react-toggle';
-import MDEditor from '@uiw/react-md-editor';
+import MDEditor, { commands } from '@uiw/react-md-editor';
 import { useStore } from '../helpers/store';
 import SideDropdown from './SideDropdown';
 import RoundNumberDropdown from './RoundNumberDropdown';
@@ -29,7 +29,9 @@ const AddRound = () => {
 
     // Add a default cite
     useEffect(() => {
-        append({ title: '', cites: '', open: true });
+        if (fields.length < 1) {
+            append({ title: '', cites: '', open: true });
+        }
     }, [append]);
 
     const [filename, setFilename] = useState();
@@ -62,9 +64,20 @@ const AddRound = () => {
             console.log(err);
         }
     };
+
+    const [files, setFiles] = useState([]);
+    // const [fileContent, setFileContent] = useState(null);
+
     const addRoundHandler = async (data) => {
+        const formData = new FormData();
+        Object.keys(data).forEach(d => {
+            formData.append(d, data[d]);
+        });
+        // if (data.opensource) {
+        //     formData.append('opensource', data.opensource, 'Test.docx');
+        // }
         try {
-            const response = await addRound(caselist, school, team, data);
+            const response = await addRound(caselist, school, team, formData);
             toast.success(response);
             reset();
             history.push(`/${caselist}/${school}/${team}`);
@@ -73,10 +86,9 @@ const AddRound = () => {
         }
     };
 
-    const [files, setFiles] = useState([]);
-
     const handleResetFiles = () => {
         setFiles([]);
+        // setFileContent(null);
     };
 
     const onDrop = useCallback((acceptedFiles) => {
@@ -103,6 +115,8 @@ const AddRound = () => {
 
                 // Convert the file contents into HTML
                 const binaryStr = reader.result;
+                // setFileContent(binaryStr);
+
                 let html;
                 try {
                     const result = await mammoth.convertToHtml({
@@ -121,6 +135,15 @@ const AddRound = () => {
                 const div = document.createElement('div');
                 div.innerHTML = html;
                 const elements = [...div.children];
+
+                if (
+                    elements[0]?.textContent?.trim()?.charAt(0) === '#'
+                    || elements[0]?.textContent?.trim()?.charAt(0) === '='
+                ) {
+                    setProcessing(false);
+                    toast.warn('Auto-detecting cites failed - this file appears to have already been wikified in Verbatim! Auto-detection only works on unconverted files.');
+                    return false;
+                }
 
                 // Combine <p> tags so each cite + card is in one element
                 // Iterates through array backwards, merges <p> into previous element if also a <p>
@@ -219,7 +242,7 @@ const AddRound = () => {
     return (
         <div>
             <h2>Add a round to {school} {team}</h2>
-            <form onSubmit={handleSubmit(addRoundHandler)} className="pure-form pure-form-stacked">
+            <form onSubmit={handleSubmit(addRoundHandler)} encType="multipart/form-data" className="pure-form pure-form-stacked">
                 <div className="form-group">
                     <label htmlFor="tourn">Tournament</label>
                     <Controller
@@ -391,17 +414,27 @@ const AddRound = () => {
                                             </span>
                                         </label>
                                     </div>
-                                    <div className="dropzone" {...getRootProps()}>
-                                        {
-                                            <div>
-                                                <input {...getInputProps()} />
-                                                <p>
-                                                    Drag and drop a file here,
-                                                    or click to select file
-                                                </p>
+                                    <Controller
+                                        control={control}
+                                        name="opensource"
+                                        render={({ field: { onChange } }) => (
+                                            <div className="dropzone" {...getRootProps()}>
+                                                <div>
+                                                    <input
+                                                        {...getInputProps(
+                                                            { onChange: (e) => (
+                                                                onChange(e.target.files[0])
+                                                            ) },
+                                                        )}
+                                                    />
+                                                    <p>
+                                                        Drag and drop a file here,
+                                                        or click to select file
+                                                    </p>
+                                                </div>
                                             </div>
-                                        }
-                                    </div>
+                                        )}
+                                    />
                                 </>
                         }
                     </div>
@@ -452,6 +485,16 @@ const AddRound = () => {
                                     />
                                 </div>
                                 {
+                                    cites[index]?.cites?.charAt(0) === '=' &&
+                                    <p className="syntax">
+                                        It looks like you&apos;re using outdated wiki syntax
+                                        from an old version of Verbatim!
+                                        Upgrade Verbatim, let the caselist autodetect cites,
+                                        use the convert button in the editor below, or
+                                        manually replace = with #.
+                                    </p>
+                                }
+                                {
                                     cites[index]?.open &&
                                     <Controller
                                         control={control}
@@ -463,6 +506,62 @@ const AddRound = () => {
                                                 <MDEditor
                                                     onChange={onChange}
                                                     value={value}
+                                                    commands={[
+                                                        {
+                                                            ...commands.title1,
+                                                            name: 'Pocket',
+                                                            icon: <div style={{ fontSize: 12, textAlign: 'left' }}>Pocket (H1)</div>,
+                                                            buttonProps: { title: 'Pocket', 'aria-label': 'Pocket' },
+                                                        },
+                                                        commands.divider,
+                                                        {
+                                                            ...commands.title2,
+                                                            name: 'Hat',
+                                                            icon: <div style={{ fontSize: 12, textAlign: 'left' }}>Hat (H2)</div>,
+                                                            buttonProps: { title: 'Hat', 'aria-label': 'Hat' },
+                                                        },
+                                                        commands.divider,
+                                                        {
+                                                            ...commands.title3,
+                                                            name: 'Block',
+                                                            icon: <div style={{ fontSize: 12, textAlign: 'left' }}>Block (H3)</div>,
+                                                            buttonProps: { title: 'Block', 'aria-label': 'Block' },
+                                                        },
+                                                        commands.divider,
+                                                        {
+                                                            ...commands.title4,
+                                                            name: 'Tag',
+                                                            icon: <div style={{ fontSize: 12, textAlign: 'left' }}>Tag (H4)</div>,
+                                                            buttonProps: { title: 'Tag', 'aria-label': 'Tag' },
+                                                        },
+                                                        commands.divider,
+                                                        {
+                                                            name: 'convert',
+                                                            keyCommand: 'convert',
+                                                            buttonProps: { 'aria-label': 'Convert' },
+                                                            icon: <div style={{ fontSize: 12, textAlign: 'left' }}>Convert = to #</div>,
+                                                            execute: (state, api) => {
+                                                                // Convert from old XWiki syntax
+                                                                // to markdown headings
+                                                                const converted = state.text
+                                                                    .replace(/==== /g, '#### ')
+                                                                    .replace(/=== /g, '### ')
+                                                                    .replace(/== /g, '## ')
+                                                                    .replace(/= /g, '# ');
+                                                                // Manually set the textarea range
+                                                                // to replace the whole contents
+                                                                api.setSelectionRange({
+                                                                    start: 0,
+                                                                    end: state.text?.length,
+                                                                });
+                                                                api.replaceSelection(converted);
+                                                            },
+                                                        },
+                                                        commands.divider,
+                                                        commands.bold,
+                                                        commands.italic,
+                                                        commands.link,
+                                                    ]}
                                                 />
                                             )
                                         }

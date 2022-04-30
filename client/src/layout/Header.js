@@ -10,19 +10,21 @@ const Header = () => {
     const auth = useContext(AuthContext);
     const { caselist } = useStore();
 
-    // TODO - doesn't work, there's no "type" for a caselist to map to a color
-    // and need an !important
-    const className = `header ${caselist.event}`;
+    // Set the header background based on the event/level combo
+    const className = `header header-${caselist.level}-${caselist.event}`;
 
     return (
         <header className={className}>
             <h1><Link to="/">openCaselist</Link></h1>
-            <form className="pure-form search">
-                <input type="text" placeholder="Search" />
-                <button className="pure-button" type="submit">
-                    <FontAwesomeIcon icon={faSearch} className="search" />
-                </button>
-            </form>
+            {
+                auth.user?.loggedIn &&
+                <form className="pure-form search">
+                    <input type="text" placeholder="Search" />
+                    <button className="pure-button" type="submit">
+                        <FontAwesomeIcon icon={faSearch} className="search" />
+                    </button>
+                </form>
+            }
             <div className="menu pure-menu">
                 <ul>
                     {
