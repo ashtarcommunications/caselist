@@ -32,7 +32,7 @@ const AddRound = () => {
         if (fields.length < 1) {
             append({ title: '', cites: '', open: true });
         }
-    }, [append]);
+    }, [append, fields.length]);
 
     const [filename, setFilename] = useState();
 
@@ -417,23 +417,27 @@ const AddRound = () => {
                                     <Controller
                                         control={control}
                                         name="opensource"
-                                        render={({ field: { onChange } }) => (
-                                            <div className="dropzone" {...getRootProps()}>
-                                                <div>
-                                                    <input
-                                                        {...getInputProps(
-                                                            { onChange: (e) => (
-                                                                onChange(e.target.files[0])
-                                                            ) },
-                                                        )}
-                                                    />
-                                                    <p>
-                                                        Drag and drop a file here,
-                                                        or click to select file
-                                                    </p>
+                                        render={
+                                            ({
+                                                field: { onChange },
+                                            }) => (
+                                                <div className="dropzone" {...getRootProps()}>
+                                                    <div>
+                                                        <input
+                                                            {...getInputProps(
+                                                                { onChange: (e) => (
+                                                                    onChange(e.target.files[0])
+                                                                ) },
+                                                            )}
+                                                        />
+                                                        <p>
+                                                            Drag and drop a file here,
+                                                            or click to select file
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        )}
+                                            )
+                                        }
                                     />
                                 </>
                         }
@@ -506,62 +510,65 @@ const AddRound = () => {
                                                 <MDEditor
                                                     onChange={onChange}
                                                     value={value}
-                                                    commands={[
-                                                        {
-                                                            ...commands.title1,
-                                                            name: 'Pocket',
-                                                            icon: <div style={{ fontSize: 12, textAlign: 'left' }}>Pocket (H1)</div>,
-                                                            buttonProps: { title: 'Pocket', 'aria-label': 'Pocket' },
-                                                        },
-                                                        commands.divider,
-                                                        {
-                                                            ...commands.title2,
-                                                            name: 'Hat',
-                                                            icon: <div style={{ fontSize: 12, textAlign: 'left' }}>Hat (H2)</div>,
-                                                            buttonProps: { title: 'Hat', 'aria-label': 'Hat' },
-                                                        },
-                                                        commands.divider,
-                                                        {
-                                                            ...commands.title3,
-                                                            name: 'Block',
-                                                            icon: <div style={{ fontSize: 12, textAlign: 'left' }}>Block (H3)</div>,
-                                                            buttonProps: { title: 'Block', 'aria-label': 'Block' },
-                                                        },
-                                                        commands.divider,
-                                                        {
-                                                            ...commands.title4,
-                                                            name: 'Tag',
-                                                            icon: <div style={{ fontSize: 12, textAlign: 'left' }}>Tag (H4)</div>,
-                                                            buttonProps: { title: 'Tag', 'aria-label': 'Tag' },
-                                                        },
-                                                        commands.divider,
-                                                        {
-                                                            name: 'convert',
-                                                            keyCommand: 'convert',
-                                                            buttonProps: { 'aria-label': 'Convert' },
-                                                            icon: <div style={{ fontSize: 12, textAlign: 'left' }}>Convert = to #</div>,
-                                                            execute: (state, api) => {
-                                                                // Convert from old XWiki syntax
-                                                                // to markdown headings
-                                                                const converted = state.text
-                                                                    .replace(/==== /g, '#### ')
-                                                                    .replace(/=== /g, '### ')
-                                                                    .replace(/== /g, '## ')
-                                                                    .replace(/= /g, '# ');
-                                                                // Manually set the textarea range
-                                                                // to replace the whole contents
-                                                                api.setSelectionRange({
-                                                                    start: 0,
-                                                                    end: state.text?.length,
-                                                                });
-                                                                api.replaceSelection(converted);
+                                                    commands={
+                                                        [
+                                                            {
+                                                                ...commands.title1,
+                                                                name: 'Pocket',
+                                                                icon: <div style={{ fontSize: 12, textAlign: 'left' }}>Pocket (H1)</div>,
+                                                                buttonProps: { title: 'Pocket', 'aria-label': 'Pocket' },
                                                             },
-                                                        },
-                                                        commands.divider,
-                                                        commands.bold,
-                                                        commands.italic,
-                                                        commands.link,
-                                                    ]}
+                                                            commands.divider,
+                                                            {
+                                                                ...commands.title2,
+                                                                name: 'Hat',
+                                                                icon: <div style={{ fontSize: 12, textAlign: 'left' }}>Hat (H2)</div>,
+                                                                buttonProps: { title: 'Hat', 'aria-label': 'Hat' },
+                                                            },
+                                                            commands.divider,
+                                                            {
+                                                                ...commands.title3,
+                                                                name: 'Block',
+                                                                icon: <div style={{ fontSize: 12, textAlign: 'left' }}>Block (H3)</div>,
+                                                                buttonProps: { title: 'Block', 'aria-label': 'Block' },
+                                                            },
+                                                            commands.divider,
+                                                            {
+                                                                ...commands.title4,
+                                                                name: 'Tag',
+                                                                icon: <div style={{ fontSize: 12, textAlign: 'left' }}>Tag (H4)</div>,
+                                                                buttonProps: { title: 'Tag', 'aria-label': 'Tag' },
+                                                            },
+                                                            commands.divider,
+                                                            {
+                                                                name: 'convert',
+                                                                keyCommand: 'convert',
+                                                                buttonProps: { 'aria-label': 'Convert' },
+                                                                icon: <div style={{ fontSize: 12, textAlign: 'left' }}>Convert = to #</div>,
+                                                                execute: (state, api) => {
+                                                                    // Convert from old XWiki syntax
+                                                                    // to markdown headings
+                                                                    const converted = state.text
+                                                                        .replace(/==== /g, '#### ')
+                                                                        .replace(/=== /g, '### ')
+                                                                        .replace(/== /g, '## ')
+                                                                        .replace(/= /g, '# ');
+                                                                    // Manually set the textarea
+                                                                    // range to replace the whole
+                                                                    // contents
+                                                                    api.setSelectionRange({
+                                                                        start: 0,
+                                                                        end: state.text?.length,
+                                                                    });
+                                                                    api.replaceSelection(converted);
+                                                                },
+                                                            },
+                                                            commands.divider,
+                                                            commands.bold,
+                                                            commands.italic,
+                                                            commands.link,
+                                                        ]
+                                                    }
                                                 />
                                             )
                                         }

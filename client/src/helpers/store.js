@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useCallback } from 'react';
+import React, { createContext, useState, useContext, useCallback, useMemo } from 'react';
 import { loadCaselist, loadSchools, loadSchool, loadTeams } from './api';
 
 // Create a context for the store
@@ -55,7 +55,7 @@ export const ProvideStore = ({ children }) => {
         }
     }, []);
 
-    const store = {
+    const store = useMemo(() => ({
         caselist: caselistData,
         fetchCaselist,
         schools,
@@ -64,7 +64,16 @@ export const ProvideStore = ({ children }) => {
         fetchSchool,
         teams,
         fetchTeams,
-    };
+    }), [
+        caselistData,
+        fetchCaselist,
+        fetchSchool,
+        fetchSchools,
+        fetchTeams,
+        schoolData,
+        schools,
+        teams,
+    ]);
 
     return (
         <StoreContext.Provider value={store}>

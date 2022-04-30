@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './Footer.css';
 
-const Footer = () => {
+const Emoji = () => {
     const [emojis, setEmojis] = useState(['✨', '🔥', '❄️', '🌀', '🎶', '💯', '🦓', '♥']);
-
     useEffect(() => {
         if (emojis.length > 1) {
             setTimeout(() => {
@@ -13,11 +12,10 @@ const Footer = () => {
             }, 1000);
         }
     }, [emojis]);
+    return <span className={emojis[0] !== '♥' ? 'spinner' : ''}>{emojis[0]}</span>;
+};
 
-    const Emoji = () => {
-        return <span className={emojis[0] !== '♥' ? 'spinner' : ''}>{emojis[0]}</span>;
-    };
-
+const Footer = () => {
     return (
         <footer className="footer">
             <span>

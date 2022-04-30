@@ -44,8 +44,18 @@
   },
   "eslintConfig": {
     "extends": [
+      "react-app",
       "@speechanddebate/eslint-config-nsda",
       "@speechanddebate/eslint-config-nsda/react"
+    ],
+    "overrides": [
+      {
+        "files": ["**/*.js?(x)"],
+        "rules": {
+          "react/function-component-definition": [2, { "namedComponents": "arrow-function" }],
+          "react/no-unstable-nested-components": [2, { "allowAsProps": true }]
+        }
+      }  
     ]
   },
   "browserslist": {
