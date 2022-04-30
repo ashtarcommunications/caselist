@@ -14,6 +14,7 @@ const postRound = {
                 if (['.docx', '.doc', '.pdf', '.rtf', '.txt'].indexOf(extension) === -1) {
                     extension = '';
                 }
+                // TODO - helper function for side name, maybe send event from client side
                 const filename = `${req.params.school} ${req.params.team} ${req.body.side} ${req.body.tourn} Round ${req.body.round}${extension}`;
                 cb(null, filename);
             },
@@ -93,6 +94,7 @@ postRound.POST.apiDoc = {
     requestBody: {
         description: 'The round to create',
         required: true,
+        // TODO = port to schema
         content: { 'multipart/form-data': { schema: { type: 'object', properties: { side: { type: 'string' }, opensource: { type: 'string', format: 'binary' } } } } },
     },
     responses: {
