@@ -7,17 +7,6 @@ import { query } from '../../helpers/mysql';
 const postRound = {
     POST: async (req, res) => {
         console.log(req.body);
-        const buff = Buffer.from(req.body.opensource, 'base64');
-
-        let extension = path.extname(req.body.filename);
-        // Disallow other extensions in case of shenanigans
-        if (['.docx', '.doc', '.pdf', '.rtf', '.txt'].indexOf(extension) === -1) {
-            extension = '';
-        }
-        // TODO - helper function for side name, maybe send event from client side
-        const filename = `${req.params.school} ${req.params.team} ${req.body.side} ${req.body.tourn} Round ${req.body.round}${extension}`;
-
-        fs.writeFileSync(`${cwd()}/uploads/${filename}`, buff);
 
         const [result] = await query(SQL`
             SELECT C.archived
@@ -31,6 +20,28 @@ const postRound = {
 
         if (!result) { return res.status(400).json({ message: 'Team not found' }); }
         if (result.archived) { return res.status(401).json({ message: 'Caselist archived, no modifications allowed' }); }
+
+        if (req.body.opensource && req.body.filename) {
+            // Convert base64 encoded file back into a buffer for saving
+            let arrayBuffer;
+            try {
+                arrayBuffer = Buffer.from(req.body.opensource, 'base64');
+            } catch (err) {
+                return res.status(400).json({ message: 'Invalid open source file' });
+            }
+
+            // Use the extensinon from the provided file, but disallow anything weird
+            let extension = path.extname(req.body.filename);
+            if (['.docx', '.doc', '.pdf', '.rtf', '.txt'].indexOf(extension) === -1) {
+                extension = '';
+            }
+            // TODO - helper function for side name, maybe send event from client side
+            const filename = `${req.params.school} ${req.params.team} ${req.body.side} ${req.body.tourn} Round ${req.body.round}${extension}`;
+
+            // TODO - decide on a file structure and whether to add a hash or something
+            await fs.promises.mkdir(`${cwd()}/uploads/${req.params.caselist}/${req.params.school}/${req.params.team}`, { recursive: true });
+            await fs.promises.writeFile(`${cwd()}/uploads/${req.params.caselist}/${req.params.school}/${req.params.team}/${filename}`, arrayBuffer);
+        }
 
         await query(SQL`
             INSERT INTO rounds (team_id, side, tournament, round, opponent, judge, report, tourn_id, external_id)

@@ -3,6 +3,11 @@
     text-align: center;
 }
 
+.ufo {
+    max-width: 50%;
+    margin: auto;
+}
+
 .error-message {
     width: 100%;
     color: var(--red);
