@@ -1,6 +1,7 @@
 import express from 'express';
 import helmet from 'helmet';
 import rateLimiter from 'express-rate-limit';
+import slowDown from 'express-slow-down';
 import uuid from 'uuid/v4';
 import expressWinston from 'express-winston';
 import bodyParser from 'body-parser';
@@ -24,6 +25,16 @@ app.use(helmet());
 
 // Enable getting forwarded client IP from proxy
 app.enable('trust proxy');
+
+// Slow down requests before they hit the rate limiter
+const speedLimiter = slowDown({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    delayAfter: 1000, // allow 1000 requests per 15 minutes, then...
+    delayMs: 500, // begin adding 500ms of delay per request above 1000:
+    maxDelayMs: 10000,
+    keyGenerator: (req) => (req.user_id ? req.user_id : req.ip),
+});
+app.use(speedLimiter);
 
 // Rate limit all requests
 const limiter = rateLimiter({
