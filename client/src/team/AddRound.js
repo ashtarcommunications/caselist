@@ -66,18 +66,16 @@ const AddRound = () => {
     };
 
     const [files, setFiles] = useState([]);
-    // const [fileContent, setFileContent] = useState(null);
+    const [fileContent, setFileContent] = useState(null);
 
     const addRoundHandler = async (data) => {
-        const formData = new FormData();
-        Object.keys(data).forEach(d => {
-            formData.append(d, data[d]);
-        });
-        // if (data.opensource) {
-        //     formData.append('opensource', data.opensource, 'Test.docx');
-        // }
+        console.log(files[0]);
+        if (fileContent) {
+            data.opensource = fileContent;
+            data.filename = files[0].name;
+        }
         try {
-            const response = await addRound(caselist, school, team, formData);
+            const response = await addRound(caselist, school, team, data);
             toast.success(response);
             reset();
             history.push(`/${caselist}/${school}/${team}`);
@@ -88,7 +86,7 @@ const AddRound = () => {
 
     const handleResetFiles = () => {
         setFiles([]);
-        // setFileContent(null);
+        setFileContent(null);
     };
 
     const onDrop = useCallback((acceptedFiles) => {
@@ -115,7 +113,15 @@ const AddRound = () => {
 
                 // Convert the file contents into HTML
                 const binaryStr = reader.result;
-                // setFileContent(binaryStr);
+
+                // Convert to base64 for upload
+                let binary = '';
+                const bytes = new Uint8Array(binaryStr);
+                const len = bytes.byteLength;
+                for (let i = 0; i < len; i++) {
+                    binary += String.fromCharCode(bytes[i]);
+                }
+                setFileContent(window.btoa(binary));
 
                 let html;
                 try {
