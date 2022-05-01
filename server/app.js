@@ -28,9 +28,9 @@ app.enable('trust proxy');
 
 // Slow down requests before they hit the rate limiter
 const speedLimiter = slowDown({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    delayAfter: 1000, // allow 1000 requests per 15 minutes, then...
-    delayMs: 500, // begin adding 500ms of delay per request above 1000:
+    windowMs: config.RATE_WINDOW || 15 * 60 * 1000, // 15 minutes
+    delayAfter: config.RATE_AFTER || 1000, // allow 1000 requests per 15 minutes, then...
+    delayMs: config.RATE_DELAY || 500, // begin adding 500ms of delay per request above 1000:
     maxDelayMs: 10000,
     keyGenerator: (req) => (req.user_id ? req.user_id : req.ip),
 });
@@ -40,7 +40,6 @@ app.use(speedLimiter);
 const limiter = rateLimiter({
     windowMs: config.RATE_WINDOW || 15 * 60 * 1000, // 15 minutes
     max: config.RATE_MAX || 1500, // limit each user to 1000 requests per windowMs
-    delayMs: config.RATE_DELAY || 0, // disable delaying - full speed until the max limit is reached
     keyGenerator: (req) => (req.user_id ? req.user_id : req.ip),
     message: 'You have exceeded the allowed number of page views per 15 minutes',
 });
@@ -50,7 +49,6 @@ app.use(limiter);
 const modificationLimiter = rateLimiter({
     windowMs: 60 * 1000, // 1 minute
     max: 5, // limit each user to 5 modifications/minute
-    delayMs: 0,
     keyGenerator: (req) => (req.user_id ? req.user_id : req.ip),
     message: 'You have exceeded the allowed number of modifications per minute',
 });
@@ -63,7 +61,6 @@ app.delete(modificationLimiter);
 const superModificationLimiter = rateLimiter({
     windowMs: 1440 * 60 * 1000, // 1 day
     max: 100, // limit each user to 100 modifications/day
-    delayMs: 0,
     keyGenerator: (req) => (req.user_id ? req.user_id : req.ip),
     message: 'You have exceeded the allowed number of modifications per day',
 });
