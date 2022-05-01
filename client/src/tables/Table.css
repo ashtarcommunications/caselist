@@ -6,3 +6,7 @@
 .table td, .table th {
     padding: 5px;
 }
+
+.sort {
+    margin-left: 5px;
+}

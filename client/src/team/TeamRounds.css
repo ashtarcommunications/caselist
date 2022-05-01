@@ -130,3 +130,15 @@ button.add-round {
 .teamname {
     margin-bottom: 0;
 }
+
+.rounds-table tr:hover .trash {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s, opacity 0s linear;
+}
+
+.cites-table tr:hover .trash {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s, opacity 0s linear;
+}

@@ -5,11 +5,6 @@
     text-align: center;
 }
 
-.trash {
-    color: var(--red);
-    cursor: pointer;
-}
-
 .link {
     font-size: 18px;
     color: var(--brightblue);
@@ -23,4 +18,32 @@
 
 .schoolname {
     margin-bottom: 0;
+}
+
+.trash {
+    color: var(--red);
+    cursor: pointer;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 1s, opacity 1s linear;
+}
+.team-list tr:hover .trash {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s, opacity 0s linear;
+}
+.hover-links {
+    display: inline;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 1s, opacity 1s linear;
+}
+.hover-links a {
+    margin-left: 40px;
+    color: var(--darkgray);
+}
+.team-list tr:hover .hover-links {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s, opacity 0s linear;
 }

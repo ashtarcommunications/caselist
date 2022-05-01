@@ -42,21 +42,28 @@ const TeamList = () => {
             accessor: row => row,
             Cell: (row) => {
                 return (
-                    <Link to={`/${caselist}/${school}/${row.value?.code}`}>
-                        {row.value.name} (
-                        <span>{row.value.debater1_first} </span>
-                        <span>{row.value.debater1_last} </span>
-                        <span>- </span>
-                        <span>{row.value.debater2_first} </span>
-                        <span>{row.value.debater2_last}</span>
-                        )
-                    </Link>
+                    <>
+                        <Link to={`/${caselist}/${school}/${row.value?.code}`}>
+                            {row.value.name} (
+                            <span>{row.value.debater1_first} </span>
+                            <span>{row.value.debater1_last} </span>
+                            <span>- </span>
+                            <span>{row.value.debater2_first} </span>
+                            <span>{row.value.debater2_last}</span>
+                            )
+                        </Link>
+                        <div className="hover-links">
+                            <Link to={`/${caselist}/${school}/${row.value?.code}/Aff`}>Aff</Link>
+                            <Link to={`/${caselist}/${school}/${row.value?.code}/Neg`}>Neg</Link>
+                        </div>
+                    </>
                 );
             },
         },
         {
             id: 'delete',
             Header: '',
+            disableSortBy: true,
             accessor: (row) => row,
             className: 'center',
             Cell: (row) => (
@@ -80,9 +87,9 @@ const TeamList = () => {
             <div className="teamlist">
                 <Breadcrumbs />
                 <h1 className="schoolname">{schoolData.display_name}</h1>
-                <p className="timestamp">Last updated by {schoolData.updated_by} on {timestamp}</p>
+                {schoolData.updatedBy && <p className="timestamp">Last updated by {schoolData.updated_by} on {timestamp}</p>}
                 {/* <TabroomChaptersDropdown /> */}
-                <Table columns={columns} data={data} />
+                <Table columns={columns} data={data} className="team-list" />
             </div>
             <hr />
             <AddTeam />

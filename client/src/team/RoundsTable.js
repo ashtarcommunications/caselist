@@ -9,7 +9,7 @@ import ConfirmButton from '../helpers/ConfirmButton';
 import { useDeviceDetect } from '../helpers/common';
 import './TeamRounds.css';
 
-const RoundsTable = () => {
+const RoundsTable = ({ loading }) => {
     const { caselist, school, team, side } = useParams();
 
     const [rounds, setRounds] = useState([]);
@@ -84,6 +84,7 @@ const RoundsTable = () => {
                     </>
                 );
             },
+            disableSortBy: true,
             accessor: row => row,
             Cell: (row) => {
                 return (
@@ -137,6 +138,7 @@ const RoundsTable = () => {
         {
             id: 'delete',
             Header: '',
+            disableSortBy: true,
             accessor: (row) => row,
             className: 'center',
             Cell: (row) => (
@@ -154,6 +156,7 @@ const RoundsTable = () => {
         {
             id: 'mobile',
             Header: 'Rounds',
+            disableSortBy: true,
             accessor: row => row,
             Cell: (row) => {
                 return (
@@ -194,7 +197,7 @@ const RoundsTable = () => {
     const { isMobile } = useDeviceDetect();
 
     return (
-        <Table columns={isMobile ? mobileColumns : columns} data={rounds} className={isMobile && 'mobile-table'} />
+        <Table columns={isMobile ? mobileColumns : columns} data={rounds} className={isMobile ? 'rounds-table mobile-table' : 'rounds-table'} loading={loading} />
     );
 };
 

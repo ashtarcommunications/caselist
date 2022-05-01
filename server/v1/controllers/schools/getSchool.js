@@ -5,6 +5,7 @@ const getSchool = {
     GET: async (req, res) => {
         const sql = (SQL`
             SELECT
+                C.archived,
                 S.*,
                 U.display_name AS 'updated_by'
             FROM schools S
@@ -15,6 +16,10 @@ const getSchool = {
         `);
         const [school] = await query(sql);
         if (!school) { return res.status(404).json({ message: 'School not found' }); }
+
+        if (school.archived) {
+            delete school.updated_by;
+        }
 
         return res.status(200).json(school);
     },

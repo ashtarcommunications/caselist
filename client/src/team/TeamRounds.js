@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import moment from 'moment';
 import { Link, useParams } from 'react-router-dom';
 import MDEditor from '@uiw/react-md-editor';
+import { useStore } from '../helpers/store';
 import Loader from '../loader/Loader';
 import Error from '../layout/Error';
 import { loadTeam, addTabroomTeamLink } from '../helpers/api';
@@ -16,6 +17,8 @@ import './TeamRounds.css';
 
 const TeamRounds = () => {
     const { caselist, school, team, side } = useParams();
+
+    const { caselist: caselistData } = useStore();
 
     const [fetching, setFetching] = useState(false);
     const [teamData, setTeamData] = useState({});
@@ -64,10 +67,21 @@ const TeamRounds = () => {
     if (fetching) { return <Loader />; }
     if (!fetching && teamData.message) { return <Error is404 />; }
 
+    let lastNames = '';
+    switch (caselistData.team_size) {
+        case 1:
+            lastNames = `${teamData.debater1_last}`;
+            break;
+        case 2:
+        default:
+            lastNames = `${teamData.debater1_last}-${teamData.debater2_last}`;
+            break;
+    }
+
     return (
         <div className="roundlist">
             <h1 className="teamname">
-                {school} {team}
+                {school} {team} {!caselistData.archived && `(${lastNames})`}
                 <button
                     type="button"
                     className="pure-button pure-button-secondary notes"
@@ -85,7 +99,10 @@ const TeamRounds = () => {
                     Claim Page
                 </button>
             </h1>
-            <p className="timestamp">Last updated by {teamData.updated_by ? teamData.updated_by : 'unknown'} on {timestamp}</p>
+            {
+                teamData.updatedBy &&
+                <p className="timestamp">Last updated by {teamData.updated_by ? teamData.updated_by : 'unknown'} on {timestamp}</p>
+            }
             <div className="notes">
                 {
                     showNotes &&
@@ -127,8 +144,8 @@ const TeamRounds = () => {
                     </button>
                 </Link>
             </div>
-            <RoundsTable />
-            <CitesTable />
+            <RoundsTable loading={fetching} />
+            <CitesTable loading={fetching} />
         </div>
     );
 };

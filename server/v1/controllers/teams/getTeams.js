@@ -4,13 +4,30 @@ import { query } from '../../helpers/mysql';
 const getTeams = {
     GET: async (req, res) => {
         const sql = (SQL`
-            SELECT T.* FROM teams T
+            SELECT
+                C.archived,
+                T.*
+            FROM teams T
             INNER JOIN schools S ON S.school_id = T.school_id
             INNER JOIN caselists C ON S.caselist_id = C.caselist_id
             wHERE C.slug = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${req.params.school})
+            ORDER BY T.code
         `);
         const teams = await query(sql);
+
+        if (teams[0].archived) {
+            teams.forEach((team) => {
+                team.debater1_first = team.debater1_first ? `${team.debater1_first.substr(0, 2)}.....` : null;
+                team.debater1_last = team.debater1_last ? `${team.debater1_last.substr(0, 2)}.....` : null;
+                team.debater2_first = team.debater2_first ? `${team.debater2_first.substr(0, 2)}.....` : null;
+                team.debater2_last = team.debater2_last ? `${team.debater2_last.substr(0, 2)}.....` : null;
+                team.debater3_first = team.debater3_first ? `${team.debater3_first.substr(0, 2)}.....` : null;
+                team.debater3_last = team.debater3_last ? `${team.debater3_last.substr(0, 2)}.....` : null;
+                team.debater4_first = team.debater4_first ? `${team.debater4_first.substr(0, 2)}.....` : null;
+                team.debater4_last = team.debater4_last ? `${team.debater4_last.substr(0, 2)}.....` : null;
+            });
+        }
 
         return res.status(200).json(teams);
     },

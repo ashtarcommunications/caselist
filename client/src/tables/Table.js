@@ -1,15 +1,18 @@
 import React from 'react';
-import { useTable } from 'react-table';
+import { useTable, useSortBy } from 'react-table';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleDown, faAngleUp, faSort } from '@fortawesome/free-solid-svg-icons';
+import Loader from '../loader/Loader';
 import './Table.css';
 
-const Table = ({ columns = [], data = [], className }) => {
+const Table = ({ columns = [], data = [], className, loading = false, noDataText = 'No data found!' }) => {
     const {
         getTableProps,
         getTableBodyProps,
         headerGroups,
         rows,
         prepareRow,
-    } = useTable({ columns, data });
+    } = useTable({ columns, data }, useSortBy);
 
     if (!columns || !data) return false;
 
@@ -22,7 +25,24 @@ const Table = ({ columns = [], data = [], className }) => {
                             <tr {...headerGroup.getHeaderGroupProps()}>
                                 {
                                     headerGroup.headers.map(column => (
-                                        <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+                                        <th {...column.getHeaderProps()}>
+                                            <div {...column.getSortByToggleProps()} data-testid="sortDiv" styleName="col-header">
+                                                {column.render('Header')}
+                                                {
+                                                    column.isSorted ?
+                                                        <FontAwesomeIcon
+                                                            icon={
+                                                                column.isSortedDesc
+                                                                ? faAngleUp
+                                                                : faAngleDown
+                                                            }
+                                                        />
+                                                        :
+                                                        !column.disableSortBy &&
+                                                        <FontAwesomeIcon className="sort" icon={faSort} />
+                                                }
+                                            </div>
+                                        </th>
                                     ))
                                 }
                             </tr>
@@ -30,6 +50,8 @@ const Table = ({ columns = [], data = [], className }) => {
                     }
                 </thead>
                 <tbody {...getTableBodyProps()}>
+                    {loading && <Loader />}
+                    {data.length < 1 && <p className="no-data">{noDataText}</p>}
                     {
                         rows.map((row) => {
                             prepareRow(row);

@@ -10,7 +10,7 @@ import ConfirmButton from '../helpers/ConfirmButton';
 import { useDeviceDetect } from '../helpers/common';
 import './TeamRounds.css';
 
-const CitesTable = () => {
+const CitesTable = ({ loading }) => {
     const { caselist, school, team, side } = useParams();
 
     const [cites, setCites] = useState([]);
@@ -95,6 +95,7 @@ const CitesTable = () => {
             {
                 id: 'copy',
                 Header: '',
+                disableSortBy: true,
                 accessor: (row) => row,
                 className: 'center',
                 Cell: (row) => (
@@ -112,6 +113,7 @@ const CitesTable = () => {
             {
                 id: 'delete',
                 Header: '',
+                disableSortBy: true,
                 accessor: (row) => row,
                 className: 'center',
                 Cell: (row) => (
@@ -132,7 +134,7 @@ const CitesTable = () => {
     const { isMobile } = useDeviceDetect();
 
     return (
-        <Table columns={citeHeaders} data={cites} className={isMobile && 'mobile-table'} />
+        <Table columns={citeHeaders} data={cites} className={isMobile ? 'cites-table mobile-table' : 'cites-table'} noDataText="No cites found!" loading={loading} />
     );
 };
 

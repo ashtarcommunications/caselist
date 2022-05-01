@@ -5,6 +5,7 @@ const getTeam = {
     GET: async (req, res) => {
         const sql = (SQL`
             SELECT
+                C.archived,
                 T.*,
                 U.display_name AS 'updated_by'
             FROM teams T
@@ -17,6 +18,18 @@ const getTeam = {
         `);
         const [team] = await query(sql);
         if (!team) { return res.status(404).json({ message: 'Team not found' }); }
+
+        if (team.archived) {
+            team.debater1_first = team.debater1_first ? `${team.debater1_first.substr(0, 2)}.....` : null;
+            team.debater1_last = team.debater1_last ? `${team.debater1_last.substr(0, 2)}.....` : null;
+            team.debater2_first = team.debater2_first ? `${team.debater2_first.substr(0, 2)}.....` : null;
+            team.debater2_last = team.debater2_last ? `${team.debater2_last.substr(0, 2)}.....` : null;
+            team.debater3_first = team.debater3_first ? `${team.debater3_first.substr(0, 2)}.....` : null;
+            team.debater3_last = team.debater3_last ? `${team.debater3_last.substr(0, 2)}.....` : null;
+            team.debater4_first = team.debater4_first ? `${team.debater4_first.substr(0, 2)}.....` : null;
+            team.debater4_last = team.debater4_last ? `${team.debater4_last.substr(0, 2)}.....` : null;
+            delete team.updated_by;
+        }
 
         return res.status(200).json(team);
     },
