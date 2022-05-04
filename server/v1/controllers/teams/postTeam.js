@@ -3,17 +3,17 @@ import { query } from '../../helpers/mysql';
 
 const postTeam = {
     POST: async (req, res) => {
-        const name = `${req.params.school} ${req.body.debater1_last.slice(0, 2)}${req.body.debater2_last.slice(0, 2)}`;
-        const code = `${req.body.debater1_last.slice(0, 2)}${req.body.debater2_last.slice(0, 2)}`;
+        const name = `${req.body.debater1_last.slice(0, 2)}${req.body.debater2_last.slice(0, 2)}`;
+        const displayName = `${req.params.school} ${req.body.debater1_last.slice(0, 2)}${req.body.debater2_last.slice(0, 2)}`;
 
         const team = await (query(SQL`
                 SELECT T.*
                 FROM teams T
                 INNER JOIN schools S ON S.school_id = T.school_id
                 INNER JOIN caselists C ON S.caselist_id = C.caselist_id
-                WHERE C.slug = ${req.params.caselist}
+                WHERE C.name = ${req.params.caselist}
                 AND LOWER(S.name) = LOWER(${req.params.school})
-                AND LOWER(T.code) = LOWER(${code})
+                AND LOWER(T.name) = LOWER(${name})
         `));
         if (team && team.length > 0) {
             return res.status(400).json({ message: 'Team already exists' });
@@ -23,7 +23,7 @@ const postTeam = {
             SELECT C.archived
             FROM schools S ON S.school_id = T.school_id
             INNER JOIN caselists C ON C.caselist_id = S.caselist_id
-            WHERE C.slug = ${req.params.caselist}
+            WHERE C.name = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${req.params.school})
         `);
 
@@ -32,11 +32,11 @@ const postTeam = {
 
         await query(SQL`
             INSERT INTO teams
-                (school_id, name, code, debater1_first, debater1_last, debater2_first, debater2_last)
+                (school_id, name, display_name, debater1_first, debater1_last, debater2_first, debater2_last)
                 SELECT
                     S.school_id,
                     ${name},
-                    ${code},
+                    ${displayName},
                     ${req.body.debater1_first},
                     ${req.body.debater1_last},
                     ${req.body.debater2_first},

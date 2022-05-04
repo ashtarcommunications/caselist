@@ -1,5 +1,6 @@
 const School = {
     type: 'object',
+    required: ['display_name'],
     properties: {
         name: { type: 'string' },
         display_name: { type: 'string' },

@@ -13,13 +13,15 @@ const postRound = {
             FROM teams T
             INNER JOIN schools S ON S.school_id = T.school_id
             INNER JOIN caselists C ON C.caselist_id = S.caselist_id
-            WHERE C.slug = ${req.params.caselist}
+            WHERE C.name = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${req.params.school})
-            AND LOWER(T.code) = LOWER(${req.params.team})
+            AND LOWER(T.name) = LOWER(${req.params.team})
         `);
 
         if (!result) { return res.status(400).json({ message: 'Team not found' }); }
         if (result.archived) { return res.status(401).json({ message: 'Caselist archived, no modifications allowed' }); }
+
+        let filename;
 
         if (req.body.opensource && req.body.filename) {
             // Convert base64 encoded file back into a buffer for saving
@@ -36,7 +38,7 @@ const postRound = {
                 extension = '';
             }
             // TODO - helper function for side name, maybe send event from client side
-            const filename = `${req.params.school} ${req.params.team} ${req.body.side} ${req.body.tourn} Round ${req.body.round}${extension}`;
+            filename = `${req.params.school} ${req.params.team} ${req.body.side} ${req.body.tourn} Round ${req.body.round}${extension}`;
 
             // TODO - decide on a file structure and whether to add a hash or something
             await fs.promises.mkdir(`${cwd()}/uploads/${req.params.caselist}/${req.params.school}/${req.params.team}`, { recursive: true });
@@ -44,7 +46,7 @@ const postRound = {
         }
 
         await query(SQL`
-            INSERT INTO rounds (team_id, side, tournament, round, opponent, judge, report, tourn_id, external_id)
+            INSERT INTO rounds (team_id, side, tournament, round, opponent, judge, report, opensource, tourn_id, external_id)
                 SELECT
                     T.team_id,
                     ${req.body.side},
@@ -53,14 +55,15 @@ const postRound = {
                     ${req.body.opponent},
                     ${req.body.judge},
                     ${req.body.report},
+                    ${filename},
                     ${req.body.tourn_id || null},
                     ${req.body.external_id || null}
                 FROM teams T
                 INNER JOIN schools S ON S.school_id = T.school_id
                 INNER JOIN caselists C ON C.caselist_id = S.caselist_id
-                WHERE C.slug = ${req.params.caselist}
+                WHERE C.name = ${req.params.caselist}
                 AND LOWER(S.name) = LOWER(${req.params.school})
-                AND LOWER(T.code) = LOWER(${req.params.team})
+                AND LOWER(T.name) = LOWER(${req.params.team})
         `);
         return res.status(201).json({ message: 'Round successfully created' });
     },

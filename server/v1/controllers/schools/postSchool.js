@@ -3,12 +3,12 @@ import { query } from '../../helpers/mysql';
 
 const postSchool = {
     POST: async (req, res) => {
-        const name = req.body.display_name.replace(' ', '');
+        const name = req.body.display_name.replaceAll(' ', '');
 
         const school = await query(SQL`
             SELECT * FROM schools S
             INNER JOIN caselists C ON C.caselist_id = S.caselist_id
-            WHERE C.slug = ${req.params.caselist}
+            WHERE C.name = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${name})
         `);
         if (school && school.length > 0) {
@@ -27,8 +27,8 @@ const postSchool = {
 
         await query(SQL`
             INSERT INTO schools (caselist_id, name, display_name, state)
-                SELECT caselist_id, ${name}, ${req.body.display_name}, ${req.body.state || null}
-                FROM caselists WHERE slug = ${req.params.caselist}
+                SELECT caselist_id, ${name}, ${req.body.display_name.trim()}, ${req.body.state.trim() || null}
+                FROM caselists WHERE name = ${req.params.caselist}
         `);
 
         return res.status(201).json({ message: 'School successfully created' });

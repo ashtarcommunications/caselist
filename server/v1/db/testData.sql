@@ -1,4 +1,4 @@
-INSERT INTO caselists (caselist_id, slug, name, year, event, level, team_size) VALUES
+INSERT INTO caselists (caselist_id, name, display_name, year, event, level, team_size) VALUES
     (1, 'ndtceda21', 'NDT/CEDA 2021-22', 2021, 'cx', 'college', 2),
     (2, 'hspolicy21', 'HS Policy 2021-22', 2021, 'cx', 'hs', 2),
     (3, 'hsld21', 'HS LD 2021-22', 2021, 'ld', 'hs', 1),
@@ -12,7 +12,7 @@ INSERT INTO schools (school_id, caselist_id, name, display_name, state, chapter_
     (4, 4, 'PF', 'PF', 'CO', 1),
     (5, 5, 'NFA', 'NFA', NULL, 1);
 
-INSERT INTO teams (team_id, school_id, name, code, notes, debater1_first, debater1_last, debater2_first, debater2_last) VALUES
+INSERT INTO teams (team_id, school_id, display_name, name, notes, debater1_first, debater1_last, debater2_first, debater2_last) VALUES
     (1, 1, 'Northwestern HaPa', 'HaPa', 'Sample Notes', 'Aaron', 'Hardy', 'Chris', 'Palmer'),
     (2, 2, 'Policy SmSm', 'SmSm', 'Sample Notes', 'Jane', 'Smith', 'John', 'Smith'),
     (3, 3, 'LD DoDo', 'DoDo', 'Sample Notes', 'John', 'Doe', 'Jane', 'Doe'),

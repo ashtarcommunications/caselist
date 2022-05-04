@@ -5,21 +5,14 @@ const getRounds = {
     GET: async (req, res) => {
         let sql = (SQL`
             SELECT
-                R.*,
-                (
-                    SELECT cites
-                    FROM cites
-                    WHERE round_id = R.round_id
-                    ORDER BY updated_at DESC
-                    LIMIT 1
-                ) AS 'cites'
+                R.*
             FROM rounds R 
             INNER JOIN teams T ON T.team_id = R.team_id
             INNER JOIN schools S ON S.school_id = T.school_id
             INNER JOIN caselists C ON S.caselist_id = C.caselist_id
-            wHERE C.slug = ${req.params.caselist}
+            wHERE C.name = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${req.params.school})
-            AND LOWER(T.code = ${req.params.team})
+            AND LOWER(T.name = ${req.params.team})
         `);
         if (req.params.side) {
             sql += SQL`AND LOWER(R.side) = LOWER(${req.params.side})`;

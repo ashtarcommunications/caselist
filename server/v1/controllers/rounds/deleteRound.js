@@ -9,9 +9,9 @@ const deleteRound = {
             INNER JOIN teams T on T.team_id = T.team_id
             INNER JOIN schools S ON S.school_id = T.school_id
             INNER JOIN caselists C ON C.caselist_id = S.caselist_id
-            WHERE C.slug = ${req.params.caselist}
+            WHERE C.name = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${req.params.school})
-            AND LOWER(T.code) = LOWER(${req.params.team})
+            AND LOWER(T.name) = LOWER(${req.params.team})
             AND R.round_id = ${req.params.round}
         `);
 

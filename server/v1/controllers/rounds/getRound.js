@@ -8,9 +8,9 @@ const getRound = {
             INNER JOIN teams T ON T.team_id = R.team_id
             INNER JOIN schools S ON S.school_id = T.school_id
             INNER JOIN caselists C ON S.caselist_id = C.caselist_id
-            wHERE C.slug = ${req.params.caselist}
+            wHERE C.name = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${req.params.school})
-            AND LOWER(T.code) = LOWER(${req.params.team})
+            AND LOWER(T.name) = LOWER(${req.params.team})
             AND R.round_id = ${req.params.round}
         `);
         const [round] = await query(sql);

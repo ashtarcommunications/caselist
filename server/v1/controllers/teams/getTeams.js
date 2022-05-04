@@ -10,9 +10,9 @@ const getTeams = {
             FROM teams T
             INNER JOIN schools S ON S.school_id = T.school_id
             INNER JOIN caselists C ON S.caselist_id = C.caselist_id
-            wHERE C.slug = ${req.params.caselist}
+            wHERE C.name = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${req.params.school})
-            ORDER BY T.code
+            ORDER BY T.name
         `);
         const teams = await query(sql);
 

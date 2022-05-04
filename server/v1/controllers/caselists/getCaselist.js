@@ -5,7 +5,7 @@ const getCaselist = {
     GET: async (req, res) => {
         const sql = (SQL`
             SELECT * FROM caselists C
-            wHERE C.slug = ${req.params.caselist}
+            wHERE C.name = ${req.params.caselist}
         `);
         const [caselist] = await query(sql);
         if (!caselist) { return res.status(404).json({ message: 'Caselist not found' }); }

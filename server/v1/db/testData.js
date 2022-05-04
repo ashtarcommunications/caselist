@@ -4,7 +4,7 @@ import { pool, query } from '../helpers/mysql';
 const years = [2017, 2018, 2019, 2020];
 years.forEach(async (y) => {
     await query(SQL`
-        INSERT INTO caselists (slug, name, year, event, level, team_size) VALUES
+        INSERT INTO caselists (name, display_name, year, event, level, team_size) VALUES
             ('ndtceda${y}', 'NDT/CEDA ${y}', ${y}, 'cx', 'college', 2),
             ('hspolicy${y}', 'HS Policy ${y}', ${y}, 'cx', 'hs', 2),
             ('hsld${y}', 'HS LD ${y}', ${y}, 'ld', 'hs', 1),
@@ -76,7 +76,7 @@ const schools = [
 schools.forEach(async (s) => {
     await query(SQL`
         INSERT INTO schools (caselist_id, name, display_name, state, chapter_id) VALUES
-            (1, ${s.replace(' ', '')}, ${s}, NULL, 1)
+            (1, ${s.replaceAll(' ', '')}, ${s}, NULL, 1)
     `);
 });
 

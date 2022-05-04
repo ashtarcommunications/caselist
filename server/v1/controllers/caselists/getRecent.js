@@ -9,7 +9,7 @@ const getRecent = {
             INNER JOIN teams T ON T.team_id = R.team_id
             INNER JOIN schools S ON S.school_id = T.school_id
             INNER JOIN caselists C ON C.caselist_id = S.caselist_id
-            wHERE C.slug = ${req.params.caselist}
+            wHERE C.name = ${req.params.caselist}
             ORDER BY R.updated_at DESC
             LIMIT 10
         `);

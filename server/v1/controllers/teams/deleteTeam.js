@@ -8,9 +8,9 @@ const deleteTeam = {
             FROM teams T
             INNER JOIN schools S ON S.school_id = T.school_id
             INNER JOIN caselists C ON C.caselist_id = S.caselist_id
-            WHERE C.slug = ${req.params.caselist}
+            WHERE C.name = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${req.params.school})
-            AND LOWER(T.code) = LOWER(${req.params.team})
+            AND LOWER(T.name) = LOWER(${req.params.team})
         `);
 
         if (!result) { return res.status(400).json({ message: 'Team not found' }); }
@@ -21,8 +21,8 @@ const deleteTeam = {
             INNER JOIN schools S ON S.school_id = T.school_id
             INNER JOIN caselists C ON C.caselist_id = S.caselist_id
             WHERE LOWER(S.name) = LOWER(${req.params.school})
-            AND C.slug = ${req.params.caselist}
-            AND LOWER(T.code) = LOWER(${req.params.team})
+            AND C.name = ${req.params.caselist}
+            AND LOWER(T.name) = LOWER(${req.params.team})
         `);
         await query(SQL`
             UPDATE teams SET deleted = 1 WHERE team_id = ${teamId}
@@ -34,9 +34,9 @@ const deleteTeam = {
             INNER JOIN schools S ON S.school_id = T.school_id
             INNER JOIN caselists C ON C.caselist_id = S.caselist_id
             SET CT.deleted = 1
-            WHERE C.slug = ${req.params.caselist}
+            WHERE C.name = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${req.params.school})
-            AND LOWER(T.code) = LOWER(${req.params.team})
+            AND LOWER(T.name) = LOWER(${req.params.team})
         `);
         await query(SQL`
             UPDATE rounds R
@@ -44,9 +44,9 @@ const deleteTeam = {
             INNER JOIN schools S ON S.school_id = T.school_id
             INNER JOIN caselists C ON C.caselist_id = S.caselist_id
             SET R.deleted = 1
-            WHERE C.slug = ${req.params.caselist}
+            WHERE C.name = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${req.params.school})
-            AND LOWER(T.code) = LOWER(${req.params.team})
+            AND LOWER(T.name) = LOWER(${req.params.team})
         `);
 
         return res.status(201).json({ message: 'Team successfully deleted' });

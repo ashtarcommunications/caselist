@@ -17,9 +17,9 @@ const patchTeam = {
             INNER JOIN schools S ON S.school_id = T.school_id
             INNER JOIN caselists C ON S.caselist_id = C.caselist_id
             LEFT JOIN users U ON U.user_id = T.updated_by_id
-            wHERE C.slug = ${req.params.caselist}
+            wHERE C.name = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${req.params.school})
-            AND LOWER(T.code) = LOWER(${req.params.team})
+            AND LOWER(T.name) = LOWER(${req.params.team})
         `);
         const [team] = await query(sql);
         if (!team) { return res.status(400).json({ message: 'Team not found' }); }
