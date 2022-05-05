@@ -1,3 +1,7 @@
+.center {
+    text-align: center;
+}
+
 .report {
     display: flex;
     align-items: center;
@@ -9,12 +13,12 @@
 }
 
 .reportclosed {
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .reportopen {
-    white-space: pre-wrap !important;
+    white-space: pre-wrap;
 }
 
 .report-header {
@@ -82,8 +86,8 @@
 .citetitle {
     display: inline-block;
 }
+
 .copy {
-    float: right;
     color: var(--brightblue);
     cursor: pointer;
 }
@@ -97,7 +101,10 @@
     background-color: var(--lightblue);
     font-size: 12px;
     margin-left: 20px;
+}
 
+.claim svg {
+    margin-right: 5px;
 }
 
 .notes {
@@ -105,13 +112,12 @@
     background-color: var(--lightgray);
     font-size: 12px;
     margin-left: 20px;
-
 }
 
 .add-round {
     margin-left: auto;
 }
-button.add-round {
+.add-round button {
     border-radius: 20px;
     font-size: 14px !important;
     background-color: var(--green);
@@ -123,12 +129,16 @@ button.add-round {
     cursor: pointer;
 }
 
-.claim svg {
-    margin-right: 5px;
-}
-
 .teamname {
     margin-bottom: 0;
+}
+
+.trash {
+    color: var(--red);
+    cursor: pointer;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 1s, opacity 1s linear;
 }
 
 .rounds-table tr:hover .trash {

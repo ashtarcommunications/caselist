@@ -22,13 +22,6 @@
     vertical-align: middle;
 } 
 
-.green {
-    background-color: var(--green);
-    color: var(--white);
-    font-size: 90%;
-    border-radius: 20px;
-}
-
 .toggle {
     display: flex;
     font-size: 24px;

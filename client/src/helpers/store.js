@@ -26,7 +26,7 @@ export const ProvideStore = ({ children }) => {
         try {
             if (caselist) {
                 const schoolData = await loadSchools(caselist);
-                schoolData.sort((a, b) => a.name?.localeCompare(b.name));
+                schoolData.sort((a, b) => a.display_name?.localeCompare(b.display_name));
                 setSchools(schoolData || []);
             }
         } catch (err) {

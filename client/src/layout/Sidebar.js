@@ -2,20 +2,24 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+
 import { useStore } from '../helpers/store';
 import { startOfYear } from '../helpers/common';
 import CaselistDropdown from './CaselistDropdown';
-import './Sidebar.css';
+
+import styles from './Sidebar.module.css';
 
 const Sidebar = () => {
     const { caselist } = useParams();
     const { schools, fetchSchools, caselist: caselistData, fetchCaselist } = useStore();
+
     useEffect(() => {
         fetchSchools(caselist);
     }, [caselist, fetchSchools]);
+
     useEffect(() => {
         if (caselistData.message) { return false; }
-        if (!caselistData || caselist !== caselistData.slug) {
+        if (!caselistData || caselist !== caselistData.name) {
             fetchCaselist(caselist);
         }
     }, [caselist, caselistData, fetchCaselist]);
@@ -28,23 +32,24 @@ const Sidebar = () => {
     if (caselistData.message) { return false; }
 
     return (
-        <div className={`sidebar ${!visible && 'sidebar-collapsed'}`}>
-            <div className="toggle" onClick={handleToggleVisible} title="Click to toggle sidebar">
+        <div className={`${styles.sidebar} ${!visible ? styles['sidebar-collapsed'] : undefined}`}>
+            <div className={styles.toggle} onClick={handleToggleVisible} title="Click to toggle sidebar">
                 <span>{visible ? '«' : '»'}</span>
             </div>
-            <div className={!visible ? 'sidebar-contents-collapsed' : undefined}>
+            <div className={!visible ? styles['sidebar-contents-collapsed'] : undefined}>
                 <CaselistDropdown />
                 {
-                    caselistData.year && caselistData.year !== startOfYear &&
-                    <h2>THIS CASELIST IS ARCHIVED, NO CHANGES ARE ALLOWED</h2>
+                    caselistData.archived
+                    ? <p>THIS CASELIST IS ARCHIVED, NO CHANGES ARE ALLOWED</p>
+                    : false
                 }
                 <h2>
                     <span>Schools </span>
                     {
-                        caselistData.year === startOfYear &&
+                        !caselistData.archived && caselistData.year === startOfYear &&
                         <Link to={`/${caselist}/add`}>
-                            <button type="button" className="green pure-button">
-                                <FontAwesomeIcon className="plus" icon={faPlus} />
+                            <button type="button" className="green-button pure-button">
+                                <FontAwesomeIcon className={styles.plus} icon={faPlus} />
                                 <span> Add</span>
                             </button>
                         </Link>

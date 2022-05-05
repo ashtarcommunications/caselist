@@ -2,16 +2,17 @@ import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
+
 import { useStore } from '../helpers/store';
-import './Breadcrumbs.css';
+
+import styles from './Breadcrumbs.module.css';
 
 const Breadcrumbs = () => {
     const { caselist, school, team } = useParams();
     const { caselist: caselistData } = useStore();
 
-    // TODO - make it work when starting on a subpage
     return (
-        <div className="breadcrumbs">
+        <div className={styles.breadcrumbs}>
             <Link to="/">
                 <FontAwesomeIcon
                     className="home"

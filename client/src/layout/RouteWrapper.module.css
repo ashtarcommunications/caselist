@@ -1,0 +1,9 @@
+.wrapper {
+    display: flex;
+    min-height: calc(100vh - 90px);
+}
+
+.main {
+    width: 100%;
+    padding: 25px;
+}

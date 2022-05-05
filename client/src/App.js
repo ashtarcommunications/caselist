@@ -1,14 +1,19 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
+
 import 'purecss/build/pure-min.css';
 import 'react-toastify/dist/ReactToastify.min.css';
-import { ProvideAuth } from './helpers/auth';
-import RouteWrapper from './layout/layout';
-import Breadcrumbs from './layout/Breadcrumbs';
-import { ProvideStore } from './helpers/store';
-import ErrorBoundary from './layout/ErrorBoundary';
 import './App.css';
+
+import { BrowserRouter as Router, Switch } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+
+import { ProvideAuth } from './helpers/auth';
+import { ProvideStore } from './helpers/store';
+
+import RouteWrapper from './layout/RouteWrapper';
+import Breadcrumbs from './layout/Breadcrumbs';
+import ErrorBoundary from './layout/ErrorBoundary';
+
 import Home from './home/Home';
 import CaselistHome from './caselist/CaselistHome';
 import Recent from './caselist/Recent';

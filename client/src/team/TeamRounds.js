@@ -6,14 +6,16 @@ import { toast } from 'react-toastify';
 import moment from 'moment';
 import { Link, useParams } from 'react-router-dom';
 import MDEditor from '@uiw/react-md-editor';
+
 import { useStore } from '../helpers/store';
+import { loadTeam, addTabroomTeamLink } from '../helpers/api';
+import ConfirmButton from '../helpers/ConfirmButton';
 import Loader from '../loader/Loader';
 import Error from '../layout/Error';
-import { loadTeam, addTabroomTeamLink } from '../helpers/api';
 import RoundsTable from './RoundsTable';
 import CitesTable from './CitesTable';
-import ConfirmButton from '../helpers/ConfirmButton';
-import './TeamRounds.css';
+
+import styles from './TeamRounds.module.css';
 
 const TeamRounds = () => {
     const { caselist, school, team, side } = useParams();
@@ -79,12 +81,12 @@ const TeamRounds = () => {
     }
 
     return (
-        <div className="roundlist">
-            <h1 className="teamname">
+        <div className={styles.roundlist}>
+            <h1 className={styles.teamname}>
                 {school} {team} {!caselistData.archived && `(${lastNames})`}
                 <button
                     type="button"
-                    className="pure-button pure-button-secondary notes"
+                    className={`pure-button pure-button-secondary ${styles.notes}`}
                     onClick={handleToggleNotes}
                     title="Team notes"
                 >
@@ -92,7 +94,7 @@ const TeamRounds = () => {
                         icon={faFileLines}
                     />
                 </button>
-                <button type="button" className="pure-button pure-button-primary claim" onClick={handleLinkConfirm}>
+                <button type="button" className={`pure-button pure-button-primary ${styles.claim}`} onClick={handleLinkConfirm}>
                     <FontAwesomeIcon
                         icon={faLink}
                     />
@@ -101,9 +103,9 @@ const TeamRounds = () => {
             </h1>
             {
                 teamData.updatedBy &&
-                <p className="timestamp">Last updated by {teamData.updated_by ? teamData.updated_by : 'unknown'} on {timestamp}</p>
+                <p className={styles.timestamp}>Last updated by {teamData.updated_by ? teamData.updated_by : 'unknown'} on {timestamp}</p>
             }
-            <div className="notes">
+            <div className={styles.notes}>
                 {
                     showNotes &&
                         <MDEditor
@@ -112,11 +114,11 @@ const TeamRounds = () => {
                         />
                 }
             </div>
-            <div className="buttons">
+            <div className={styles.buttons}>
                 <Link to={`/${caselist}/${school}/${team}`}>
                     <button
                         type="button"
-                        className={`pure-button all ${!side && 'selected-side'}`}
+                        className={`pure-button all ${!side ? styles['selected-side'] : undefined}`}
                     >
                         All
                     </button>
@@ -124,7 +126,7 @@ const TeamRounds = () => {
                 <Link to={`/${caselist}/${school}/${team}/Aff`}>
                     <button
                         type="button"
-                        className={`pure-button aff ${side === 'Aff' && 'selected-side'}`}
+                        className={`pure-button all ${side === 'Aff' ? styles['selected-side'] : undefined}`}
                     >
                         Aff
                     </button>
@@ -132,14 +134,14 @@ const TeamRounds = () => {
                 <Link to={`/${caselist}/${school}/${team}/Neg`}>
                     <button
                         type="button"
-                        className={`pure-button neg ${side === 'Neg' && 'selected-side'}`}
+                        className={`pure-button all ${side === 'Neg' ? styles['selected-side'] : undefined}`}
                     >
                         Neg
                     </button>
                 </Link>
-                <Link to={`/${caselist}/${school}/${team}/add`} className="add-round">
-                    <button type="button" className="pure-button add-round">
-                        <FontAwesomeIcon className="plus" icon={faPlus} />
+                <Link to={`/${caselist}/${school}/${team}/add`} className={styles['add-round']}>
+                    <button type="button" className={`pure-button`}>
+                        <FontAwesomeIcon className={styles.plus} icon={faPlus} />
                         <span> Add Round</span>
                     </button>
                 </Link>

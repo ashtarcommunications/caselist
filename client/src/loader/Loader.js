@@ -1,9 +1,10 @@
 import React from 'react';
-import './Loader.css';
+
+import styles from './Loader.module.css';
 
 export const Loader = () => {
     return (
-        <div className="flex"><div className="loader" aria-label="circle loading animation" /></div>
+        <div className={styles.flex}><div className={styles.loader} aria-label="circle loading animation" /></div>
     );
 };
 

@@ -32,7 +32,7 @@
 }
 
 .search button {
-    background-color: var(--brightblue);
+    background-color: var(--green);
     color: white;
 }
 
@@ -47,8 +47,8 @@
     background-color: var(--lightblue);
 }
 .header-hs-pf {
-    background-color: var(--green);
+    background-color: var(--brightblue);
 }
 .header-college-ld {
-    background-color: var(--lightgreen);
+    background-color: var(--darkgray);
 }

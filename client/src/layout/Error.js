@@ -1,7 +1,7 @@
 import React from 'react';
 
 import UFO from './ufo.svg';
-import './Error.css';
+import styles from './Error.module.css';
 
 const Error = ({ statusCode = null, message = '', is404 = false }) => {
     if (is404) {
@@ -10,9 +10,9 @@ const Error = ({ statusCode = null, message = '', is404 = false }) => {
     }
 
     return (
-        <div className="error-container">
-            <div className="ufo"><img src={UFO} alt="UFO" /></div>
-            <div className="error-message">
+        <div className={styles['error-container']}>
+            <div className={styles.ufo}><img src={UFO} alt="UFO" /></div>
+            <div className={styles['error-message']}>
                 <h3>Error {statusCode}</h3>
                 <p>{message}</p>
                 <p><a href="/">Home</a></p>

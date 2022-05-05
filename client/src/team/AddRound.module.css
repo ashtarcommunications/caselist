@@ -1,0 +1,77 @@
+.dropzone {
+    border: 1px dashed var(--black);
+    margin: 20px 0px;
+    padding: 20px;
+    background-color: var(--lightgray);
+}
+
+.add-cite {
+    background-color: var(--green);
+    color: var(--white);
+    border-radius: 20px;
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+.add {
+    background-color: var(--green);
+    color: var(--white);
+    border-radius: 20px;
+}
+
+.cancel {
+    background-color: var(--red);
+    color: var(--white);
+    margin-left: 20px;
+    border-radius: 20px;
+}
+
+.flex {
+    display: flex;
+}
+
+.buttons {
+    margin-top: 20px;
+}
+
+.citetitle {
+    display: flex;
+    align-items: center;
+}
+.citetitle input {
+    min-width: 400px;
+}
+.citetitle svg {
+    margin-left: auto;
+}
+
+.caret {
+    width: 100%;
+}
+.caret label {
+    cursor: pointer;
+}
+.caret label input {
+    display: none;
+}
+
+.switch {
+    vertical-align: middle;
+}
+.switch-label {
+    vertical-align: middle;
+    margin-left: 10px;
+}
+
+.form-group label {
+    font-size: 0.7em;
+}
+
+.syntax {
+  color: var(--red);
+  font-size: 12px;
+}
+
+.trash {
+    color: var(--red);
+}

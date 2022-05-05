@@ -10,19 +10,21 @@ import { faTrash, faAngleUp, faAngleDown, faPlus } from '@fortawesome/free-solid
 import { toast } from 'react-toastify';
 import Toggle from 'react-toggle';
 import MDEditor, { commands } from '@uiw/react-md-editor';
+// import MarkdownIt from 'markdown-it';
+
 import { useStore } from '../helpers/store';
+import { addRound, loadTabroomRounds } from '../helpers/api';
+import { affName, negName } from '../helpers/common';
 import SideDropdown from './SideDropdown';
 import RoundNumberDropdown from './RoundNumberDropdown';
-// import MarkdownIt from 'markdown-it';
-import { addRound, loadTabroomRounds } from '../helpers/api';
-import './AddRound.css';
-import { affName, negName } from '../helpers/common';
 import Loader from '../loader/Loader';
+
+import styles from './AddRound.module.css';
 
 const AddRound = () => {
     const { caselist, school, team } = useParams();
     const history = useHistory();
-    const { register, watch, formState: { errors }, handleSubmit, reset, setValue, control } = useForm({ mode: 'all' });
+    const { register, watch, formState: { errors, isValid }, handleSubmit, reset, setValue, control } = useForm({ mode: 'all' });
     const { fields, append, remove } = useFieldArray({ control, name: 'cites' });
 
     const { caselist: caselistData } = useStore();
@@ -69,7 +71,6 @@ const AddRound = () => {
     const [fileContent, setFileContent] = useState(null);
 
     const addRoundHandler = async (data) => {
-        console.log(files[0]);
         if (fileContent) {
             data.opensource = fileContent;
             data.filename = files[0].name;
@@ -249,7 +250,7 @@ const AddRound = () => {
         <div>
             <h2>Add a round to {school} {team}</h2>
             <form onSubmit={handleSubmit(addRoundHandler)} encType="multipart/form-data" className="pure-form pure-form-stacked">
-                <div className="form-group">
+                <div className={styles['form-group']}>
                     <label htmlFor="tourn">Tournament</label>
                     <Controller
                         control={control}
@@ -261,7 +262,7 @@ const AddRound = () => {
                                 fieldState: { invalid },
                             }) => (
                                 <Combobox
-                                    containerClassName={`combo combo-block ${invalid ? 'dirty' : ''}`}
+                                    containerClassName={`${styles.combo} ${styles['combo-block']} ${invalid ? styles.dirty : undefined}`}
                                     busy={fetchingRounds}
                                     hideCaret={fetchingRounds || rounds.length < 1}
                                     data={rounds}
@@ -288,7 +289,7 @@ const AddRound = () => {
                         }
                     />
                 </div>
-                <div className="form-group">
+                <div className={styles['form-group']}>
                     <label htmlFor="side">Side</label>
                     <Controller
                         control={control}
@@ -307,7 +308,7 @@ const AddRound = () => {
                         }
                     />
                 </div>
-                <div className="form-group">
+                <div className={styles['form-group']}>
                     <label htmlFor="round">Round</label>
                     <Controller
                         control={control}
@@ -323,7 +324,7 @@ const AddRound = () => {
                     />
                 </div>
 
-                <div className="form-group">
+                <div className={styles['form-group']}>
                     <label htmlFor="opponent">Opponent</label>
                     <input
                         name="opponent"
@@ -331,7 +332,7 @@ const AddRound = () => {
                         {...register('opponent', { required: true })}
                     />
                 </div>
-                <div className="form-group">
+                <div className={styles['form-group']}>
                     <label htmlFor="judge">Judge</label>
                     <input
                         name="judge"
@@ -339,14 +340,14 @@ const AddRound = () => {
                         {...register('judge', { required: true })}
                     />
                 </div>
-                <div className="form-group">
+                <div className={styles['form-group']}>
                     <label htmlFor="report">Round Report</label>
                     <textarea
                         name="report"
                         {...register('report')}
                     />
                 </div>
-                <div className="form-group">
+                <div className={styles['form-group']}>
                     <label htmlFor="video">Video URL</label>
                     <input
                         name="video"
@@ -372,7 +373,7 @@ const AddRound = () => {
                                                     <span>Uploaded file: </span>
                                                     {file.path}
                                                     <FontAwesomeIcon
-                                                        className="trash"
+                                                        className={styles.trash}
                                                         icon={faTrash}
                                                         onClick={handleResetFiles}
                                                     />
@@ -387,7 +388,7 @@ const AddRound = () => {
                                 </div>
                             :
                                 <>
-                                    <div style={{ display: 'flex' }}>
+                                    <div className={styles.flex}>
                                         <label htmlFor="autodetect-cites">
                                             <Controller
                                                 control={control}
@@ -398,7 +399,7 @@ const AddRound = () => {
                                                         field: { onChange, value },
                                                     }) => (
                                                         <Toggle
-                                                            className="switch"
+                                                            className={styles.switch}
                                                             onChange={onChange}
                                                             checked={value}
                                                             onColor="#8BBF56"
@@ -415,7 +416,7 @@ const AddRound = () => {
                                                     )
                                                 }
                                             />
-                                            <span className="switch-label">
+                                            <span className={styles['switch-label']}>
                                                 Auto-detect cites (works with <a href="https://paperlessdebate.com" target="_blank" rel="noopener noreferrer">Verbatim</a>)
                                             </span>
                                         </label>
@@ -427,7 +428,10 @@ const AddRound = () => {
                                             ({
                                                 field: { onChange },
                                             }) => (
-                                                <div className="dropzone" {...getRootProps()}>
+                                                <div
+                                                    className={styles.dropzone}
+                                                    {...getRootProps()}
+                                                >
                                                     <div>
                                                         <input
                                                             {...getInputProps(
@@ -452,8 +456,8 @@ const AddRound = () => {
                 <hr />
                 <h4>
                     Cites
-                    <button type="button" onClick={() => append({ title: '', cites: '', open: false })} className="pure-button add-cite">
-                        <FontAwesomeIcon className="plus" icon={faPlus} />
+                    <button type="button" onClick={() => append({ title: '', cites: '', open: false })} className={`${styles['add-cite']} pure-button`}>
+                        <FontAwesomeIcon className={styles.plus} icon={faPlus} />
                         <span> Add Cite</span>
                     </button>
                 </h4>
@@ -461,8 +465,8 @@ const AddRound = () => {
                     fields.map((item, index) => {
                         return (
                             <React.Fragment key={item.id}>
-                                <div className="citetitle">
-                                    <div className="form-group">
+                                <div className={styles.citetitle}>
+                                    <div className={styles['form-group']}>
                                         <label htmlFor={`title-${item.id}`}>Cite Title</label>
                                         <input
                                             name={`title-${item.id}`}
@@ -471,7 +475,7 @@ const AddRound = () => {
                                             defaultValue={item.title}
                                         />
                                     </div>
-                                    <span className="caret">
+                                    <span className={styles.caret}>
                                         <label htmlFor={`cites.${index}.open`}>
                                             <input
                                                 id={`cites.${index}.open`}
@@ -481,7 +485,7 @@ const AddRound = () => {
                                             />
                                             <FontAwesomeIcon
                                                 icon={
-                                                    cites[index]?.open
+                                                    cites && cites[index]?.open
                                                     ? faAngleDown
                                                     : faAngleUp
                                                 }
@@ -489,14 +493,14 @@ const AddRound = () => {
                                         </label>
                                     </span>
                                     <FontAwesomeIcon
-                                        className="trash"
+                                        className={styles.trash}
                                         icon={faTrash}
                                         onClick={() => remove(index)}
                                     />
                                 </div>
                                 {
                                     cites[index]?.cites?.charAt(0) === '=' &&
-                                    <p className="syntax">
+                                    <p className={styles.syntax}>
                                         It looks like you&apos;re using outdated wiki syntax
                                         from an old version of Verbatim!
                                         Upgrade Verbatim, let the caselist autodetect cites,
@@ -584,10 +588,10 @@ const AddRound = () => {
                         );
                     })
                 }
-                <div className="buttons">
-                    <button type="submit" className="pure-button add" disabled={Object.keys(errors).length > 0}>Add Round</button>
+                <div className={styles.buttons}>
+                    <button type="submit" className={`pure-button ${styles.add}`} disabled={!isValid}>Add Round</button>
                     <Link to={`/${caselist}/${school}/${team}`}>
-                        <button type="button" className="pure-button cancel">Cancel</button>
+                        <button type="button" className={`pure-button ${styles.cancel}`}>Cancel</button>
                     </Link>
                 </div>
             </form>

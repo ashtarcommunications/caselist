@@ -41,11 +41,11 @@
     background-color: var(--lightblue);
 }
 .pf {
-    background-color: var(--green);
+    background-color: var(--brightblue);
 }
 .nfa {
-    background-color: var(--lightgreen);
+    background-color: var(--darkgray);
 }
 .openev {
-    background-color: var(--magenta);
+    background-color: var(--green);
 }

@@ -10,3 +10,7 @@
 .sort {
     margin-left: 5px;
 }
+
+.no-data {
+    padding: 10px;
+}

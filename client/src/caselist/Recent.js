@@ -23,7 +23,7 @@ const Recent = () => {
     }, [caselist]);
 
     return (
-        <div className="home">
+        <div>
             <h1>Recently Modified</h1>
             <p>{JSON.stringify(recentData)}</p>
         </div>

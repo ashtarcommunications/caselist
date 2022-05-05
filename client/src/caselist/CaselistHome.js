@@ -3,14 +3,14 @@ import { useParams } from 'react-router-dom';
 import Markdown from 'react-markdown';
 import { useStore } from '../helpers/store';
 import Error from '../layout/Error';
-import './CaselistHome.css';
+import styles from './CaselistHome.module.css';
 
 const CaselistHome = () => {
     const { caselist } = useParams();
     const { caselist: caselistData, fetchCaselist } = useStore();
     useEffect(() => {
         if (caselistData.message) { return false; }
-        if (!caselistData || caselist !== caselistData.slug) {
+        if (!caselistData || caselist !== caselistData.name) {
             fetchCaselist(caselist);
         }
     }, [caselist, caselistData, fetchCaselist]);
@@ -20,11 +20,11 @@ const CaselistHome = () => {
     const markdown = '# # This would create Heading 1 - Reserved for titles\n## ## This would create Heading 2 - Hat/Section\n### ### This would create Heading 3 - Block Title/Argument Title\n#### #### This would create Heading 4 - Tag';
 
     return (
-        <div className="caselist-home">
-            <h1>{caselistData.name}</h1>
+        <div className={styles['caselist-home']}>
+            <h1>{caselistData.display_name}</h1>
             <div>
                 <p>
-                    This site provides a space for collaborative intel for the NDT/CEDA/ADA
+                    This site provides a space for collaborative intel for the
                     debate community.
                 </p>
 

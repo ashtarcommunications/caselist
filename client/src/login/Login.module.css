@@ -11,8 +11,10 @@
     margin-top: 20px;
 }
 
-.login .button {
+.button {
     margin-top: 20px;
+    background-color: var(--green);
+    color: var(--white);
 }
 
 .login-form {

@@ -5,7 +5,7 @@ const ConfirmButton = ({ message = 'Are you sure?', handler }) => (
         <p>{message}</p>
         <button
             type="button"
-            className="pure-button pure-button-primary"
+            className="pure-button blue-button"
             onClick={handler}
         >
             Confirm

@@ -1,27 +1,31 @@
 import React from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+
 import { useStore } from '../helpers/store';
 import { addSchool } from '../helpers/api';
 import StatesDropdown from './StatesDropdown';
-import './AddSchool.css';
+
+import styles from './AddSchool.module.css';
 
 const AddSchool = () => {
     const history = useHistory();
     const { caselist } = useParams();
     const { caselist: caselistData, fetchSchools } = useStore();
 
-    const { register, formState: { errors }, handleSubmit, reset } = useForm({ mode: 'all' });
+    const { register, formState: { errors, isValid }, handleSubmit, reset, control } = useForm({ mode: 'all' });
 
     const addSchoolHandler = async (data) => {
         try {
-            await addSchool(caselist, { display_name: data.name });
+            const newSchool = await addSchool(
+                caselist,
+                { displayName: data.name, state: data.state },
+            );
             fetchSchools(caselist);
             reset();
             toast.success('Successfully added school');
-            // TODO - use the returned slug, not the display name
-            history.push(`/${caselist}/${data.name}`);
+            history.push(`/${caselist}/${newSchool.name}`);
         } catch (err) {
             console.log(err);
             toast.error(err.message);
@@ -32,7 +36,7 @@ const AddSchool = () => {
     const alpha = /^[a-zA-Z ]+$/;
 
     return (
-        <div className="instructions">
+        <div className={styles.instructions}>
             <h1>Add a school to {caselistData.name}</h1>
             <p>
                 Use the form below to add a school to the caselist. School names should conform
@@ -63,7 +67,7 @@ const AddSchool = () => {
                 banning. Please note that everything you do on the site is logged.
             </p>
             <form onSubmit={handleSubmit(addSchoolHandler)} className="pure-form pure-form-stacked">
-                School Name:
+                <label htmlFor="name">School Name</label>
                 <input
                     id="name"
                     type="text"
@@ -88,15 +92,41 @@ const AddSchool = () => {
                         }
                     )}
                 />
-                <div className="error">
+                <div className="error-small">
                     {errors.name?.type === 'required' && <p>This field is required</p>}
                     {errors.name?.type === 'minLength' && <p>At least 3 characters</p>}
                     {errors.name?.type === 'maxLength' && <p>Max 255 characters</p>}
                     {errors.name && <p>{errors.name?.message}</p>}
                 </div>
 
-                {caselistData.level === 'hs' && <StatesDropdown emptyOptionText="" />}
-                <button type="submit" className="green pure-button" disabled={errors.name}>Add</button>
+                {
+                    caselistData.level === 'hs' &&
+                    <Controller
+                        control={control}
+                        name="state"
+                        rules={{ required: true }}
+                        render={
+                            ({
+                                field: { onChange, value },
+                            }) => (
+                                <>
+                                    <label htmlFor="state">State</label>
+                                    <StatesDropdown
+                                        id="state"
+                                        stateCode={value}
+                                        changeStateCode={onChange}
+                                        required
+                                    />
+                                </>
+                            )
+                        }
+                    />
+                }
+                <div className="error-small">
+                    {errors.state?.type === 'required' && <p>This field is required</p>}
+                </div>
+
+                <button type="submit" className={`${styles.add} green-button pure-button`} disabled={!isValid}>Add</button>
             </form>
         </div>
     );

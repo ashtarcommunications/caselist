@@ -4,11 +4,13 @@ import { faTrash, faAngleDown, faAngleUp, faCopy } from '@fortawesome/free-solid
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 import Markdown from 'react-markdown';
+
 import { loadCites, deleteCite } from '../helpers/api';
-import Table from '../tables/Table';
 import ConfirmButton from '../helpers/ConfirmButton';
 import { useDeviceDetect } from '../helpers/common';
-import './TeamRounds.css';
+import Table from '../tables/Table';
+
+import styles from './TeamRounds.module.css';
 
 const CitesTable = ({ loading }) => {
     const { caselist, school, team, side } = useParams();
@@ -64,16 +66,16 @@ const CitesTable = ({ loading }) => {
                 id: 'cites',
                 Header: 'Cites',
                 accessor: row => row,
-                className: 'cites',
+                className: styles.cites,
                 Cell: (row) => {
                     return (
-                        <div className="cites">
+                        <div className={styles.cites}>
                             <h1
                                 onClick={e => handleToggleCites(e)}
                                 id={row.row?.original?.cite_id}
                             >
                                 <span>{row.value?.title}</span>
-                                <span className="caret">
+                                <span className={styles.caret}>
                                     <FontAwesomeIcon
                                         icon={
                                             row.row?.original?.citesopen
@@ -84,7 +86,7 @@ const CitesTable = ({ loading }) => {
                                 </span>
                             </h1>
                             <span
-                                className={row.row?.original?.citesopen ? 'cites citesopen' : 'cites citesclosed'}
+                                className={`cites ${row.row?.original?.citesopen ? styles.citesopen : styles.citesclosed}`}
                             >
                                 <Markdown>{row.value?.cites}</Markdown>
                             </span>
@@ -97,12 +99,12 @@ const CitesTable = ({ loading }) => {
                 Header: '',
                 disableSortBy: true,
                 accessor: (row) => row,
-                className: 'center',
+                className: styles.center,
                 Cell: (row) => (
                     <span
                         id={row.row?.original?.cite_id}
                         onClick={() => handleCopyCites(row.row?.original?.cite_id)}
-                        className="copy"
+                        className={styles.copy}
                     >
                         <FontAwesomeIcon
                             icon={faCopy}
@@ -115,12 +117,12 @@ const CitesTable = ({ loading }) => {
                 Header: '',
                 disableSortBy: true,
                 accessor: (row) => row,
-                className: 'center',
+                className: styles.center,
                 Cell: (row) => (
                     <span
                         id={row.row?.original?.cite_id}
                         onClick={() => handleDeleteCiteConfirm(row.row?.original?.cite_id)}
-                        className="trash"
+                        className={styles.trash}
                     >
                         <FontAwesomeIcon
                             icon={faTrash}
@@ -134,7 +136,13 @@ const CitesTable = ({ loading }) => {
     const { isMobile } = useDeviceDetect();
 
     return (
-        <Table columns={citeHeaders} data={cites} className={isMobile ? 'cites-table mobile-table' : 'cites-table'} noDataText="No cites found!" loading={loading} />
+        <Table
+            columns={citeHeaders}
+            data={cites}
+            className={`${styles['cites-table']} ${isMobile ? styles['mobile-table'] : undefined}`}
+            noDataText="No cites found!"
+            loading={loading}
+        />
     );
 };
 

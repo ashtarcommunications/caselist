@@ -1,13 +1,15 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faCheck, faAngleDown, faAngleUp, faSave } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faAngleDown, faAngleUp, faSave } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
+
 import { loadRounds, deleteRound } from '../helpers/api';
-import Table from '../tables/Table';
 import ConfirmButton from '../helpers/ConfirmButton';
 import { useDeviceDetect } from '../helpers/common';
-import './TeamRounds.css';
+import Table from '../tables/Table';
+
+import styles from './TeamRounds.module.css';
 
 const RoundsTable = ({ loading }) => {
     const { caselist, school, team, side } = useParams();
@@ -18,7 +20,9 @@ const RoundsTable = ({ loading }) => {
         const fetchData = async () => {
             try {
                 const response = await loadRounds(caselist, school, team);
-                setRounds(side ? response.filter(r => r.side === side) : response);
+                if (response) {
+                    setRounds(side ? response.filter(r => r.side === side) : response);
+                }
             } catch (err) {
                 console.log(err);
             }
@@ -73,10 +77,10 @@ const RoundsTable = ({ loading }) => {
             Header: () => {
                 return (
                     <>
-                        <span className="report-header">Round Report</span>
+                        <span className={styles['report-header']}>Round Report</span>
                         <button
                             type="button"
-                            className="pure-button toggleall"
+                            className={`pure-button ${styles.toggleall}`}
                             onClick={handleToggleAll}
                         >
                             {allRoundsOpen ? 'Collapse All' : 'Expand All'}
@@ -88,15 +92,15 @@ const RoundsTable = ({ loading }) => {
             accessor: row => row,
             Cell: (row) => {
                 return (
-                    <div className="report">
+                    <div className={styles.report}>
                         <div
-                            className={row.row?.original?.reportopen ? 'report reportopen' : 'report reportclosed'}
+                            className={`${styles.report} ${row.row?.original?.reportopen ? styles.reportopen : styles.reportclosed}`}
                         >
                             {row.value?.report}
                         </div>
                         {
                             row.value?.report &&
-                            <span className="caret">
+                            <span className={styles.caret}>
                                 <FontAwesomeIcon
                                     icon={
                                         row.row?.original?.reportopen
@@ -112,26 +116,26 @@ const RoundsTable = ({ loading }) => {
                 );
             },
         },
-        {
-            id: 'cites',
-            Header: 'Cites',
-            accessor: 'cites',
-            className: 'center',
-            Cell: (row) => {
-                return row.value && <FontAwesomeIcon
-                    icon={faCheck}
-                />;
-            },
-        },
+        // {
+        //     id: 'cites',
+        //     Header: 'Cites',
+        //     accessor: 'cites',
+        //     className: styles.center,
+        //     Cell: (row) => {
+        //         return row.value && <FontAwesomeIcon
+        //             icon={faCheck}
+        //         />;
+        //     },
+        // },
         {
             id: 'opensource',
             Header: () => <span>Open<br />Source</span>,
             accessor: row => row,
-            className: 'center',
+            className: styles.center,
             Cell: () => {
                 return (<FontAwesomeIcon
                     icon={faSave}
-                    className="save"
+                    className={styles.save}
                 />);
             },
         },
@@ -140,10 +144,10 @@ const RoundsTable = ({ loading }) => {
             Header: '',
             disableSortBy: true,
             accessor: (row) => row,
-            className: 'center',
+            className: styles.center,
             Cell: (row) => (
                 <FontAwesomeIcon
-                    className="trash"
+                    className={styles.trash}
                     icon={faTrash}
                     id={row.value?.round_id}
                     onClick={e => handleDeleteRoundConfirm(e)}
@@ -165,7 +169,7 @@ const RoundsTable = ({ loading }) => {
                         <p>
                             <span>Round: {row.row?.original?.round}</span>
                             <FontAwesomeIcon
-                                className="trash"
+                                className={styles.trash}
                                 icon={faTrash}
                                 id={row.row?.original?.round_id}
                                 onClick={e => handleDeleteRoundConfirm(e)}
@@ -180,13 +184,13 @@ const RoundsTable = ({ loading }) => {
                                 <span>Open Source:</span>
                                 <FontAwesomeIcon
                                     icon={faSave}
-                                    className="save"
+                                    className={styles.save}
                                 />
                             </p>
                         }
                         {
                             row.row?.original?.report &&
-                            <p className="report reportopen">Report:<br />{row.row?.original?.report}</p>
+                            <p className={`${styles.report} ${styles.reportopen}`}>Report:<br />{row.row?.original?.report}</p>
                         }
                     </div>
                 );
@@ -197,7 +201,12 @@ const RoundsTable = ({ loading }) => {
     const { isMobile } = useDeviceDetect();
 
     return (
-        <Table columns={isMobile ? mobileColumns : columns} data={rounds} className={isMobile ? 'rounds-table mobile-table' : 'rounds-table'} loading={loading} />
+        <Table
+            columns={isMobile ? mobileColumns : columns}
+            data={rounds}
+            className={`${styles['rounds-table']} ${isMobile ? styles['mobile-table'] : undefined}`}
+            loading={loading}
+        />
     );
 };
 

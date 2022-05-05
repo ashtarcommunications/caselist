@@ -27,7 +27,7 @@
     opacity: 0;
     transition: visibility 0s 1s, opacity 1s linear;
 }
-.team-list tr:hover .trash {
+.team-table tr:hover .trash {
     visibility: visible;
     opacity: 1;
     transition: visibility 0s, opacity 0s linear;
@@ -42,7 +42,7 @@
     margin-left: 40px;
     color: var(--darkgray);
 }
-.team-list tr:hover .hover-links {
+.team-table tr:hover .hover-links {
     visibility: visible;
     opacity: 1;
     transition: visibility 0s, opacity 0s linear;

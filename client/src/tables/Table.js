@@ -2,8 +2,10 @@ import React from 'react';
 import { useTable, useSortBy } from 'react-table';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp, faSort } from '@fortawesome/free-solid-svg-icons';
+
 import Loader from '../loader/Loader';
-import './Table.css';
+
+import styles from './Table.module.css';
 
 const Table = ({ columns = [], data = [], className, loading = false, noDataText = 'No data found!' }) => {
     const {
@@ -17,7 +19,7 @@ const Table = ({ columns = [], data = [], className, loading = false, noDataText
     if (!columns || !data) return false;
 
     return (
-        <div className="table">
+        <div className={styles.table}>
             <table {...getTableProps()} className={`pure-table pure-table-bordered ${className}`}>
                 <thead>
                     {
@@ -26,7 +28,7 @@ const Table = ({ columns = [], data = [], className, loading = false, noDataText
                                 {
                                     headerGroup.headers.map(column => (
                                         <th {...column.getHeaderProps()}>
-                                            <div {...column.getSortByToggleProps()} data-testid="sortDiv" styleName="col-header">
+                                            <div {...column.getSortByToggleProps()} data-testid="sortDiv">
                                                 {column.render('Header')}
                                                 {
                                                     column.isSorted ?
@@ -39,7 +41,10 @@ const Table = ({ columns = [], data = [], className, loading = false, noDataText
                                                         />
                                                         :
                                                         !column.disableSortBy &&
-                                                        <FontAwesomeIcon className="sort" icon={faSort} />
+                                                        <FontAwesomeIcon
+                                                            className={styles.sort}
+                                                            icon={faSort}
+                                                        />
                                                 }
                                             </div>
                                         </th>
@@ -51,7 +56,7 @@ const Table = ({ columns = [], data = [], className, loading = false, noDataText
                 </thead>
                 <tbody {...getTableBodyProps()}>
                     {loading && <Loader />}
-                    {data.length < 1 && <p className="no-data">{noDataText}</p>}
+                    {data.length < 1 && <tr className={styles['no-data']}><td>{noDataText}</td></tr>}
                     {
                         rows.map((row) => {
                             prepareRow(row);

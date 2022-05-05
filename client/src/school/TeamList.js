@@ -3,6 +3,8 @@ import { Link, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
+import { toast } from 'react-toastify';
+
 import { deleteTeam } from '../helpers/api';
 import { useStore } from '../helpers/store';
 // import TabroomChaptersDropdown from './TabroomChaptersDropdown';
@@ -10,8 +12,9 @@ import Breadcrumbs from '../layout/Breadcrumbs';
 import Table from '../tables/Table';
 import Error from '../layout/Error';
 import Loader from '../loader/Loader';
-import './TeamList.css';
 import AddTeam from './AddTeam';
+
+import styles from './TeamList.module.css';
 
 const TeamList = () => {
     const { caselist, school } = useParams();
@@ -27,10 +30,12 @@ const TeamList = () => {
 
     const handleDelete = useCallback(async (e) => {
         // eslint-disable-next-line no-alert
-        alert(`Deleting team ${e.currentTarget.dataset.code}`);
+        alert(`Deleting team ${e.currentTarget.dataset.name}`);
         try {
-            await deleteTeam(caselist, school, e.currentTarget.dataset.code);
+            await deleteTeam(caselist, school, e.currentTarget.dataset.name);
+            toast.success('Team successfully deleted');
         } catch (err) {
+            toast.error('Failed to delete team');
             console.log(err);
         }
     }, [caselist, school]);
@@ -43,8 +48,8 @@ const TeamList = () => {
             Cell: (row) => {
                 return (
                     <>
-                        <Link to={`/${caselist}/${school}/${row.value?.code}`}>
-                            {row.value.name} (
+                        <Link to={`/${caselist}/${school}/${row.value?.name}`}>
+                            {row.value.display_name} (
                             <span>{row.value.debater1_first} </span>
                             <span>{row.value.debater1_last} </span>
                             <span>- </span>
@@ -52,9 +57,9 @@ const TeamList = () => {
                             <span>{row.value.debater2_last}</span>
                             )
                         </Link>
-                        <div className="hover-links">
-                            <Link to={`/${caselist}/${school}/${row.value?.code}/Aff`}>Aff</Link>
-                            <Link to={`/${caselist}/${school}/${row.value?.code}/Neg`}>Neg</Link>
+                        <div className={styles['hover-links']}>
+                            <Link to={`/${caselist}/${school}/${row.value?.name}/Aff`}>Aff</Link>
+                            <Link to={`/${caselist}/${school}/${row.value?.name}/Neg`}>Neg</Link>
                         </div>
                     </>
                 );
@@ -65,12 +70,12 @@ const TeamList = () => {
             Header: '',
             disableSortBy: true,
             accessor: (row) => row,
-            className: 'center',
+            className: styles.center,
             Cell: (row) => (
                 <FontAwesomeIcon
-                    className="trash"
+                    className={styles.trash}
                     icon={faTrash}
-                    data-code={row.value?.code}
+                    data-name={row.value?.name}
                     onClick={e => handleDelete(e)}
                 />
             ),
@@ -84,12 +89,17 @@ const TeamList = () => {
 
     return (
         <>
-            <div className="teamlist">
+            <div className={styles.teamlist}>
                 <Breadcrumbs />
-                <h1 className="schoolname">{schoolData.display_name}</h1>
-                {schoolData.updatedBy && <p className="timestamp">Last updated by {schoolData.updated_by} on {timestamp}</p>}
+                <h1 className={styles.schoolname}>{schoolData.display_name}</h1>
+                {
+                    schoolData.updatedBy &&
+                    <p className={styles.timestamp}>
+                        Last updated by {schoolData.updated_by} on {timestamp}
+                    </p>
+                }
                 {/* <TabroomChaptersDropdown /> */}
-                <Table columns={columns} data={data} className="team-list" />
+                <Table columns={columns} data={data} className={styles['team-table']} noDataText="No teams found" />
             </div>
             <hr />
             <AddTeam />

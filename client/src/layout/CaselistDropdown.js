@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import uniqBy from 'lodash/uniqBy';
 import { useHistory, useParams } from 'react-router-dom';
+
 import { loadCaselists } from '../helpers/api';
 import { startOfYear } from '../helpers/common';
 import { useStore } from '../helpers/store';
-import './CaselistDropdown.css';
+
+import styles from './CaselistDropdown.module.css';
 
 const CaselistDropdown = () => {
     const history = useHistory();
@@ -12,16 +14,8 @@ const CaselistDropdown = () => {
     const { fetchCaselist } = useStore();
 
     const [caselists, setCaselists] = useState([]);
-
-    // TODO - dropdowns not setting default value correctly
-    const selectedCaselist = caselists.find(c => c.slug === caselist) || {};
-    if (selectedCaselist.name) {
-        document.title = `openCaselist - ${selectedCaselist.name}`;
-    }
-    const defaultYear = selectedCaselist.year || startOfYear;
-
     const [years, setYears] = useState([]);
-    const [year, setYear] = useState(defaultYear);
+    const [year, setYear] = useState(startOfYear);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -39,6 +33,14 @@ const CaselistDropdown = () => {
         fetchData();
     }, []);
 
+    useEffect(() => {
+        const selectedCaselist = caselists.find(c => c.name === caselist) || {};
+        if (selectedCaselist.name) {
+            document.title = `openCaselist - ${selectedCaselist.display_name}`;
+        }
+        setYear(selectedCaselist.year || startOfYear);
+    }, [caselist, caselists]);
+
     const filteredCaselists = caselists.filter(c => c.year === year).sort();
 
     const handleChangeYear = (e) => {
@@ -46,16 +48,17 @@ const CaselistDropdown = () => {
     };
 
     const handleChangeCaselist = (e) => {
-        history.push(`/${e.currentTarget.value}`);
-        const selected = caselists.find(c => c.slug === e.currentTarget.value) || {};
-        document.title = `openCaselist - ${selected.name}`;
+        const selected = caselists.find(c => c.name === e.currentTarget.value) || {};
+        document.title = `openCaselist - ${selected.display_name}`;
         fetchCaselist(e.currentTarget.value);
+        history.push(`/${e.currentTarget.value}`);
     };
 
     return (
         <div>
-            <form className="form pure-form caselist-select">
+            <form className="form pure-form">
                 <select
+                    className={styles.select}
                     onChange={handleChangeYear}
                     value={year}
                 >
@@ -72,16 +75,16 @@ const CaselistDropdown = () => {
                         })
                     }
                 </select>
-                <select onChange={handleChangeCaselist} value={caselist}>
+                <select onChange={handleChangeCaselist} value={caselist} className={styles.select}>
                     <option value="">Choose a Caselist</option>
                     {
                         filteredCaselists.map(c => {
                             return (
                                 <option
                                     key={c.caselist_id}
-                                    value={c.slug}
+                                    value={c.name}
                                 >
-                                    {c.name}
+                                    {c.display_name}
                                 </option>
                             );
                         })

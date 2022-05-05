@@ -1,8 +1,10 @@
 import React, { useContext } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+
 import { AuthContext } from '../helpers/auth';
-import './Login.css';
+
+import styles from './Login.module.css';
 
 const Login = () => {
     const { register, handleSubmit } = useForm();
@@ -12,9 +14,7 @@ const Login = () => {
     const onSubmit = async (data) => {
         try {
             await auth.handleLogin(data.username, data.password);
-            console.log(location);
             const { from } = location.state || { from: { pathname: '/' } };
-            console.log(from);
             history.replace(from);
         } catch (err) {
             console.log(err);
@@ -22,9 +22,9 @@ const Login = () => {
     };
 
     return (
-        <div className="login">
+        <div className={styles.login}>
             <p>Login with your <a href="https://tabroom.com">Tabroom.com</a> username and password</p>
-            <form className="login-form pure-form pure-form-stacked" onSubmit={handleSubmit(onSubmit)}>
+            <form className={`${styles['login-form']} pure-form pure-form-stacked`} onSubmit={handleSubmit(onSubmit)}>
                 <div>
                     <label htmlFor="username">Username</label>
                     <input id="username" type="text" {...register('username')} />
@@ -36,7 +36,7 @@ const Login = () => {
                 <div>
                     <input id="remember" type="checkbox" defaultChecked {...register('remember')} /> Remember Me
                 </div>
-                <button className="button pure-button pure-button-primary" type="submit">Login</button>
+                <button className={`${styles.button} pure-button`} type="submit">Login</button>
             </form>
             <p>
                 <a href="https://tabroom.com">Forgot Password?</a>
