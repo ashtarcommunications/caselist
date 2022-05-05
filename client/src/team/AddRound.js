@@ -502,7 +502,7 @@ const AddRound = () => {
                                             />
                                             <FontAwesomeIcon
                                                 icon={
-                                                    cites && cites[index]?.open
+                                                    cites?.[index]?.open
                                                     ? faAngleDown
                                                     : faAngleUp
                                                 }
@@ -516,7 +516,7 @@ const AddRound = () => {
                                     />
                                 </div>
                                 {
-                                    cites[index]?.cites?.charAt(0) === '=' &&
+                                    cites?.[index]?.cites?.charAt(0) === '=' &&
                                     <p className={styles.syntax}>
                                         It looks like you&apos;re using outdated wiki syntax
                                         from an old version of Verbatim!
@@ -526,7 +526,7 @@ const AddRound = () => {
                                     </p>
                                 }
                                 {
-                                    cites[index]?.open &&
+                                    cites?.[index]?.open &&
                                     <Controller
                                         control={control}
                                         name={`cites.${index}.cites`}

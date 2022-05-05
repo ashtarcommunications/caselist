@@ -102,7 +102,7 @@ const TeamRounds = () => {
                 </button>
             </h1>
             {
-                teamData.updatedBy &&
+                teamData.updated_by &&
                 <p className={styles.timestamp}>Last updated by {teamData.updated_by ? teamData.updated_by : 'unknown'} on {timestamp}</p>
             }
             <div className={styles.notes}>
