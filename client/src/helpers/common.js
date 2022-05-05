@@ -51,14 +51,28 @@ export const negName = (eventName) => {
 };
 export const normalizeSide = (side) => {
     switch (side) {
-        case 'Aff': return 'Aff';
-        case 'A': return 'Aff';
-        case 'Pro': return 'Aff';
-        case 'Neg': return 'Neg';
-        case 'N': return 'Neg';
-        case 'Con': return 'Neg';
+        case 'A': return 'A';
+        case 'Aff': return 'A';
+        case 'Pro': return 'A';
+        case 'N': return 'N';
+        case 'Neg': return 'N';
+        case 'Con': return 'N';
         default: return side;
     }
+};
+export const displaySide = (side, event) => {
+    if (['A', 'Aff', 'Pro'].indexOf(side) > -1) {
+        return event === 'pf' ? 'Pro' : 'Aff';
+    }
+    if (['N', 'Neg', 'Con'].indexOf(side) > -1) {
+        return event === 'pf' ? 'Con' : 'Neg';
+    }
+    return side;
+};
+
+export const roundName = (round) => {
+    if (parseInt(round)) { return `Round ${round}`; }
+    return round;
 };
 
 export default null;

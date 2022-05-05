@@ -118,7 +118,7 @@ const TeamRounds = () => {
                 <Link to={`/${caselist}/${school}/${team}`}>
                     <button
                         type="button"
-                        className={`pure-button all ${!side ? styles['selected-side'] : undefined}`}
+                        className={`pure-button ${styles.side} ${!side ? styles['selected-side'] : undefined}`}
                     >
                         All
                     </button>
@@ -126,7 +126,7 @@ const TeamRounds = () => {
                 <Link to={`/${caselist}/${school}/${team}/Aff`}>
                     <button
                         type="button"
-                        className={`pure-button all ${side === 'Aff' ? styles['selected-side'] : undefined}`}
+                        className={`pure-button ${styles.side} ${side === 'Aff' ? styles['selected-side'] : undefined}`}
                     >
                         Aff
                     </button>
@@ -134,7 +134,7 @@ const TeamRounds = () => {
                 <Link to={`/${caselist}/${school}/${team}/Neg`}>
                     <button
                         type="button"
-                        className={`pure-button all ${side === 'Neg' ? styles['selected-side'] : undefined}`}
+                        className={`pure-button ${styles.side} ${side === 'Neg' ? styles['selected-side'] : undefined}`}
                     >
                         Neg
                     </button>
@@ -146,7 +146,7 @@ const TeamRounds = () => {
                     </button>
                 </Link>
             </div>
-            <RoundsTable loading={fetching} />
+            <RoundsTable loading={fetching} event={caselistData.event} />
             <CitesTable loading={fetching} />
         </div>
     );

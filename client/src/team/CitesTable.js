@@ -55,9 +55,15 @@ const CitesTable = ({ loading }) => {
         setCites(newCites);
     }, [cites]);
 
-    const handleCopyCites = useCallback((id) => {
+    const handleCopyCites = useCallback(async (id) => {
         const cite = cites.find(c => c.cite_id === parseInt(id));
-        toast.success(cite);
+        const citeContent = `${cite.title}\n${cite.cites}`;
+        try {
+            await navigator.clipboard.writeText(citeContent);
+            toast.success('Cites copied to clipboard');
+        } catch (err) {
+            console.log(err);
+        }
     }, [cites]);
 
     const citeHeaders = useMemo(() => {
@@ -105,6 +111,7 @@ const CitesTable = ({ loading }) => {
                         id={row.row?.original?.cite_id}
                         onClick={() => handleCopyCites(row.row?.original?.cite_id)}
                         className={styles.copy}
+                        title="Copy cites"
                     >
                         <FontAwesomeIcon
                             icon={faCopy}
@@ -123,6 +130,7 @@ const CitesTable = ({ loading }) => {
                         id={row.row?.original?.cite_id}
                         onClick={() => handleDeleteCiteConfirm(row.row?.original?.cite_id)}
                         className={styles.trash}
+                        title="Delete cites"
                     >
                         <FontAwesomeIcon
                             icon={faTrash}

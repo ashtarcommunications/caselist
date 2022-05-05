@@ -38,22 +38,15 @@
     color: var(--white);
 }
 
-.aff {
+.side {
     margin-right: 20px;
     background-color: var(--white);
     color: var(--darkgray);
 }
 
-.neg {
-    margin-right: 20px;
-    background-color: var(--white);
-    color: var(--darkgray);
-}
-
-.all {
-    margin-right: 20px;
-    background-color: var(--white);
-    color: var(--darkgray);
+.side:hover {
+    background-color: var(--brightblue);
+    color: var(--white);
 }
 
 .selected-side {

@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 
 import { deleteTeam } from '../helpers/api';
 import { useStore } from '../helpers/store';
+import { affName, negName } from '../helpers/common';
 // import TabroomChaptersDropdown from './TabroomChaptersDropdown';
 import Breadcrumbs from '../layout/Breadcrumbs';
 import Table from '../tables/Table';
@@ -18,7 +19,7 @@ import styles from './TeamList.module.css';
 
 const TeamList = () => {
     const { caselist, school } = useParams();
-    const { school: schoolData, teams, fetchSchool, fetchTeams } = useStore();
+    const { school: schoolData, caselist: caselistData, teams, fetchSchool, fetchTeams } = useStore();
     const [fetching, setFetching] = useState(false);
 
     useEffect(() => {
@@ -58,8 +59,8 @@ const TeamList = () => {
                             )
                         </Link>
                         <div className={styles['hover-links']}>
-                            <Link to={`/${caselist}/${school}/${row.value?.name}/Aff`}>Aff</Link>
-                            <Link to={`/${caselist}/${school}/${row.value?.name}/Neg`}>Neg</Link>
+                            <Link to={`/${caselist}/${school}/${row.value?.name}/Aff`}>{affName(caselistData.event)}</Link>
+                            <Link to={`/${caselist}/${school}/${row.value?.name}/Neg`}>{negName(caselistData.event)}</Link>
                         </div>
                     </>
                 );
@@ -80,7 +81,7 @@ const TeamList = () => {
                 />
             ),
         },
-    ], [caselist, school, handleDelete]);
+    ], [caselist, school, handleDelete, caselistData]);
 
     const timestamp = moment(schoolData?.updated_at, 'YYYY-MM-DD HH:mm:ss').format('l');
 

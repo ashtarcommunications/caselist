@@ -6,12 +6,12 @@ import { useParams } from 'react-router-dom';
 
 import { loadRounds, deleteRound } from '../helpers/api';
 import ConfirmButton from '../helpers/ConfirmButton';
-import { useDeviceDetect } from '../helpers/common';
+import { displaySide, normalizeSide, roundName, useDeviceDetect } from '../helpers/common';
 import Table from '../tables/Table';
 
 import styles from './TeamRounds.module.css';
 
-const RoundsTable = ({ loading }) => {
+const RoundsTable = ({ loading, event }) => {
     const { caselist, school, team, side } = useParams();
 
     const [rounds, setRounds] = useState([]);
@@ -21,7 +21,7 @@ const RoundsTable = ({ loading }) => {
             try {
                 const response = await loadRounds(caselist, school, team);
                 if (response) {
-                    setRounds(side ? response.filter(r => r.side === side) : response);
+                    setRounds(side ? response.filter(r => r.side === normalizeSide(side)) : response);
                 }
             } catch (err) {
                 console.log(err);
@@ -40,11 +40,14 @@ const RoundsTable = ({ loading }) => {
     }, [caselist, school, team]);
 
     const handleDeleteRoundConfirm = useCallback((e) => {
+        const id = e.currentTarget.id;
+        if (!id) { return false; }
+        const round = rounds.find(r => r.round_id === parseInt(id));
         toast(<ConfirmButton
-            message="Are you sure you want to delete this round and all linked cites?"
-            handler={handleDeleteRound(e.currentTarget.id)}
+            message={`Are you sure you want to delete ${round.tournament} ${roundName(round.round)} and all linked cites?`}
+            handler={() => handleDeleteRound(id)}
         />);
-    }, [handleDeleteRound]);
+    }, [handleDeleteRound, rounds]);
 
     const handleToggleReport = useCallback((e) => {
         const newRounds = [...rounds];
@@ -68,8 +71,20 @@ const RoundsTable = ({ loading }) => {
 
     const columns = useMemo(() => [
         { Header: 'Tournament', accessor: 'tournament' },
-        { Header: 'Round', accessor: 'round' },
-        { Header: 'Side', accessor: 'side' },
+        {
+            Header: 'Round',
+            accessor: 'round',
+            Cell: (row) => (
+                <span>{roundName(row.value)}</span>
+            ),
+        },
+        {
+            Header: 'Side',
+            accessor: 'side',
+            Cell: (row) => (
+                <span>{displaySide(row.value, event)}</span>
+            ),
+        },
         { Header: 'Opponent', accessor: 'opponent' },
         { Header: 'Judge', accessor: 'judge' },
         {
@@ -135,6 +150,7 @@ const RoundsTable = ({ loading }) => {
             Cell: () => {
                 return (<FontAwesomeIcon
                     icon={faSave}
+                    title="Download"
                     className={styles.save}
                 />);
             },
@@ -148,13 +164,14 @@ const RoundsTable = ({ loading }) => {
             Cell: (row) => (
                 <FontAwesomeIcon
                     className={styles.trash}
+                    title="Delete round"
                     icon={faTrash}
                     id={row.value?.round_id}
                     onClick={e => handleDeleteRoundConfirm(e)}
                 />
             ),
         },
-    ], [handleToggleReport, handleToggleAll, allRoundsOpen, handleDeleteRoundConfirm]);
+    ], [handleToggleReport, handleToggleAll, allRoundsOpen, handleDeleteRoundConfirm, event]);
 
     const mobileColumns = useMemo(() => [
         {

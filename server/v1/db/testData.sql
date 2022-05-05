@@ -20,9 +20,9 @@ INSERT INTO teams (team_id, school_id, display_name, name, notes, debater1_first
     (5, 5, 'NFA NaFo', 'NaFo', 'Sample Notes', 'National', 'National', 'Forensics', 'Forensics');
 
 INSERT INTO rounds (round_id, team_id, side, tournament, round, opponent, judge, report, tourn_id, external_id) VALUES
-    (1, 1, 'Aff', 'Test Tournament', 'Round 1', 'Evil Empire XX', 'Hardy', 'Report', 1234, 1234),
-    (2, 1, 'Neg', 'Test Tournament', 'Round 2', 'Evil Empire YY', 'Hardy', 'Report', 1234, 1234);
+    (1, 1, 'A', 'Test Tournament', '1', 'Evil Empire XX', 'Hardy', 'Report', 1234, 1234),
+    (2, 1, 'N', 'Test Tournament', '2', 'Evil Empire YY', 'Hardy', 'Report', 1234, 1234);
 
 INSERT INTO cites (cite_id, round_id, title, cites) VALUES
-    (1, 1, 'Test Aff Title', '# Test 1AC\n## Heading Two\n ### This is some aff cites and stuff'),
-    (2, 2, 'Test Neg Title', '# Test 1NC\n## Heading Two\n ### neg cites and stuff');
+    (1, 1, 'Test Aff Title', '# Test 1AC\n## Heading Two\n### This is some aff cites and stuff'),
+    (2, 2, 'Test Neg Title', '# Test 1NC\n## Heading Two\n### neg cites and stuff');
