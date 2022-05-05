@@ -10,7 +10,6 @@ Finalize color scheme
 Working add-round form with error handling
 Cite parser and markdown display
 Loading spinner
-Modularize css
 Recently modified page
 Hide delete/edit buttons on archived caselists
 Anonymize debater names on archived caselists
@@ -27,6 +26,7 @@ Table column sorting/filtering
 In-place round data editing
 Full-text search
 Mobile table display
+Scroll to top on route change
 Scraper/usage info
 Privacy/terms page
 Move labels outside placeholders on add team form
