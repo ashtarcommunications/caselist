@@ -1,9 +1,9 @@
 const School = {
     type: 'object',
-    required: ['display_name'],
+    required: ['displayName'],
     properties: {
         name: { type: 'string' },
-        display_name: { type: 'string' },
+        displayName: { type: 'string' },
         state: { type: 'string', minLength: 2, maxLength: 2 },
     },
 };

@@ -6,8 +6,6 @@ import { query } from '../../helpers/mysql';
 
 const postRound = {
     POST: async (req, res) => {
-        console.log(req.body);
-
         const [result] = await query(SQL`
             SELECT C.archived
             FROM teams T

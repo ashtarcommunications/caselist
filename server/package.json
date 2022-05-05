@@ -16,7 +16,7 @@
   "license": "GPL3",
   "main": "index.js",
   "engines": {
-    "node": ">= 15.11.0"
+    "node": ">= 16.15.0"
   },
   "dependencies": {
     "aws-sdk": "^2.1040.0",

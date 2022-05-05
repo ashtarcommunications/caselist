@@ -12,11 +12,12 @@ const getTeams = {
             INNER JOIN caselists C ON S.caselist_id = C.caselist_id
             wHERE C.name = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${req.params.school})
+            AND (T.deleted IS NULL OR T.deleted <> 1)
             ORDER BY T.name
         `);
         const teams = await query(sql);
 
-        if (teams[0].archived) {
+        if (teams.length > 0 && teams[0].archived) {
             teams.forEach((team) => {
                 team.debater1_first = team.debater1_first ? `${team.debater1_first.substr(0, 2)}.....` : null;
                 team.debater1_last = team.debater1_last ? `${team.debater1_last.substr(0, 2)}.....` : null;
