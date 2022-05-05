@@ -71,8 +71,39 @@ label {
 }
 
 /* react-widget modifications */
+.rw-widget,
+.rw-widget div,
+.rw-widget input
+.rw-widget .rw-widget-picker,
+.rw-widget-input {
+    color: var(--black) !important;
+}
+
 .rw-combobox {
     display: inline-block;
+}
+
+.rw-combobox input {
+    border: none !important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    margin: 0 !important;
+}
+
+.rw-widget-picker {
+    border: 1px solid #ccc;
+    box-shadow: inset 0 1px 3px #ddd;
+    border-radius: 4px;
+}
+
+.rw-state-focus .rw-widget-picker {
+    border: 1px solid #129fea !important;
+    box-shadow: inset 0 1px 3px #ddd !important;
+    border-radius: 4px;
+}
+
+.rw-popup-container {
+  min-width: 500px;
 }
 
 /* react-markdown modifications */

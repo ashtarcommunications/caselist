@@ -26,6 +26,10 @@
     border-radius: 20px;
 }
 
+.report {
+    min-width: 400px;
+}
+
 .flex {
     display: flex;
 }
@@ -74,4 +78,8 @@
 
 .trash {
     color: var(--red);
+}
+
+.dirty {
+    border: 1px solid var(--red) !important;
 }

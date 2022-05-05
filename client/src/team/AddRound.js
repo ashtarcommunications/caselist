@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
@@ -29,10 +29,15 @@ const AddRound = () => {
 
     const { caselist: caselistData } = useStore();
 
+    const tournRef = useRef();
+    useEffect(() => {
+        tournRef?.current?.focus();
+    }, [tournRef]);
+
     // Add a default cite
     useEffect(() => {
         if (fields.length < 1) {
-            append({ title: '', cites: '', open: true });
+            append({ title: '', cites: '', open: true }, { shouldFocus: false });
         }
     }, [append, fields.length]);
 
@@ -259,11 +264,12 @@ const AddRound = () => {
                         render={
                             ({
                                 field: { onChange, onBlur, value },
-                                fieldState: { invalid },
+                                fieldState: { error },
                             }) => (
                                 <Combobox
-                                    containerClassName={`${styles.combo} ${styles['combo-block']} ${invalid ? styles.dirty : undefined}`}
+                                    containerClassName={`${(!value || error) && styles.dirty}`}
                                     busy={fetchingRounds}
+                                    ref={tournRef}
                                     hideCaret={fetchingRounds || rounds.length < 1}
                                     data={rounds}
                                     dataKey="id"
@@ -282,7 +288,10 @@ const AddRound = () => {
                                         }
                                     }
                                     inputProps={
-                                        { onFocus: fetchRounds, onBlur }
+                                        {
+                                            onFocus: fetchRounds,
+                                            onBlur,
+                                        }
                                     }
                                 />
                             )
@@ -298,8 +307,10 @@ const AddRound = () => {
                         render={
                             ({
                                 field: { onChange, value },
+                                fieldState: { error },
                             }) => (
                                 <SideDropdown
+                                    className={(!value || error) && styles.dirty}
                                     value={value}
                                     onChange={onChange}
                                     event={caselistData?.event}
@@ -317,8 +328,13 @@ const AddRound = () => {
                         render={
                             ({
                                 field: { onChange, value },
+                                fieldState: { error },
                             }) => (
-                                <RoundNumberDropdown value={value} onChange={onChange} />
+                                <RoundNumberDropdown
+                                    className={(!value || error) && styles.dirty}
+                                    value={value}
+                                    onChange={onChange}
+                                />
                             )
                         }
                     />
@@ -343,6 +359,7 @@ const AddRound = () => {
                 <div className={styles['form-group']}>
                     <label htmlFor="report">Round Report</label>
                     <textarea
+                        className={styles.report}
                         name="report"
                         {...register('report')}
                     />
@@ -456,7 +473,7 @@ const AddRound = () => {
                 <hr />
                 <h4>
                     Cites
-                    <button type="button" onClick={() => append({ title: '', cites: '', open: false })} className={`${styles['add-cite']} pure-button`}>
+                    <button type="button" onClick={() => append({ title: '', cites: '', open: false }, { shouldFocus: false })} className={`${styles['add-cite']} pure-button`}>
                         <FontAwesomeIcon className={styles.plus} icon={faPlus} />
                         <span> Add Cite</span>
                     </button>

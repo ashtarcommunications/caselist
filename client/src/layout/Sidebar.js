@@ -55,9 +55,12 @@ const Sidebar = () => {
                         </Link>
                     }
                 </h2>
-                <p>
-                    <Link to={`/${caselist}/recent`}>Recently Modified</Link>
-                </p>
+                {
+                    !caselistData.archived &&
+                    <p>
+                        <Link to={`/${caselist}/recent`}>Recently Modified</Link>
+                    </p>
+                }
                 {
                     schools && schools.length > 0 &&
                         <div>

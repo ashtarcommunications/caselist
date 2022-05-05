@@ -2,17 +2,15 @@
 Add PUT/PATCH endpoints for round info
 Add version control handling to round/cites POSTs
 Trim all inputs
-Tests
 Tabroom claim endpoints
+Tests
 
 # Client
-Finalize color scheme
 Working add-round form with error handling
 Cite parser and markdown display
 Loading spinner
 Recently modified page
 Hide delete/edit buttons on archived caselists
-Anonymize debater names on archived caselists
 Table CSS
 Homepage sponsor logos
 Better <3 logos
@@ -22,19 +20,18 @@ Add team form dynamic # of debaters
 Aff/Pro language helper
 Fix cite copy button
 Table empty and loading states
-Table column sorting/filtering
+Table column filtering
 In-place round data editing
 Full-text search
 Mobile table display
-Scroll to top on route change
 Scraper/usage info
 Privacy/terms page
-Move labels outside placeholders on add team form
-Match non-purecss widget CSS
 Contact/support link
 Team notes/contact info, warn on contact info
-Better redirect on 401
+Better redirect/logout on 401
 Support for novice/all team entries
+Add analytics
+Open ev
 Tests
 
 # Misc

@@ -11,6 +11,7 @@ import { ProvideAuth } from './helpers/auth';
 import { ProvideStore } from './helpers/store';
 
 import RouteWrapper from './layout/RouteWrapper';
+import ScrollToTop from './layout/ScrollToTop';
 import Breadcrumbs from './layout/Breadcrumbs';
 import ErrorBoundary from './layout/ErrorBoundary';
 
@@ -28,6 +29,7 @@ const App = () => {
     return (
         <ProvideAuth>
             <Router>
+                <ScrollToTop />
                 <ProvideStore>
                     <ErrorBoundary>
                         <Switch>
