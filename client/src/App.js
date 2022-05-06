@@ -15,6 +15,10 @@ import ScrollToTop from './layout/ScrollToTop';
 import Breadcrumbs from './layout/Breadcrumbs';
 import ErrorBoundary from './layout/ErrorBoundary';
 
+import Markdown from './layout/Markdown';
+import PrivacyPolicy from './layout/PrivacyPolicy.md';
+import Terms from './layout/Terms.md';
+
 import Home from './home/Home';
 import CaselistHome from './caselist/CaselistHome';
 import Recent from './caselist/Recent';
@@ -38,6 +42,12 @@ const App = () => {
                             </RouteWrapper>
                             <RouteWrapper exact path="/logout">
                                 <Logout />
+                            </RouteWrapper>
+                            <RouteWrapper exact path="/privacy">
+                                <Markdown file={PrivacyPolicy} />
+                            </RouteWrapper>
+                            <RouteWrapper exact path="/terms">
+                                <Markdown file={Terms} />
                             </RouteWrapper>
                             <RouteWrapper exact path="/">
                                 <Home />

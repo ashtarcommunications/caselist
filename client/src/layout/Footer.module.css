@@ -5,13 +5,14 @@
     align-items: center;
     justify-content: space-around;
     flex-wrap: nowrap;
-    background-color: var(--darkblue);
+    background-color: var(--blue);
     color: white;
     font-size: 14px;
 }
 
-.donate a {
-    color: white;
+.footer a {
+  color: white;
+  text-decoration: underline;
 }
 
 .spinner {
@@ -45,6 +46,6 @@
     }
 }
 
-.bullet {
+.divider {
     margin: 0px 10px;
 }

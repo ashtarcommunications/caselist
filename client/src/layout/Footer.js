@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import styles from './Footer.module.css';
 
 const Emoji = () => {
@@ -21,9 +23,15 @@ const Footer = () => {
             <span>
                 <span>Created with </span>
                 <Emoji />
-                <span> by <a href="https://paperlessdebate.com">Ashtar</a></span>
-                <span className={styles.bullet}> • </span>
-                <span className={styles.donate}><a href="https://paperlessdebate.com/donate">Donate</a></span>
+                <span> by <a href="https://paperlessdebate.com" rel="noopener noreferrer" target="_blank">Ashtar</a></span>
+                <span className={styles.divider}> | </span>
+                <span><a href="https://paperlessdebate.com/donate" rel="noopener noreferrer" target="_blank">Donate</a></span>
+                <span className={styles.divider}> | </span>
+                <Link to="/privacy">Privacy Policy</Link>
+                <span className={styles.divider}> | </span>
+                <Link to="/terms">Terms</Link>
+                <span className={styles.divider}> | </span>
+                <a href="https://paperlessdebate.com/#contact" rel="noopener noreferrer" target="_blank">Contact</a>
             </span>
         </footer>
     );
