@@ -26,6 +26,7 @@
     visibility: hidden;
     opacity: 0;
     font-size: 18px;
+    margin: 0px 10px;
     transition: visibility 0s 1s, opacity 1s linear;
 }
 .team-table tr:hover .trash {

@@ -73,6 +73,7 @@ const RoundsTable = ({ loading, event }) => {
         { Header: 'Tournament', accessor: 'tournament' },
         {
             Header: 'Round',
+            width: '75px',
             accessor: 'round',
             Cell: (row) => (
                 <span>{roundName(row.value)}</span>
@@ -80,12 +81,13 @@ const RoundsTable = ({ loading, event }) => {
         },
         {
             Header: 'Side',
+            width: '25px',
             accessor: row => displaySide(row.side),
             Cell: (row) => (
                 <span>{displaySide(row.value, event)}</span>
             ),
         },
-        { Header: 'Opponent', accessor: 'opponent' },
+        { Header: 'Opponent', accessor: 'opponent', width: '150px' },
         { Header: 'Judge', accessor: 'judge' },
         {
             id: 'report',
@@ -145,6 +147,7 @@ const RoundsTable = ({ loading, event }) => {
         // },
         {
             id: 'opensource',
+            width: '25px',
             accessor: row => row,
             disableSortBy: true,
             disableFilters: true,
@@ -159,7 +162,7 @@ const RoundsTable = ({ loading, event }) => {
         },
         {
             id: 'delete',
-            Header: '',
+            width: '25px',
             disableSortBy: true,
             disableFilters: true,
             accessor: (row) => row,

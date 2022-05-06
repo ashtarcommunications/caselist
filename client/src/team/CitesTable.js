@@ -70,6 +70,7 @@ const CitesTable = ({ loading }) => {
         return [
             {
                 id: 'cites',
+                width: 'auto',
                 Header: 'Cites',
                 accessor: row => row,
                 className: styles.cites,
@@ -102,7 +103,8 @@ const CitesTable = ({ loading }) => {
             },
             {
                 id: 'copy',
-                Header: '',
+                width: '25px',
+                maxWidth: '25px',
                 disableSortBy: true,
                 accessor: (row) => row,
                 className: styles.center,
@@ -121,7 +123,8 @@ const CitesTable = ({ loading }) => {
             },
             {
                 id: 'delete',
-                Header: '',
+                width: '25px',
+                maxWidth: '25px',
                 disableSortBy: true,
                 accessor: (row) => row,
                 className: styles.center,

@@ -45,6 +45,7 @@ const TeamList = () => {
     const columns = useMemo(() => [
         {
             Header: 'Team',
+            width: 'auto',
             accessor: 'display_name',
             Cell: (row) => {
                 console.log(row);
@@ -69,6 +70,7 @@ const TeamList = () => {
         },
         {
             id: 'delete',
+            width: '25px',
             Header: '',
             disableSortBy: true,
             disableFilters: true,

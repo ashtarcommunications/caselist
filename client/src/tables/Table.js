@@ -28,7 +28,7 @@ const Table = ({ columns = [], data = [], className, loading = false, noDataText
                                 <tr {...headerGroup.getHeaderGroupProps()}>
                                     {
                                         headerGroup.headers.map(column => (
-                                            <th key={column.id} {...column.getHeaderProps()}>
+                                            <th key={column.id} {...column.getHeaderProps()} style={{ width: column.width || 'auto', maxWidth: column.maxWidth || 'auto' }}>
                                                 <div {...column.getSortByToggleProps()} data-testid="sortDiv">
                                                     {column.render('Header')}
                                                     {
