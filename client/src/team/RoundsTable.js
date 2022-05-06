@@ -80,7 +80,7 @@ const RoundsTable = ({ loading, event }) => {
         },
         {
             Header: 'Side',
-            accessor: 'side',
+            accessor: row => displaySide(row.side),
             Cell: (row) => (
                 <span>{displaySide(row.value, event)}</span>
             ),
@@ -104,6 +104,7 @@ const RoundsTable = ({ loading, event }) => {
                 );
             },
             disableSortBy: true,
+            disableFilters: true,
             accessor: row => row,
             Cell: (row) => {
                 return (
@@ -144,8 +145,9 @@ const RoundsTable = ({ loading, event }) => {
         // },
         {
             id: 'opensource',
-            Header: () => <span>Open<br />Source</span>,
             accessor: row => row,
+            disableSortBy: true,
+            disableFilters: true,
             className: styles.center,
             Cell: () => {
                 return (<FontAwesomeIcon
@@ -159,6 +161,7 @@ const RoundsTable = ({ loading, event }) => {
             id: 'delete',
             Header: '',
             disableSortBy: true,
+            disableFilters: true,
             accessor: (row) => row,
             className: styles.center,
             Cell: (row) => (
@@ -178,6 +181,7 @@ const RoundsTable = ({ loading, event }) => {
             id: 'mobile',
             Header: 'Rounds',
             disableSortBy: true,
+            disableFilters: true,
             accessor: row => row,
             Cell: (row) => {
                 return (

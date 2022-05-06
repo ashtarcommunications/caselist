@@ -2,6 +2,7 @@
 Add PUT/PATCH endpoints for round info
 Add version control handling to round/cites POSTs
 Trim all inputs
+Aff/Pro language helper
 Tabroom claim endpoints
 Tests
 
@@ -17,13 +18,10 @@ Better <3 logos
 404 handling throughout
 Opensource file structure and download handling
 Add team form dynamic # of debaters
-Aff/Pro language helper
 Table empty and loading states
-Table column filtering
 In-place round data editing
 Full-text search
 Mobile table display
-Contact/support link
 Team notes/contact info, warn on contact info
 Better redirect/logout on 401
 Support for novice/all team entries

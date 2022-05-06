@@ -83,6 +83,7 @@
 .copy {
     color: var(--brightblue);
     cursor: pointer;
+    font-size: 18px;
 }
 
 .buttons {
@@ -120,6 +121,8 @@
 .save {
     color: var(--brightblue);
     cursor: pointer;
+    margin: 0px 10px;
+    font-size: 18px;
 }
 
 .teamname {
@@ -132,6 +135,8 @@
     visibility: hidden;
     opacity: 0;
     transition: visibility 0s 1s, opacity 1s linear;
+    margin: 0px 10px;
+    font-size: 18px;
 }
 
 .rounds-table tr:hover .trash {

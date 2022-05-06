@@ -150,6 +150,7 @@ const CitesTable = ({ loading }) => {
             className={`${styles['cites-table']} ${isMobile ? styles['mobile-table'] : undefined}`}
             noDataText="No cites found!"
             loading={loading}
+            filterable={false}
         />
     );
 };

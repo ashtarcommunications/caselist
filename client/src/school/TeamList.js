@@ -45,22 +45,23 @@ const TeamList = () => {
     const columns = useMemo(() => [
         {
             Header: 'Team',
-            accessor: row => row,
+            accessor: 'display_name',
             Cell: (row) => {
+                console.log(row);
                 return (
                     <>
-                        <Link to={`/${caselist}/${school}/${row.value?.name}`}>
-                            {row.value.display_name} (
-                            <span>{row.value.debater1_first} </span>
-                            <span>{row.value.debater1_last} </span>
+                        <Link to={`/${caselist}/${school}/${row.row.original?.name}`}>
+                            {row.row.original.display_name} (
+                            <span>{row.row.original.debater1_first} </span>
+                            <span>{row.row.original.debater1_last} </span>
                             <span>- </span>
-                            <span>{row.value.debater2_first} </span>
-                            <span>{row.value.debater2_last}</span>
+                            <span>{row.row.original.debater2_first} </span>
+                            <span>{row.row.original.debater2_last}</span>
                             )
                         </Link>
                         <div className={styles['hover-links']}>
-                            <Link to={`/${caselist}/${school}/${row.value?.name}/Aff`}>{affName(caselistData.event)}</Link>
-                            <Link to={`/${caselist}/${school}/${row.value?.name}/Neg`}>{negName(caselistData.event)}</Link>
+                            <Link to={`/${caselist}/${school}/${row.row.original?.name}/Aff`}>{affName(caselistData.event)}</Link>
+                            <Link to={`/${caselist}/${school}/${row.row.original?.name}/Neg`}>{negName(caselistData.event)}</Link>
                         </div>
                     </>
                 );
@@ -70,6 +71,7 @@ const TeamList = () => {
             id: 'delete',
             Header: '',
             disableSortBy: true,
+            disableFilters: true,
             accessor: (row) => row,
             className: styles.center,
             Cell: (row) => (
