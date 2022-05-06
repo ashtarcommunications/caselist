@@ -1,23 +1,32 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Markdown from 'react-markdown';
+
 import { useStore } from '../helpers/store';
 import Error from '../layout/Error';
+import Loader from '../loader/Loader';
+
 import styles from './CaselistHome.module.css';
 
 const CaselistHome = () => {
     const { caselist } = useParams();
     const { caselist: caselistData, fetchCaselist } = useStore();
+    const [fetching, setFetching] = useState(false);
+
     useEffect(() => {
         if (caselistData.message) { return false; }
         if (!caselistData || caselist !== caselistData.name) {
+            setFetching(true);
             fetchCaselist(caselist);
+            setFetching(false);
         }
     }, [caselist, caselistData, fetchCaselist]);
 
     if (caselistData.message) { return <Error is404 />; }
 
-    const markdown = '# # This would create Heading 1 - Reserved for titles\n## ## This would create Heading 2 - Hat/Section\n### ### This would create Heading 3 - Block Title/Argument Title\n#### #### This would create Heading 4 - Tag';
+    const markdown = '# # This would create Heading 1 - For Pocket/Title\n## ## This would create Heading 2 - Hat/Section\n### ### This would create Heading 3 - Block Title/Argument Title\n#### #### This would create Heading 4 - Tag';
+
+    if (fetching) return <Loader />;
 
     return (
         <div className={styles['caselist-home']}>

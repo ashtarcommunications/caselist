@@ -94,12 +94,15 @@ const TeamRounds = () => {
                         icon={faFileLines}
                     />
                 </button>
-                <button type="button" className={`pure-button pure-button-primary ${styles.claim}`} onClick={handleLinkConfirm}>
-                    <FontAwesomeIcon
-                        icon={faLink}
-                    />
-                    Claim Page
-                </button>
+                {
+                    !caselistData.archived &&
+                    <button type="button" className={`pure-button pure-button-primary ${styles.claim}`} onClick={handleLinkConfirm}>
+                        <FontAwesomeIcon
+                            icon={faLink}
+                        />
+                        Claim Page
+                    </button>
+                }
             </h1>
             {
                 teamData.updated_by &&
@@ -139,15 +142,18 @@ const TeamRounds = () => {
                         Neg
                     </button>
                 </Link>
-                <Link to={`/${caselist}/${school}/${team}/add`} className={styles['add-round']}>
-                    <button type="button" className={`pure-button`}>
-                        <FontAwesomeIcon className={styles.plus} icon={faPlus} />
-                        <span> Add Round</span>
-                    </button>
-                </Link>
+                {
+                    !caselistData.archived &&
+                    <Link to={`/${caselist}/${school}/${team}/add`} className={styles['add-round']}>
+                        <button type="button" className={`pure-button`}>
+                            <FontAwesomeIcon className={styles.plus} icon={faPlus} />
+                            <span> Add Round</span>
+                        </button>
+                    </Link>
+                }
             </div>
-            <RoundsTable loading={fetching} event={caselistData.event} />
-            <CitesTable loading={fetching} />
+            <RoundsTable event={caselistData.event} />
+            <CitesTable />
         </div>
     );
 };

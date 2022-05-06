@@ -18,6 +18,8 @@ const Table = ({ columns = [], data = [], className, loading = false, noDataText
 
     if (!columns || !data) return false;
 
+    if (loading) { return <Loader />; }
+
     return (
         <div className={styles.table}>
             <table {...getTableProps()} className={`pure-table pure-table-bordered ${className}`}>
@@ -83,7 +85,6 @@ const Table = ({ columns = [], data = [], className, loading = false, noDataText
 
                 </thead>
                 <tbody {...getTableBodyProps()}>
-                    {loading && <Loader />}
                     {data.length < 1 && <tr className={styles['no-data']}><td>{noDataText}</td></tr>}
                     {
                         rows.map((row) => {

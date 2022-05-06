@@ -48,7 +48,6 @@ const TeamList = () => {
             width: 'auto',
             accessor: 'display_name',
             Cell: (row) => {
-                console.log(row);
                 return (
                     <>
                         <Link to={`/${caselist}/${school}/${row.row.original?.name}`}>
@@ -104,10 +103,10 @@ const TeamList = () => {
                     </p>
                 }
                 {/* <TabroomChaptersDropdown /> */}
-                <Table columns={columns} data={data} className={styles['team-table']} noDataText="No teams found" />
+                <Table columns={columns} data={data} className={styles['team-table']} noDataText="No teams found" loading={fetching} />
             </div>
             <hr />
-            <AddTeam />
+            {!caselistData.archived && <AddTeam />}
         </>
     );
 };

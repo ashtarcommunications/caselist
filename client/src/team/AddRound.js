@@ -18,6 +18,7 @@ import { affName, negName } from '../helpers/common';
 import SideDropdown from './SideDropdown';
 import RoundNumberDropdown from './RoundNumberDropdown';
 import Loader from '../loader/Loader';
+import Error from '../layout/Error';
 
 import styles from './AddRound.module.css';
 
@@ -250,6 +251,8 @@ const AddRound = () => {
     }, [append, watchFields, fields, remove]);
 
     const { getRootProps, getInputProps } = useDropzone({ onDrop, multiple: false, maxFiles: 1, maxSize: 10000000, acceptedFiles: '.docx,.doc,.txt,.rtf,.pdf' });
+
+    if (caselistData.archived) { return <Error message="This caselist is archived, no modifications allowed." />; }
 
     return (
         <div>

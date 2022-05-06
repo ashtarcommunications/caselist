@@ -229,6 +229,7 @@ const RoundsTable = ({ loading, event }) => {
             columns={isMobile ? mobileColumns : columns}
             data={rounds}
             className={`${styles['rounds-table']} ${isMobile ? styles['mobile-table'] : undefined}`}
+            noDataText="No rounds found"
             loading={loading}
         />
     );

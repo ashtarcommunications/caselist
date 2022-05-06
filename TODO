@@ -9,7 +9,6 @@ Tests
 # Client
 Working add-round form with error handling
 Cite parser and markdown display
-Loading spinner
 Recently modified page
 Hide delete/edit buttons on archived caselists
 Table CSS
@@ -18,7 +17,6 @@ Better <3 logos
 404 handling throughout
 Opensource file structure and download handling
 Add team form dynamic # of debaters
-Table empty and loading states
 In-place round data editing
 Full-text search
 Mobile table display
