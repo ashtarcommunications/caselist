@@ -7,6 +7,7 @@ import Round from './Round';
 import TabroomChapter from './TabroomChapter';
 import TabroomStudent from './TabroomStudent';
 import TabroomRound from './TabroomRound';
+import File from './File';
 
 export default {
     Err,
@@ -18,4 +19,5 @@ export default {
     TabroomChapter,
     TabroomStudent,
     TabroomRound,
+    File,
 };

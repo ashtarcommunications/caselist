@@ -3,6 +3,10 @@
     margin: 5px 0px 20px 0px;
 }
 
+.table th {
+    color: var(--darkblue);
+}
+
 .table td, .table th {
     padding: 5px;
 }

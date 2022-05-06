@@ -114,3 +114,7 @@ export const loadTabroomRounds = async (slug) => {
 export const addTabroomTeamLink = async (link) => {
     return fetchBase(`tabroom/teams`, { method: 'POST' }, { link });
 };
+
+export const loadOpenEv = async (year) => {
+    return fetchBase(`openev?year=${year}`);
+};

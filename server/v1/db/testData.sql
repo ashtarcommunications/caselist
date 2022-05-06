@@ -26,3 +26,7 @@ INSERT INTO rounds (round_id, team_id, side, tournament, round, opponent, judge,
 INSERT INTO cites (cite_id, round_id, title, cites) VALUES
     (1, 1, 'Test Aff Title', '# Test 1AC\n## Heading Two\n### This is some aff cites and stuff'),
     (2, 2, 'Test Neg Title', '# Test 1NC\n## Heading Two\n### neg cites and stuff');
+
+INSERT INTO openev (openev_id, path, year, camp, lab, tags, deleted) VALUES
+    (1, '/openev/2021/SDI/AA/Test.docx', 2021, 'SDI', 'AA', '{"da":true,"cp":true}', 0),
+    (2, '/openev/2021/CNDI/BB/Test2.docx', 2021, 'CNDI', 'BB', '{"k":true,"aff":true}', 0);

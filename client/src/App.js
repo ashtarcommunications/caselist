@@ -28,6 +28,7 @@ import AddSchool from './caselist/AddSchool';
 import TeamList from './school/TeamList';
 import TeamRounds from './team/TeamRounds';
 import AddRound from './team/AddRound';
+import OpenEvHome from './openev/OpenEvHome';
 
 const App = () => {
     return (
@@ -48,6 +49,9 @@ const App = () => {
                             </RouteWrapper>
                             <RouteWrapper exact path="/terms">
                                 <Markdown file={Terms} />
+                            </RouteWrapper>
+                            <RouteWrapper path="/openev/:year?">
+                                <OpenEvHome />
                             </RouteWrapper>
                             <RouteWrapper exact path="/">
                                 <Home />
