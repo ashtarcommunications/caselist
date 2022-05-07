@@ -152,8 +152,8 @@ const TeamRounds = () => {
                     </Link>
                 }
             </div>
-            <RoundsTable event={caselistData.event} />
-            <CitesTable />
+            <RoundsTable event={caselistData.event} archived={caselistData.archived} />
+            <CitesTable archived={caselistData.archived} />
         </div>
     );
 };

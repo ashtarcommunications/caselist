@@ -12,7 +12,7 @@ import Table from '../tables/Table';
 
 import styles from './TeamRounds.module.css';
 
-const CitesTable = ({ loading }) => {
+const CitesTable = ({ loading, archived }) => {
     const { caselist, school, team, side } = useParams();
 
     const [cites, setCites] = useState([]);
@@ -132,6 +132,7 @@ const CitesTable = ({ loading }) => {
                 accessor: (row) => row,
                 className: styles.center,
                 Cell: (row) => (
+                    !archived &&
                     <span
                         id={row.row?.original?.cite_id}
                         onClick={e => handleDeleteCiteConfirm(e)}
@@ -145,7 +146,7 @@ const CitesTable = ({ loading }) => {
                 ),
             },
         ];
-    }, [handleToggleCites, handleCopyCites, handleDeleteCiteConfirm]);
+    }, [handleToggleCites, handleCopyCites, handleDeleteCiteConfirm, archived]);
 
     const { isMobile } = useDeviceDetect();
 

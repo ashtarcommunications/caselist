@@ -11,7 +11,7 @@ import Table from '../tables/Table';
 
 import styles from './TeamRounds.module.css';
 
-const RoundsTable = ({ loading, event }) => {
+const RoundsTable = ({ loading, event, archived }) => {
     const { caselist, school, team, side } = useParams();
 
     const [rounds, setRounds] = useState([]);
@@ -173,6 +173,7 @@ const RoundsTable = ({ loading, event }) => {
             accessor: (row) => row,
             className: styles.center,
             Cell: (row) => (
+                !archived &&
                 <FontAwesomeIcon
                     className={styles.trash}
                     title="Delete round"
@@ -182,7 +183,14 @@ const RoundsTable = ({ loading, event }) => {
                 />
             ),
         },
-    ], [handleToggleReport, handleToggleAll, allRoundsOpen, handleDeleteRoundConfirm, event]);
+    ], [
+        handleToggleReport,
+        handleToggleAll,
+        allRoundsOpen,
+        handleDeleteRoundConfirm,
+        event,
+        archived,
+    ]);
 
     const mobileColumns = useMemo(() => [
         {
@@ -197,12 +205,14 @@ const RoundsTable = ({ loading, event }) => {
                         <p>Tournament: {row.row?.original?.tournament}</p>
                         <p>
                             <span>Round: {row.row?.original?.round}</span>
-                            <FontAwesomeIcon
-                                className={styles.trash}
-                                icon={faTrash}
-                                id={row.row?.original?.round_id}
-                                onClick={e => handleDeleteRoundConfirm(e)}
-                            />
+                            {
+                                !archived && <FontAwesomeIcon
+                                    className={styles.trash}
+                                    icon={faTrash}
+                                    id={row.row?.original?.round_id}
+                                    onClick={e => handleDeleteRoundConfirm(e)}
+                                />
+                            }
                         </p>
                         <p>Side: {row.row?.original?.side}</p>
                         <p>Opponent: {row.row?.original?.opponent}</p>
