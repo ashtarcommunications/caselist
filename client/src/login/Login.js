@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import { AuthContext } from '../helpers/auth';
@@ -8,14 +8,14 @@ import styles from './Login.module.css';
 
 const Login = () => {
     const { register, handleSubmit } = useForm();
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation();
     const auth = useContext(AuthContext);
     const onSubmit = async (data) => {
         try {
             await auth.handleLogin(data.username, data.password);
             const { from } = location.state || { from: { pathname: '/' } };
-            history.replace(from);
+            navigate(from);
         } catch (err) {
             console.log(err);
         }

@@ -1,6 +1,11 @@
+import { createBrowserHistory } from 'history';
 import fetch from './fetch-retry';
 
-export const fetchBase = (path, options = {}, body = {}) => {
+/* Hacky HistoryRouter kludge for react-router v6 */
+/* https://github.com/remix-run/react-router/issues/8264 */
+export const history = createBrowserHistory();
+
+export const fetchBase = async (path, options = {}, body = {}) => {
     const base = `http://localhost:10010/v1/`;
     const fetchOptions = {
         method: options.method ? options.method : 'GET',
@@ -16,7 +21,20 @@ export const fetchBase = (path, options = {}, body = {}) => {
 
     if (fetchOptions.method === 'GET') { delete fetchOptions.body; }
 
-    return fetch(`${base}${path}`, fetchOptions).then(r => r.json());
+    try {
+        const response = await fetch(`${base}${path}`, fetchOptions);
+        return response.json();
+    } catch (err) {
+        if (err.statusCode === 401) {
+            history.push('/login');
+            return false;
+        }
+        if (err.statusCode === 404) {
+            history.push('/404');
+            return false;
+        }
+        history.push('/error', { statusCode: err.statusCode, message: err.message });
+    }
 };
 
 export const login = async (username, password) => {

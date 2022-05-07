@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
@@ -10,7 +10,7 @@ import StatesDropdown from './StatesDropdown';
 import styles from './AddSchool.module.css';
 
 const AddSchool = () => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const { caselist } = useParams();
     const { caselist: caselistData, fetchSchools } = useStore();
 
@@ -25,7 +25,7 @@ const AddSchool = () => {
             fetchSchools(caselist);
             reset();
             toast.success('Successfully added school');
-            history.push(`/${caselist}/${newSchool.name}`);
+            navigate(`/${caselist}/${newSchool.name}`);
         } catch (err) {
             console.log(err);
             toast.error(err.message);

@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import uniqBy from 'lodash/uniqBy';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { loadCaselists } from '../helpers/api';
 import { startOfYear } from '../helpers/common';
-import { useStore } from '../helpers/store';
 
 import styles from './CaselistDropdown.module.css';
 
 const CaselistDropdown = () => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const { caselist } = useParams();
-    const { fetchCaselist } = useStore();
 
     const [caselists, setCaselists] = useState([]);
     const [years, setYears] = useState([]);
@@ -50,8 +48,7 @@ const CaselistDropdown = () => {
     const handleChangeCaselist = (e) => {
         const selected = caselists.find(c => c.name === e.currentTarget.value) || {};
         document.title = `openCaselist - ${selected.display_name}`;
-        fetchCaselist(e.currentTarget.value);
-        history.push(`/${e.currentTarget.value}`);
+        navigate(`/${e.currentTarget.value}`);
     };
 
     return (

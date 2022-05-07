@@ -11,7 +11,7 @@ import { useStore } from '../helpers/store';
 import { loadTeam, addTabroomTeamLink } from '../helpers/api';
 import ConfirmButton from '../helpers/ConfirmButton';
 import Loader from '../loader/Loader';
-import Error from '../layout/Error';
+import Breadcrumbs from '../layout/Breadcrumbs';
 import RoundsTable from './RoundsTable';
 import CitesTable from './CitesTable';
 
@@ -67,7 +67,6 @@ const TeamRounds = () => {
     const timestamp = moment(teamData.updated_at, 'YYYY-MM-DD HH:mm:ss').format('l');
 
     if (fetching) { return <Loader />; }
-    if (!fetching && teamData.message) { return <Error is404 />; }
 
     let lastNames = '';
     switch (caselistData.team_size) {
@@ -82,6 +81,7 @@ const TeamRounds = () => {
 
     return (
         <div className={styles.roundlist}>
+            <Breadcrumbs />
             <h1 className={styles.teamname}>
                 {school} {team} {!caselistData.archived && `(${lastNames})`}
                 <button

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react';
-import { Link, useParams, useHistory } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
 import Combobox from 'react-widgets/Combobox';
@@ -17,6 +17,7 @@ import { addRound, loadTabroomRounds } from '../helpers/api';
 import { affName, negName } from '../helpers/common';
 import SideDropdown from './SideDropdown';
 import RoundNumberDropdown from './RoundNumberDropdown';
+import Breadcrumbs from '../layout/Breadcrumbs';
 import Loader from '../loader/Loader';
 import Error from '../layout/Error';
 
@@ -24,7 +25,7 @@ import styles from './AddRound.module.css';
 
 const AddRound = () => {
     const { caselist, school, team } = useParams();
-    const history = useHistory();
+    const navigate = useNavigate();
     const { register, watch, formState: { errors, isValid }, handleSubmit, reset, setValue, control } = useForm({ mode: 'all' });
     const { fields, append, remove } = useFieldArray({ control, name: 'cites' });
 
@@ -85,7 +86,7 @@ const AddRound = () => {
             const response = await addRound(caselist, school, team, data);
             toast.success(response);
             reset();
-            history.push(`/${caselist}/${school}/${team}`);
+            navigate(`/${caselist}/${school}/${team}`);
         } catch (err) {
             console.log(err);
         }
@@ -256,6 +257,7 @@ const AddRound = () => {
 
     return (
         <div>
+            <Breadcrumbs />
             <h2>Add a round to {school} {team}</h2>
             <form onSubmit={handleSubmit(addRoundHandler)} encType="multipart/form-data" className="pure-form pure-form-stacked">
                 <div className={styles['form-group']}>

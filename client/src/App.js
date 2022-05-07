@@ -4,20 +4,21 @@ import 'purecss/build/pure-min.css';
 import 'react-toastify/dist/ReactToastify.min.css';
 import './App.css';
 
-import { BrowserRouter as Router, Switch } from 'react-router-dom';
+import { unstable_HistoryRouter as Router, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
 import { ProvideAuth } from './helpers/auth';
 import { ProvideStore } from './helpers/store';
+import { history } from './helpers/api';
 
-import RouteWrapper from './layout/RouteWrapper';
+import Layout from './layout/Layout';
 import ScrollToTop from './layout/ScrollToTop';
-import Breadcrumbs from './layout/Breadcrumbs';
 import ErrorBoundary from './layout/ErrorBoundary';
 
 import Markdown from './layout/Markdown';
 import PrivacyPolicy from './layout/PrivacyPolicy.md';
 import Terms from './layout/Terms.md';
+import Error from './layout/Error';
 
 import Home from './home/Home';
 import CaselistHome from './caselist/CaselistHome';
@@ -33,50 +34,83 @@ import OpenEvHome from './openev/OpenEvHome';
 const App = () => {
     return (
         <ProvideAuth>
-            <Router>
-                <ScrollToTop />
+            <Router history={history}>
+                <ScrollToTop history={history} />
                 <ProvideStore>
                     <ErrorBoundary>
-                        <Switch>
-                            <RouteWrapper exact path="/login">
-                                <Login />
-                            </RouteWrapper>
-                            <RouteWrapper exact path="/logout">
-                                <Logout />
-                            </RouteWrapper>
-                            <RouteWrapper exact path="/privacy">
-                                <Markdown file={PrivacyPolicy} />
-                            </RouteWrapper>
-                            <RouteWrapper exact path="/terms">
-                                <Markdown file={Terms} />
-                            </RouteWrapper>
-                            <RouteWrapper path="/openev/:year?">
-                                <OpenEvHome />
-                            </RouteWrapper>
-                            <RouteWrapper exact path="/">
-                                <Home />
-                            </RouteWrapper>
-                            <RouteWrapper path="/:caselist/add" privateRoute>
-                                <AddSchool />
-                            </RouteWrapper>
-                            <RouteWrapper path="/:caselist/recent" privateRoute>
-                                <Recent />
-                            </RouteWrapper>
-                            <RouteWrapper path="/:caselist/:school/:team/add" privateRoute>
-                                <Breadcrumbs />
-                                <AddRound />
-                            </RouteWrapper>
-                            <RouteWrapper path="/:caselist/:school/:team/:side?" privateRoute>
-                                <Breadcrumbs />
-                                <TeamRounds />
-                            </RouteWrapper>
-                            <RouteWrapper path="/:caselist/:school" privateRoute>
-                                <TeamList />
-                            </RouteWrapper>
-                            <RouteWrapper path="/:caselist" privateRoute>
-                                <CaselistHome />
-                            </RouteWrapper>
-                        </Switch>
+                        <Routes>
+                            <Route exact path="/login" element={<Layout><Login /></Layout>} />
+                            <Route exact path="/logout" element={<Logout />} />
+                            <Route exact path="/privacy" element={<Layout><Markdown file={PrivacyPolicy} /></Layout>} />
+                            <Route exact path="/terms" element={<Layout><Markdown file={Terms} /></Layout>} />
+                            <Route
+                                path="/openev/*"
+                                element={
+                                    <Layout privateRoute>
+                                        <OpenEvHome />
+                                    </Layout>
+                                }
+                            />
+                            <Route exact path="/404" element={<Layout><Error is404 /></Layout>} />
+                            <Route exact path="/error" element={<Layout><Error /></Layout>} />
+                            <Route exact path="/" element={<Layout><Home /></Layout>} />
+                            <Route
+                                path="/:caselist/add"
+                                element={
+                                    <Layout privateRoute>
+                                        <AddSchool />
+                                    </Layout>
+                                }
+                            />
+                            <Route
+                                path="/:caselist/recent"
+                                element={
+                                    <Layout privateRoute>
+                                        <Recent />
+                                    </Layout>
+                                }
+                            />
+                            <Route
+                                path="/:caselist/:school/:team/add"
+                                element={
+                                    <Layout privateRoute>
+                                        <AddRound />
+                                    </Layout>
+                                }
+                            />
+                            <Route
+                                path="/:caselist/:school/:team/"
+                                element={
+                                    <Layout privateRoute>
+                                        <TeamRounds />
+                                    </Layout>
+                                }
+                            />
+                            <Route
+                                path="/:caselist/:school/:team/:side"
+                                element={
+                                    <Layout privateRoute>
+                                        <TeamRounds />
+                                    </Layout>
+                                }
+                            />
+                            <Route
+                                path="/:caselist/:school"
+                                element={
+                                    <Layout privateRoute>
+                                        <TeamList />
+                                    </Layout>
+                                }
+                            />
+                            <Route
+                                path="/:caselist"
+                                element={
+                                    <Layout privateRoute>
+                                        <CaselistHome />
+                                    </Layout>
+                                }
+                            />
+                        </Routes>
                     </ErrorBoundary>
                 </ProvideStore>
             </Router>

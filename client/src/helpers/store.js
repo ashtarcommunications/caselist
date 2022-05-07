@@ -11,11 +11,9 @@ export const ProvideStore = ({ children }) => {
     const fetchCaselist = useCallback(async (caselist) => {
         try {
             if (caselist) {
-                const response = await loadCaselist(caselist);
-                setCaselistData(response || {});
+                setCaselistData(await loadCaselist(caselist) || {});
             }
         } catch (err) {
-            setCaselistData(new Error(err.message));
             console.log(err);
         }
     }, []);
@@ -30,17 +28,16 @@ export const ProvideStore = ({ children }) => {
                 setSchools(schoolData || []);
             }
         } catch (err) {
-            console.log(err);
             setSchools([]);
+            console.log(err);
         }
     }, []);
 
     const [schoolData, setSchoolData] = useState({});
     const fetchSchool = useCallback(async (caselist, school) => {
         try {
-            setSchoolData(await loadSchool(caselist, school));
+            setSchoolData(await loadSchool(caselist, school) || {});
         } catch (err) {
-            setSchoolData(new Error(err.message));
             console.log(err);
         }
     }, []);

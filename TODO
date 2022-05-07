@@ -14,14 +14,12 @@ Hide delete/edit buttons on archived caselists
 Table CSS
 Homepage sponsor logos
 Better <3 logos
-404 handling throughout
 Opensource file structure and download handling
 Add team form dynamic # of debaters
 In-place round data editing
 Full-text search
 Mobile table display
 Team notes/contact info, warn on contact info
-Better redirect/logout on 401
 Support for novice/all team entries
 Add analytics
 Open ev

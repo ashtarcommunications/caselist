@@ -14,15 +14,9 @@ const Sidebar = () => {
     const { schools, fetchSchools, caselist: caselistData, fetchCaselist } = useStore();
 
     useEffect(() => {
+        fetchCaselist(caselist);
         fetchSchools(caselist);
-    }, [caselist, fetchSchools]);
-
-    useEffect(() => {
-        if (caselistData.message) { return false; }
-        if (!caselistData || caselist !== caselistData.name) {
-            fetchCaselist(caselist);
-        }
-    }, [caselist, caselistData, fetchCaselist]);
+    }, [caselist, fetchCaselist, fetchSchools]);
 
     const [visible, setVisible] = useState(true);
     const handleToggleVisible = () => {
