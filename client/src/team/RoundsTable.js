@@ -235,7 +235,7 @@ const RoundsTable = ({ loading, event, archived }) => {
                 );
             },
         },
-    ], [handleDeleteRoundConfirm]);
+    ], [handleDeleteRoundConfirm, archived]);
 
     const { isMobile } = useDeviceDetect();
 
