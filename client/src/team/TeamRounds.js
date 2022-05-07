@@ -20,7 +20,7 @@ import styles from './TeamRounds.module.css';
 const TeamRounds = () => {
     const { caselist, school, team, side } = useParams();
 
-    const { caselist: caselistData } = useStore();
+    const { caselistData } = useStore();
 
     const [fetching, setFetching] = useState(false);
     const [teamData, setTeamData] = useState({});

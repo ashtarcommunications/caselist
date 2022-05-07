@@ -13,7 +13,7 @@ import styles from './AddTeam.module.css';
 const AddTeam = () => {
     const { caselist, school } = useParams();
     const { handleSubmit, reset, control, setValue, formState: { errors } } = useForm({ mode: 'all' });
-    const { caselist: caselistData, fetchTeams } = useStore();
+    const { caselistData, fetchTeams } = useStore();
 
     const [fetching, setFetching] = useState(false);
     const [students, setStudents] = useState([]);

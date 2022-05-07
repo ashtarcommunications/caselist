@@ -139,14 +139,9 @@
     font-size: 18px;
 }
 
-.rounds-table tr:hover .trash {
-    visibility: visible;
-    opacity: 1;
-    transition: visibility 0s, opacity 0s linear;
-}
-
+.rounds-table tr:hover .trash,
 .cites-table tr:hover .trash {
     visibility: visible;
     opacity: 1;
-    transition: visibility 0s, opacity 0s linear;
+    transition: visibility 0s, opacity 2s linear;
 }

@@ -6,7 +6,7 @@ import { useStore } from '../helpers/store';
 import styles from './CaselistHome.module.css';
 
 const CaselistHome = () => {
-    const { caselist: caselistData } = useStore();
+    const { caselistData } = useStore();
 
     const markdown = '# # This would create Heading 1 - For Pocket/Title\n## ## This would create Heading 2 - Hat/Section\n### ### This would create Heading 3 - Block Title/Argument Title\n#### #### This would create Heading 4 - Tag';
 

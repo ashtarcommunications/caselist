@@ -3,6 +3,7 @@ Add PUT/PATCH endpoints for round info
 Add version control handling to round/cites POSTs
 Trim all inputs
 Aff/Pro language helper
+Event log
 Tabroom claim endpoints
 Tests
 

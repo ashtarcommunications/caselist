@@ -21,7 +21,11 @@ const RoundsTable = ({ loading, event }) => {
             try {
                 const response = await loadRounds(caselist, school, team);
                 if (response) {
-                    setRounds(side ? response.filter(r => r.side === normalizeSide(side)) : response);
+                    setRounds(
+                        side
+                        ? response.filter(r => r.side === normalizeSide(side))
+                        : response
+                    );
                 }
             } catch (err) {
                 console.log(err);
@@ -32,12 +36,13 @@ const RoundsTable = ({ loading, event }) => {
 
     const handleDeleteRound = useCallback(async (id) => {
         try {
-            const response = await deleteRound(caselist, school, team, id);
+            const response = await deleteRound(caselist, school, team, parseInt(id));
             toast.success(response.message);
+            setRounds(rounds.filter(r => r.round_id !== parseInt(id)));
         } catch (err) {
             console.log(err);
         }
-    }, [caselist, school, team]);
+    }, [caselist, school, team, rounds]);
 
     const handleDeleteRoundConfirm = useCallback((e) => {
         const id = e.currentTarget.id;

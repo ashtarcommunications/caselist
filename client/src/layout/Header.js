@@ -10,10 +10,10 @@ import styles from './Header.module.css';
 
 const Header = () => {
     const auth = useContext(AuthContext);
-    const { caselist } = useStore();
+    const { caselistData } = useStore();
 
     // Set the header background based on the event/level combo
-    const className = `header-${caselist.level}-${caselist.event}`;
+    const className = `header-${caselistData.level}-${caselistData.event}`;
 
     return (
         <header className={`${styles.header} ${styles[className]}`}>

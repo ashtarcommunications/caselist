@@ -28,6 +28,14 @@
 
 .report {
     min-width: 400px;
+    min-height: 150px;
+}
+
+.info {
+    color: var(--brightblue);
+    font-size: 14px;
+    margin: 0px 5px;
+    cursor: pointer;
 }
 
 .flex {
@@ -78,6 +86,7 @@
 
 .trash {
     color: var(--red);
+    cursor: pointer;
 }
 
 .dirty {

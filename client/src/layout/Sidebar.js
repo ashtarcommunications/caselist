@@ -11,7 +11,7 @@ import styles from './Sidebar.module.css';
 
 const Sidebar = () => {
     const { caselist } = useParams();
-    const { schools, fetchSchools, caselist: caselistData, fetchCaselist } = useStore();
+    const { schools, fetchSchools, caselistData, fetchCaselist } = useStore();
 
     useEffect(() => {
         fetchCaselist(caselist);

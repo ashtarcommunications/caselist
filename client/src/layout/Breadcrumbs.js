@@ -9,7 +9,7 @@ import styles from './Breadcrumbs.module.css';
 
 const Breadcrumbs = () => {
     const { caselist, school, team } = useParams();
-    const { caselist: caselistData } = useStore();
+    const { caselistData } = useStore();
 
     return (
         <div className={styles.breadcrumbs}>

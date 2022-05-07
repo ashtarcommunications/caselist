@@ -31,14 +31,17 @@ const CitesTable = ({ loading }) => {
 
     const handleDeleteCite = useCallback(async (id) => {
         try {
-            const response = await deleteCite(caselist, school, team, id);
+            const response = await deleteCite(caselist, school, team, parseInt(id));
             toast.success(response.message);
+            setCites(cites.filter(c => c.cite_id !== parseInt(id)));
         } catch (err) {
             console.log(err);
         }
-    }, [caselist, school, team]);
+    }, [caselist, school, team, cites]);
 
-    const handleDeleteCiteConfirm = useCallback((id) => {
+    const handleDeleteCiteConfirm = useCallback((e) => {
+        const id = e.currentTarget.id;
+        if (!id) { return false; }
         toast(<ConfirmButton
             message="Are you sure you want to delete this cite entry?"
             handler={() => handleDeleteCite(id)}
@@ -131,7 +134,7 @@ const CitesTable = ({ loading }) => {
                 Cell: (row) => (
                     <span
                         id={row.row?.original?.cite_id}
-                        onClick={() => handleDeleteCiteConfirm(row.row?.original?.cite_id)}
+                        onClick={e => handleDeleteCiteConfirm(e)}
                         className={styles.trash}
                         title="Delete cites"
                     >

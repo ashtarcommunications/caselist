@@ -18,7 +18,7 @@ import styles from './TeamList.module.css';
 
 const TeamList = () => {
     const { caselist, school } = useParams();
-    const { school: schoolData, caselist: caselistData, teams, fetchSchool, fetchTeams } = useStore();
+    const { schoolData, caselistData, teams, fetchSchool, fetchTeams } = useStore();
     const [fetching, setFetching] = useState(false);
 
     useEffect(() => {

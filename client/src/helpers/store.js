@@ -23,9 +23,9 @@ export const ProvideStore = ({ children }) => {
     const fetchSchools = useCallback(async (caselist) => {
         try {
             if (caselist) {
-                const schoolData = await loadSchools(caselist);
-                schoolData.sort((a, b) => a.display_name?.localeCompare(b.display_name));
-                setSchools(schoolData || []);
+                const schoolList = await loadSchools(caselist);
+                schoolList.sort((a, b) => a.display_name?.localeCompare(b.display_name));
+                setSchools(schoolList || []);
             }
         } catch (err) {
             setSchools([]);
@@ -53,11 +53,11 @@ export const ProvideStore = ({ children }) => {
     }, []);
 
     const store = useMemo(() => ({
-        caselist: caselistData,
+        caselistData,
         fetchCaselist,
         schools,
         fetchSchools,
-        school: schoolData,
+        schoolData,
         fetchSchool,
         teams,
         fetchTeams,

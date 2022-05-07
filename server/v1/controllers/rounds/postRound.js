@@ -3,11 +3,12 @@ import fs from 'fs';
 import path from 'path';
 import { cwd } from 'process';
 import { query } from '../../helpers/mysql';
+import { displaySide } from '../../helpers/common';
 
 const postRound = {
     POST: async (req, res) => {
         const [result] = await query(SQL`
-            SELECT C.archived
+            SELECT C.archived, C.event
             FROM teams T
             INNER JOIN schools S ON S.school_id = T.school_id
             INNER JOIN caselists C ON C.caselist_id = S.caselist_id
@@ -30,39 +31,83 @@ const postRound = {
                 return res.status(400).json({ message: 'Invalid open source file' });
             }
 
-            // Use the extensinon from the provided file, but disallow anything weird
+            // Use the extension from the provided file, but disallow anything weird
             let extension = path.extname(req.body.filename);
             if (['.docx', '.doc', '.pdf', '.rtf', '.txt'].indexOf(extension) === -1) {
                 extension = '';
             }
-            // TODO - helper function for side name, maybe send event from client side
-            filename = `${req.params.school} ${req.params.team} ${req.body.side} ${req.body.tourn} Round ${req.body.round}${extension}`;
+            filename = `${req.params.school} ${req.params.team} `;
+            filename += `${displaySide(req.body.side, result.event)} `;
+            filename += `${req.body.tourn.trim()} `;
+            filename += parseInt(req.body.round) ? `Round ${req.body.round}` : req.body.round.trim();
+            filename += `${extension}`;
 
             // TODO - decide on a file structure and whether to add a hash or something
-            await fs.promises.mkdir(`${cwd()}/uploads/${req.params.caselist}/${req.params.school}/${req.params.team}`, { recursive: true });
-            await fs.promises.writeFile(`${cwd()}/uploads/${req.params.caselist}/${req.params.school}/${req.params.team}/${filename}`, arrayBuffer);
+            try {
+                await fs.promises.mkdir(`${cwd()}/uploads/${req.params.caselist}/${req.params.school}/${req.params.team}`, { recursive: true });
+                await fs.promises.writeFile(`${cwd()}/uploads/${req.params.caselist}/${req.params.school}/${req.params.team}/${filename}`, arrayBuffer);
+            } catch (err) {
+                return res.status(500).json({ message: 'Failed to upload open source file' });
+            }
         }
 
-        await query(SQL`
-            INSERT INTO rounds (team_id, side, tournament, round, opponent, judge, report, opensource, tourn_id, external_id)
-                SELECT
-                    T.team_id,
-                    ${req.body.side},
-                    ${req.body.tourn},
-                    ${req.body.round},
-                    ${req.body.opponent},
-                    ${req.body.judge},
-                    ${req.body.report},
-                    ${filename},
-                    ${req.body.tourn_id || null},
-                    ${req.body.external_id || null}
-                FROM teams T
-                INNER JOIN schools S ON S.school_id = T.school_id
-                INNER JOIN caselists C ON C.caselist_id = S.caselist_id
-                WHERE C.name = ${req.params.caselist}
-                AND LOWER(S.name) = LOWER(${req.params.school})
-                AND LOWER(T.name) = LOWER(${req.params.team})
-        `);
+        let round;
+        try {
+            round = await query(SQL`
+                INSERT INTO rounds (team_id, side, tournament, round, opponent, judge, report, opensource, tourn_id, external_id, created_by_id)
+                    SELECT
+                        T.team_id,
+                        ${req.body.side.trim()},
+                        ${req.body.tourn.trim()},
+                        ${req.body.round},
+                        ${req.body.opponent.trim()},
+                        ${req.body.judge.trim()},
+                        ${req.body.report.trim()},
+                        ${filename || null},
+                        ${req.body.tourn_id || null},
+                        ${req.body.external_id || null},
+                        ${req.user_id}
+                    FROM teams T
+                    INNER JOIN schools S ON S.school_id = T.school_id
+                    INNER JOIN caselists C ON C.caselist_id = S.caselist_id
+                    WHERE C.name = ${req.params.caselist}
+                    AND LOWER(S.name) = LOWER(${req.params.school})
+                    AND LOWER(T.name) = LOWER(${req.params.team})
+            `);
+        } catch (err) {
+            return res.status(500).json({ message: 'Failed to create round' });
+        }
+
+        let cites = req.body.cites || [];
+        cites = cites.filter(c => (
+            c.title
+            && c.cites
+            && c.title.trim().length > 0
+            && c.cites.trim().length > 0
+        ));
+
+        const promises = [];
+        if (cites.length > 0) {
+            cites.forEach(c => {
+                promises.push(
+                    query(SQL`
+                        INSERT INTO cites (round_id, title, cites, created_by_id)
+                        VALUES (
+                                ${round.insertId},
+                                ${c.title.trim()},
+                                ${c.cites.trim()},
+                                ${req.user_id}
+                        )
+                    `),
+                );
+            });
+        }
+        try {
+            await Promise.all(promises);
+        } catch (err) {
+            return res.status(500).json({ message: 'Failed to create cites' });
+        }
+
         return res.status(201).json({ message: 'Round successfully created' });
     },
 };

@@ -12,7 +12,7 @@ import styles from './AddSchool.module.css';
 const AddSchool = () => {
     const navigate = useNavigate();
     const { caselist } = useParams();
-    const { caselist: caselistData, fetchSchools } = useStore();
+    const { caselistData, fetchSchools } = useStore();
 
     const { register, formState: { errors, isValid }, handleSubmit, reset, control } = useForm({ mode: 'all' });
 
