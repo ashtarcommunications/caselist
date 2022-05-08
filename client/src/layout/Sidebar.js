@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { startOfYear } from '@speechanddebate/eslint-config-nsda';
+import { startOfYear } from '@speechanddebate/nsda-js-utils';
 
 import { useStore } from '../helpers/store';
 import CaselistDropdown from './CaselistDropdown';
