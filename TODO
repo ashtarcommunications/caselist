@@ -1,8 +1,6 @@
 # Server
 Add PUT/PATCH endpoints for round info
 Add version control handling to round/cites POSTs
-Trim all inputs
-Updated_by and created_by to modification endpoints
 Event log
 Tabroom claim endpoints
 Tests

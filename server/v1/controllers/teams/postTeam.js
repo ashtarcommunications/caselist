@@ -32,7 +32,7 @@ const postTeam = {
 
         await query(SQL`
             INSERT INTO teams
-                (school_id, name, display_name, debater1_first, debater1_last, debater2_first, debater2_last)
+                (school_id, name, display_name, debater1_first, debater1_last, debater2_first, debater2_last, created_by_id)
                 SELECT
                     S.school_id,
                     ${name},
@@ -40,7 +40,8 @@ const postTeam = {
                     ${req.body.debater1_first?.trim() || null},
                     ${req.body.debater1_last?.trim() || null},
                     ${req.body.debater2_first?.trim() || null},
-                    ${req.body.debater2_last?.trim() || null}
+                    ${req.body.debater2_last?.trim() || null},
+                    ${req.user_id}
                 FROM schools S
                 INNER JOIN caselists C ON S.caselist_id = C.caselist_id
                 WHERE C.slug = ${req.params.caselist}

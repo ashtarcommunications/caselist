@@ -24,7 +24,7 @@ const putRound = {
             INNER JOIN teams T ON T.team_id = R.team_id
             INNER JOIN schools S ON S.school_id = T.school_id
             INNER JOIN caselists C ON C.caselist_id = S.caselist_id
-            SET CT.deleted = 1
+            SET CT.deleted = 1, CT.updated_by_id = ${req.user_id}
             WHERE C.name = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${req.params.school})
             AND LOWER(T.name) = LOWER(${req.params.team})
@@ -36,7 +36,7 @@ const putRound = {
             INNER JOIN teams T ON T.team_id = R.team_id
             INNER JOIN schools S ON S.school_id = T.school_id
             INNER JOIN caselists C ON C.caselist_id = S.caselist_id
-            SET R.updated_at = CURRENT_TIMESTAMP
+            SET R.updated_at = CURRENT_TIMESTAMP, R.updated_by_id = ${req.user_id}
             WHERE C.name = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${req.params.school})
             AND LOWER(T.name = LOWER(${req.params.team})
@@ -44,8 +44,8 @@ const putRound = {
         `);
 
         await query(SQL`
-            INSERT INTO cites (round_id, cites)
-            VALUES (${req.params.round}, ${JSON.stringify(req.body.cites)})
+            INSERT INTO cites (round_id, cites, created_by_id)
+            VALUES (${req.params.round}, ${JSON.stringify(req.body.cites)}, ${req.user_id})
         `);
 
         return res.status(201).json({ message: 'Round successfully updated' });

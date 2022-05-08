@@ -26,8 +26,8 @@ const postSchool = {
         }
 
         const result = await query(SQL`
-            INSERT INTO schools (caselist_id, name, display_name, state)
-                SELECT caselist_id, ${name}, ${req.body.displayName?.trim()}, ${req.body.state?.trim()}
+            INSERT INTO schools (caselist_id, name, display_name, state, created_by_id)
+                SELECT caselist_id, ${name}, ${req.body.displayName?.trim()}, ${req.body.state?.trim()}, ${req.user_id}
                 FROM caselists WHERE name = ${req.params.caselist}
         `);
 
