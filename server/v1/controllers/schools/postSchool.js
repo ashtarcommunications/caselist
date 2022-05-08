@@ -3,7 +3,7 @@ import { query } from '../../helpers/mysql';
 
 const postSchool = {
     POST: async (req, res) => {
-        const name = req.body.displayName.replaceAll(' ', '');
+        const name = req.body.displayName?.replaceAll(' ', '');
 
         const school = await query(SQL`
             SELECT * FROM schools S
@@ -27,7 +27,7 @@ const postSchool = {
 
         const result = await query(SQL`
             INSERT INTO schools (caselist_id, name, display_name, state)
-                SELECT caselist_id, ${name}, ${req.body.displayName ? req.body.displayName.trim() : null}, ${req.body.state ? req.body.state.trim() : null}
+                SELECT caselist_id, ${name}, ${req.body.displayName?.trim()}, ${req.body.state?.trim()}
                 FROM caselists WHERE name = ${req.params.caselist}
         `);
 

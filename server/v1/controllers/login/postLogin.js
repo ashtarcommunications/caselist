@@ -6,7 +6,7 @@ import config from '../../../config';
 
 const postLogin = {
     POST: async (req, res) => {
-        const username = req.body.username;
+        const username = req.body.username.trim();
         const password = req.body.password;
 
         // TODO - figure out how to mock this

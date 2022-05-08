@@ -31,7 +31,7 @@ const patchTeam = {
             if (Object.keys(u)[0] === 'notes') {
                 promises.push(
                     query(SQL`
-                        UPDATE teams SET notes = ${u.notes}
+                        UPDATE teams SET notes = ${u.notes.trim()}
                         WHERE T.team_id = ${team.team_id}
                     `)
                 );

@@ -37,10 +37,10 @@ const postTeam = {
                     S.school_id,
                     ${name},
                     ${displayName},
-                    ${req.body.debater1_first},
-                    ${req.body.debater1_last},
-                    ${req.body.debater2_first},
-                    ${req.body.debater2_last}
+                    ${req.body.debater1_first?.trim() || null},
+                    ${req.body.debater1_last?.trim() || null},
+                    ${req.body.debater2_first?.trim() || null},
+                    ${req.body.debater2_last?.trim() || null}
                 FROM schools S
                 INNER JOIN caselists C ON S.caselist_id = C.caselist_id
                 WHERE C.slug = ${req.params.caselist}
