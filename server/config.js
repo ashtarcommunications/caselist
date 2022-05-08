@@ -1,4 +1,6 @@
-require('dotenv').config();
+import { config as envconfig } from 'dotenv';
+
+envconfig();
 
 // Default (Dev config)
 const config = {

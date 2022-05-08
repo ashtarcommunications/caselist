@@ -2,8 +2,8 @@ import SQL from 'sql-template-strings';
 import fs from 'fs';
 import path from 'path';
 import { cwd } from 'process';
+import { displaySide } from '@speechanddebate/nsda-js-utils';
 import { query } from '../../helpers/mysql';
-import { displaySide } from '../../helpers/common';
 
 const postRound = {
     POST: async (req, res) => {

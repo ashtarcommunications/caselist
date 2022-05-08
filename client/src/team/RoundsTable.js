@@ -3,10 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faAngleDown, faAngleUp, faSave } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
+import { displaySide, normalizeSide, roundName } from '@speechanddebate/nsda-js-utils';
 
 import { loadRounds, deleteRound } from '../helpers/api';
 import ConfirmButton from '../helpers/ConfirmButton';
-import { displaySide, normalizeSide, roundName, useDeviceDetect } from '../helpers/common';
+import { useDeviceDetect } from '../helpers/mobile';
 import Table from '../tables/Table';
 
 import styles from './TeamRounds.module.css';

@@ -6,10 +6,10 @@ import Toggle from 'react-toggle';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
+import { displaySide, affName, negName } from '@speechanddebate/nsda-js-utils';
 
 import { useStore } from '../helpers/store';
 import { addRound, loadTabroomRounds } from '../helpers/api';
-import { displaySide, affName, negName } from '../helpers/common';
 import processFile from './processFile';
 
 import Error from '../layout/Error';

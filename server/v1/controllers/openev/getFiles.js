@@ -1,6 +1,6 @@
 import SQL from 'sql-template-strings';
+import { startOfYear } from '@speechanddebate/nsda-js-utils';
 import { query } from '../../helpers/mysql';
-import { startOfYear } from '../../helpers/common';
 
 const getFiles = {
     GET: async (req, res) => {

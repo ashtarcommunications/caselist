@@ -7,7 +7,7 @@ import Markdown from 'react-markdown';
 
 import { loadCites, deleteCite } from '../helpers/api';
 import ConfirmButton from '../helpers/ConfirmButton';
-import { useDeviceDetect } from '../helpers/common';
+import { useDeviceDetect } from '../helpers/mobile';
 import Table from '../tables/Table';
 
 import styles from './TeamRounds.module.css';

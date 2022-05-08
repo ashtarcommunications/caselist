@@ -1,5 +1,5 @@
 import React from 'react';
-import { affName, negName } from '../helpers/common';
+import { affName, negName } from '@speechanddebate/nsda-js-utils';
 
 const SideDropdown = ({ className, value, onChange, event = 'cx' }) => {
     return (

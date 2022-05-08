@@ -1,12 +1,13 @@
 {
   "scripts": {
-    "start": "NODE_ENV='production' NODE_OPTIONS='--max_old_space_size=8000' node --use_strict index.js",
-    "dev": "NODE_ENV='development' nodemon --require esm --use-strict index.js",
+    "start": "NODE_ENV='production' NODE_OPTIONS='--max_old_space_size=8000' node --experimental-specifier-resolution=node --use_strict index.js",
+    "dev": "NODE_ENV='development' nodemon --experimental-specifier-resolution=node --use-strict index.js",
     "test": "NODE_ENV='test' mocha 'v1/**/*.test.js'",
     "cover": "rm -fr ./node_modules/.cache; NODE_ENV='test' nyc mocha 'v1/**/*.test.js'",
     "lint": "eslint --ignore-path .gitignore ."
   },
   "name": "caselist-api",
+  "type": "module",
   "version": "1.0.0",
   "private": true,
   "description": "Caselist API",
@@ -19,13 +20,13 @@
     "node": ">= 16.15.0"
   },
   "dependencies": {
+    "@speechanddebate/nsda-js-utils": "^1.0.0",
     "aws-sdk": "^2.1040.0",
     "body-parser": "^1.18.3",
     "bottleneck": "^2.19.0",
     "cookie-parser": "^1.4.4",
     "crypto-js": "^4.0.0",
     "dotenv": "^8.2.0",
-    "esm": "^3.2.22",
     "express": "^4.16.4",
     "express-openapi": "^4.6.1",
     "express-rate-limit": "^3.4.1",
@@ -57,13 +58,11 @@
   },
   "mocha": {
     "use_strict": true,
-    "require": [
-      "esm"
-    ],
     "exit": true
   },
   "eslintConfig": {
-    "extends": "@speechanddebate/eslint-config-nsda"
+    "extends": "@speechanddebate/eslint-config-nsda",
+    "ecmaVersion": 2020
   },
   "_id": "caselist-api@1.0.0"
 }

@@ -2,9 +2,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { startOfYear } from '@speechanddebate/eslint-config-nsda';
 
 import { useStore } from '../helpers/store';
-import { startOfYear } from '../helpers/common';
 import CaselistDropdown from './CaselistDropdown';
 
 import styles from './Sidebar.module.css';
