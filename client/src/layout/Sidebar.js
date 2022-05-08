@@ -6,6 +6,7 @@ import { startOfYear } from '@speechanddebate/eslint-config-nsda';
 
 import { useStore } from '../helpers/store';
 import CaselistDropdown from './CaselistDropdown';
+import StatesDropdown from '../caselist/StatesDropdown';
 
 import styles from './Sidebar.module.css';
 
@@ -18,12 +19,16 @@ const Sidebar = () => {
         fetchSchools(caselist);
     }, [caselist, fetchCaselist, fetchSchools]);
 
+    const [stateCode, setStateCode] = useState('');
+
     const [visible, setVisible] = useState(true);
     const handleToggleVisible = () => {
         setVisible(!visible);
     };
 
-    if (caselistData.message) { return false; }
+    if (!caselistData.name) { return false; }
+
+    const filteredSchools = stateCode ? schools.filter(s => s.state === stateCode) : schools;
 
     return (
         <div className={`${styles.sidebar} ${!visible ? styles['sidebar-collapsed'] : undefined}`}>
@@ -50,18 +55,36 @@ const Sidebar = () => {
                     }
                 </h2>
                 {
+                    caselistData.level === 'hs' &&
+                    <form className="pure-form">
+                        <label htmlFor="state">State</label>
+                        <StatesDropdown
+                            required={false}
+                            stateCode={stateCode}
+                            changeStateCode={e => setStateCode(e.currentTarget.value)}
+                        />
+                    </form>
+                }
+                {
                     !caselistData.archived &&
                     <p>
                         <Link to={`/${caselist}/recent`}>Recently Modified</Link>
                     </p>
                 }
                 {
-                    schools && schools.length > 0 &&
+                    filteredSchools && filteredSchools.length > 0 &&
                         <div>
                             <ul>
                                 {
-                                    schools.map(s => {
-                                        return <li key={s.school_id}><Link to={`/${caselist}/${s.name}`}>{s.display_name}</Link></li>;
+                                    filteredSchools.map(s => {
+                                        return (
+                                            <li key={s.school_id}>
+                                                <Link to={`/${caselist}/${s.name}`}>
+                                                    {s.display_name}
+                                                    {caselistData.level === 'hs' && ` (${s.state})`}
+                                                </Link>
+                                            </li>
+                                        );
                                     })
                                 }
                             </ul>
