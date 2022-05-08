@@ -37,7 +37,15 @@ const putRound = {
             INNER JOIN teams T ON T.team_id = R.team_id
             INNER JOIN schools S ON S.school_id = T.school_id
             INNER JOIN caselists C ON C.caselist_id = S.caselist_id
-            SET R.updated_at = CURRENT_TIMESTAMP, R.updated_by_id = ${req.user_id}
+            SET
+                R.side = ${req.body.side},
+                R.tournament = ${req.body.tournament?.trim()},
+                R.round = ${req.body.round?.trim()},
+                R.opponent = ${req.body.opponent?.trim()},
+                R.judge = ${req.body.judge?.trim()},
+                R.report = ${req.body.report?.trim()},
+                R.updated_at = CURRENT_TIMESTAMP,
+                R.updated_by_id = ${req.user_id}
             WHERE C.name = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${req.params.school})
             AND LOWER(T.name = LOWER(${req.params.team})

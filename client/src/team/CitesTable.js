@@ -127,7 +127,6 @@ const CitesTable = ({ loading, archived }) => {
             {
                 id: 'delete',
                 width: '25px',
-                maxWidth: '25px',
                 disableSortBy: true,
                 accessor: (row) => row,
                 className: styles.center,

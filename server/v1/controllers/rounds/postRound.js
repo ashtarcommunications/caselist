@@ -59,7 +59,7 @@ const postRound = {
                         T.team_id,
                         ${req.body.side.trim()},
                         ${req.body.tourn.trim()},
-                        ${req.body.round},
+                        ${req.body.round.trim()},
                         ${req.body.opponent.trim()},
                         ${req.body.judge.trim()},
                         ${req.body.report.trim()},
