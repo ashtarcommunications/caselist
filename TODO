@@ -10,6 +10,7 @@ Tests
 # Client
 Working add-round form with error handling
 Round table date sort
+Cite quick add w/ no round
 Video links in round table
 Cite parser and markdown display
 Why cites explanation
