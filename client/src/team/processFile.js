@@ -2,7 +2,15 @@ import * as mammoth from 'mammoth/mammoth.browser';
 import Turndown from 'turndown';
 import { toast } from 'react-toastify';
 
-const processFile = (acceptedFiles, setFiles, autodetect, removeEmptyCites, setProcessing, setFileContent, append) => {
+const processFile = (
+    acceptedFiles,
+    setFiles,
+    autodetect,
+    removeEmptyCites,
+    setProcessing,
+    setFileContent,
+    append
+) => {
     setFiles(acceptedFiles);
     acceptedFiles.forEach((file) => {
         const reader = new FileReader();

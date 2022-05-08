@@ -68,7 +68,13 @@ const Table = ({ columns = [], data = [], className, loading = false, noDataText
                                                         <input
                                                             className={styles.filter}
                                                             value={column.filterValue || ''}
-                                                            onChange={e => column.setFilter(e.target.value || undefined)}
+                                                            onChange={
+                                                                e => (
+                                                                    column.setFilter(
+                                                                        e.target.value || undefined
+                                                                    )
+                                                                )
+                                                            }
                                                             placeholder={column.filterPlaceholder}
                                                             disabled={column.disableFilters}
                                                         />

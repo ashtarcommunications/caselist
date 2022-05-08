@@ -103,13 +103,14 @@ const CiteEditor = ({ item, index, register, control, remove }) => {
                                             buttonProps: { 'aria-label': 'Convert' },
                                             icon: <div style={{ fontSize: 12, textAlign: 'left' }}>Convert = to #</div>,
                                             execute: (state, api) => {
-                                                // Convert from old XWiki syntax to markdown headings
+                                                // Convert from old XWiki syntax to markdown
                                                 const converted = state.text
                                                     .replace(/==== /g, '#### ')
                                                     .replace(/=== /g, '### ')
                                                     .replace(/== /g, '## ')
                                                     .replace(/= /g, '# ');
-                                                // Manually set the textarea range to replace the whole contents
+                                                // Manually set textarea range to replace
+                                                // whole contents
                                                 api.setSelectionRange({
                                                     start: 0,
                                                     end: state.text?.length,
