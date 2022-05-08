@@ -1,5 +1,6 @@
 import SQL from 'sql-template-strings';
 import { query } from '../../helpers/mysql';
+import log from '../log/insertEventLog';
 
 const patchTeam = {
     PATCH: async (req, res) => {
@@ -41,6 +42,14 @@ const patchTeam = {
         await Promise.all(promises);
 
         const updatedTeam = await query(SQL`SELECT * FROM teams WHERE T.team_id = ${team.team_id}`);
+
+        await log({
+            user_id: req.user_id,
+            tag: 'team-edit',
+            description: `Edited team ${req.params.school} ${req.params.team} in ${req.params.caselist}`,
+            team_id: team.team_id,
+        });
+
         return res.status(200).json(updatedTeam);
     },
 };

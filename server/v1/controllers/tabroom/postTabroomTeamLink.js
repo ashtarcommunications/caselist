@@ -1,5 +1,13 @@
+import log from '../log/insertEventLog';
+
 const postTabroomTeamLink = {
     POST: async (req, res) => {
+        await log({
+            user_id: req.user_id,
+            tag: 'tabroom-add',
+            description: `Linked to tabroom`,
+        });
+
         return res.status(201).json({ message: 'Team linked to Tabroom' });
     },
 };

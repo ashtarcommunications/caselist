@@ -108,6 +108,13 @@ const postRound = {
             return res.status(500).json({ message: 'Failed to create cites' });
         }
 
+        await log({
+            user_id: req.user_id,
+            tag: 'round-add',
+            description: `Created round #${round.insertId} for ${req.params.school} ${req.params.team} in ${req.params.caselist}`,
+            round_id: parseInt(round.insertId),
+        });
+
         return res.status(201).json({ message: 'Round successfully created' });
     },
 };

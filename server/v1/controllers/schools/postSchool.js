@@ -1,5 +1,6 @@
 import SQL from 'sql-template-strings';
 import { query } from '../../helpers/mysql';
+import log from '../log/insertEventLog';
 
 const postSchool = {
     POST: async (req, res) => {
@@ -34,6 +35,13 @@ const postSchool = {
         const newSchool = await query(SQL`
             SELECT * FROM schools WHERE school_id = ${result.insertId}
         `);
+
+        await log({
+            user_id: req.user_id,
+            tag: 'school-add',
+            description: `Added school #${result.insertId} in ${req.params.caselist}`,
+            school_id: parseInt(result.insertId),
+        });
 
         return res.status(201).json(newSchool[0]);
     },

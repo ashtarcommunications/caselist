@@ -1,5 +1,6 @@
 import SQL from 'sql-template-strings';
 import { query } from '../../helpers/mysql';
+import log from '../log/insertEventLog';
 
 const deleteCite = {
     DELETE: async (req, res) => {
@@ -23,6 +24,13 @@ const deleteCite = {
         await query(SQL`
             UPDATE cites SET deleted = 1 WHERE cite_id = ${parseInt(req.params.cite)}
         `);
+
+        await log({
+            user_id: req.user_id,
+            tag: 'cite-delete',
+            description: `Deleted cite #${req.params.cite} for ${req.params.school} ${req.params.team} in ${req.params.caselist}`,
+            cite_id: parseInt(req.params.cite),
+        });
 
         return res.status(201).json({ message: 'Cite successfully deleted' });
     },

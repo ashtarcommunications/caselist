@@ -1,5 +1,6 @@
 import SQL from 'sql-template-strings';
 import { query } from '../../helpers/mysql';
+import log from '../log/insertEventLog';
 
 const postTeam = {
     POST: async (req, res) => {
@@ -30,7 +31,7 @@ const postTeam = {
         if (!result) { return res.status(400).json({ message: 'School not found' }); }
         if (result.archived) { return res.status(401).json({ message: 'Caselist archived, no modifications allowed' }); }
 
-        await query(SQL`
+        const [newTeam] = await query(SQL`
             INSERT INTO teams
                 (school_id, name, display_name, debater1_first, debater1_last, debater2_first, debater2_last, created_by_id)
                 SELECT
@@ -47,6 +48,13 @@ const postTeam = {
                 WHERE C.slug = ${req.params.caselist}
                 AND LOWER(S.name) = LOWER(${req.params.school})
         `);
+
+        await log({
+            user_id: req.user_id,
+            tag: 'team-add',
+            description: `Added team #${newTeam.insertId} to ${req.params.school} in ${req.params.caselist}`,
+            team_id: newTeam.insertId,
+        });
 
         return res.status(201).json({ message: 'Team successfully created' });
     },

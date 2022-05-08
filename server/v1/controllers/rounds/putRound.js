@@ -1,5 +1,6 @@
 import SQL from 'sql-template-strings';
 import { query } from '../../helpers/mysql';
+import log from '../log/insertEventLog';
 
 const putRound = {
     PUT: async (req, res) => {
@@ -47,6 +48,13 @@ const putRound = {
             INSERT INTO cites (round_id, cites, created_by_id)
             VALUES (${req.params.round}, ${JSON.stringify(req.body.cites)}, ${req.user_id})
         `);
+
+        await log({
+            user_id: req.user_id,
+            tag: 'round-edit',
+            description: `Edited round #${req.params.round} for ${req.params.school} ${req.params.team} in ${req.params.caselist}`,
+            round_id: parseInt(req.params.round),
+        });
 
         return res.status(201).json({ message: 'Round successfully updated' });
     },

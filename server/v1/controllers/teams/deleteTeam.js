@@ -1,10 +1,11 @@
 import SQL from 'sql-template-strings';
 import { query } from '../../helpers/mysql';
+import log from '../log/insertEventLog';
 
 const deleteTeam = {
     DELETE: async (req, res) => {
-        const [result] = await query(SQL`
-            SELECT C.archived
+        const [team] = await query(SQL`
+            SELECT C.archived, T.team_id
             FROM teams T
             INNER JOIN schools S ON S.school_id = T.school_id
             INNER JOIN caselists C ON C.caselist_id = S.caselist_id
@@ -13,19 +14,11 @@ const deleteTeam = {
             AND LOWER(T.name) = LOWER(${req.params.team})
         `);
 
-        if (!result) { return res.status(400).json({ message: 'Team not found' }); }
-        if (result.archived) { return res.status(401).json({ message: 'Caselist archived, no modifications allowed' }); }
+        if (!team) { return res.status(400).json({ message: 'Team not found' }); }
+        if (team.archived) { return res.status(401).json({ message: 'Caselist archived, no modifications allowed' }); }
 
-        const teamId = await query(SQL`
-            SELECT team_id FROM teams T
-            INNER JOIN schools S ON S.school_id = T.school_id
-            INNER JOIN caselists C ON C.caselist_id = S.caselist_id
-            WHERE LOWER(S.name) = LOWER(${req.params.school})
-            AND C.name = ${req.params.caselist}
-            AND LOWER(T.name) = LOWER(${req.params.team})
-        `);
         await query(SQL`
-            UPDATE teams SET deleted = 1 WHERE team_id = ${teamId}
+            UPDATE teams SET deleted = 1 WHERE team_id = ${team.team_id}
         `);
         await query(SQL`
             UPDATE cites CT
@@ -48,6 +41,13 @@ const deleteTeam = {
             AND LOWER(S.name) = LOWER(${req.params.school})
             AND LOWER(T.name) = LOWER(${req.params.team})
         `);
+
+        await log({
+            user_id: req.user_id,
+            tag: 'team-delete',
+            description: `Deleted team ${req.params.school} ${req.params.team} in ${req.params.caselist}`,
+            team_id: team.team_id,
+        });
 
         return res.status(201).json({ message: 'Team successfully deleted' });
     },

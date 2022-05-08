@@ -1,5 +1,6 @@
 import SQL from 'sql-template-strings';
 import { query } from '../../helpers/mysql';
+import log from '../log/insertEventLog';
 
 const deleteRound = {
     DELETE: async (req, res) => {
@@ -24,6 +25,13 @@ const deleteRound = {
         await query(SQL`
             UPDATE rounds SET deleted = 1 WHERE round_id = ${req.params.round}
         `);
+
+        await log({
+            user_id: req.user_id,
+            tag: 'round-delete',
+            description: `Deleted round #${req.params.round} for ${req.params.school} ${req.params.team} in ${req.params.caselist}`,
+            round_id: parseInt(req.params.round),
+        });
 
         return res.status(201).json({ message: 'Round successfully deleted' });
     },
