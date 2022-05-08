@@ -32,6 +32,7 @@ import getTabroomRounds from '../controllers/tabroom/getTabroomRounds';
 import postTabroomTeamLink from '../controllers/tabroom/postTabroomTeamLink';
 
 import getFiles from '../controllers/openev/getFiles';
+import postFile from '../controllers/openev/postFile';
 
 export default [
     { path: '/status', module: status },
@@ -61,5 +62,5 @@ export default [
     { path: '/tabroom/students', module: getTabroomStudents },
     { path: '/tabroom/rounds', module: getTabroomRounds },
 
-    { path: '/openev', module: getFiles },
+    { path: '/openev', module: {...getFiles, ...postFile } },
 ];

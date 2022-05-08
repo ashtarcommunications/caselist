@@ -8,6 +8,8 @@ const File = {
         lab: { type: 'string' },
         tags: { type: 'string' },
         deleted: { type: 'boolean' },
+        file: { type: 'string' },
+        filename: { type: 'string' }
     },
 };
 
