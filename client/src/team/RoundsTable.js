@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faAngleDown, faAngleUp, faSave } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faAngleDown, faAngleUp, faFileDownload, faVideo } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 import { displaySide, normalizeSide, roundName } from '@speechanddebate/nsda-js-utils';
@@ -153,17 +153,35 @@ const RoundsTable = ({ loading, event, archived }) => {
         // },
         {
             id: 'opensource',
-            width: '25px',
+            Header: 'Open Source',
+            width: '100px',
             accessor: row => row,
             disableSortBy: true,
             disableFilters: true,
             className: styles.center,
-            Cell: () => {
-                return (<FontAwesomeIcon
-                    icon={faSave}
-                    title="Download"
-                    className={styles.save}
-                />);
+            Cell: (row) => {
+                return (
+                    <>
+                        {
+                            row.row?.original?.opensource &&
+                            <FontAwesomeIcon
+                                icon={faFileDownload}
+                                title="Download"
+                                className={styles.download}
+                            />
+                        }
+                        {
+                            row.row?.original?.video &&
+                            <a href={row.row?.original?.video} target="_blank" rel="noopener noreferrer">
+                                <FontAwesomeIcon
+                                    icon={faVideo}
+                                    title="Video"
+                                    className={styles.video}
+                                />
+                            </a>
+                        }
+                    </>
+                );
             },
         },
         {
@@ -223,9 +241,22 @@ const RoundsTable = ({ loading, event, archived }) => {
                             <p>
                                 <span>Open Source:</span>
                                 <FontAwesomeIcon
-                                    icon={faSave}
+                                    icon={faFileDownload}
                                     className={styles.save}
                                 />
+                            </p>
+                        }
+                        {
+                            row.row?.original?.video &&
+                            <p>
+                                <span>Video:</span>
+                                <a href={row.row?.original?.video} target="_blank" rel="noopener noreferrer">
+                                    <FontAwesomeIcon
+                                        icon={faVideo}
+                                        title="Video"
+                                        className={styles.video}
+                                    />
+                                </a>
                             </p>
                         }
                         {

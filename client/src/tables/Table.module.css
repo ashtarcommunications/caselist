@@ -11,6 +11,16 @@
     padding: 5px;
 }
 
+.table thead {
+    vertical-align: middle;
+    background: var(--lightgray);
+    color: var(--black);
+}
+
+.table tbody tr td {
+    font-size: 14px;
+}
+
 .sort {
     margin-left: 5px;
 }

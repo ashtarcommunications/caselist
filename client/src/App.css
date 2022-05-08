@@ -60,16 +60,6 @@ label {
     margin-top: 20px;
 }
 
-.pure-table thead {
-    vertical-align: middle;
-    background: var(--lightgray) !important;
-    color: var(--black) !important;
-}
-
-.pure-table tbody tr td {
-    font-size: 14px;
-}
-
 /* react-widget modifications */
 .rw-widget,
 .rw-widget div,
