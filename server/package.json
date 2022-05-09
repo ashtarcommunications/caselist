@@ -4,7 +4,7 @@
     "dev": "NODE_ENV='development' nodemon --experimental-specifier-resolution=node --use-strict index.js",
     "test": "NODE_ENV='test' mocha 'v1/**/*.test.js'",
     "cover": "rm -fr ./node_modules/.cache; NODE_ENV='test' nyc mocha 'v1/**/*.test.js'",
-    "lint": "eslint --ignore-path .gitignore ."
+    "lint": "eslint --ignore-path ../.gitignore ."
   },
   "name": "caselist-api",
   "type": "module",
@@ -62,7 +62,7 @@
   },
   "eslintConfig": {
     "extends": "@speechanddebate/eslint-config-nsda",
-    "ecmaVersion": 2020
+    "parserOptions": { "ecmaVersion": "latest", "sourceType": "module" }
   },
   "_id": "caselist-api@1.0.0"
 }

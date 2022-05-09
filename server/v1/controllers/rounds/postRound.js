@@ -4,6 +4,7 @@ import path from 'path';
 import { cwd } from 'process';
 import { displaySide } from '@speechanddebate/nsda-js-utils';
 import { query } from '../../helpers/mysql';
+import log from '../log/insertEventLog';
 
 const postRound = {
     POST: async (req, res) => {

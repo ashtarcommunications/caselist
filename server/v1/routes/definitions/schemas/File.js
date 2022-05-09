@@ -9,7 +9,7 @@ const File = {
         tags: { type: 'string' },
         deleted: { type: 'boolean' },
         file: { type: 'string' },
-        filename: { type: 'string' }
+        filename: { type: 'string' },
     },
 };
 

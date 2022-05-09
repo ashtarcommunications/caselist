@@ -3,9 +3,10 @@ import fetch from 'isomorphic-fetch';
 
 const getTabroomChapters = {
     GET: async (req, res) => {
-        // const chapters = await fetch(
-        //     `${config.TABROOM_API_URL}/caselist/chapters?person_id=${req.user.id}&caselist_key=${config.TABROOM_CASELIST_KEY}`
-        // );
+        // let url = `${config.TABROOM_API_URL}`;
+        // url += `/caselist/chapters?person_id=${req.user.id}`;
+        // url += `&caselist_key=${config.TABROOM_CASELIST_KEY}`;
+        // const chapters = await fetch(url);
         const chapters = await fetch(
             'http://localhost:10011/v1/caselist/chapters?person_id=17145&caselist_key=caselist-key'
         );

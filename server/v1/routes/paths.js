@@ -62,5 +62,5 @@ export default [
     { path: '/tabroom/students', module: getTabroomStudents },
     { path: '/tabroom/rounds', module: getTabroomRounds },
 
-    { path: '/openev', module: {...getFiles, ...postFile } },
+    { path: '/openev', module: { ...getFiles, ...postFile } },
 ];

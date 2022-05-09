@@ -1,9 +1,8 @@
 import SQL from 'sql-template-strings';
 import fs from 'fs';
-import path from 'path';
 import { cwd } from 'process';
-import { displaySide } from '@speechanddebate/nsda-js-utils';
 import { query } from '../../helpers/mysql';
+import log from '../log/insertEventLog';
 
 const postFile = {
     POST: async (req, res) => {
@@ -39,9 +38,8 @@ const postFile = {
             }
         }
 
-        let file;
         try {
-            file = await query(SQL`
+            await query(SQL`
                 INSERT INTO openev (path, year, camp, lab, tags, created_by_id)
                 VALUES (
                     ${path}${filename},
@@ -66,7 +64,7 @@ const postFile = {
     },
 };
 
-postRound.POST.apiDoc = {
+postFile.POST.apiDoc = {
     summary: 'Creates an OpenEv file',
     operationId: 'postFile',
     requestBody: {
