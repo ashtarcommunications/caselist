@@ -3,14 +3,12 @@ import { query } from '../../helpers/mysql';
 
 const getSchools = {
     GET: async (req, res) => {
-        const sql = (SQL`
+        const schools = await query(SQL`
             SELECT S.* FROM schools S
             INNER JOIN caselists C ON S.caselist_id = C.caselist_id
             wHERE C.name = ${req.params.caselist}
-            AND (S.deleted IS NULL OR S.deleted <> 1)
             ORDER BY S.display_name
         `);
-        const schools = await query(sql);
 
         return res.status(200).json(schools);
     },

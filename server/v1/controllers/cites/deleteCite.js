@@ -4,8 +4,7 @@ import log from '../log/insertEventLog';
 
 const deleteCite = {
     DELETE: async (req, res) => {
-        console.log(req.params);
-        const [result] = await query(SQL`
+        const [cite] = await query(SQL`
             SELECT C.archived
             FROM cites CT
             INNER JOIN rounds R ON R.round_id = CT.round_id
@@ -18,11 +17,39 @@ const deleteCite = {
             AND CT.cite_id = ${parseInt(req.params.cite)}
         `);
 
-        if (!result) { return res.status(400).json({ message: 'Cite not found' }); }
-        if (result.archived) { return res.status(401).json({ message: 'Caselist archived, no modifications allowed' }); }
+        if (!cite) { return res.status(400).json({ message: 'Cite not found' }); }
+        if (cite.archived) { return res.status(401).json({ message: 'Caselist archived, no modifications allowed' }); }
 
         await query(SQL`
-            UPDATE cites SET deleted = 1 WHERE cite_id = ${parseInt(req.params.cite)}
+            INSERT INTO cites_history (
+                cite_id,
+                version,
+                round_id,
+                title,
+                cites,
+                created_at,
+                created_by_id,
+                updated_at,
+                updated_by_id,
+                event
+            )
+            SELECT
+                CT.cite_id,
+                (SELECT COALESCE(MAX(version), 0) + 1 FROM cites_history CH WHERE CH.cite_id = CT.cite_id) AS 'version',
+                CT.round_id,
+                CT.title,
+                CT.cites,
+                CT.created_at,
+                CT.created_by_id,
+                CURRENT_TIMESTAMP,
+                ${req.user_id},
+                'delete'
+            FROM cites CT
+            WHERE CT.cite_id = ${parseInt(req.params.cite)}
+        `);
+
+        await query(SQL`
+            DELETE FROM cites WHERE cite_id = ${parseInt(req.params.cite)}
         `);
 
         await log({

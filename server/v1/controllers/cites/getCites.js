@@ -19,7 +19,6 @@ const getCites = {
             wHERE C.name = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${req.params.school})
             AND LOWER(T.name) = LOWER(${req.params.team})
-            AND (CT.deleted IS NULL OR CT.deleted <> 1)
         `);
         if (req.params.side) {
             sql += SQL`AND LOWER(R.side) = LOWER(${req.params.side})`;

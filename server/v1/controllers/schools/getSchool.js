@@ -13,7 +13,6 @@ const getSchool = {
             LEFT JOIN users U ON U.user_id = S.updated_by_id
             wHERE C.name = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${req.params.school})
-            AND (S.deleted IS NULL OR S.deleted <> 1)
         `);
         const [school] = await query(sql);
         if (!school) { return res.status(404).json({ message: 'School not found' }); }

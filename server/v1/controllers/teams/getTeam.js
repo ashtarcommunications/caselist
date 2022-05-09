@@ -15,7 +15,6 @@ const getTeam = {
             wHERE C.name = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${req.params.school})
             AND LOWER(T.name) = LOWER(${req.params.team})
-            AND (T.deleted IS NULL OR T.deleted <> 1)
         `);
         const [team] = await query(sql);
         if (!team) { return res.status(404).json({ message: 'Team not found' }); }

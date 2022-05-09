@@ -34,12 +34,13 @@ const TeamList = () => {
         alert(`Deleting team ${e.currentTarget.dataset.name}`);
         try {
             await deleteTeam(caselist, school, e.currentTarget.dataset.name);
+            await fetchTeams(caselist, school);
             toast.success('Team successfully deleted');
         } catch (err) {
             toast.error('Failed to delete team');
             console.log(err);
         }
-    }, [caselist, school]);
+    }, [caselist, school, fetchTeams]);
 
     const data = useMemo(() => teams, [teams]);
     const columns = useMemo(() => [
@@ -97,7 +98,7 @@ const TeamList = () => {
                 <Breadcrumbs />
                 <h1 className={styles.schoolname}>{schoolData.display_name}</h1>
                 {
-                    schoolData.updatedBy &&
+                    schoolData.updated_by &&
                     <p className={styles.timestamp}>
                         Last updated by {schoolData.updated_by} on {timestamp}
                     </p>

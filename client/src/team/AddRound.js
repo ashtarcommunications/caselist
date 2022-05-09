@@ -108,7 +108,7 @@ const AddRound = () => {
         try {
             const response = await addRound(caselist, school, team, data);
             toast.success(response);
-            reset();
+            reset({ keepDefaultValues: true });
             navigate(`/${caselist}/${school}/${team}`);
         } catch (err) {
             console.log(err);

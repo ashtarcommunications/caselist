@@ -12,7 +12,6 @@ const getRound = {
             AND LOWER(S.name) = LOWER(${req.params.school})
             AND LOWER(T.name) = LOWER(${req.params.team})
             AND R.round_id = ${req.params.round}
-            AND (R.deleted IS NULL OR R.deleted <> 1)
         `);
         const [round] = await query(sql);
 

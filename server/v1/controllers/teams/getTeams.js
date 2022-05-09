@@ -12,7 +12,6 @@ const getTeams = {
             INNER JOIN caselists C ON S.caselist_id = C.caselist_id
             wHERE C.name = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${req.params.school})
-            AND (T.deleted IS NULL OR T.deleted <> 1)
             ORDER BY T.name
         `);
         const teams = await query(sql);

@@ -10,7 +10,7 @@ export const fetchBase = async (path, options = {}, body = {}) => {
     const fetchOptions = {
         method: options.method ? options.method : 'GET',
         body: body instanceof FormData ? body : JSON.stringify(body),
-        maxRetries: 3,
+        maxRetries: (options.method && options.method !== 'GET') ? 0 : 3,
         retryDelay: process.env.NODE_ENV === 'test' ? 10 : 100,
         credentials: 'include',
         headers: body instanceof FormData ? {} : {
@@ -34,6 +34,7 @@ export const fetchBase = async (path, options = {}, body = {}) => {
             return false;
         }
         history.push('/error', { statusCode: err.statusCode, message: err.message });
+        throw new Error(err);
     }
 };
 

@@ -2,6 +2,11 @@
     text-align: center;
 }
 
+.timestamp {
+    font-size: 10px;
+    color: var(--darkgray);
+}
+
 .report {
     display: flex;
     align-items: center;

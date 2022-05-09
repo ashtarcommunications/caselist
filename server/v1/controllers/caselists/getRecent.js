@@ -4,16 +4,20 @@ import { query } from '../../helpers/mysql';
 const getRecent = {
     GET: async (req, res) => {
         const sql = (SQL`
-            SELECT DISTINCT R.team_id, T.name, T.display_name FROM
-            rounds R
+            SELECT DISTINCT
+                R.team_id,
+                T.name,
+                T.display_name,
+                S.name,
+                S.display_name
+            FROM rounds R
             INNER JOIN teams T ON T.team_id = R.team_id
             INNER JOIN schools S ON S.school_id = T.school_id
             INNER JOIN caselists C ON C.caselist_id = S.caselist_id
             wHERE C.name = ${req.params.caselist}
                 AND C.archived = 0
-                AND (R.deleted IS NULL OR R.deleted <> 1)
             ORDER BY R.updated_at DESC
-            LIMIT 10
+            LIMIT 25
         `);
         const recent = await query(sql);
 

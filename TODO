@@ -1,14 +1,13 @@
 # Server
-Add version control handling to round/cites POSTs
 Tabroom claim endpoints
 Tests
 
 # Client
-Working add-round form with error handling
+Last name Title Case validation for team add
 Round table date sort
 Cite quick add w/ no round
 Inline round info in cite display
-Cite parser and markdown display
+Improve cite parser and markdown display
 Why cites explanation
 Delete confirmation screen
 Recently modified page

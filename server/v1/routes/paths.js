@@ -20,8 +20,9 @@ import getRounds from '../controllers/rounds/getRounds';
 import postRound from '../controllers/rounds/postRound';
 import putRound from '../controllers/rounds/putRound';
 import deleteRound from '../controllers/rounds/deleteRound';
-import getCites from '../controllers/rounds/getCites';
-import deleteCite from '../controllers/rounds/deleteCite';
+
+import getCites from '../controllers/cites/getCites';
+import deleteCite from '../controllers/cites/deleteCite';
 
 import postLogin from '../controllers/login/postLogin';
 

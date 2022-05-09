@@ -4,8 +4,7 @@ import { query } from '../../helpers/mysql';
 const getRounds = {
     GET: async (req, res) => {
         let sql = (SQL`
-            SELECT
-                R.*
+            SELECT R.*
             FROM rounds R 
             INNER JOIN teams T ON T.team_id = R.team_id
             INNER JOIN schools S ON S.school_id = T.school_id
@@ -13,7 +12,6 @@ const getRounds = {
             wHERE C.name = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${req.params.school})
             AND LOWER(T.name = ${req.params.team})
-            AND (R.deleted IS NULL OR R.deleted <> 1)
         `);
         if (req.params.side) {
             sql += SQL`AND LOWER(R.side) = LOWER(${req.params.side})`;

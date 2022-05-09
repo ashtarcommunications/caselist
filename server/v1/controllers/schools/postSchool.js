@@ -26,24 +26,62 @@ const postSchool = {
             return res.status(401).json({ message: 'Caselist archived, no modifications allowed' });
         }
 
-        const result = await query(SQL`
-            INSERT INTO schools (caselist_id, name, display_name, state, created_by_id)
-                SELECT caselist_id, ${name}, ${req.body.displayName?.trim()}, ${req.body.state?.trim()}, ${req.user_id}
-                FROM caselists WHERE name = ${req.params.caselist}
+        const newSchool = await query(SQL`
+            INSERT INTO schools (caselist_id, name, display_name, state, chapter_id, created_by_id, updated_by_id)
+            VALUES (
+                ${caselist[0].caselist_id},
+                ${name},
+                ${req.body.displayName?.trim()},
+                ${req.body.state?.trim()},
+                ${req.body.chapter_id || null},
+                ${req.user_id},
+                ${req.user_id}
+            )
         `);
 
-        const newSchool = await query(SQL`
-            SELECT * FROM schools WHERE school_id = ${result.insertId}
+        await query(SQL`
+                INSERT INTO schools_history (
+                    school_id,
+                    version,
+                    caselist_id,
+                    name,
+                    display_name,
+                    state,
+                    chapter_id,
+                    created_at,
+                    created_by_id,
+                    updated_at,
+                    updated_by_id,
+                    event
+                )
+                SELECT
+                    S.school_id,
+                    (SELECT COALESCE(MAX(version), 0) + 1 FROM schools_history SH WHERE SH.school_id = S.school_id) AS 'version',
+                    S.caselist_id,
+                    S.name,
+                    S.display_name,
+                    S.state,
+                    S.chapter_id,
+                    S.created_at,
+                    S.created_by_id,
+                    S.updated_at,
+                    S.updated_by_id,
+                    'insert'
+                FROM schools S WHERE S.school_id = ${newSchool.insertId}
         `);
 
         await log({
             user_id: req.user_id,
             tag: 'school-add',
-            description: `Added school #${result.insertId} in ${req.params.caselist}`,
-            school_id: parseInt(result.insertId),
+            description: `Added school #${newSchool.insertId} in ${req.params.caselist}`,
+            school_id: parseInt(newSchool.insertId),
         });
 
-        return res.status(201).json(newSchool[0]);
+        const [result] = await query(SQL`
+            SELECT * FROM schools WHERE school_id = ${newSchool.insertId}
+        `);
+
+        return res.status(201).json(result);
     },
 };
 

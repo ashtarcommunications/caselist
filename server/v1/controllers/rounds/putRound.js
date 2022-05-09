@@ -4,7 +4,7 @@ import log from '../log/insertEventLog';
 
 const putRound = {
     PUT: async (req, res) => {
-        const [result] = await query(SQL`
+        const [round] = await query(SQL`
             SELECT C.archived
             FROM rounds R
             INNER JOIN teams T ON T.team_id = R.team_id
@@ -13,24 +13,11 @@ const putRound = {
             WHERE C.name = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${req.params.school})
             AND LOWER(T.name) = LOWER(${req.params.team})
-            AND R.round_id = ${req.params.round}
+            AND R.round_id = ${parseInt(req.params.round)}
         `);
 
-        if (!result) { return res.status(400).json({ message: 'Caselist, school, or team not found' }); }
-        if (result.archived) { return res.status(401).json({ message: 'Caselist archived, no modifications allowed' }); }
-
-        await query(SQL`
-            UPDATE cites CT 
-            INNER JOIN rounds R ON R.round_id = C.round_id
-            INNER JOIN teams T ON T.team_id = R.team_id
-            INNER JOIN schools S ON S.school_id = T.school_id
-            INNER JOIN caselists C ON C.caselist_id = S.caselist_id
-            SET CT.deleted = 1, CT.updated_by_id = ${req.user_id}
-            WHERE C.name = ${req.params.caselist}
-            AND LOWER(S.name) = LOWER(${req.params.school})
-            AND LOWER(T.name) = LOWER(${req.params.team})
-            AND CT.round_id = ${req.params.round}
-        `);
+        if (!round) { return res.status(400).json({ message: 'Caselist, school, or team not found' }); }
+        if (round.archived) { return res.status(401).json({ message: 'Caselist archived, no modifications allowed' }); }
 
         await query(SQL`
             UPDATE rounds R
@@ -44,17 +31,56 @@ const putRound = {
                 R.opponent = ${req.body.opponent?.trim()},
                 R.judge = ${req.body.judge?.trim()},
                 R.report = ${req.body.report?.trim()},
+                R.opensource = ${req.body.opensource?.trim()},
+                R.video = ${req.body.video?.trim()},
                 R.updated_at = CURRENT_TIMESTAMP,
                 R.updated_by_id = ${req.user_id}
             WHERE C.name = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${req.params.school})
             AND LOWER(T.name = LOWER(${req.params.team})
-            AND R.round_id = ${req.params.round}
+            AND R.round_id = ${parseInt(req.params.round)}
         `);
 
         await query(SQL`
-            INSERT INTO cites (round_id, cites, created_by_id)
-            VALUES (${req.params.round}, ${JSON.stringify(req.body.cites)}, ${req.user_id})
+            INSERT INTO rounds_history (
+                round_id,
+                version,
+                team_id,
+                side,
+                tournament,
+                round,
+                opponent,
+                judge,
+                report,
+                opensource,
+                tourn_id,
+                external_id,
+                created_at,
+                created_by_id,
+                updated_at,
+                updated_by_id,
+                event
+            )
+                SELECT
+                    R.round_id,
+                    (SELECT COALESCE(MAX(version), 0) + 1 FROM rounds_history RH WHERE RH.round_id = R.round_id) AS 'version',
+                    T.team_id,
+                    R.side,
+                    R.tournament,
+                    R.round,
+                    R.opponent,
+                    R.judge,
+                    R.report,
+                    R.opensource,
+                    R.tourn_id,
+                    R.external_id,
+                    R.created_at,
+                    R.created_by_id,
+                    R.updated_at,
+                    R.updated_by_id,
+                    'update'
+                FROM rounds R
+                WHERE R.round_id = ${parseInt(req.params.round)}
         `);
 
         await log({

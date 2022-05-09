@@ -32,9 +32,66 @@ const patchTeam = {
             if (Object.keys(u)[0] === 'notes') {
                 promises.push(
                     query(SQL`
-                        UPDATE teams SET notes = ${u.notes.trim()}, updated_by_id = ${req.user_id}
+                        UPDATE teams
+                        SET
+                            notes = ${u.notes.trim()},
+                            updated_by_id = ${req.user_id}
                         WHERE T.team_id = ${team.team_id}
-                    `)
+                    `).then(() => {
+                        return query(SQL`
+                            INSERT INTO teams_history (
+                                team_id,
+                                version,
+                                school_id,
+                                name,
+                                display_name,
+                                notes,
+                                debater1_first,
+                                debater1_last,
+                                debater1_student_id,
+                                debater2_first,
+                                debater2_last,
+                                debater2_student_id,
+                                debater3_first,
+                                debater3_last,
+                                debater3_student_id,
+                                debater4_first,
+                                debater4_last,
+                                debater4_student_id,
+                                created_at,
+                                created_by_id,
+                                updated_at,
+                                updated_by_id,
+                                event
+                            )
+                            SELECT
+                                T.team_id,
+                                (SELECT COALESCE(MAX(version), 0) + 1 FROM teams_history TH WHERE TH.team_id = T.team_id) AS 'version',
+                                T.school_id,
+                                T.name,
+                                T.display_name,
+                                T.notes,
+                                T.debater1_first,
+                                T.debater1_last,
+                                T.debater1_student_id,
+                                T.debater2_first,
+                                T.debater2_last,
+                                T.debater2_student_id,
+                                T.debater3_first,
+                                T.debater3_last,
+                                T.debater3_student_id,
+                                T.debater4_first,
+                                T.debater4_last,
+                                T.debater4_student_id,
+                                T.created_at,
+                                T.created_by_id,
+                                T.updated_at,
+                                T.updated_by_id,
+                                'update'
+                            FROM teams T
+                            WHERE T.team_id = ${parseInt(team.team_id)}
+                        `);
+                    })
                 );
             }
         });

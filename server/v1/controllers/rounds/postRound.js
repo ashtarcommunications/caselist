@@ -8,7 +8,7 @@ import log from '../log/insertEventLog';
 
 const postRound = {
     POST: async (req, res) => {
-        const [result] = await query(SQL`
+        const [team] = await query(SQL`
             SELECT C.archived, C.event
             FROM teams T
             INNER JOIN schools S ON S.school_id = T.school_id
@@ -18,8 +18,8 @@ const postRound = {
             AND LOWER(T.name) = LOWER(${req.params.team})
         `);
 
-        if (!result) { return res.status(400).json({ message: 'Team not found' }); }
-        if (result.archived) { return res.status(401).json({ message: 'Caselist archived, no modifications allowed' }); }
+        if (!team) { return res.status(400).json({ message: 'Team not found' }); }
+        if (team.archived) { return res.status(401).json({ message: 'Caselist archived, no modifications allowed' }); }
 
         let filename;
 
@@ -38,7 +38,7 @@ const postRound = {
                 extension = '';
             }
             filename = `${req.params.school} ${req.params.team} `;
-            filename += `${displaySide(req.body.side, result.event)} `;
+            filename += `${displaySide(req.body.side, team.event)} `;
             filename += `${req.body.tourn.trim()} `;
             filename += parseInt(req.body.round) ? `Round ${req.body.round}` : req.body.round.trim();
             filename += `${extension}`;
@@ -55,7 +55,7 @@ const postRound = {
         let round;
         try {
             round = await query(SQL`
-                INSERT INTO rounds (team_id, side, tournament, round, opponent, judge, report, opensource, tourn_id, external_id, created_by_id)
+                INSERT INTO rounds (team_id, side, tournament, round, opponent, judge, report, opensource, tourn_id, external_id, created_by_id, updated_by_id)
                     SELECT
                         T.team_id,
                         ${req.body.side.trim()},
@@ -67,6 +67,7 @@ const postRound = {
                         ${filename || null},
                         ${req.body.tourn_id || null},
                         ${req.body.external_id || null},
+                        ${req.user_id},
                         ${req.user_id}
                     FROM teams T
                     INNER JOIN schools S ON S.school_id = T.school_id
@@ -74,6 +75,47 @@ const postRound = {
                     WHERE C.name = ${req.params.caselist}
                     AND LOWER(S.name) = LOWER(${req.params.school})
                     AND LOWER(T.name) = LOWER(${req.params.team})
+            `);
+            await query(SQL`
+                INSERT INTO rounds_history (
+                    round_id,
+                    version,
+                    team_id,
+                    side,
+                    tournament,
+                    round,
+                    opponent,
+                    judge,
+                    report,
+                    opensource,
+                    tourn_id,
+                    external_id,
+                    created_at,
+                    created_by_id,
+                    updated_at,
+                    updated_by_id,
+                    event
+                )
+                    SELECT
+                        R.round_id,
+                        (SELECT COALESCE(MAX(version), 0) + 1 FROM rounds_history RH WHERE RH.round_id = R.round_id) AS 'version',
+                        R.team_id,
+                        R.side,
+                        R.tournament,
+                        R.round,
+                        R.opponent,
+                        R.judge,
+                        R.report,
+                        R.opensource,
+                        R.tourn_id,
+                        R.external_id,
+                        R.created_at,
+                        R.created_by_id,
+                        R.updated_at,
+                        R.updated_by_id,
+                        'insert'
+                    FROM rounds R
+                    WHERE R.round_id = ${round.insertId}
             `);
         } catch (err) {
             return res.status(500).json({ message: 'Failed to create round' });
@@ -92,14 +134,32 @@ const postRound = {
             cites.forEach(c => {
                 promises.push(
                     query(SQL`
-                        INSERT INTO cites (round_id, title, cites, created_by_id)
+                        INSERT INTO cites (round_id, title, cites, created_by_id, updated_by_id)
                         VALUES (
                                 ${round.insertId},
                                 ${c.title.trim()},
                                 ${c.cites.trim()},
+                                ${req.user_id},
                                 ${req.user_id}
                         )
-                    `),
+                    `).then(newCite => {
+                        return query(SQL`
+                            INSERT INTO cites_history (cite_id, version, round_id, title, cites, created_at, created_by_id, updated_at, updated_by_id, event)
+                            SELECT
+                                CT.cite_id,
+                                (SELECT COALESCE(MAX(version), 0) + 1 FROM cites_history CH WHERE CH.cite_id = CT.cite_id) AS 'version',
+                                CT.round_id,
+                                CT.title,
+                                CT.cites,
+                                CT.created_at,
+                                CT.created_by_id,
+                                CT.updated_at,
+                                CT.updated_by_id,
+                                'insert'
+                            FROM cites CT
+                            WHERE CT.cite_id = ${newCite.insertId}
+                        `);
+                    }),
                 );
             });
         }

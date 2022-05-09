@@ -12,7 +12,25 @@ import styles from './AddTeam.module.css';
 
 const AddTeam = () => {
     const { caselist, school } = useParams();
-    const { handleSubmit, reset, control, setValue, formState: { errors } } = useForm({ mode: 'all' });
+    const {
+        handleSubmit,
+        reset,
+        control,
+        setValue,
+        formState: { errors },
+    } = useForm({
+        mode: 'all',
+        defaultValues: {
+            debater1_first: '',
+            debater1_last: '',
+            debater2_first: '',
+            debater2_last: '',
+            debater3_first: '',
+            debater3_last: '',
+            debater4_first: '',
+            debater4_last: '',
+        },
+    });
     const { caselistData, fetchTeams } = useStore();
 
     const [fetching, setFetching] = useState(false);
@@ -38,10 +56,10 @@ const AddTeam = () => {
 
     const addTeamHandler = async (data) => {
         try {
-            if (data) { return false; }
+            if (!data) { return false; }
             await addTeam(caselist, school, data);
             toast.success('Team added');
-            reset();
+            reset({ keepDefaultValues: true });
             fetchTeams(caselist, school);
         } catch (err) {
             console.log(err);
