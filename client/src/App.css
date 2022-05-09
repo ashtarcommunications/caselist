@@ -41,6 +41,18 @@ h2 {
     color: var(--darkblue);
 }
 
+h3 {
+    font-weight: 400;
+    font-size: 18px;
+    color: var(--darkblue);
+}
+
+h4 {
+    font-weight: 400;
+    font-size: 16px;
+    color: var(--darkblue);
+}
+
 a {
     text-decoration: none;
     color: var(--brightblue);

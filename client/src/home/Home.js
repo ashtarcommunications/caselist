@@ -4,6 +4,11 @@ import { AuthContext } from '../helpers/auth';
 import Login from '../login/Login';
 import styles from './Home.module.css';
 
+import nsda from './nsda.png';
+import ndca from './ndca.png';
+import afa from './afa.png';
+import cndi from './cndi.png';
+
 const Home = () => {
     const auth = useContext(AuthContext);
     return (
@@ -27,12 +32,34 @@ const Home = () => {
                     </div>
                 </>
             }
-            <div>
-                <p>This site is supported by:</p>
-                <p>National Speech &amp; Debate Association</p>
-                <p>National Debate Coaches Association</p>
-                <p>American Forensics Association</p>
-                <p>California National Debate Institute</p>
+            <div className={styles.sponsors}>
+                <h3>With support from</h3>
+                <div className={styles.flex}>
+                    <div className={styles.sponsor}>
+                        <a href="https://speechanddebate.org" target="_blank" rel="noopener noreferrer">
+                            <img alt="nsda" src={nsda} />
+                            <p>National Speech &amp; <br />Debate Association</p>
+                        </a>
+                    </div>
+                    <div className={styles.sponsor}>
+                        <a href="https://debatecoaches.org" target="_blank" rel="noopener noreferrer">
+                            <img alt="ndca" src={ndca} />
+                            <p>National Debate<br />Coaches Association</p>
+                        </a>
+                    </div>
+                    <div className={styles.sponsor}>
+                        <a href="https://americanforensicsassoc.org" target="_blank" rel="noopener noreferrer">
+                            <img alt="afa" src={afa} />
+                            <p>American Forensic<br /> Association</p>
+                        </a>
+                    </div>
+                    <div className={styles.sponsor}>
+                        <a href="https://berkeleydebate.com" target="_blank" rel="noopener noreferrer">
+                            <img alt="cndi" src={cndi} />
+                            <p>California National<br />Debate Institute</p>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     );

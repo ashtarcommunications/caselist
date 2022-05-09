@@ -49,3 +49,25 @@
 .openev {
     background-color: var(--green);
 }
+
+.sponsors {
+    margin-top: 100px;
+}
+
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.sponsor {
+    font-size: 12px;
+    cursor: pointer;
+    margin: 20px 20px;
+    padding: 20px;
+}
+
+.sponsor img {
+    height: 50px;
+}
