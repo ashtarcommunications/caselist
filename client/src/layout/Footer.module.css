@@ -11,8 +11,8 @@
 }
 
 .footer a {
-  color: white;
-  text-decoration: underline;
+    color: white;
+    text-decoration: underline;
 }
 
 .spinner {
@@ -48,4 +48,45 @@
 
 .divider {
     margin: 0px 10px;
+}
+
+.ufo {
+    position: absolute;
+    left: 0;
+    width: 10%;
+    animation: horizontal 15s infinite linear;
+}
+
+.ufo svg {
+    position: absolute;
+    width: 100%;
+    fill: var(--white);
+    opacity: 0;
+    animation: vertical 1.5s alternate infinite ease-in-out, fadein 20s ease-in 300s infinite;
+}
+
+@keyframes fadein {
+  0% {
+      opacity: 0;
+  }
+  25% {
+    opacity: 0;
+  }
+  50% {
+      opacity: 1;
+  }
+  75% {
+    opacity: 0;
+  }
+  100% {
+      opacity: 0;
+   }
+}
+
+@keyframes vertical {
+  to { transform: translatey(-20px);}
+}
+
+@keyframes horizontal {
+  to { transform: translatex(900%);}
 }
