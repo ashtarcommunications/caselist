@@ -147,6 +147,10 @@
     margin-bottom: 0;
 }
 
+.roundinfo {
+    color: var(--darkgray);
+}
+
 .trash {
     color: var(--red);
     cursor: pointer;

@@ -4,6 +4,7 @@ import { faTrash, faAngleDown, faAngleUp, faCopy } from '@fortawesome/free-solid
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 import Markdown from 'react-markdown';
+import { roundName, displaySide } from '@speechanddebate/nsda-js-utils';
 
 import { loadCites, deleteCite } from '../helpers/api';
 import ConfirmButton from '../helpers/ConfirmButton';
@@ -12,7 +13,7 @@ import Table from '../tables/Table';
 
 import styles from './TeamRounds.module.css';
 
-const CitesTable = ({ loading, archived }) => {
+const CitesTable = ({ loading, event, archived }) => {
     const { caselist, school, team, side } = useParams();
 
     const [cites, setCites] = useState([]);
@@ -80,6 +81,19 @@ const CitesTable = ({ loading, archived }) => {
                 Cell: (row) => {
                     return (
                         <div className={styles.cites}>
+                            {
+                                row.row?.original?.citesopen && row.row?.original?.tournament &&
+                                <p className={styles.roundinfo}>
+                                    <span>{row.row?.original?.tournament}</span>
+                                    <span> | </span>
+                                    <span>{roundName(row.row?.original?.round)}</span>
+                                    <span> | </span>
+                                    <span>{displaySide(row.row?.original?.side, event)}</span>
+                                    <span> vs {row.row?.original?.opponent}</span>
+                                    <span> | </span>
+                                    <span>{row.row?.original?.judge}</span>
+                                </p>
+                            }
                             <h1
                                 onClick={e => handleToggleCites(e)}
                                 id={row.row?.original?.cite_id}
@@ -145,7 +159,7 @@ const CitesTable = ({ loading, archived }) => {
                 ),
             },
         ];
-    }, [handleToggleCites, handleCopyCites, handleDeleteCiteConfirm, archived]);
+    }, [handleToggleCites, handleCopyCites, handleDeleteCiteConfirm, event, archived]);
 
     const { isMobile } = useDeviceDetect();
 

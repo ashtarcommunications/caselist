@@ -153,7 +153,7 @@ const TeamRounds = () => {
                 }
             </div>
             <RoundsTable event={caselistData.event} archived={caselistData.archived} />
-            <CitesTable archived={caselistData.archived} />
+            <CitesTable event={caselistData.event} archived={caselistData.archived} />
         </div>
     );
 };
