@@ -2,10 +2,33 @@
     display: flex;
 }
 
+.add-team {
+    max-width: fit-content;
+}
+
 .add-team label {
     display: block;
     font-size: 12px;
     margin-bottom: 5px;
+}
+
+.addremove {
+    text-align: right;
+}
+
+.remove-debater {
+    display: inline-block;
+    background-color: var(--red);
+    color: var(--white);
+    font-size: 10px;
+    margin-right: 10px;
+}
+
+.add-debater {
+    display: inline-block;
+    background-color: var(--brightblue);
+    color: var(--white);
+    font-size: 10px;
 }
 
 .combo {
@@ -30,4 +53,9 @@
 
 .dirty {
     border: 1px solid var(--red);
+}
+
+.warning {
+    color: var(--red);
+    font-size: 12px;
 }

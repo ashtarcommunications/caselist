@@ -37,6 +37,8 @@ const CaselistDropdown = () => {
             document.title = `openCaselist - ${selectedCaselist.display_name}`;
         }
         setYear(selectedCaselist.year || startOfYear);
+        // Reset title on unmount
+        return () => { document.title = 'openCaselist'; };
     }, [caselist, caselists]);
 
     const filteredCaselists = caselists.filter(c => c.year === year).sort();

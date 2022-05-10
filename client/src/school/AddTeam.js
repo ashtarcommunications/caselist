@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, useWatch, Controller } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import Combobox from 'react-widgets/Combobox';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 
 import { useStore } from '../helpers/store';
 import { addTeam, loadTabroomStudents } from '../helpers/api';
@@ -17,7 +19,7 @@ const AddTeam = () => {
         reset,
         control,
         setValue,
-        formState: { errors },
+        formState: { isValid },
     } = useForm({
         mode: 'all',
         defaultValues: {
@@ -31,10 +33,27 @@ const AddTeam = () => {
             debater4_last: '',
         },
     });
+
+    const watchFields = useWatch({ control });
+
     const { caselistData, fetchTeams } = useStore();
 
     const [fetching, setFetching] = useState(false);
     const [students, setStudents] = useState([]);
+    const [teamSize, setTeamSize] = useState(caselistData.team_size);
+    const [showWarning, setShowWarning] = useState(false);
+
+    useEffect(() => {
+        let warn = false;
+        Object.keys(watchFields).forEach(f => {
+            if (watchFields[f]
+                && watchFields[f]?.charAt(0) === watchFields[f]?.charAt(0)?.toLowerCase()
+            ) {
+                warn = true;
+            }
+        });
+        setShowWarning(warn);
+    }, [watchFields]);
 
     const loadStudents = () => {
         const fetchStudents = async () => {
@@ -67,13 +86,23 @@ const AddTeam = () => {
         }
     };
 
+    const addStudentHandler = () => {
+        if (teamSize >= 4) { return false; }
+        setTeamSize(teamSize + 1);
+    };
+
+    const removeStudentHandler = () => {
+        if (teamSize <= caselistData.teamSize) { return false; }
+        setTeamSize(teamSize - 1);
+    };
+
     return (
         <div>
             <h3>Add a {caselistData.team_size > 1 ? 'Team' : 'Debater'}</h3>
             <form onSubmit={handleSubmit(addTeamHandler)} className={`${styles['add-team']} pure-form}`}>
                 <div>
                     {
-                        Array.from({ length: caselistData.team_size }).map((x, i) => (
+                        Array.from({ length: teamSize }).map((x, i) => (
                             // eslint-disable-next-line react/no-array-index-key
                             <div className={styles.flex} key={i}>
                                 <Controller
@@ -83,12 +112,12 @@ const AddTeam = () => {
                                     render={
                                         ({
                                             field: { onChange, onBlur, value },
-                                            fieldState: { invalid },
+                                            fieldState: { error },
                                         }) => (
                                             <div className={styles.first}>
                                                 <label htmlFor={`debater${i + 1}_first`}>Debater #{i + 1} First</label>
                                                 <Combobox
-                                                    containerClassName={`${styles.combo} ${invalid ? styles.dirty : undefined}`}
+                                                    containerClassName={`${styles.combo} ${error ? styles.dirty : undefined}`}
                                                     busy={fetching}
                                                     hideCaret={fetching || students.length < 1}
                                                     data={students}
@@ -149,8 +178,34 @@ const AddTeam = () => {
                             </div>
                         ))
                     }
+                    <div className={styles.addremove}>
+                        {
+                            teamSize > caselistData.team_size &&
+                            <button
+                                type="button"
+                                className={`${styles['remove-debater']} pure-button`}
+                                onClick={removeStudentHandler}
+                            >
+                                <FontAwesomeIcon className={styles.minus} icon={faMinus} />
+                            </button>
+                        }
+                        {
+                            teamSize < 4 &&
+                            <button
+                                type="button"
+                                className={`${styles['add-debater']} pure-button`}
+                                onClick={addStudentHandler}
+                            >
+                                <FontAwesomeIcon className={styles.plus} icon={faPlus} />
+                            </button>
+                        }
+                    </div>
                 </div>
-                <button className={`${styles['add-team-button']} pure-button`} type="submit" disabled={Object.keys(errors).length > 0}>Add</button>
+                {
+                    showWarning &&
+                    <p className={styles.warning}>Please use title case for debater names</p>
+                }
+                <button className={`${styles['add-team-button']} pure-button`} type="submit" disabled={!isValid}>Add</button>
             </form>
         </div>
     );
