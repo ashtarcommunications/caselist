@@ -113,7 +113,7 @@ const RoundsTable = ({ loading, event, archived }) => {
         },
         {
             Header: 'Side',
-            width: '25px',
+            width: '50px',
             accessor: row => displaySide(row.side),
             Cell: (row) => (
                 <span>{displaySide(row.value, event)}</span>
