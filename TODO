@@ -5,8 +5,8 @@ Tests
 # Client
 Cite quick add w/ no round
 Improve cite parser and markdown display
-Why cites explanation
 Delete confirmation screen
+Refactor TeamRounds CSS to separate tables
 Recently modified page
 Opensource file structure and download handling
 Round data editing

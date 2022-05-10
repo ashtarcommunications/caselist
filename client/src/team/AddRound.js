@@ -311,8 +311,11 @@ const AddRound = () => {
                         />
                     :
                         <>
-                            <div className={styles.flex}>
+                            <div>
                                 <label htmlFor="autodetect">
+                                    <p className={styles['switch-label']}>
+                                        Auto-detect cites (works with <a href="https://paperlessdebate.com" target="_blank" rel="noopener noreferrer">Verbatim</a>)
+                                    </p>
                                     <Controller
                                         control={control}
                                         name="autodetect"
@@ -335,9 +338,6 @@ const AddRound = () => {
                                             )
                                         }
                                     />
-                                    <span className={styles['switch-label']}>
-                                        Auto-detect cites (works with <a href="https://paperlessdebate.com" target="_blank" rel="noopener noreferrer">Verbatim</a>)
-                                    </span>
                                 </label>
                             </div>
                             <Dropzone
@@ -361,6 +361,11 @@ const AddRound = () => {
                         <span> Add Cite</span>
                     </button>
                 </h4>
+                <p className={styles.prompt}>
+                    Please consider adding cites even if you&apos;re also uploading an open source
+                    document. They&apos;re the best way to see an overview of your past arguments
+                    and improve the quality of your disclosure.
+                </p>
                 {
                     fields.map((item, index) => {
                         return (

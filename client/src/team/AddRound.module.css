@@ -5,6 +5,11 @@
     background-color: var(--lightgray);
 }
 
+.prompt {
+    font-size: 12px;
+    margin-right: 50px;
+}
+
 .add-cite {
     background-color: var(--green);
     color: var(--white);
@@ -69,10 +74,6 @@
 
 .switch {
     vertical-align: middle;
-}
-.switch-label {
-    vertical-align: middle;
-    margin-left: 10px;
 }
 
 .form-group label {
