@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLink, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { faFileLines } from '@fortawesome/free-regular-svg-icons';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import { Link, useParams } from 'react-router-dom';
-import MDEditor from '@uiw/react-md-editor';
 
 import { useStore } from '../helpers/store';
 import { loadTeam, addTabroomTeamLink } from '../helpers/api';
 import ConfirmButton from '../helpers/ConfirmButton';
 import Loader from '../loader/Loader';
 import Breadcrumbs from '../layout/Breadcrumbs';
+import TeamNotes from './TeamNotes';
 import RoundsTable from './RoundsTable';
 import CitesTable from './CitesTable';
 
@@ -24,8 +23,6 @@ const TeamRounds = () => {
 
     const [fetching, setFetching] = useState(false);
     const [teamData, setTeamData] = useState({});
-    const [showNotes, setShowNotes] = useState(false);
-    const [notes, setNotes] = useState(teamData.notes);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -46,6 +43,7 @@ const TeamRounds = () => {
             const response = await addTabroomTeamLink(window.location.pathname);
             toast.success(response.message);
         } catch (err) {
+            toast.error(`Failed to link page: ${err.message}`);
             console.log(err);
         }
     };
@@ -54,14 +52,6 @@ const TeamRounds = () => {
             message="Are you sure? Claiming this page will link it to your Tabroom account to easily add rounds you have participated in. You should only claim your own page, not someone else's."
             handler={handleLinkPage}
         />);
-    };
-
-    const handleToggleNotes = async () => {
-        setShowNotes(!showNotes);
-    };
-
-    const handleChangeNotes = async (e) => {
-        setNotes(e.value);
     };
 
     const timestamp = moment(teamData.updated_at, 'YYYY-MM-DD HH:mm:ss').format('l');
@@ -84,16 +74,6 @@ const TeamRounds = () => {
             <Breadcrumbs />
             <h1 className={styles.teamname}>
                 {school} {team} {!caselistData.archived && `(${lastNames})`}
-                <button
-                    type="button"
-                    className={`pure-button pure-button-secondary ${styles.notes}`}
-                    onClick={handleToggleNotes}
-                    title="Team notes"
-                >
-                    <FontAwesomeIcon
-                        icon={faFileLines}
-                    />
-                </button>
                 {
                     !caselistData.archived &&
                     <button type="button" className={`pure-button pure-button-primary ${styles.claim}`} onClick={handleLinkConfirm}>
@@ -108,15 +88,9 @@ const TeamRounds = () => {
                 teamData.updated_by &&
                 <p className={styles.timestamp}>Last updated by {teamData.updated_by ? teamData.updated_by : 'unknown'} on {timestamp}</p>
             }
-            <div className={styles.notes}>
-                {
-                    showNotes &&
-                        <MDEditor
-                            onChange={handleChangeNotes}
-                            value={notes}
-                        />
-                }
-            </div>
+
+            <TeamNotes teamData={teamData} />
+
             <div className={styles.buttons}>
                 <Link to={`/${caselist}/${school}/${team}`}>
                     <button

@@ -34,9 +34,9 @@ const patchTeam = {
                     query(SQL`
                         UPDATE teams
                         SET
-                            notes = ${u.notes.trim()},
+                            notes = ${u.notes?.trim()},
                             updated_by_id = ${req.user_id}
-                        WHERE T.team_id = ${team.team_id}
+                        WHERE team_id = ${parseInt(team.team_id)}
                     `).then(() => {
                         return query(SQL`
                             INSERT INTO teams_history (
@@ -98,8 +98,6 @@ const patchTeam = {
 
         await Promise.all(promises);
 
-        const updatedTeam = await query(SQL`SELECT * FROM teams WHERE T.team_id = ${team.team_id}`);
-
         await log({
             user_id: req.user_id,
             tag: 'team-edit',
@@ -107,7 +105,7 @@ const patchTeam = {
             team_id: team.team_id,
         });
 
-        return res.status(200).json(updatedTeam);
+        return res.status(200).json({ message: 'Team successfully updated' });
     },
 };
 

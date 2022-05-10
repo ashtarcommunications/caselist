@@ -8,16 +8,24 @@ import TabroomChapter from './TabroomChapter';
 import TabroomStudent from './TabroomStudent';
 import TabroomRound from './TabroomRound';
 import File from './File';
+import Update from './Update';
+import Updates from './Updates';
+import Cite from './Cite';
+import Recent from './Recent';
 
 export default {
     Err,
     Caselist,
+    Cite,
     Login,
     School,
     Team,
+    Recent,
     Round,
     TabroomChapter,
     TabroomStudent,
     TabroomRound,
     File,
+    Update,
+    Updates,
 };

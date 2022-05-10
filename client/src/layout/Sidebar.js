@@ -47,7 +47,7 @@ const Sidebar = () => {
                     {
                         !caselistData.archived && caselistData.year === startOfYear &&
                         <Link to={`/${caselist}/add`}>
-                            <button type="button" className="green-button pure-button">
+                            <button type="button" className={`${styles['add-school']} pure-button`}>
                                 <FontAwesomeIcon className={styles.plus} icon={faPlus} />
                                 <span> Add</span>
                             </button>

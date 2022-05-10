@@ -4,6 +4,7 @@ Tests
 
 # Client
 Cite quick add w/ no round
+Support for novice/all team entries
 Improve cite parser and markdown display
 Delete confirmation screen
 Refactor TeamRounds CSS to separate tables
@@ -11,8 +12,6 @@ Opensource file structure and download handling
 Round data editing
 Full-text search
 Mobile table display
-Team notes/contact info, warn on contact info
-Support for novice/all team entries
 Add analytics
 Open ev
 Tests

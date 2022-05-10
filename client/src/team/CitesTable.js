@@ -37,6 +37,7 @@ const CitesTable = ({ loading, event, archived }) => {
             setCites(cites.filter(c => c.cite_id !== parseInt(id)));
         } catch (err) {
             console.log(err);
+            toast.error(`Failed to delete cite: ${err.message}`);
         }
     }, [caselist, school, team, cites]);
 

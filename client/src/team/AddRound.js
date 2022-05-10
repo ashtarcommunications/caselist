@@ -107,10 +107,11 @@ const AddRound = () => {
         }
         try {
             const response = await addRound(caselist, school, team, data);
-            toast.success(response);
+            toast.success(response.message);
             reset({ keepDefaultValues: true });
             navigate(`/${caselist}/${school}/${team}`);
         } catch (err) {
+            toast.error(`Failed to add round: ${err.message}`);
             console.log(err);
         }
     };
@@ -268,12 +269,11 @@ const AddRound = () => {
                 <div className={styles['form-group']}>
                     <label htmlFor="report">
                         Round Report
-                        <span title="Describe what happened in the round, what arguments were run, what was in rebuttals, etc.">
-                            <FontAwesomeIcon
-                                className={styles.info}
-                                icon={faInfoCircle}
-                            />
-                        </span>
+                        <FontAwesomeIcon
+                            className={styles.info}
+                            icon={faInfoCircle}
+                            title="Describe what happened in the round, what arguments were run, what was in rebuttals, etc."
+                        />
                     </label>
                     <textarea
                         className={styles.report}
@@ -285,12 +285,11 @@ const AddRound = () => {
                 <div className={styles['form-group']}>
                     <label htmlFor="video">
                         Video URL
-                        <span title="Public URL to recording of the round (e.g. YouTube link), if available">
-                            <FontAwesomeIcon
-                                className={styles.info}
-                                icon={faInfoCircle}
-                            />
-                        </span>
+                        <FontAwesomeIcon
+                            className={styles.info}
+                            icon={faInfoCircle}
+                            title="Public URL to recording of the round (e.g. YouTube link), if available"
+                        />
                     </label>
                     <input
                         name="video"

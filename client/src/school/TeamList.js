@@ -31,13 +31,12 @@ const TeamList = () => {
 
     const handleDelete = useCallback(async (e) => {
         // eslint-disable-next-line no-alert
-        alert(`Deleting team ${e.currentTarget.dataset.name}`);
         try {
-            await deleteTeam(caselist, school, e.currentTarget.dataset.name);
+            const response = await deleteTeam(caselist, school, e.currentTarget.dataset.name);
             await fetchTeams(caselist, school);
-            toast.success('Team successfully deleted');
+            toast.success(response.message);
         } catch (err) {
-            toast.error('Failed to delete team');
+            toast.error(`Failed to delete team: ${err.message}`);
             console.log(err);
         }
     }, [caselist, school, fetchTeams]);

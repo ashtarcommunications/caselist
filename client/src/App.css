@@ -21,6 +21,17 @@
     --purple: #8b56bf;
     --magenta: #bf568b;
     --red: #bf5656;
+
+    --toastify-color-light: var(--white);
+    --toastify-color-dark: var(--black);
+    --toastify-color-info: var(--brightblue);
+    --toastify-color-success: var(--green);
+    --toastify-color-warning: var(--yellow);
+    --toastify-color-error: var(--red);
+    --toastify-color-transparent: rgba(255, 255, 255, 0.7);
+  
+    --toastify-text-color-light: var(--black);
+    --toastify-text-color-dark: var(--white);
 }
 
 /* Globals */

@@ -49,6 +49,7 @@
     margin-top: 20px;
     background-color: var(--green);
     color: var(--white);
+    border-radius: 20px;
 }
 
 .dirty {

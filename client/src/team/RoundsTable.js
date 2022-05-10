@@ -43,6 +43,7 @@ const RoundsTable = ({ loading, event, archived }) => {
             setRounds(rounds.filter(r => r.round_id !== parseInt(id)));
         } catch (err) {
             console.log(err);
+            toast.error(`Failed to delete round: ${err.message}`);
         }
     }, [caselist, school, team, rounds]);
 

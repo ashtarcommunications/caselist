@@ -24,11 +24,11 @@ const AddSchool = () => {
             );
             fetchSchools(caselist);
             reset();
-            toast.success('Successfully added school');
+            toast.success(newSchool.message);
             navigate(`/${caselist}/${newSchool.name}`);
         } catch (err) {
             console.log(err);
-            toast.error(err.message);
+            toast.error(`Failed to add school: ${err.message}`);
         }
     };
 
@@ -126,7 +126,7 @@ const AddSchool = () => {
                     {errors.state?.type === 'required' && <p>This field is required</p>}
                 </div>
 
-                <button type="submit" className={`${styles.add} green-button pure-button`} disabled={!isValid}>Add</button>
+                <button type="submit" className={`${styles.add} pure-button`} disabled={!isValid}>Add</button>
             </form>
         </div>
     );

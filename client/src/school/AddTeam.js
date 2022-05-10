@@ -76,13 +76,13 @@ const AddTeam = () => {
     const addTeamHandler = async (data) => {
         try {
             if (!data) { return false; }
-            await addTeam(caselist, school, data);
-            toast.success('Team added');
+            const response = await addTeam(caselist, school, data);
+            toast.success(response.message);
             reset({ keepDefaultValues: true });
             fetchTeams(caselist, school);
         } catch (err) {
             console.log(err);
-            toast.error(err.message);
+            toast.error(`Failed to add team: ${err.message}`);
         }
     };
 

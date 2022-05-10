@@ -41,6 +41,7 @@
     font-size: 60%;
     background-color: var(--lightblue);
     color: var(--white);
+    border-radius: 20px;
 }
 
 .side {
@@ -106,11 +107,52 @@
     margin-right: 5px;
 }
 
+.shownotes {
+    font-size: 18px;
+    margin-left: 10px;
+    cursor: pointer;
+}
 .notes {
-    border-radius: 20px;
-    background-color: var(--lightgray);
+    display: flex;
+    align-items: center;
+}
+.notes h4 {
+    margin: 0;
+}
+.notes-buttons {
+    margin: 20px 0px;
+}
+.notes textarea {
+    width: 500px;
+    min-height: 200px;
+    height: fit-content;
+}
+.info {
+    color: var(--brightblue);
+    font-size: 14px;
+    margin: 0px 5px;
+    cursor: pointer;
+}
+.warning {
     font-size: 12px;
-    margin-left: 20px;
+    color: var(--red);
+}
+
+.save {
+    background-color: var(--brightblue);
+    color: var(--white);
+    font-size: 14px;
+    margin: 0px 5px;
+    cursor: pointer;
+    border-radius: 20px;
+}
+.cancel {
+    background-color: var(--red);
+    color: var(--white);
+    font-size: 14px;
+    margin: 0px 5px;
+    cursor: pointer;
+    border-radius: 20px;
 }
 
 .add-round {
@@ -120,7 +162,7 @@
     border-radius: 20px;
     font-size: 14px !important;
     background-color: var(--green);
-    color: white;
+    color: var(--white);
 }
 
 .calendar {
