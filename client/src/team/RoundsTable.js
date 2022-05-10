@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faAngleDown, faAngleUp, faFileDownload, faVideo } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faAngleDown, faAngleUp, faCalendarAlt, faFileDownload, faVideo } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
+import moment from 'moment';
 import { displaySide, normalizeSide, roundName } from '@speechanddebate/nsda-js-utils';
 
 import { loadRounds, deleteRound } from '../helpers/api';
@@ -76,14 +77,38 @@ const RoundsTable = ({ loading, event, archived }) => {
     }, [allRoundsOpen, rounds]);
 
     const columns = useMemo(() => [
-        { Header: 'Tournament', accessor: 'tournament' },
+        {
+            id: 'created_at',
+            accessor: 'created_at',
+        },
+        {
+            Header: (row) => {
+                return (
+                    <>
+                        <span>Tournament</span>
+                        <FontAwesomeIcon
+                            icon={faCalendarAlt}
+                            title="Sort by date"
+                            className={styles.calendar}
+                            onClick={() => row.toggleSortBy('created_at')}
+                        />
+                    </>
+                );
+            },
+            accessor: 'tournament',
+            Cell: (row) => {
+                const createdAt = moment(row.row?.original?.created_at).format('l');
+                return <span title={`Created ${createdAt}`}>{row.value}</span>;
+            },
+        },
         {
             Header: 'Round',
             width: '75px',
             accessor: 'round',
-            Cell: (row) => (
-                <span>{roundName(row.value)}</span>
-            ),
+            Cell: (row) => {
+                const createdAt = moment(row.row?.original?.created_at).format('l');
+                return <span title={`Created ${createdAt}`}>{roundName(row.value)}</span>;
+            },
         },
         {
             Header: 'Side',
@@ -140,17 +165,6 @@ const RoundsTable = ({ loading, event, archived }) => {
                 );
             },
         },
-        // {
-        //     id: 'cites',
-        //     Header: 'Cites',
-        //     accessor: 'cites',
-        //     className: styles.center,
-        //     Cell: (row) => {
-        //         return row.value && <FontAwesomeIcon
-        //             icon={faCheck}
-        //         />;
-        //     },
-        // },
         {
             id: 'opensource',
             Header: 'Open Source',
@@ -275,6 +289,7 @@ const RoundsTable = ({ loading, event, archived }) => {
         <Table
             columns={isMobile ? mobileColumns : columns}
             data={rounds}
+            hiddenColumns={['created_at']}
             className={`${styles['rounds-table']} ${isMobile ? styles['mobile-table'] : undefined}`}
             noDataText="No rounds found"
             loading={loading}

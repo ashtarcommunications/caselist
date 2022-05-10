@@ -3,7 +3,7 @@ import { query } from '../../helpers/mysql';
 
 const getRounds = {
     GET: async (req, res) => {
-        let sql = (SQL`
+        const sql = (SQL`
             SELECT R.*
             FROM rounds R 
             INNER JOIN teams T ON T.team_id = R.team_id
@@ -14,8 +14,10 @@ const getRounds = {
             AND LOWER(T.name = ${req.params.team})
         `);
         if (req.params.side) {
-            sql += SQL`AND LOWER(R.side) = LOWER(${req.params.side})`;
+            sql.append(`AND LOWER(R.side) = LOWER(${req.params.side})`);
         }
+        sql.append(`ORDER BY R.tournament, R.round`);
+
         const rounds = await query(sql);
 
         return res.status(200).json(rounds);

@@ -7,14 +7,14 @@ import Loader from '../loader/Loader';
 
 import styles from './Table.module.css';
 
-const Table = ({ columns = [], data = [], className, loading = false, noDataText = 'No data found!', filterable = true }) => {
+const Table = ({ columns = [], data = [], hiddenColumns = [], className, loading = false, noDataText = 'No data found!', filterable = true }) => {
     const {
         getTableProps,
         getTableBodyProps,
         headerGroups,
         rows,
         prepareRow,
-    } = useTable({ columns, data }, useFilters, useSortBy);
+    } = useTable({ columns, data, initialState: { hiddenColumns } }, useFilters, useSortBy);
 
     if (!columns || !data) return false;
 
@@ -30,25 +30,34 @@ const Table = ({ columns = [], data = [], className, loading = false, noDataText
                                 <tr {...headerGroup.getHeaderGroupProps()}>
                                     {
                                         headerGroup.headers.map(column => (
-                                            <th key={column.id} {...column.getHeaderProps()} style={{ width: column.width || 'auto', maxWidth: column.maxWidth || 'auto' }}>
-                                                <div {...column.getSortByToggleProps()} data-testid="sortDiv">
+                                            <th
+                                                key={column.id}
+                                                {...column.getHeaderProps()}
+                                                style={{ width: column.width || 'auto', maxWidth: column.maxWidth || 'auto' }}
+                                            >
+                                                <div>
                                                     {column.render('Header')}
-                                                    {
-                                                        column.isSorted ?
-                                                            <FontAwesomeIcon
-                                                                icon={
-                                                                    column.isSortedDesc
-                                                                    ? faAngleUp
-                                                                    : faAngleDown
-                                                                }
-                                                            />
-                                                            :
-                                                            !column.disableSortBy &&
-                                                            <FontAwesomeIcon
-                                                                className={styles.sort}
-                                                                icon={faSort}
-                                                            />
-                                                    }
+                                                    <span {...column.getSortByToggleProps()}>
+                                                        {
+                                                            column.isSorted ?
+                                                                <FontAwesomeIcon
+                                                                    icon={
+                                                                        column.isSortedDesc
+                                                                        ? faAngleUp
+                                                                        : faAngleDown
+                                                                    }
+                                                                    className={styles.sort}
+                                                                    title={column.isSortedDesc ? 'Default Sort' : 'Sort Descending'}
+                                                                />
+                                                                :
+                                                                !column.disableSortBy &&
+                                                                <FontAwesomeIcon
+                                                                    className={styles.sort}
+                                                                    icon={faSort}
+                                                                    title="Sort Ascending"
+                                                                />
+                                                        }
+                                                    </span>
                                                 </div>
                                             </th>
                                         ))
