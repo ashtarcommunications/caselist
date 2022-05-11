@@ -13,6 +13,7 @@ import Breadcrumbs from '../layout/Breadcrumbs';
 import Table from '../tables/Table';
 import Loader from '../loader/Loader';
 import AddTeam from './AddTeam';
+import ConfirmButton from '../helpers/ConfirmButton';
 // import TabroomChaptersDropdown from './TabroomChaptersDropdown';
 
 import styles from './TeamList.module.css';
@@ -29,10 +30,10 @@ const TeamList = () => {
         setFetching(false);
     }, [caselist, school, fetchSchool, fetchTeams]);
 
-    const handleDelete = useCallback(async (e) => {
-        // eslint-disable-next-line no-alert
+    const handleDeleteTeam = useCallback(async (name) => {
         try {
-            const response = await deleteTeam(caselist, school, e.currentTarget.dataset.name);
+            toast.dismiss();
+            const response = await deleteTeam(caselist, school, name);
             await fetchTeams(caselist, school);
             toast.success(response.message);
         } catch (err) {
@@ -40,6 +41,25 @@ const TeamList = () => {
             console.log(err);
         }
     }, [caselist, school, fetchTeams]);
+
+    const handleDeleteTeamConfirm = useCallback((e) => {
+        const name = e.currentTarget.dataset?.name;
+        if (!name) { return false; }
+        const team = teams.find(t => t.name === name);
+        toast.warning(({ closeToast }) => (
+            <ConfirmButton
+                message={`Are you sure you want to delete ${team.display_name} and all linked rounds? This cannot be undone.`}
+                handler={() => handleDeleteTeam(name)}
+                dismiss={closeToast}
+                requireInput
+            />),
+        {
+            autoClose: 15000,
+            closeOnClick: false,
+            closeButton: false,
+        },
+        );
+    }, [handleDeleteTeam, teams]);
 
     const data = useMemo(() => teams, [teams]);
     const columns = useMemo(() => [
@@ -81,11 +101,11 @@ const TeamList = () => {
                     className={styles.trash}
                     icon={faTrash}
                     data-name={row.value?.name}
-                    onClick={e => handleDelete(e)}
+                    onClick={e => handleDeleteTeamConfirm(e)}
                 />
             ),
         },
-    ], [caselist, school, handleDelete, caselistData]);
+    ], [caselist, school, handleDeleteTeamConfirm, caselistData]);
 
     const timestamp = moment(schoolData?.updated_at, 'YYYY-MM-DD HH:mm:ss').format('l');
 

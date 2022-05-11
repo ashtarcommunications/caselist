@@ -1,82 +1,24 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faAngleDown, faAngleUp, faCalendarAlt, faFileDownload, faVideo } from '@fortawesome/free-solid-svg-icons';
-import { toast } from 'react-toastify';
-import { useParams } from 'react-router-dom';
 import moment from 'moment';
-import { displaySide, normalizeSide, roundName } from '@speechanddebate/nsda-js-utils';
+import { displaySide, roundName } from '@speechanddebate/nsda-js-utils';
 
-import { loadRounds, deleteRound } from '../helpers/api';
-import ConfirmButton from '../helpers/ConfirmButton';
 import { useDeviceDetect } from '../helpers/mobile';
 import Table from '../tables/Table';
 
 import styles from './RoundsTable.module.css';
 
-const RoundsTable = ({ loading, event, archived }) => {
-    const { caselist, school, team, side } = useParams();
-
-    const [rounds, setRounds] = useState([]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await loadRounds(caselist, school, team);
-                if (response) {
-                    setRounds(
-                        side
-                        ? response.filter(r => r.side === normalizeSide(side))
-                        : response
-                    );
-                }
-            } catch (err) {
-                console.log(err);
-            }
-        };
-        fetchData();
-    }, [caselist, school, team, side]);
-
-    const handleDeleteRound = useCallback(async (id) => {
-        try {
-            const response = await deleteRound(caselist, school, team, parseInt(id));
-            toast.success(response.message);
-            setRounds(rounds.filter(r => r.round_id !== parseInt(id)));
-        } catch (err) {
-            console.log(err);
-            toast.error(`Failed to delete round: ${err.message}`);
-        }
-    }, [caselist, school, team, rounds]);
-
-    const handleDeleteRoundConfirm = useCallback((e) => {
-        const id = e.currentTarget.id;
-        if (!id) { return false; }
-        const round = rounds.find(r => r.round_id === parseInt(id));
-        toast(<ConfirmButton
-            message={`Are you sure you want to delete ${round.tournament} ${roundName(round.round)} and all linked cites?`}
-            handler={() => handleDeleteRound(id)}
-        />);
-    }, [handleDeleteRound, rounds]);
-
-    const handleToggleReport = useCallback((e) => {
-        const newRounds = [...rounds];
-        newRounds.forEach(r => {
-            if (r.round_id === parseInt(e.currentTarget.id)) {
-                r.reportopen = !r.reportopen;
-            }
-        });
-        setRounds(newRounds);
-    }, [rounds]);
-
-    const allRoundsOpen = rounds?.filter(r => r.reportopen).length === rounds.length;
-
-    const handleToggleAll = useCallback(() => {
-        const newRounds = [...rounds];
-        newRounds.forEach(r => {
-            r.reportopen = !allRoundsOpen;
-        });
-        setRounds(newRounds);
-    }, [allRoundsOpen, rounds]);
-
+const RoundsTable = ({
+    loading,
+    event,
+    archived,
+    rounds = [],
+    handleDeleteRoundConfirm,
+    handleToggleAll,
+    handleToggleReport,
+    allRoundsOpen,
+}) => {
     const columns = useMemo(() => [
         {
             id: 'created_at',

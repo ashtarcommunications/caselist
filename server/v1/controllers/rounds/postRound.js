@@ -55,16 +55,17 @@ const postRound = {
         let round;
         try {
             round = await query(SQL`
-                INSERT INTO rounds (team_id, side, tournament, round, opponent, judge, report, opensource, tourn_id, external_id, created_by_id, updated_by_id)
+                INSERT INTO rounds (team_id, side, tournament, round, opponent, judge, report, opensource, video, tourn_id, external_id, created_by_id, updated_by_id)
                     SELECT
                         T.team_id,
                         ${req.body.side.trim()},
                         ${req.body.tourn.trim()},
                         ${req.body.round.trim()},
-                        ${req.body.opponent.trim()},
-                        ${req.body.judge.trim()},
-                        ${req.body.report.trim()},
+                        ${req.body.opponent.trim() || null},
+                        ${req.body.judge.trim() || null},
+                        ${req.body.report.trim() || null},
                         ${filename || null},
+                        ${req.body.video.trim() || null},
                         ${req.body.tourn_id || null},
                         ${req.body.external_id || null},
                         ${req.user_id},
@@ -88,6 +89,7 @@ const postRound = {
                     judge,
                     report,
                     opensource,
+                    video,
                     tourn_id,
                     external_id,
                     created_at,
@@ -107,6 +109,7 @@ const postRound = {
                         R.judge,
                         R.report,
                         R.opensource,
+                        R.video,
                         R.tourn_id,
                         R.external_id,
                         R.created_at,

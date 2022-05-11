@@ -1,0 +1,9 @@
+.confirm {
+    margin-bottom: 20px;
+}
+
+.cancel {
+    margin-left: 20px;
+    background-color: var(--red);
+    color: var(--white);
+}

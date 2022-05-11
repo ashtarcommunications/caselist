@@ -55,6 +55,10 @@ const AddTeam = () => {
         setShowWarning(warn);
     }, [watchFields]);
 
+    useEffect(() => {
+        setTeamSize(caselistData.team_size);
+    }, [caselistData]);
+
     const loadStudents = () => {
         const fetchStudents = async () => {
             try {
@@ -78,7 +82,7 @@ const AddTeam = () => {
             if (!data) { return false; }
             const response = await addTeam(caselist, school, data);
             toast.success(response.message);
-            reset({ keepDefaultValues: true });
+            reset({}, { keepDefaultValues: true });
             fetchTeams(caselist, school);
         } catch (err) {
             console.log(err);
