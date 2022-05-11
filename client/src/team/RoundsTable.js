@@ -11,7 +11,7 @@ import ConfirmButton from '../helpers/ConfirmButton';
 import { useDeviceDetect } from '../helpers/mobile';
 import Table from '../tables/Table';
 
-import styles from './TeamRounds.module.css';
+import styles from './RoundsTable.module.css';
 
 const RoundsTable = ({ loading, event, archived }) => {
     const { caselist, school, team, side } = useParams();
@@ -257,7 +257,7 @@ const RoundsTable = ({ loading, event, archived }) => {
                                 <span>Open Source:</span>
                                 <FontAwesomeIcon
                                     icon={faFileDownload}
-                                    className={styles.save}
+                                    className={styles.download}
                                 />
                             </p>
                         }

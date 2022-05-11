@@ -4,7 +4,7 @@ import { useDropzone } from 'react-dropzone';
 
 import Loader from '../loader/Loader';
 
-import styles from './AddRound.module.css';
+import styles from './Dropzone.module.css';
 
 const Dropzone = ({ name, processing, onDrop, control }) => {
     const { getRootProps, getInputProps } = useDropzone({

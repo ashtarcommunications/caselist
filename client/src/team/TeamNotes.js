@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 
 import { updateTeam } from '../helpers/api';
 
-import styles from './TeamRounds.module.css';
+import styles from './TeamNotes.module.css';
 
 const TeamNotes = ({ teamData }) => {
     const { caselist, school, team } = useParams();

@@ -11,7 +11,7 @@ import ConfirmButton from '../helpers/ConfirmButton';
 import { useDeviceDetect } from '../helpers/mobile';
 import Table from '../tables/Table';
 
-import styles from './TeamRounds.module.css';
+import styles from './CitesTable.module.css';
 
 const CitesTable = ({ loading, event, archived }) => {
     const { caselist, school, team, side } = useParams();
@@ -111,7 +111,7 @@ const CitesTable = ({ loading, event, archived }) => {
                                 </span>
                             </h1>
                             <span
-                                className={`cites ${row.row?.original?.citesopen ? styles.citesopen : styles.citesclosed}`}
+                                className={`cites ${!row.row?.original?.citesopen && styles.citesclosed}`}
                             >
                                 <Markdown>{row.value?.cites}</Markdown>
                             </span>

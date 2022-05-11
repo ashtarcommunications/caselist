@@ -2,7 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
-import styles from './AddRound.module.css';
+import styles from './UploadedFiles.module.css';
 
 const UploadedFiles = ({ files, filename, handleResetFiles, showFilename }) => {
     return (

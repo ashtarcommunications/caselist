@@ -1,0 +1,56 @@
+.cites h1 {
+    font-size: 14px;
+}
+.cites h2 {
+    font-size: 12px;
+}
+.cites h3 {
+    font-size: 11px;
+}
+.cites h4 {
+    font-size: 10px;
+    font-weight: bold;
+}
+.cites p {
+    font-size: 10px;
+}
+
+.roundinfo {
+    color: var(--darkgray);
+}
+
+.caret {
+    color: var(--blue);
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.citesclosed {
+    display: none;
+}
+
+.center {
+    text-align: center;
+}
+
+.copy {
+    color: var(--brightblue);
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.trash {
+    color: var(--red);
+    cursor: pointer;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 1s, opacity 1s linear;
+    margin: 0px 10px;
+    font-size: 18px;
+}
+
+.cites-table tr:hover .trash {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s, opacity 2s linear;
+}

@@ -1,5 +1,17 @@
-.center {
-    text-align: center;
+.teamname {
+    margin-bottom: 0;
+}
+
+.claim {
+    border-radius: 20px;
+    background-color: var(--lightblue);
+    color: var(--white);
+    font-size: 12px;
+    margin-left: 20px;
+}
+
+.claim svg {
+    margin-right: 5px;
 }
 
 .timestamp {
@@ -7,41 +19,8 @@
     color: var(--darkgray);
 }
 
-.report {
+.buttons {
     display: flex;
-    align-items: center;
-    line-height: 1.5em;
-}
-.report div {
-    display: inline-block;
-    width: 200px;
-}
-
-.reportclosed {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.reportopen {
-    white-space: pre-wrap;
-}
-
-.report-header {
-    vertical-align: bottom;
-}
-
-.caret {
-    color: var(--blue);
-    cursor: pointer;
-    margin-left: 5px;
-}
-
-.toggleall {
-    margin-left: 20px;
-    font-size: 60%;
-    background-color: var(--lightblue);
-    color: var(--white);
-    border-radius: 20px;
 }
 
 .side {
@@ -55,157 +34,26 @@
     color: var(--white);
 }
 
+.side:focus {
+    background-color: var(--white);
+    color: var(--brightblue);
+    border-bottom: 5px solid var(--brightblue);
+    background-image: none;
+}
+
 .selected-side {
     background-color: var(--white);
     color: var(--brightblue);
     border-bottom: 5px solid var(--brightblue);
 }
 
-.citesclosed {
-    display: none;
-}
-
-.cites h1 {
-    font-size: 14px;
-}
-.cites h2 {
-    font-size: 12px;
-}
-.cites h3 {
-    font-size: 11px;
-}
-.cites h4 {
-    font-size: 10px;
-    font-weight: bold;
-}
-.cites p {
-    font-size: 10px;
-}
-
-.citetitle {
-    display: inline-block;
-}
-
-.copy {
-    color: var(--brightblue);
-    cursor: pointer;
-    font-size: 18px;
-}
-
-.buttons {
-    display: flex;
-}
-
-.claim {
-    border-radius: 20px;
-    background-color: var(--lightblue);
-    font-size: 12px;
-    margin-left: 20px;
-}
-
-.claim svg {
-    margin-right: 5px;
-}
-
-.shownotes {
-    font-size: 18px;
-    margin-left: 10px;
-    cursor: pointer;
-}
-.notes {
-    display: flex;
-    align-items: center;
-}
-.notes h4 {
-    margin: 0;
-}
-.notes-buttons {
-    margin: 20px 0px;
-}
-.notes textarea {
-    width: 500px;
-    min-height: 200px;
-    height: fit-content;
-}
-.info {
-    color: var(--brightblue);
-    font-size: 14px;
-    margin: 0px 5px;
-    cursor: pointer;
-}
-.warning {
-    font-size: 12px;
-    color: var(--red);
-}
-
-.save {
-    background-color: var(--brightblue);
-    color: var(--white);
-    font-size: 14px;
-    margin: 0px 5px;
-    cursor: pointer;
-    border-radius: 20px;
-}
-.cancel {
-    background-color: var(--red);
-    color: var(--white);
-    font-size: 14px;
-    margin: 0px 5px;
-    cursor: pointer;
-    border-radius: 20px;
-}
-
 .add-round {
     margin-left: auto;
 }
+
 .add-round button {
     border-radius: 20px;
     font-size: 14px !important;
     background-color: var(--green);
     color: var(--white);
-}
-
-.calendar {
-    color: var(--brightblue);
-    cursor: pointer;
-    margin: 0px 10px;
-    font-size: 18px;
-}
-
-.download {
-    color: var(--brightblue);
-    cursor: pointer;
-    margin: 0px 10px;
-    font-size: 18px;
-}
-.video {
-    color: var(--brightblue);
-    cursor: pointer;
-    margin: 0px 10px;
-    font-size: 18px;
-}
-
-.teamname {
-    margin-bottom: 0;
-}
-
-.roundinfo {
-    color: var(--darkgray);
-}
-
-.trash {
-    color: var(--red);
-    cursor: pointer;
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 0s 1s, opacity 1s linear;
-    margin: 0px 10px;
-    font-size: 18px;
-}
-
-.rounds-table tr:hover .trash,
-.cites-table tr:hover .trash {
-    visibility: visible;
-    opacity: 1;
-    transition: visibility 0s, opacity 2s linear;
 }

@@ -4,14 +4,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import MDEditor, { commands } from '@uiw/react-md-editor';
 
-import styles from './AddRound.module.css';
+import styles from './CiteEditor.module.css';
 
 const CiteEditor = ({ item, index, register, control, remove }) => {
     const cites = useWatch({ name: 'cites', control });
     return (
         <React.Fragment key={item.id}>
             <div className={styles.citetitle}>
-                <div className={styles['form-group']}>
+                <div>
                     <label htmlFor={`cites.${index}.title`}>Cite Title</label>
                     <input
                         id={`cites.${index}.title`}

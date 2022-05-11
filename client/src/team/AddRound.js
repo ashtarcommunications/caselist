@@ -151,7 +151,7 @@ const AddRound = () => {
 
             <form onSubmit={handleSubmit(addRoundHandler)} className="pure-form pure-form-stacked">
 
-                <div className={styles['form-group']}>
+                <div>
                     <label htmlFor="tourn">Tournament</label>
                     <Controller
                         control={control}
@@ -205,7 +205,7 @@ const AddRound = () => {
                     />
                 </div>
 
-                <div className={styles['form-group']}>
+                <div>
                     <label htmlFor="side">Side</label>
                     <Controller
                         control={control}
@@ -227,7 +227,7 @@ const AddRound = () => {
                     />
                 </div>
 
-                <div className={styles['form-group']}>
+                <div>
                     <label htmlFor="round">Round</label>
                     <Controller
                         control={control}
@@ -248,7 +248,7 @@ const AddRound = () => {
                     />
                 </div>
 
-                <div className={styles['form-group']}>
+                <div>
                     <label htmlFor="opponent">Opponent</label>
                     <input
                         name="opponent"
@@ -257,7 +257,7 @@ const AddRound = () => {
                     />
                 </div>
 
-                <div className={styles['form-group']}>
+                <div>
                     <label htmlFor="judge">Judge</label>
                     <input
                         name="judge"
@@ -266,7 +266,7 @@ const AddRound = () => {
                     />
                 </div>
 
-                <div className={styles['form-group']}>
+                <div>
                     <label htmlFor="report">
                         Round Report
                         <FontAwesomeIcon
@@ -282,7 +282,7 @@ const AddRound = () => {
                     />
                 </div>
 
-                <div className={styles['form-group']}>
+                <div>
                     <label htmlFor="video">
                         Video URL
                         <FontAwesomeIcon
@@ -312,7 +312,7 @@ const AddRound = () => {
                         <>
                             <div>
                                 <label htmlFor="autodetect">
-                                    <p className={styles['switch-label']}>
+                                    <p>
                                         Auto-detect cites (works with <a href="https://paperlessdebate.com" target="_blank" rel="noopener noreferrer">Verbatim</a>)
                                     </p>
                                     <Controller
@@ -356,7 +356,7 @@ const AddRound = () => {
                         onClick={() => append({ title: '', cites: '', open: false }, { shouldFocus: false })}
                         className={`${styles['add-cite']} pure-button`}
                     >
-                        <FontAwesomeIcon className={styles.plus} icon={faPlus} />
+                        <FontAwesomeIcon icon={faPlus} />
                         <span> Add Cite</span>
                     </button>
                 </h4>

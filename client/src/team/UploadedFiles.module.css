@@ -1,0 +1,4 @@
+.trash {
+    color: var(--red);
+    cursor: pointer;
+}

@@ -1,13 +1,21 @@
-.dropzone {
-    border: 1px dashed var(--black);
-    margin: 20px 0px;
-    padding: 20px;
-    background-color: var(--lightgray);
+.dirty {
+    border: 1px solid var(--red) !important;
 }
 
-.prompt {
-    font-size: 12px;
-    margin-right: 50px;
+.info {
+    color: var(--brightblue);
+    font-size: 14px;
+    margin: 0px 5px;
+    cursor: pointer;
+}
+
+.report {
+    min-width: 400px;
+    min-height: 150px;
+}
+
+.switch {
+    vertical-align: middle;
 }
 
 .add-cite {
@@ -16,6 +24,15 @@
     border-radius: 20px;
     font-size: 12px;
     margin-left: 10px;
+}
+
+.prompt {
+    font-size: 12px;
+    margin-right: 50px;
+}
+
+.buttons {
+    margin-top: 20px;
 }
 
 .add {
@@ -29,67 +46,4 @@
     color: var(--white);
     margin-left: 20px;
     border-radius: 20px;
-}
-
-.report {
-    min-width: 400px;
-    min-height: 150px;
-}
-
-.info {
-    color: var(--brightblue);
-    font-size: 14px;
-    margin: 0px 5px;
-    cursor: pointer;
-}
-
-.flex {
-    display: flex;
-}
-
-.buttons {
-    margin-top: 20px;
-}
-
-.citetitle {
-    display: flex;
-    align-items: center;
-}
-.citetitle input {
-    min-width: 400px;
-}
-.citetitle svg {
-    margin-left: auto;
-}
-
-.caret {
-    width: 100%;
-}
-.caret label {
-    cursor: pointer;
-}
-.caret label input {
-    display: none;
-}
-
-.switch {
-    vertical-align: middle;
-}
-
-.form-group label {
-    font-size: 0.7em;
-}
-
-.syntax {
-  color: var(--red);
-  font-size: 12px;
-}
-
-.trash {
-    color: var(--red);
-    cursor: pointer;
-}
-
-.dirty {
-    border: 1px solid var(--red) !important;
 }

@@ -70,13 +70,13 @@ const TeamRounds = () => {
     }
 
     return (
-        <div className={styles.roundlist}>
+        <div>
             <Breadcrumbs />
             <h1 className={styles.teamname}>
                 {school} {team} {!caselistData.archived && `(${lastNames})`}
                 {
                     !caselistData.archived &&
-                    <button type="button" className={`pure-button pure-button-primary ${styles.claim}`} onClick={handleLinkConfirm}>
+                    <button type="button" className={`pure-button ${styles.claim}`} onClick={handleLinkConfirm}>
                         <FontAwesomeIcon
                             icon={faLink}
                         />
@@ -95,7 +95,7 @@ const TeamRounds = () => {
                 <Link to={`/${caselist}/${school}/${team}`}>
                     <button
                         type="button"
-                        className={`pure-button ${styles.side} ${!side ? styles['selected-side'] : undefined}`}
+                        className={`pure-button ${styles.side} ${!side && styles['selected-side']}`}
                     >
                         All
                     </button>
@@ -103,7 +103,7 @@ const TeamRounds = () => {
                 <Link to={`/${caselist}/${school}/${team}/Aff`}>
                     <button
                         type="button"
-                        className={`pure-button ${styles.side} ${side === 'Aff' ? styles['selected-side'] : undefined}`}
+                        className={`pure-button ${styles.side} ${side === 'Aff' && styles['selected-side']}`}
                     >
                         Aff
                     </button>
@@ -111,7 +111,7 @@ const TeamRounds = () => {
                 <Link to={`/${caselist}/${school}/${team}/Neg`}>
                     <button
                         type="button"
-                        className={`pure-button ${styles.side} ${side === 'Neg' ? styles['selected-side'] : undefined}`}
+                        className={`pure-button ${styles.side} ${side === 'Neg' && styles['selected-side']}`}
                     >
                         Neg
                     </button>
@@ -120,7 +120,7 @@ const TeamRounds = () => {
                     !caselistData.archived &&
                     <Link to={`/${caselist}/${school}/${team}/add`} className={styles['add-round']}>
                         <button type="button" className={`pure-button`}>
-                            <FontAwesomeIcon className={styles.plus} icon={faPlus} />
+                            <FontAwesomeIcon icon={faPlus} />
                             <span> Add Round</span>
                         </button>
                     </Link>

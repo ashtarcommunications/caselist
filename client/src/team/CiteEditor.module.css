@@ -1,0 +1,40 @@
+.citetitle {
+    display: flex;
+    align-items: center;
+}
+
+.citetitle input {
+    min-width: 400px;
+}
+
+.citetitle svg {
+    margin-left: auto;
+}
+
+.caret {
+    width: 100%;
+    cursor: pointer;
+}
+
+.caret label {
+    cursor: pointer;
+}
+
+.caret label input {
+    display: none;
+}
+
+.caret svg {
+    font-size: 16px;
+    margin-left: 5px;
+}
+
+.trash {
+    color: var(--red);
+    cursor: pointer;
+}
+
+.syntax {
+  color: var(--red);
+  font-size: 12px;
+}
