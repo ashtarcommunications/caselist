@@ -31,7 +31,12 @@ import TeamRounds from './team/TeamRounds';
 import AddRound from './team/AddRound';
 import OpenEvHome from './openev/OpenEvHome';
 
+import useScript from './helpers/useScript';
+
 const App = () => {
+    // Inject analytics script
+    useScript(process.env.REACT_APP_ANALYTICS_URL, { domain: process.env.REACT_APP_DOMAIN });
+
     return (
         <ProvideAuth>
             <Router history={history}>
