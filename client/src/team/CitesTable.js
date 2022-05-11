@@ -10,6 +10,44 @@ import Table from '../tables/Table';
 
 import styles from './CitesTable.module.css';
 
+const CiteCell = ({ row, event, handleToggleCites }) => (
+    <div className={styles.cites}>
+        {
+            row.row?.original?.citesopen && row.row?.original?.tournament &&
+            <p className={styles.roundinfo}>
+                <span>{row.row?.original?.tournament}</span>
+                <span> | </span>
+                <span>{roundName(row.row?.original?.round)}</span>
+                <span> | </span>
+                <span>{displaySide(row.row?.original?.side, event)}</span>
+                <span> vs {row.row?.original?.opponent}</span>
+                <span> | </span>
+                <span>{row.row?.original?.judge}</span>
+            </p>
+        }
+        <h1
+            onClick={e => handleToggleCites(e)}
+            id={row.row?.original?.cite_id}
+        >
+            <span>{row.value?.title}</span>
+            <span className={styles.caret}>
+                <FontAwesomeIcon
+                    icon={
+                        row.row?.original?.citesopen
+                        ? faAngleDown
+                        : faAngleUp
+                    }
+                />
+            </span>
+        </h1>
+        <span
+            className={`cites ${!row.row?.original?.citesopen && styles.citesclosed}`}
+        >
+            <Markdown>{row.value?.cites}</Markdown>
+        </span>
+    </div>
+);
+
 const CitesTable = ({
     loading,
     event,
@@ -18,6 +56,8 @@ const CitesTable = ({
     handleDeleteCiteConfirm,
     handleToggleCites,
 }) => {
+    const { isMobile } = useDeviceDetect();
+
     const handleCopyCites = useCallback(async (id) => {
         const cite = cites.find(c => c.cite_id === parseInt(id));
         const citeContent = `${cite.title}\n${cite.cites}`;
@@ -29,7 +69,7 @@ const CitesTable = ({
         }
     }, [cites]);
 
-    const citeHeaders = useMemo(() => {
+    const columns = useMemo(() => {
         return [
             {
                 id: 'cites',
@@ -37,45 +77,9 @@ const CitesTable = ({
                 Header: 'Cites',
                 accessor: row => row,
                 className: styles.cites,
-                Cell: (row) => {
-                    return (
-                        <div className={styles.cites}>
-                            {
-                                row.row?.original?.citesopen && row.row?.original?.tournament &&
-                                <p className={styles.roundinfo}>
-                                    <span>{row.row?.original?.tournament}</span>
-                                    <span> | </span>
-                                    <span>{roundName(row.row?.original?.round)}</span>
-                                    <span> | </span>
-                                    <span>{displaySide(row.row?.original?.side, event)}</span>
-                                    <span> vs {row.row?.original?.opponent}</span>
-                                    <span> | </span>
-                                    <span>{row.row?.original?.judge}</span>
-                                </p>
-                            }
-                            <h1
-                                onClick={e => handleToggleCites(e)}
-                                id={row.row?.original?.cite_id}
-                            >
-                                <span>{row.value?.title}</span>
-                                <span className={styles.caret}>
-                                    <FontAwesomeIcon
-                                        icon={
-                                            row.row?.original?.citesopen
-                                            ? faAngleDown
-                                            : faAngleUp
-                                        }
-                                    />
-                                </span>
-                            </h1>
-                            <span
-                                className={`cites ${!row.row?.original?.citesopen && styles.citesclosed}`}
-                            >
-                                <Markdown>{row.value?.cites}</Markdown>
-                            </span>
-                        </div>
-                    );
-                },
+                Cell: (row) => (
+                    <CiteCell row={row} event={event} handleToggleCites={handleToggleCites} />
+                ),
             },
             {
                 id: 'copy',
@@ -85,16 +89,13 @@ const CitesTable = ({
                 accessor: (row) => row,
                 className: styles.center,
                 Cell: (row) => (
-                    <span
+                    <FontAwesomeIcon
+                        icon={faCopy}
                         id={row.row?.original?.cite_id}
                         onClick={() => handleCopyCites(row.row?.original?.cite_id)}
                         className={styles.copy}
                         title="Copy cites"
-                    >
-                        <FontAwesomeIcon
-                            icon={faCopy}
-                        />
-                    </span>
+                    />
                 ),
             },
             {
@@ -105,28 +106,48 @@ const CitesTable = ({
                 className: styles.center,
                 Cell: (row) => (
                     !archived &&
-                    <span
+                    <FontAwesomeIcon
+                        icon={faTrash}
                         id={row.row?.original?.cite_id}
                         onClick={e => handleDeleteCiteConfirm(e)}
                         className={styles.trash}
                         title="Delete cites"
-                    >
-                        <FontAwesomeIcon
-                            icon={faTrash}
-                        />
-                    </span>
+                    />
                 ),
             },
         ];
     }, [handleToggleCites, handleCopyCites, handleDeleteCiteConfirm, event, archived]);
 
-    const { isMobile } = useDeviceDetect();
+    const mobileColumns = useMemo(() => [
+        {
+            id: 'mobile',
+            Header: 'Cites',
+            disableSortBy: true,
+            disableFilters: true,
+            accessor: row => row,
+            Cell: (row) => (
+                <>
+                    <CiteCell row={row} event={event} handleToggleCites={handleToggleCites} />
+                    {
+                        !archived &&
+                        <FontAwesomeIcon
+                            icon={faTrash}
+                            id={row.row?.original?.cite_id}
+                            onClick={e => handleDeleteCiteConfirm(e)}
+                            className={styles.trash}
+                            title="Delete cites"
+                        />
+                    }
+                </>
+            ),
+        },
+    ], [handleToggleCites, handleDeleteCiteConfirm, archived, event]);
 
     return (
         <Table
-            columns={citeHeaders}
+            columns={isMobile ? mobileColumns : columns}
             data={cites}
-            className={`${styles['cites-table']} ${isMobile ? styles['mobile-table'] : undefined}`}
+            className={`${styles['cites-table']} ${isMobile && styles.mobile}`}
             noDataText="No cites found!"
             loading={loading}
             filterable={false}

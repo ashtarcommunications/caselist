@@ -1,4 +1,5 @@
-.error-container {
+.error {
+    width: 100%;
     padding-top: 20px;
     text-align: center;
 }
@@ -8,11 +9,10 @@
     margin: auto;
 }
 
-.error-message {
-    width: 100%;
-    color: var(--red);
+.error h3 {
+    font-size: 26px;
 }
 
-.error-message h3 {
-    font-size: 26px;
+.message {
+    color: var(--red);
 }

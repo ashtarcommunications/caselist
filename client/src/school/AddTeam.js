@@ -8,12 +8,14 @@ import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 
 import { useStore } from '../helpers/store';
 import { addTeam, loadTabroomStudents } from '../helpers/api';
+import { useDeviceDetect } from '../helpers/mobile';
 
 import 'react-widgets/styles.css';
 import styles from './AddTeam.module.css';
 
 const AddTeam = () => {
     const { caselist, school } = useParams();
+    const { isMobile } = useDeviceDetect();
     const {
         handleSubmit,
         reset,
@@ -103,12 +105,12 @@ const AddTeam = () => {
     return (
         <div>
             <h3>Add a {caselistData.team_size > 1 ? 'Team' : 'Debater'}</h3>
-            <form onSubmit={handleSubmit(addTeamHandler)} className={`${styles['add-team']} pure-form}`}>
+            <form onSubmit={handleSubmit(addTeamHandler)} className={`${styles['add-team']} pure-form`}>
                 <div>
                     {
                         Array.from({ length: teamSize }).map((x, i) => (
                             // eslint-disable-next-line react/no-array-index-key
-                            <div className={styles.flex} key={i}>
+                            <div className={!isMobile && styles.flex} key={i}>
                                 <Controller
                                     control={control}
                                     name={`debater${i + 1}_first`}
@@ -121,7 +123,7 @@ const AddTeam = () => {
                                             <div className={styles.first}>
                                                 <label htmlFor={`debater${i + 1}_first`}>Debater #{i + 1} First</label>
                                                 <Combobox
-                                                    containerClassName={`${styles.combo} ${error ? styles.dirty : undefined}`}
+                                                    containerClassName={`${styles.combo} ${error && styles.dirty}`}
                                                     busy={fetching}
                                                     hideCaret={fetching || students.length < 1}
                                                     data={students}

@@ -1,23 +1,28 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import UFO from './ufo.svg';
 import styles from './Error.module.css';
 
 const Error = ({ statusCode = null, message = '', is404 = false }) => {
     const location = useLocation();
+    const navigate = useNavigate();
     if (is404) {
         statusCode = 404;
         message = "Sorry, either that page doesn't exist or has ascended to the Ashtar Command!";
     }
 
     return (
-        <div className={styles['error-container']}>
+        <div className={styles.error}>
             <div className={styles.ufo}><img src={UFO} alt="UFO" /></div>
-            <div className={styles['error-message']}>
+            <div>
                 <h3>Error {statusCode || location?.state?.statusCode}</h3>
-                <p>{message || location?.state?.message}</p>
-                <p><Link to="/">Home</Link></p>
+                <p className={styles.message}>{message || location?.state?.message}</p>
+                <p>
+                    <a href="#" onClick={() => navigate(-1)}>Back</a>
+                    <span> | </span>
+                    <Link to="/">Home</Link>
+                </p>
             </div>
         </div>
     );

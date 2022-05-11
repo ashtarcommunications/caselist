@@ -10,6 +10,7 @@ import { displaySide, affName, negName } from '@speechanddebate/nsda-js-utils';
 
 import { useStore } from '../helpers/store';
 import { addRound, loadTabroomRounds } from '../helpers/api';
+import { useDeviceDetect } from '../helpers/mobile';
 import processFile from './processFile';
 
 import Error from '../layout/Error';
@@ -26,6 +27,7 @@ import styles from './AddRound.module.css';
 const AddRound = () => {
     const { caselist, school, team } = useParams();
     const navigate = useNavigate();
+    const { isMobile } = useDeviceDetect();
 
     const { caselistData } = useStore();
 
@@ -149,7 +151,7 @@ const AddRound = () => {
 
             <h2>Add a round to {school} {team}</h2>
 
-            <form onSubmit={handleSubmit(addRoundHandler)} className="pure-form pure-form-stacked">
+            <form onSubmit={handleSubmit(addRoundHandler)} className={`pure-form pure-form-stacked ${isMobile && styles.mobile}`}>
 
                 <div>
                     <label htmlFor="tourn">Tournament</label>

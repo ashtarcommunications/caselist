@@ -5,18 +5,20 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 import { AuthContext } from '../helpers/auth';
 import { useStore } from '../helpers/store';
+import { useDeviceDetect } from '../helpers/mobile';
 
 import styles from './Header.module.css';
 
 const Header = () => {
     const auth = useContext(AuthContext);
     const { caselistData } = useStore();
+    const { isMobile } = useDeviceDetect();
 
     // Set the header background based on the event/level combo
     const className = `header-${caselistData.level}-${caselistData.event}`;
 
     return (
-        <header className={`${styles.header} ${styles[className]}`}>
+        <header className={`${styles.header} ${styles[className]} ${isMobile && styles.mobile}`}>
             <h1><Link to="/">openCaselist</Link></h1>
             {
                 auth.user?.loggedIn &&

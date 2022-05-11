@@ -52,3 +52,11 @@
     cursor: pointer;
     border-radius: 20px;
 }
+
+.mobile.notes textarea {
+    width: 100%;
+}
+
+.mobile .save {
+    margin: 0px 5px !important;
+}

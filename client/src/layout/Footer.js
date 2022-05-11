@@ -1,11 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { useDeviceDetect } from '../helpers/mobile';
+
 import styles from './Footer.module.css';
 
 const Footer = () => {
+    const { isMobile } = useDeviceDetect();
     return (
-        <footer className={styles.footer}>
+        <footer className={`${styles.footer} ${isMobile && styles.mobile}`}>
             {/* From Material Design Icons https://materialdesignicons.com/ */}
             <div className={styles.ufo}>
                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="24" height="24" viewBox="0 0 24 24">

@@ -52,3 +52,20 @@
 .header-college-ld {
     background-color: var(--darkgray);
 }
+
+.mobile {
+    padding: 20px;
+    justify-content: left;
+}
+
+.mobile form.search {
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+.mobile .menu ul {
+    padding-left: 20px;
+}
+.mobile .menu ul li {
+    text-decoration: underline;
+}

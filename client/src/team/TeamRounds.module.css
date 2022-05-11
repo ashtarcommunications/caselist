@@ -57,3 +57,13 @@
     background-color: var(--green);
     color: var(--white);
 }
+
+.mobile .buttons {
+    display: inline-block;
+}
+
+.mobile .add-round {
+    display: inline-block;
+    margin-top: 20px;
+    margin-left: 0;
+}

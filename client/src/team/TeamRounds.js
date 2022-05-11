@@ -8,6 +8,7 @@ import { normalizeSide, roundName } from '@speechanddebate/nsda-js-utils';
 
 import { useStore } from '../helpers/store';
 import { loadTeam, loadRounds, deleteRound, loadCites, deleteCite, addTabroomTeamLink } from '../helpers/api';
+import { useDeviceDetect } from '../helpers/mobile';
 
 import ConfirmButton from '../helpers/ConfirmButton';
 import Loader from '../loader/Loader';
@@ -27,6 +28,8 @@ const TeamRounds = () => {
     const [teamData, setTeamData] = useState({});
     const [rounds, setRounds] = useState([]);
     const [cites, setCites] = useState([]);
+
+    const { isMobile } = useDeviceDetect();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -194,7 +197,7 @@ const TeamRounds = () => {
     }
 
     return (
-        <div>
+        <div className={isMobile && styles.mobile}>
             <Breadcrumbs />
             <h1 className={styles.teamname}>
                 {school} {team} {!caselistData.archived && `(${lastNames})`}

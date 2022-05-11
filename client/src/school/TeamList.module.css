@@ -20,6 +20,24 @@
     margin-bottom: 0;
 }
 
+.hover-links {
+    display: inline;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 1s, opacity 1s linear;
+}
+
+.hover-links a {
+    margin-left: 40px;
+    color: var(--darkgray);
+}
+
+.team-table tr:hover .hover-links {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s, opacity 0s linear;
+}
+
 .trash {
     color: var(--red);
     cursor: pointer;
@@ -29,23 +47,14 @@
     margin: 0px 10px;
     transition: visibility 0s 1s, opacity 1s linear;
 }
+
 .team-table tr:hover .trash {
     visibility: visible;
     opacity: 1;
     transition: visibility 0s, opacity 2s linear;
 }
-.hover-links {
-    display: inline;
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 0s 1s, opacity 1s linear;
-}
-.hover-links a {
-    margin-left: 40px;
-    color: var(--darkgray);
-}
-.team-table tr:hover .hover-links {
-    visibility: visible;
+
+.mobile .trash {
     opacity: 1;
-    transition: visibility 0s, opacity 0s linear;
+    visibility: visible;
 }

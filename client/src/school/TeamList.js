@@ -8,6 +8,7 @@ import { affName, negName } from '@speechanddebate/nsda-js-utils';
 
 import { deleteTeam } from '../helpers/api';
 import { useStore } from '../helpers/store';
+import { useDeviceDetect } from '../helpers/mobile';
 
 import Breadcrumbs from '../layout/Breadcrumbs';
 import Table from '../tables/Table';
@@ -22,6 +23,7 @@ const TeamList = () => {
     const { caselist, school } = useParams();
     const { schoolData, caselistData, teams, fetchSchool, fetchTeams } = useStore();
     const [fetching, setFetching] = useState(false);
+    const { isMobile } = useDeviceDetect();
 
     useEffect(() => {
         setFetching(true);
@@ -79,10 +81,13 @@ const TeamList = () => {
                             <span>{row.row.original.debater2_last}</span>
                             )
                         </Link>
-                        <div className={styles['hover-links']}>
-                            <Link to={`/${caselist}/${school}/${row.row.original?.name}/Aff`}>{affName(caselistData.event)}</Link>
-                            <Link to={`/${caselist}/${school}/${row.row.original?.name}/Neg`}>{negName(caselistData.event)}</Link>
-                        </div>
+                        {
+                            !isMobile &&
+                            <div className={styles['hover-links']}>
+                                <Link to={`/${caselist}/${school}/${row.row.original?.name}/Aff`}>{affName(caselistData.event)}</Link>
+                                <Link to={`/${caselist}/${school}/${row.row.original?.name}/Neg`}>{negName(caselistData.event)}</Link>
+                            </div>
+                        }
                     </>
                 );
             },
@@ -105,7 +110,7 @@ const TeamList = () => {
                 />
             ),
         },
-    ], [caselist, school, handleDeleteTeamConfirm, caselistData]);
+    ], [isMobile, caselist, school, handleDeleteTeamConfirm, caselistData]);
 
     const timestamp = moment(schoolData?.updated_at, 'YYYY-MM-DD HH:mm:ss').format('l');
 
@@ -123,7 +128,13 @@ const TeamList = () => {
                     </p>
                 }
                 {/* <TabroomChaptersDropdown /> */}
-                <Table columns={columns} data={data} className={styles['team-table']} noDataText="No teams found" loading={fetching} />
+                <Table
+                    columns={columns}
+                    data={data}
+                    className={`${styles['team-table']} ${isMobile && styles.mobile}`}
+                    noDataText="No teams found"
+                    loading={fetching}
+                />
             </div>
             <hr />
             {!caselistData.archived && <AddTeam />}

@@ -90,3 +90,13 @@
 @keyframes horizontal {
   to { transform: translatex(900%);}
 }
+
+.mobile {
+  height: 60px;
+  flex-wrap: wrap;
+}
+
+.mobile a {
+  display: inline-block;
+  margin: 5px;
+}

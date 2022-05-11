@@ -6,11 +6,13 @@ import { faCaretUp, faCaretDown, faInfoCircle } from '@fortawesome/free-solid-sv
 import { toast } from 'react-toastify';
 
 import { updateTeam } from '../helpers/api';
+import { useDeviceDetect } from '../helpers/mobile';
 
 import styles from './TeamNotes.module.css';
 
 const TeamNotes = ({ teamData }) => {
     const { caselist, school, team } = useParams();
+    const { isMobile } = useDeviceDetect();
 
     const {
         register,
@@ -56,7 +58,7 @@ const TeamNotes = ({ teamData }) => {
     };
 
     return (
-        <div className={styles.notes}>
+        <div className={`${styles.notes} ${isMobile && styles.mobile}`}>
             <form onSubmit={handleSubmit(updateNotesHandler)} className="pure-form">
                 <h4 onClick={handleToggleNotes}>
                     Team Notes

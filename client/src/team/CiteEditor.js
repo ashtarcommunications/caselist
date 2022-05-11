@@ -4,12 +4,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import MDEditor, { commands } from '@uiw/react-md-editor';
 
+import { useDeviceDetect } from '../helpers/mobile';
+
 import styles from './CiteEditor.module.css';
 
 const CiteEditor = ({ item, index, register, control, remove }) => {
     const cites = useWatch({ name: 'cites', control });
+    const { isMobile } = useDeviceDetect();
+
     return (
-        <React.Fragment key={item.id}>
+        <div key={item.id} className={isMobile && styles.mobile}>
             <div className={styles.citetitle}>
                 <div>
                     <label htmlFor={`cites.${index}.title`}>Cite Title</label>
@@ -129,7 +133,7 @@ const CiteEditor = ({ item, index, register, control, remove }) => {
                     }
                 />
             }
-        </React.Fragment>
+        </div>
     );
 };
 

@@ -47,3 +47,11 @@
     margin-left: 20px;
     border-radius: 20px;
 }
+
+.mobile .report {
+    min-width: auto;
+}
+
+.mobile .add {
+    margin: 0 !important;
+}

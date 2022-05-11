@@ -54,3 +54,8 @@
     opacity: 1;
     transition: visibility 0s, opacity 2s linear;
 }
+
+.mobile .trash {
+    opacity: 1;
+    visibility: visible;
+}

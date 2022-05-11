@@ -38,3 +38,11 @@
   color: var(--red);
   font-size: 12px;
 }
+
+.mobile .citetitle input {
+    min-width: auto;
+}
+
+.mobile .citetitle {
+    margin-bottom: 20px;
+}

@@ -19,6 +19,8 @@ const RoundsTable = ({
     handleToggleReport,
     allRoundsOpen,
 }) => {
+    const { isMobile } = useDeviceDetect();
+
     const columns = useMemo(() => [
         {
             id: 'created_at',
@@ -218,7 +220,7 @@ const RoundsTable = ({
                         }
                         {
                             row.row?.original?.report &&
-                            <p className={`${styles.report} ${styles.reportopen}`}>Report:<br />{row.row?.original?.report}</p>
+                            <p className={`${styles.report}`}>Report:<br />{row.row?.original?.report}</p>
                         }
                     </div>
                 );
@@ -226,14 +228,12 @@ const RoundsTable = ({
         },
     ], [handleDeleteRoundConfirm, archived]);
 
-    const { isMobile } = useDeviceDetect();
-
     return (
         <Table
             columns={isMobile ? mobileColumns : columns}
             data={rounds}
             hiddenColumns={['created_at']}
-            className={`${styles['rounds-table']} ${isMobile ? styles['mobile-table'] : undefined}`}
+            className={`${styles['rounds-table']} ${isMobile && styles.mobile}`}
             noDataText="No rounds found"
             loading={loading}
         />
