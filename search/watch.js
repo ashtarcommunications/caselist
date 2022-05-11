@@ -3,7 +3,7 @@ import chokidar from 'chokidar';
 import fetch from 'isomorphic-fetch';
 
 // Initialize watcher.
-const watcher = chokidar.watch('/home/aaron/Desktop', {
+const watcher = chokidar.watch('/tmp/uploads', {
     ignored: /(^|[/\\])\../, // ignore dotfiles
     persistent: true,
     awaitWriteFinish: true,
@@ -11,6 +11,7 @@ const watcher = chokidar.watch('/home/aaron/Desktop', {
 
 // Something to use when events are received.
 const log = console.log.bind(console);
+
 // Add event listeners.
 watcher
 .on('add', async (path) => {

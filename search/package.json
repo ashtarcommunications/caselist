@@ -7,7 +7,7 @@
   "homepage": "https://paperlessdebate.com",
   "license": "GPL3",
   "dependencies": {
-    "@speechanddebate/eslint-config-nsda": "^1.0.9",
+    "@speechanddebate/eslint-config-nsda": "^1.0.10",
     "chokidar": "^3.5.2",
     "isomorphic-fetch": "^3.0.0"
   },
