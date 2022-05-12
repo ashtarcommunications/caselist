@@ -119,13 +119,18 @@ const TeamRounds = () => {
         const fetchData = async () => {
             try {
                 const response = await loadCites(caselist, school, team);
-                setCites(side ? response.filter(r => r.side === side) : response);
+                setCites(side
+                    ? response.filter(cite => rounds.map(
+                        round => round.round_id
+                    ).indexOf(cite.round_id) > -1)
+                    : response
+                );
             } catch (err) {
                 console.log(err);
             }
         };
         fetchData();
-    }, [caselist, school, team, side]);
+    }, [caselist, school, team, side, rounds]);
 
     const handleDeleteCite = useCallback(async (id) => {
         try {
