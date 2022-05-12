@@ -1,4 +1,4 @@
-import fetch from 'isomorphic-fetch';
+// import fetch from 'isomorphic-fetch';
 // import config from '../../../config';
 
 const getTabroomChapters = {
@@ -7,16 +7,16 @@ const getTabroomChapters = {
         // url += `/caselist/chapters?person_id=${req.user.id}`;
         // url += `&caselist_key=${config.TABROOM_CASELIST_KEY}`;
         // const chapters = await fetch(url);
-        const chapters = await fetch(
-            'http://localhost:10011/v1/caselist/chapters?person_id=17145&caselist_key=caselist-key'
-        );
-        const json = await chapters.json();
-        // const chapters = [
-        //     { id: 6, name: 'Lexington HS', state: 'MA' },
-        //     { id: 958, name: 'NFA', state: 'NY' },
-        // ];
+        // const chapters = await fetch(
+        //     'http://localhost:10011/v1/caselist/chapters?person_id=17145&caselist_key=caselist-key'
+        // );
+        // const json = await chapters.json();
+        const chapters = [
+            { id: 6, name: 'Lexington HS', state: 'MA' },
+            { id: 958, name: 'NFA', state: 'NY' },
+        ];
 
-        return res.status(200).json(json);
+        return res.status(200).json(chapters);
     },
 };
 

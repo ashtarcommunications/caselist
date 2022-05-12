@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
+import { Combobox } from 'react-widgets';
 import { toast } from 'react-toastify';
 
 import { useStore } from '../helpers/store';
-import { addSchool } from '../helpers/api';
+import { loadTabroomChapters, addSchool } from '../helpers/api';
 import StatesDropdown from './StatesDropdown';
 
 import styles from './AddSchool.module.css';
@@ -14,17 +15,40 @@ const AddSchool = () => {
     const { caselist } = useParams();
     const { caselistData, fetchSchools } = useStore();
 
-    const { register, formState: { errors, isValid }, handleSubmit, reset, control } = useForm({ mode: 'all' });
+    const { setValue, formState: { errors, isValid }, handleSubmit, reset, control } = useForm({ mode: 'all' });
+
+    const [fetching, setFetching] = useState(false);
+    const [chapters, setChapters] = useState([]);
+
+    const nameRef = useRef();
+    useEffect(() => {
+        nameRef?.current?.focus();
+    }, [nameRef]);
+
+    const fetchChapters = async () => {
+        // Don't refetch on subsequent clicks
+        if (chapters.length > 0) { return false; }
+        try {
+            setFetching(true);
+            setChapters(await loadTabroomChapters());
+            setFetching(false);
+        } catch (err) {
+            setFetching(false);
+            setChapters([]);
+            console.log(err);
+        }
+    };
 
     const addSchoolHandler = async (data) => {
         try {
+            const chapter = chapters.find(c => c.name === data.name);
             const newSchool = await addSchool(
                 caselist,
-                { displayName: data.name, state: data.state },
+                { displayName: data.name, state: data.state, chapter_id: chapter?.id || null },
             );
             fetchSchools(caselist);
-            reset();
-            toast.success(newSchool.message);
+            reset({}, { keepDefaultValues: true });
+            toast.success('Successfully added school');
             navigate(`/${caselist}/${newSchool.name}`);
         } catch (err) {
             console.log(err);
@@ -61,18 +85,19 @@ const AddSchool = () => {
                     code at the end, like &quot;Lincoln MN&quot;
                 </li>
             </ul>
+
             <p className="error">
                 Abusing the wiki (e.g. posting joke schools, using profanity, purposefully
                 breaking the above rules, etc.) will not be tolerated and may result in
                 banning. Please note that everything you do on the site is logged.
             </p>
+
             <form onSubmit={handleSubmit(addSchoolHandler)} className="pure-form pure-form-stacked">
                 <label htmlFor="name">School Name</label>
-                <input
-                    id="name"
-                    type="text"
-                    {...register(
-                        'name',
+                <Controller
+                    control={control}
+                    name="name"
+                    rules={
                         {
                             required: true,
                             minLength: 3,
@@ -90,8 +115,46 @@ const AddSchool = () => {
                                 length: v => v.length === v.trim().length || 'No leading/trailing spaces allowed',
                             },
                         }
-                    )}
+                    }
+                    render={
+                        ({
+                            field: { value, onChange },
+                            fieldState: { error },
+                        }) => (
+                            <Combobox
+                                busy={fetching}
+                                ref={nameRef}
+                                hideCaret={fetching || chapters.length < 1}
+                                data={chapters}
+                                dataKey="id"
+                                textField={
+                                    i => {
+                                        if (typeof i === 'string') { return i; }
+                                        return i.name;
+                                    }
+                                }
+                                hideEmptyPopup
+                                filter="contains"
+                                value={value}
+                                onChange={
+                                    e => {
+                                        if (typeof e === 'string') { return onChange(e); }
+                                        if (e.state) {
+                                            setValue('state', e.state, { shouldValidate: true });
+                                        }
+                                        return onChange(e.name);
+                                    }
+                                }
+                                inputProps={
+                                    {
+                                        onFocus: fetchChapters,
+                                    }
+                                }
+                            />
+                        )
+                    }
                 />
+
                 <div className="error-small">
                     {errors.name?.type === 'required' && <p>This field is required</p>}
                     {errors.name?.type === 'minLength' && <p>At least 3 characters</p>}

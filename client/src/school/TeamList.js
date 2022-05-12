@@ -15,7 +15,6 @@ import Table from '../tables/Table';
 import Loader from '../loader/Loader';
 import AddTeam from './AddTeam';
 import ConfirmButton from '../helpers/ConfirmButton';
-// import TabroomChaptersDropdown from './TabroomChaptersDropdown';
 
 import styles from './TeamList.module.css';
 
@@ -127,7 +126,6 @@ const TeamList = () => {
                         Last updated by {schoolData.updated_by} on {timestamp}
                     </p>
                 }
-                {/* <TabroomChaptersDropdown /> */}
                 <Table
                     columns={columns}
                     data={data}
