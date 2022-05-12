@@ -6,6 +6,7 @@ const Caselist = {
         name: { type: 'string' },
         event: { type: 'string' },
         year: { type: 'integer' },
+        archived: { type: 'boolean' },
     },
 };
 

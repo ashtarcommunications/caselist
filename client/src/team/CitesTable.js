@@ -20,9 +20,8 @@ const CiteCell = ({ row, event, handleToggleCites }) => (
                 <span>{roundName(row.row?.original?.round)}</span>
                 <span> | </span>
                 <span>{displaySide(row.row?.original?.side, event)}</span>
-                <span> vs {row.row?.original?.opponent}</span>
-                <span> | </span>
-                <span>{row.row?.original?.judge}</span>
+                {row.row?.original?.opponent && <span> vs {row.row?.original?.opponent}</span>}
+                {row.row?.original?.judge && <span> | {row.row?.original?.judge}</span>}
             </p>
         }
         <h1

@@ -1,14 +1,14 @@
 const Round = {
     type: 'object',
     properties: {
-        side: { type: 'string' },
         tournament: { type: 'string' },
+        side: { type: 'string' },
         round: { type: 'string' },
-        opponent: { type: 'string' },
-        judge: { type: 'string' },
-        report: { type: 'string' },
-        tourn_id: { type: 'integer' },
-        external_id: { type: 'integer' },
+        opponent: { type: 'string', nullable: true },
+        judge: { type: 'string', nullable: true },
+        report: { type: 'string', nullable: true },
+        tourn_id: { type: 'integer', nullable: true },
+        external_id: { type: 'integer', nullable: true },
     },
 };
 

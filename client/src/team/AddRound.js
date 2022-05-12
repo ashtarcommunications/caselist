@@ -6,7 +6,7 @@ import Toggle from 'react-toggle';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
-import { displaySide, affName, negName } from '@speechanddebate/nsda-js-utils';
+import { displaySide, roundName } from '@speechanddebate/nsda-js-utils';
 
 import { useStore } from '../helpers/store';
 import { addRound, loadTabroomRounds } from '../helpers/api';
@@ -90,7 +90,14 @@ const AddRound = () => {
         if (rounds.length > 0) { return false; }
         try {
             setFetchingRounds(true);
-            setRounds(await loadTabroomRounds(window.location.pathname) || []);
+            const tabroomRounds = await loadTabroomRounds(window.location.pathname) || [];
+            tabroomRounds.unshift({
+                id: 0,
+                tourn: 'All Tournaments',
+                round: 'All',
+                side: 'A',
+            });
+            setRounds(tabroomRounds);
             setFetchingRounds(false);
         } catch (err) {
             setFetchingRounds(false);
@@ -107,6 +114,16 @@ const AddRound = () => {
             data.opensource = null;
             data.filename = null;
         }
+
+        // Ignore extra info if using the All Tournaments option
+        if (data.tourn === 'All Tournaments') {
+            data.round = 'All';
+            data.opponent = null;
+            data.judge = null;
+            data.report = null;
+            data.video = null;
+        }
+
         try {
             const response = await addRound(caselist, school, team, data);
             toast.success(response.message);
@@ -172,15 +189,11 @@ const AddRound = () => {
                                     data={rounds}
                                     dataKey="id"
                                     textField={
-                                        i => (
-                                            typeof i === 'string'
-                                            ? i
-                                            : `${i.tourn} Round ${i.round} ${
-                                                    i.side === 'A'
-                                                    ? affName(caselistData.event)
-                                                    : negName(caselistData.event)
-                                            } vs ${i.opponent}`
-                                        )
+                                        i => {
+                                            if (typeof i === 'string') { return i; }
+                                            if (i.tourn === 'All Tournaments') { return 'All Tournaments / General Disclosure'; }
+                                            return `${i.tourn} ${roundName(i.round)} ${displaySide(i.side, caselistData.event)} vs ${i.opponent}`;
+                                        }
                                     }
                                     hideEmptyPopup
                                     filter="contains"
@@ -188,10 +201,10 @@ const AddRound = () => {
                                     onChange={
                                         e => {
                                             if (typeof e === 'string') { return onChange(e); }
-                                            setValue('side', e.side, { shouldValidate: true });
                                             setValue('round', e.round, { shouldValidate: true });
-                                            setValue('opponent', e.opponent, { shouldValidate: true });
-                                            setValue('judge', e.judge, { shouldValidate: true });
+                                            setValue('side', e.side, { shouldValidate: true });
+                                            setValue('opponent', e.opponent ?? '', { shouldValidate: true });
+                                            setValue('judge', e.judge ?? '', { shouldValidate: true });
                                             return onChange(e.tourn);
                                         }
                                     }
@@ -244,6 +257,7 @@ const AddRound = () => {
                                     className={(!value || error) && styles.dirty}
                                     value={value}
                                     onChange={onChange}
+                                    disabled={watchFields.tourn === 'All Tournaments'}
                                 />
                             )
                         }
@@ -255,7 +269,8 @@ const AddRound = () => {
                     <input
                         name="opponent"
                         type="text"
-                        {...register('opponent', { required: true })}
+                        {...register('opponent')}
+                        disabled={watchFields.tourn === 'All Tournaments'}
                     />
                 </div>
 
@@ -264,7 +279,8 @@ const AddRound = () => {
                     <input
                         name="judge"
                         type="text"
-                        {...register('judge', { required: true })}
+                        {...register('judge')}
+                        disabled={watchFields.tourn === 'All Tournaments'}
                     />
                 </div>
 
@@ -281,6 +297,7 @@ const AddRound = () => {
                         className={styles.report}
                         name="report"
                         {...register('report')}
+                        disabled={watchFields.tourn === 'All Tournaments'}
                     />
                 </div>
 
@@ -297,6 +314,7 @@ const AddRound = () => {
                         name="video"
                         type="text"
                         {...register('video')}
+                        disabled={watchFields.tourn === 'All Tournaments'}
                     />
                 </div>
 

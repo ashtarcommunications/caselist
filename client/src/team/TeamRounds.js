@@ -7,13 +7,14 @@ import { Link, useParams } from 'react-router-dom';
 import { normalizeSide, roundName } from '@speechanddebate/nsda-js-utils';
 
 import { useStore } from '../helpers/store';
-import { loadTeam, loadRounds, deleteRound, loadCites, deleteCite, addTabroomTeamLink } from '../helpers/api';
+import { loadTeam, loadRounds, deleteRound, loadCites, deleteCite, addCite, addTabroomTeamLink } from '../helpers/api';
 import { useDeviceDetect } from '../helpers/mobile';
 
 import ConfirmButton from '../helpers/ConfirmButton';
 import Loader from '../loader/Loader';
 import Breadcrumbs from '../layout/Breadcrumbs';
 import TeamNotes from './TeamNotes';
+import AddCite from './AddCite';
 import RoundsTable from './RoundsTable';
 import CitesTable from './CitesTable';
 
@@ -165,6 +166,19 @@ const TeamRounds = () => {
         setCites(newCites);
     }, [cites]);
 
+    const handleAddCite = async (data) => {
+        const cite = { round_id: parseInt(data.round_id), ...data.cites[0] };
+        try {
+            let response = await addCite(caselist, school, team, cite);
+            toast.success(response.message);
+            response = await loadCites(caselist, school, team);
+            setCites(side ? response.filter(r => r.side === side) : response);
+        } catch (err) {
+            toast.error(`Failed to add cite: ${err.message}`);
+            console.log(err);
+        }
+    };
+
     const handleLinkPage = async () => {
         try {
             const response = await addTabroomTeamLink(window.location.pathname);
@@ -262,6 +276,10 @@ const TeamRounds = () => {
                 handleToggleReport={handleToggleReport}
                 allRoundsOpen={allRoundsOpen}
             />
+            {
+                !caselistData.archived && rounds.length > 0 &&
+                <AddCite rounds={rounds} event={caselistData.event} handleAddCite={handleAddCite} />
+            }
             <CitesTable
                 event={caselistData.event}
                 archived={caselistData.archived}

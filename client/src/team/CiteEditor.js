@@ -41,11 +41,14 @@ const CiteEditor = ({ item, index, register, control, remove }) => {
                         />
                     </label>
                 </span>
-                <FontAwesomeIcon
-                    className={styles.trash}
-                    icon={faTrash}
-                    onClick={() => remove(index)}
-                />
+                {
+                    remove &&
+                    <FontAwesomeIcon
+                        className={styles.trash}
+                        icon={faTrash}
+                        onClick={() => remove(index)}
+                    />
+                }
             </div>
             {
                 cites?.[index]?.cites?.charAt(0) === '=' &&

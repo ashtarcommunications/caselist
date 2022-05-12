@@ -106,6 +106,10 @@ export const deleteRound = async (caselist, school, team, round) => {
     return fetchBase(`caselists/${caselist}/schools/${school}/teams/${team}/rounds/${round}`, { method: 'DELETE' });
 };
 
+export const addCite = async (caselist, school, team, cite) => {
+    return fetchBase(`caselists/${caselist}/schools/${school}/teams/${team}/cites`, { method: 'POST' }, cite);
+};
+
 export const loadCites = async (caselist, school, team, side) => {
     return fetchBase(`caselists/${caselist}/schools/${school}/teams/${team}/cites?side=${side}`);
 };

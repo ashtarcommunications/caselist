@@ -1,9 +1,10 @@
 import React from 'react';
 
-const RoundNumberDropdown = ({ className, value, onChange }) => {
+const RoundNumberDropdown = ({ className, value, onChange, disabled }) => {
     return (
-        <select className={className} name="round" value={value} onChange={onChange}>
+        <select className={className} name="round" value={value} onChange={onChange} disabled={disabled}>
             <option value="" />
+            <option value="All">All</option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
