@@ -1,6 +1,7 @@
 .notes {
     display: flex;
     align-items: center;
+    margin-top: 20px;
 }
 
 .notes h4 {

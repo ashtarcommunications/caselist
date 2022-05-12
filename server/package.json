@@ -41,7 +41,8 @@
     "mysql2": "^1.6.5",
     "sql-template-strings": "^2.2.2",
     "uuid": "^3.3.2",
-    "winston": "^3.2.1"
+    "winston": "^3.2.1",
+    "xml2js": "^0.4.23"
   },
   "devDependencies": {
     "@speechanddebate/eslint-config-nsda": "^1.0.9",
@@ -62,7 +63,10 @@
   },
   "eslintConfig": {
     "extends": "@speechanddebate/eslint-config-nsda",
-    "parserOptions": { "ecmaVersion": "latest", "sourceType": "module" }
+    "parserOptions": {
+      "ecmaVersion": "latest",
+      "sourceType": "module"
+    }
   },
   "_id": "caselist-api@1.0.0"
 }
