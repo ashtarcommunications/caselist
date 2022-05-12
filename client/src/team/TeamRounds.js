@@ -219,7 +219,7 @@ const TeamRounds = () => {
         <div className={isMobile && styles.mobile}>
             <Breadcrumbs />
             <h1 className={styles.teamname}>
-                {school} {team} {!caselistData.archived && `(${lastNames})`}
+                {teamData.display_name} {!caselistData.archived && `(${lastNames})`}
                 {
                     !caselistData.archived &&
                     <button type="button" className={`pure-button ${styles.claim}`} onClick={handleLinkConfirm}>

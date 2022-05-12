@@ -9,7 +9,7 @@ import styles from './Breadcrumbs.module.css';
 
 const Breadcrumbs = () => {
     const { caselist, school, team } = useParams();
-    const { caselistData } = useStore();
+    const { caselistData, schoolData } = useStore();
 
     return (
         <div className={styles.breadcrumbs}>
@@ -21,7 +21,7 @@ const Breadcrumbs = () => {
             </Link>
 
             {caselist && <Link to={`/${caselist}`}><span> / {caselistData.name}</span></Link>}
-            {school && <Link to={`/${caselist}/${school}`}><span> / {school}</span></Link>}
+            {school && <Link to={`/${caselist}/${school}`}><span> / {schoolData.display_name}</span></Link>}
             {team && <Link to={`/${caselist}/${school}/${team}`}><span> / {team}</span></Link>}
         </div>
     );

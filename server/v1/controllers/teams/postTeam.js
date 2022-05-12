@@ -4,20 +4,20 @@ import log from '../log/insertEventLog';
 
 const postTeam = {
     POST: async (req, res) => {
-        const [caselist] = await query(SQL`
-            SELECT C.archived, C.team_size
+        const [school] = await query(SQL`
+            SELECT C.archived, C.team_size, S.*
             FROM caselists C
             INNER JOIN schools S ON S.caselist_id = C.caselist_id
             WHERE C.name = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${req.params.school})
         `);
 
-        if (!caselist) { return res.status(400).json({ message: 'School not found' }); }
-        if (caselist.archived) { return res.status(401).json({ message: 'Caselist archived, no modifications allowed' }); }
+        if (!school) { return res.status(400).json({ message: 'School not found' }); }
+        if (school.archived) { return res.status(401).json({ message: 'Caselist archived, no modifications allowed' }); }
 
         let name = '';
-        let displayName = `${req.params.school} `;
-        for (let i = 0; i < caselist.team_size; i++) {
+        let displayName = `${school.display_name} `;
+        for (let i = 0; i < school.team_size; i++) {
             const debater = `debater${i + 1}_last`;
             name += `${req.body[debater].slice(0, 2)}`;
             displayName += `${req.body[debater].slice(0, 2)}`;

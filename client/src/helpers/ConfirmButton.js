@@ -10,20 +10,19 @@ const ConfirmButton = ({ message = 'Are you sure?', handler, dismiss, requireInp
     };
 
     return (
-        <div>
+        <form onSubmit={(e) => { e.preventDefault(); handler(); }} className="pure-form">
             <p>{message}</p>
             {
                 requireInput &&
-                <form className="pure-form">
+                <div>
                     <p>Please type &quot;I am certain&quot; below, exactly as shown</p>
-                    <input className={styles.confirm} type="text" value={confirm} onChange={handleChangeConfirm} />
-                </form>
+                    <input className={styles.confirm} type="text" pattern="I am certain" value={confirm} onChange={handleChangeConfirm} />
+                </div>
             }
             <div>
                 <button
-                    type="button"
+                    type="submit"
                     className="pure-button green-button"
-                    onClick={handler}
                     disabled={requireInput && confirm !== 'I am certain'}
                 >
                     Confirm
@@ -36,7 +35,7 @@ const ConfirmButton = ({ message = 'Are you sure?', handler, dismiss, requireInp
                     Cancel
                 </button>
             </div>
-        </div>
+        </form>
     );
 };
 

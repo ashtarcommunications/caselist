@@ -1,10 +1,10 @@
 # Server
 Tabroom claim endpoints
-Archive importerTests
+Archive importer
+Tests
 
 # Client
 Support for novice/all team entries
-Use school display_name in headings and breadcrumbs instead of name
 Round data editing
 Opensource file structure and download handling
 Improve cite parser and markdown display

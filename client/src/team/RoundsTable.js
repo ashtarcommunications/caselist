@@ -71,13 +71,16 @@ const RoundsTable = ({
                 return (
                     <>
                         <span className={styles['report-header']}>Round Report</span>
-                        <button
-                            type="button"
-                            className={`pure-button ${styles.toggleall}`}
-                            onClick={handleToggleAll}
-                        >
-                            {allRoundsOpen ? 'Collapse All' : 'Expand All'}
-                        </button>
+                        {
+                            rounds.length > 0 &&
+                            <button
+                                type="button"
+                                className={`pure-button ${styles.toggleall}`}
+                                onClick={handleToggleAll}
+                            >
+                                {allRoundsOpen ? 'Collapse All' : 'Expand All'}
+                            </button>
+                        }
                     </>
                 );
             },
@@ -168,6 +171,7 @@ const RoundsTable = ({
         handleDeleteRoundConfirm,
         event,
         archived,
+        rounds,
     ]);
 
     const mobileColumns = useMemo(() => [
