@@ -12,6 +12,18 @@
     margin-bottom: 5px;
 }
 
+.buttons {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.allteams {
+    margin-right: 20px;
+    font-size: 10px;
+    background-color: var(--green);
+    color: var(--white);
+}
+
 .addremove {
     text-align: right;
 }
@@ -32,7 +44,6 @@
 }
 
 .combo {
-    width: 250px;
     margin-bottom: 20px;
 }
 .combo input {
@@ -52,7 +63,7 @@
     border-radius: 20px;
 }
 
-.dirty {
+.error {
     border: 1px solid var(--red);
 }
 

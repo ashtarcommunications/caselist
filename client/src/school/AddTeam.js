@@ -5,17 +5,26 @@ import { toast } from 'react-toastify';
 import Combobox from 'react-widgets/Combobox';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
+import { sortBy } from 'lodash';
 
 import { useStore } from '../helpers/store';
 import { addTeam, loadTabroomStudents } from '../helpers/api';
 import { useDeviceDetect } from '../helpers/mobile';
+import ConfirmButton from '../helpers/ConfirmButton';
 
 import 'react-widgets/styles.css';
 import styles from './AddTeam.module.css';
 
 const AddTeam = () => {
     const { caselist, school } = useParams();
+    const { caselistData, teams, fetchTeams } = useStore();
     const { isMobile } = useDeviceDetect();
+
+    const [fetching, setFetching] = useState(false);
+    const [students, setStudents] = useState([]);
+    const [teamSize, setTeamSize] = useState(caselistData.team_size);
+    const [showWarning, setShowWarning] = useState(false);
+
     const {
         handleSubmit,
         reset,
@@ -38,13 +47,7 @@ const AddTeam = () => {
 
     const watchFields = useWatch({ control });
 
-    const { caselistData, fetchTeams } = useStore();
-
-    const [fetching, setFetching] = useState(false);
-    const [students, setStudents] = useState([]);
-    const [teamSize, setTeamSize] = useState(caselistData.team_size);
-    const [showWarning, setShowWarning] = useState(false);
-
+    // Soft warning if not using title case for names
     useEffect(() => {
         let warn = false;
         Object.keys(watchFields).forEach(f => {
@@ -57,16 +60,20 @@ const AddTeam = () => {
         setShowWarning(warn);
     }, [watchFields]);
 
+    // Update the default team size if changing caselists
     useEffect(() => {
         setTeamSize(caselistData.team_size);
     }, [caselistData]);
 
     const loadStudents = () => {
         const fetchStudents = async () => {
+            // Don't refetch on subsequent clicks
+            if (students.length > 0) { return false; }
             try {
                 setFetching(true);
-                const response = await loadTabroomStudents();
-                setStudents(response || []);
+                let tabroomStudents = await loadTabroomStudents() || [];
+                tabroomStudents = sortBy(tabroomStudents, 'last');
+                setStudents(tabroomStudents);
                 setFetching(false);
             } catch (err) {
                 setFetching(false);
@@ -74,21 +81,22 @@ const AddTeam = () => {
                 console.log(err);
             }
         };
-        if (students.length < 1) {
-            fetchStudents();
-        }
+        fetchStudents();
     };
 
     const addTeamHandler = async (data) => {
         try {
             if (!data) { return false; }
+            setFetching(true);
             const response = await addTeam(caselist, school, data);
             toast.success(response.message);
             reset({}, { keepDefaultValues: true });
             fetchTeams(caselist, school);
+            setFetching(false);
         } catch (err) {
-            console.log(err);
+            setFetching(false);
             toast.error(`Failed to add team: ${err.message}`);
+            console.log(err);
         }
     };
 
@@ -102,9 +110,60 @@ const AddTeam = () => {
         setTeamSize(teamSize - 1);
     };
 
+    const addAllTeamsHandler = (e) => {
+        const name = e.currentTarget?.name;
+        const data = {
+            debater1_first: 'All',
+            debater1_last: name === 'novices' ? 'Novices' : 'Teams',
+        };
+
+        const message = `Are you sure you want to add a team for general disclosure for all ${name === 'novices' ? 'novices' : 'teams'}?`;
+
+        toast.warning(({ closeToast }) => (
+            <ConfirmButton
+                message={message}
+                handler={() => addTeamHandler(data)}
+                dismiss={closeToast}
+            />),
+        {
+            autoClose: 15000,
+            closeButton: false,
+        },
+        );
+    };
+
     return (
         <div>
             <h3>Add a {caselistData.team_size > 1 ? 'Team' : 'Debater'}</h3>
+            <div className={styles.buttons}>
+                {
+                    teams.filter(t => t.name === 'All').length < 1 &&
+                    <button
+                        type="button"
+                        name="all"
+                        className={`pure-button ${styles.allteams}`}
+                        onClick={addAllTeamsHandler}
+                        title="Add a team for general disclosure for all teams"
+                    >
+                        <FontAwesomeIcon className={styles.plus} icon={faPlus} />
+                        <span> All Teams</span>
+                    </button>
+                }
+                {
+                    teams.filter(t => t.name === 'Novices').length < 1 &&
+                    <button
+                        type="button"
+                        name="novices"
+                        className={`pure-button ${styles.allteams}`}
+                        onClick={addAllTeamsHandler}
+                        title="Add a team for general disclosure for all novices"
+                    >
+                        <FontAwesomeIcon className={styles.plus} icon={faPlus} />
+                        <span> All Novices</span>
+                    </button>
+                }
+
+            </div>
             <form onSubmit={handleSubmit(addTeamHandler)} className={`${styles['add-team']} pure-form`}>
                 <div>
                     {
@@ -123,7 +182,7 @@ const AddTeam = () => {
                                             <div className={styles.first}>
                                                 <label htmlFor={`debater${i + 1}_first`}>Debater #{i + 1} First</label>
                                                 <Combobox
-                                                    containerClassName={`${styles.combo} ${error && styles.dirty}`}
+                                                    containerClassName={`${styles.combo} ${error && styles.error}`}
                                                     busy={fetching}
                                                     hideCaret={fetching || students.length < 1}
                                                     data={students}
@@ -152,11 +211,14 @@ const AddTeam = () => {
                                     name={`debater${i + 1}_last`}
                                     rules={{ required: true, minLength: 2 }}
                                     render={
-                                        ({ field: { onChange, onBlur, value } }) => (
+                                        ({
+                                            field: { onChange, onBlur, value },
+                                            fieldState: { error },
+                                        }) => (
                                             <div>
                                                 <label htmlFor={`debater${i + 1}_last`}>Debater #{i + 1} Last</label>
                                                 <Combobox
-                                                    containerClassName={`${styles.combo}`}
+                                                    containerClassName={`${styles.combo} ${error && styles.error}`}
                                                     busy={fetching}
                                                     hideCaret={fetching || students.length < 1}
                                                     data={students}

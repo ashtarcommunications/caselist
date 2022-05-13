@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { Combobox } from 'react-widgets';
 import { toast } from 'react-toastify';
+import { sortBy } from 'lodash';
 
 import { useStore } from '../helpers/store';
 import { loadTabroomChapters, addSchool } from '../helpers/api';
@@ -15,7 +16,16 @@ const AddSchool = () => {
     const { caselist } = useParams();
     const { caselistData, fetchSchools } = useStore();
 
-    const { setValue, formState: { errors, isValid }, handleSubmit, reset, control } = useForm({ mode: 'all' });
+    const {
+        setValue,
+        formState: { errors, isValid },
+        handleSubmit,
+        reset,
+        control,
+    } = useForm({
+        mode: 'all',
+        defaultValues: { name: '', state: '' },
+    });
 
     const [fetching, setFetching] = useState(false);
     const [chapters, setChapters] = useState([]);
@@ -30,7 +40,9 @@ const AddSchool = () => {
         if (chapters.length > 0) { return false; }
         try {
             setFetching(true);
-            setChapters(await loadTabroomChapters());
+            let tabroomChapters = await loadTabroomChapters() || [];
+            tabroomChapters = sortBy(tabroomChapters, 'name');
+            setChapters(tabroomChapters);
             setFetching(false);
         } catch (err) {
             setFetching(false);

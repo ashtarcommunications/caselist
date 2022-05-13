@@ -205,21 +205,28 @@ const TeamRounds = () => {
     if (fetching) { return <Loader />; }
 
     let lastNames = '';
-    switch (caselistData.team_size) {
-        case 1:
-            lastNames = `${teamData.debater1_last}`;
-            break;
-        case 2:
-        default:
-            lastNames = `${teamData.debater1_last}-${teamData.debater2_last}`;
-            break;
+    if (teamData.debater1_last) {
+        lastNames += `${teamData.debater1_last}`;
+    }
+    if (teamData.debater2_last) {
+        lastNames += `-${teamData.debater2_last}`;
+    }
+    if (teamData.debater3_last) {
+        lastNames += `-${teamData.debater3_last}`;
+    }
+    if (teamData.debater4_last) {
+        lastNames += `-${teamData.debater4_last}`;
+    }
+
+    if (teamData.name === 'All' || teamData.name === 'Novices') {
+        lastNames = null;
     }
 
     return (
         <div className={isMobile && styles.mobile}>
             <Breadcrumbs />
             <h1 className={styles.teamname}>
-                {teamData.display_name} {!caselistData.archived && `(${lastNames})`}
+                {teamData.display_name} {!caselistData.archived && lastNames && `(${lastNames})`}
                 {
                     !caselistData.archived &&
                     <button type="button" className={`pure-button ${styles.claim}`} onClick={handleLinkConfirm}>

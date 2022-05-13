@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import { displaySide, roundName } from '@speechanddebate/nsda-js-utils';
+import { sortBy } from 'lodash';
 
 import { useStore } from '../helpers/store';
 import { addRound, loadTabroomRounds } from '../helpers/api';
@@ -90,7 +91,8 @@ const AddRound = () => {
         if (rounds.length > 0) { return false; }
         try {
             setFetchingRounds(true);
-            const tabroomRounds = await loadTabroomRounds(window.location.pathname) || [];
+            let tabroomRounds = await loadTabroomRounds(window.location.pathname) || [];
+            tabroomRounds = sortBy(tabroomRounds, ['tourn', 'round']);
             tabroomRounds.unshift({
                 id: 0,
                 tourn: 'All Tournaments',
@@ -182,7 +184,7 @@ const AddRound = () => {
                                 fieldState: { error },
                             }) => (
                                 <Combobox
-                                    containerClassName={`${(!value || error) && styles.dirty}`}
+                                    containerClassName={`${(!value || error) && styles.error}`}
                                     busy={fetchingRounds}
                                     ref={tournRef}
                                     hideCaret={fetchingRounds || rounds.length < 1}
@@ -232,7 +234,7 @@ const AddRound = () => {
                                 fieldState: { error },
                             }) => (
                                 <SideDropdown
-                                    className={(!value || error) && styles.dirty}
+                                    className={(!value || error) && styles.error}
                                     value={value}
                                     onChange={onChange}
                                     event={caselistData?.event}
@@ -254,7 +256,7 @@ const AddRound = () => {
                                 fieldState: { error },
                             }) => (
                                 <RoundNumberDropdown
-                                    className={(!value || error) && styles.dirty}
+                                    className={(!value || error) && styles.error}
                                     value={value}
                                     onChange={onChange}
                                     disabled={watchFields.tourn === 'All Tournaments'}

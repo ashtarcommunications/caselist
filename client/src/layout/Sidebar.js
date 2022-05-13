@@ -11,13 +11,25 @@ import StatesDropdown from '../caselist/StatesDropdown';
 import styles from './Sidebar.module.css';
 
 const Sidebar = () => {
-    const { caselist } = useParams();
-    const { schools, fetchSchools, caselistData, fetchCaselist } = useStore();
+    const { caselist, school } = useParams();
+    const {
+        caselistData,
+        fetchCaselist,
+        schools,
+        fetchSchools,
+        schoolData,
+        fetchSchool,
+    } = useStore();
 
     useEffect(() => {
-        fetchCaselist(caselist);
-        fetchSchools(caselist);
-    }, [caselist, fetchCaselist, fetchSchools]);
+        if (caselist && !caselistData?.name) {
+            fetchCaselist(caselist);
+            fetchSchools(caselist);
+        }
+        if (caselist && school && !schoolData?.name) {
+            fetchSchool(caselist, school);
+        }
+    }, [caselist, caselistData, fetchCaselist, fetchSchools, school, schoolData, fetchSchool]);
 
     const [stateCode, setStateCode] = useState('');
 

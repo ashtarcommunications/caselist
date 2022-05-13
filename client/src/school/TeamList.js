@@ -20,16 +20,15 @@ import styles from './TeamList.module.css';
 
 const TeamList = () => {
     const { caselist, school } = useParams();
-    const { schoolData, caselistData, teams, fetchSchool, fetchTeams } = useStore();
+    const { caselistData, schoolData, teams, fetchTeams } = useStore();
     const [fetching, setFetching] = useState(false);
     const { isMobile } = useDeviceDetect();
 
     useEffect(() => {
         setFetching(true);
-        fetchSchool(caselist, school);
         fetchTeams(caselist, school);
         setFetching(false);
-    }, [caselist, school, fetchSchool, fetchTeams]);
+    }, [caselist, school, fetchTeams]);
 
     const handleDeleteTeam = useCallback(async (name) => {
         try {
@@ -69,16 +68,26 @@ const TeamList = () => {
             width: 'auto',
             accessor: 'display_name',
             Cell: (row) => {
+                let displayName;
+                if (['All', 'Novices'].indexOf(row.row?.original?.name) > -1) {
+                    displayName = row.value;
+                } else {
+                    displayName = `${row.value}`;
+                    displayName += ` (`;
+                    displayName += row.row?.original?.debater1_first
+                        ? `${row.row?.original?.debater1_first} ${row.row?.original?.debater1_last}` : '';
+                    displayName += row.row?.original?.debater2_first
+                        ? ` - ${row.row?.original?.debater2_first} ${row.row?.original?.debater2_last}` : '';
+                    displayName += row.row?.original?.debater3_first
+                        ? ` - ${row.row?.original?.debater3_first} ${row.row?.original?.debater3_last}` : '';
+                    displayName += row.row?.original?.debater4_first
+                        ? ` - ${row.row?.original?.debater4_first} ${row.row?.original?.debater4_last}` : '';
+                    displayName += `)`;
+                }
                 return (
                     <>
                         <Link to={`/${caselist}/${school}/${row.row.original?.name}`}>
-                            {row.row.original.display_name} (
-                            <span>{row.row.original.debater1_first} </span>
-                            <span>{row.row.original.debater1_last} </span>
-                            <span>- </span>
-                            <span>{row.row.original.debater2_first} </span>
-                            <span>{row.row.original.debater2_last}</span>
-                            )
+                            {displayName}
                         </Link>
                         {
                             !isMobile &&

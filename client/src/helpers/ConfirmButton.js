@@ -6,7 +6,7 @@ const ConfirmButton = ({ message = 'Are you sure?', handler, dismiss, requireInp
     const [confirm, setConfirm] = useState('');
 
     const handleChangeConfirm = (e) => {
-        setConfirm(e.target.value);
+        setConfirm(e.currentTarget.value);
     };
 
     return (

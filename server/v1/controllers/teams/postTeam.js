@@ -19,8 +19,16 @@ const postTeam = {
         let displayName = `${school.display_name} `;
         for (let i = 0; i < school.team_size; i++) {
             const debater = `debater${i + 1}_last`;
-            name += `${req.body[debater].slice(0, 2)}`;
-            displayName += `${req.body[debater].slice(0, 2)}`;
+            name += `${req.body?.[debater]?.slice(0, 2)}`;
+            displayName += `${req.body?.[debater]?.slice(0, 2)}`;
+        }
+        if (req.body.debater1_first?.trim() === 'All' && req.body.debater1_last?.trim() === 'Teams') {
+            name = 'All';
+            displayName = `${school.display_name} All Teams`;
+        }
+        if (req.body.debater1_first?.trim() === 'All' && req.body.debater1_last?.trim() === 'Novices') {
+            name = 'Novices';
+            displayName = `${school.display_name} Novices`;
         }
 
         const team = await (query(SQL`
