@@ -30,49 +30,6 @@ app.use(helmet());
 // Enable getting forwarded client IP from proxy
 app.enable('trust proxy');
 
-// Slow down requests before they hit the rate limiter
-const speedLimiter = slowDown({
-    windowMs: config.RATE_WINDOW || 15 * 60 * 1000, // 15 minutes
-    delayAfter: config.RATE_AFTER || 1000, // allow 1000 requests per 15 minutes, then...
-    delayMs: config.RATE_DELAY || 500, // begin adding 500ms of delay per request above 1000:
-    maxDelayMs: 10000,
-    keyGenerator: (req) => (req.user_id ? req.user_id : req.ip),
-});
-app.use(speedLimiter);
-
-// Rate limit all requests
-const limiter = rateLimiter({
-    windowMs: config.RATE_WINDOW || 15 * 60 * 1000, // 15 minutes
-    max: config.RATE_MAX || 1500, // limit each user to 1000 requests per windowMs
-    keyGenerator: (req) => (req.user_id ? req.user_id : req.ip),
-    message: 'You have exceeded the allowed number of page views per 15 minutes',
-});
-app.use(limiter);
-
-// Rate limit modification requests to prevent abuse
-const modificationLimiter = rateLimiter({
-    windowMs: 60 * 1000, // 1 minute
-    max: 5, // limit each user to 5 modifications/minute
-    keyGenerator: (req) => (req.user_id ? req.user_id : req.ip),
-    message: 'You have exceeded the allowed number of modifications per minute',
-});
-app.post(modificationLimiter);
-app.put(modificationLimiter);
-app.patch(modificationLimiter);
-app.delete(modificationLimiter);
-
-// Super rate limit modification requests to stop bot abuse
-const superModificationLimiter = rateLimiter({
-    windowMs: 1440 * 60 * 1000, // 1 day
-    max: 100, // limit each user to 100 modifications/day
-    keyGenerator: (req) => (req.user_id ? req.user_id : req.ip),
-    message: 'You have exceeded the allowed number of modifications per day',
-});
-app.post(superModificationLimiter);
-app.put(superModificationLimiter);
-app.patch(superModificationLimiter);
-app.delete(superModificationLimiter);
-
 // Enable CORS
 app.use((req, res, next) => {
     // Can't use wildcard for CORS with credentials, so echo back the requesting domain
@@ -102,15 +59,65 @@ app.use(expressWinston.logger({
     },
 }));
 
+// Slow down requests before they hit the rate limiter
+const speedLimiter = slowDown({
+    windowMs: config.SLOWDOWN_RATE_WINDOW || 15 * 60 * 1000, // 15 minutes
+    delayAfter: config.SLOWDOWN_RATE_AFTER || 1000, // Allow 1000 requests per 15 minutes
+    delayMs: config.SLOWDOWN_RATE_DELAY || 50, // Add 50ms of delay per request above 1000
+    maxDelayMs: config.SLOWDOWN_MAX_DELAY || 10000, // Cap max delay at 10s per request
+    keyGenerator: (req) => (req.user_id ? req.user_id : req.ip),
+    skip: req => req.method === 'OPTIONS',
+});
+
+// Rate limit all requests
+const getLimiter = rateLimiter({
+    windowMs: config.GET_RATE_WINDOW || 15 * 60 * 1000, // 15 minutes
+    max: config.GET_RATE_MAX || 1500, // limit each user to 1000 requests per windowMs
+    keyGenerator: (req) => (req.user_id ? req.user_id : req.ip),
+    handler: (req, res) => {
+        debugLogger.info(`1000 requests/15m rate limit enforced on user ${req.user_id}`);
+        res.status(429).send({ message: 'You have exceeded the allowed number of page views per 15 minutes. Wait and try again.' });
+    },
+    skip: req => req.method === 'OPTIONS',
+});
+
+// Rate limit modification requests to prevent abuse
+const modificationLimiter = rateLimiter({
+    windowMs: config.MODIFICATION_RATE_WINDOW || 60 * 1000, // 1 minute
+    max: config.MODIFICATION_RATE_MAX || 5, // limit each user to 5 modifications/minute
+    keyGenerator: (req) => (req.user_id ? req.user_id : req.ip),
+    handler: (req, res) => {
+        debugLogger.info(`5 modifications/1m rate limit enforced on user ${req.user_id}`);
+        res.status(429).send({ message: 'You have exceeded the allowed number of modifications per minute. Wait and try again.' });
+    },
+    skip: req => req.method === 'OPTIONS' || req.method === 'GET',
+});
+
+// Super rate limit modification requests to stop bot abuse
+const superModificationLimiter = rateLimiter({
+    windowMs: config.SUPER_MODIFICATION_RATE_WINDOW || 1440 * 60 * 1000, // 1 day
+    max: config.SUPER_MODIFICATION_RATE_MAX || 100, // limit each user to 100 modifications/day
+    keyGenerator: (req) => (req.user_id ? req.user_id : req.ip),
+    message: { message: 'You have exceeded the allowed number of modifications per day' },
+    handler: (req, res) => {
+        debugLogger.info(`100 modifications/1d rate limit enforced on user ${req.user_id}`);
+        res.status(429).send({ message: 'You have exceeded the allowed number of modifications per day. Wait and try again.' });
+    },
+    skip: req => req.method === 'OPTIONS' || req.method === 'GET',
+});
+
 // Parse body and cookies
 app.use(bodyParser.json({ type: ['json', 'application/*json'], limit: '10mb' }));
 app.use(bodyParser.text({ type: '*/*', limit: '10mb' }));
 app.use(cookieParser());
 
-// Initialize OpenAPI middleware
+// Initialize OpenAPI middleware - have to add rate limiters here to have access to user info
 initialize({
     app,
-    apiDoc,
+    apiDoc: {
+        ...apiDoc,
+        'x-express-openapi-additional-middleware': [speedLimiter, getLimiter, modificationLimiter, superModificationLimiter],
+    },
     paths,
     docsPath: '/docs',
     promiseMode: true,

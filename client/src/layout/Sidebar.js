@@ -17,7 +17,6 @@ const Sidebar = () => {
         fetchCaselist,
         schools,
         fetchSchools,
-        schoolData,
         fetchSchool,
     } = useStore();
 
@@ -26,10 +25,13 @@ const Sidebar = () => {
             fetchCaselist(caselist);
             fetchSchools(caselist);
         }
-        if (caselist && school && !schoolData?.name) {
+    }, [caselist, caselistData, fetchCaselist, fetchSchools]);
+
+    useEffect(() => {
+        if (caselist && school) {
             fetchSchool(caselist, school);
         }
-    }, [caselist, caselistData, fetchCaselist, fetchSchools, school, schoolData, fetchSchool]);
+    }, [caselist, school, fetchSchool]);
 
     const [stateCode, setStateCode] = useState('');
 

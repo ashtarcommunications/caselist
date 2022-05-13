@@ -16,7 +16,7 @@ const ConfirmButton = ({ message = 'Are you sure?', handler, dismiss, requireInp
                 requireInput &&
                 <div>
                     <p>Please type &quot;I am certain&quot; below, exactly as shown</p>
-                    <input className={styles.confirm} type="text" pattern="I am certain" value={confirm} onChange={handleChangeConfirm} />
+                    <input autoFocus className={styles.confirm} type="text" pattern="I am certain" value={confirm} onChange={handleChangeConfirm} />
                 </div>
             }
             <div>

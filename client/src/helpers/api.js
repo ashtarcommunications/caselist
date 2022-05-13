@@ -1,4 +1,5 @@
 import { createBrowserHistory } from 'history';
+import { toast } from 'react-toastify';
 import fetch from './fetch-retry';
 
 /* Hacky HistoryRouter kludge for react-router v6 */
@@ -31,6 +32,10 @@ export const fetchBase = async (path, options = {}, body = {}) => {
         }
         if (err.statusCode === 404) {
             history.push('/404');
+            return false;
+        }
+        if (err.statusCode === 429) {
+            toast.error(err.message);
             return false;
         }
         history.push('/error', { statusCode: err.statusCode, message: err.message });

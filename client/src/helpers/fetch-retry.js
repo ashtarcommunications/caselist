@@ -39,6 +39,11 @@ export default (url, opt) => {
                 if (body) {
                     const err = new Error(body.message || statusText);
                     err.statusCode = statusCode;
+
+                    // Exit early on 429 rate limit exceeded
+                    if (statusCode === 429) { return reject(err); }
+
+                    // Otherwise rethrow error to catch and retry
                     throw err;
                 }
             })

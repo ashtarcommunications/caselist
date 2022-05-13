@@ -25,8 +25,8 @@ export const ProvideStore = ({ children }) => {
     const fetchSchools = useCallback(async (caselist) => {
         try {
             if (caselist) {
-                const schoolList = await loadSchools(caselist);
-                schoolList.sort((a, b) => a.display_name?.localeCompare(b.display_name));
+                const schoolList = await loadSchools(caselist) || [];
+                schoolList?.sort((a, b) => a.display_name?.localeCompare(b.display_name));
                 setSchools(schoolList || []);
             }
         } catch (err) {
