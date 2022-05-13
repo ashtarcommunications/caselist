@@ -1,10 +1,10 @@
 import SQL from 'sql-template-strings';
 import fs from 'fs';
 import path from 'path';
-import { cwd } from 'process';
 import { displaySide } from '@speechanddebate/nsda-js-utils';
 import { query } from '../../helpers/mysql';
 import log from '../log/insertEventLog';
+import config from '../../../config';
 
 const postRound = {
     POST: async (req, res) => {
@@ -43,10 +43,10 @@ const postRound = {
             filename += parseInt(req.body.round) ? `Round ${req.body.round}` : req.body.round.trim();
             filename += `${extension}`;
 
-            // TODO - decide on a file structure and whether to add a hash or something
+            const uploadPath = `${config.UPLOAD_DIR}/${req.params.caselist}/${req.params.school}/${req.params.team}`;
             try {
-                await fs.promises.mkdir(`${cwd()}/uploads/${req.params.caselist}/${req.params.school}/${req.params.team}`, { recursive: true });
-                await fs.promises.writeFile(`${cwd()}/uploads/${req.params.caselist}/${req.params.school}/${req.params.team}/${filename}`, arrayBuffer);
+                await fs.promises.mkdir(uploadPath, { recursive: true });
+                await fs.promises.writeFile(`${uploadPath}/${filename}`, arrayBuffer);
             } catch (err) {
                 return res.status(500).json({ message: 'Failed to upload open source file' });
             }

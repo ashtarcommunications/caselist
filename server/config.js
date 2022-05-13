@@ -1,4 +1,5 @@
 import { config as envconfig } from 'dotenv';
+import { cwd } from 'process';
 
 envconfig();
 
@@ -22,6 +23,7 @@ const config = {
     TABROOM_API_URL: 'http://localhost:10011/v1',
     TABROOM_CASELIST_KEY: 'caselist-key',
     S3_BUCKET: 'caselist-files',
+    UPLOAD_DIR: `${cwd()}/uploads`, // No trailing slash
 };
 
 if (process.env.NODE_ENV === 'production') {

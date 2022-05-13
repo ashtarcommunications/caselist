@@ -1,13 +1,13 @@
 import SQL from 'sql-template-strings';
 import fs from 'fs';
-import { cwd } from 'process';
+import path from 'path';
 import { query } from '../../helpers/mysql';
 import log from '../log/insertEventLog';
+import config from '../../../config';
 
 const postFile = {
     POST: async (req, res) => {
         let filename;
-        let path;
 
         if (req.body.file && req.body.filename) {
             // Convert base64 encoded file back into a buffer for saving
@@ -28,11 +28,11 @@ const postFile = {
             filename += `${req.body.lab.trim()}`;
             filename += `${extension}`;
 
-            path = `${cwd()}/uploads/openev/${req.body.year}/`;
+            const uploadPath = `${config.UPLOAD_DIR}/openev/${req.body.year}`;
 
             try {
-                await fs.promises.mkdir(`${cwd()}/uploads/openev/${req.body.year}`, { recursive: true });
-                await fs.promises.writeFile(`${path}${filename}`, arrayBuffer);
+                await fs.promises.mkdir(uploadPath, { recursive: true });
+                await fs.promises.writeFile(`${uploadPath}/${filename}`, arrayBuffer);
             } catch (err) {
                 return res.status(500).json({ message: 'Failed to upload file' });
             }
