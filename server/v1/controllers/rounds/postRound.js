@@ -21,7 +21,9 @@ const postRound = {
         if (!team) { return res.status(400).json({ message: 'Team not found' }); }
         if (team.archived) { return res.status(401).json({ message: 'Caselist archived, no modifications allowed' }); }
 
+        let uploadDir;
         let filename;
+        let filePath;
 
         if (req.body.opensource && req.body.filename) {
             // Convert base64 encoded file back into a buffer for saving
@@ -37,16 +39,18 @@ const postRound = {
             if (['.docx', '.doc', '.pdf', '.rtf', '.txt'].indexOf(extension) === -1) {
                 extension = '';
             }
+            filename = '';
             filename = `${req.params.school} ${req.params.team} `;
             filename += `${displaySide(req.body.side, team.event)} `;
             filename += `${req.body.tourn.trim()} `;
             filename += parseInt(req.body.round) ? `Round ${req.body.round}` : req.body.round.trim();
             filename += `${extension}`;
 
-            const uploadPath = `${config.UPLOAD_DIR}/${req.params.caselist}/${req.params.school}/${req.params.team}`;
+            uploadDir = `${req.params.caselist}/${req.params.school}/${req.params.team}`;
+            filePath = `${uploadDir}/${filename}`;
             try {
-                await fs.promises.mkdir(uploadPath, { recursive: true });
-                await fs.promises.writeFile(`${uploadPath}/${filename}`, arrayBuffer);
+                await fs.promises.mkdir(`${config.UPLOAD_DIR}/${uploadDir}`, { recursive: true });
+                await fs.promises.writeFile(`${config.UPLOAD_DIR}/${filePath}`, arrayBuffer);
             } catch (err) {
                 return res.status(500).json({ message: 'Failed to upload open source file' });
             }
@@ -64,7 +68,7 @@ const postRound = {
                         ${req.body.opponent?.trim() || null},
                         ${req.body.judge?.trim() || null},
                         ${req.body.report?.trim() || null},
-                        ${filename || null},
+                        ${filePath || null},
                         ${req.body.video?.trim() || null},
                         ${req.body.tourn_id || null},
                         ${req.body.external_id || null},

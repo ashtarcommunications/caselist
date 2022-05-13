@@ -52,7 +52,6 @@
     text-align: center;
 }
 
-.download,
 .video {
     color: var(--brightblue);
     cursor: pointer;

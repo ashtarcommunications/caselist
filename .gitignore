@@ -31,8 +31,8 @@ node_modules/
 # Optional eslint cache
 .eslintcache
 
-# dotenv environment variables file
-.env
+# dotenv environment variables file (client .env from Create React App is okay
+server/.env
 
 build/
 

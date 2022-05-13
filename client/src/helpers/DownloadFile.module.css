@@ -1,0 +1,6 @@
+.download {
+    color: var(--brightblue);
+    cursor: pointer;
+    margin: 0px 10px;
+    font-size: 18px;
+}

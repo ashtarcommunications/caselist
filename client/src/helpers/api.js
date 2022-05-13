@@ -6,7 +6,7 @@ import fetch from './fetch-retry';
 export const history = createBrowserHistory();
 
 export const fetchBase = async (path, options = {}, body = {}) => {
-    const base = `http://localhost:10010/v1/`;
+    const base = process.env.REACT_APP_API_BASE;
     const fetchOptions = {
         method: options.method ? options.method : 'GET',
         body: body instanceof FormData ? body : JSON.stringify(body),
@@ -22,8 +22,8 @@ export const fetchBase = async (path, options = {}, body = {}) => {
     if (fetchOptions.method === 'GET') { delete fetchOptions.body; }
 
     try {
-        const response = await fetch(`${base}${path}`, fetchOptions);
-        return response.json();
+        const response = await fetch(`${base}/${path}`, fetchOptions);
+        return options.raw ? response : response.json();
     } catch (err) {
         if (err.statusCode === 401) {
             history.push('/login');
@@ -140,4 +140,8 @@ export const addTabroomTeamLink = async (link) => {
 
 export const loadOpenEv = async (year) => {
     return fetchBase(`openev?year=${year}`);
+};
+
+export const downloadFile = async (path) => {
+    return fetchBase(`download?path=${encodeURIComponent(path)}`, { raw: true, maxRetries: 0, headers: {} });
 };

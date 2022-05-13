@@ -6,6 +6,7 @@ import { displaySide, roundName } from '@speechanddebate/nsda-js-utils';
 
 import { useDeviceDetect } from '../helpers/mobile';
 import Table from '../tables/Table';
+import DownloadFile from '../helpers/DownloadFile';
 
 import styles from './RoundsTable.module.css';
 
@@ -126,11 +127,7 @@ const RoundsTable = ({
                     <>
                         {
                             row.row?.original?.opensource &&
-                            <FontAwesomeIcon
-                                icon={faFileDownload}
-                                title="Download"
-                                className={styles.download}
-                            />
+                            <DownloadFile path={row.row?.original?.opensource} />
                         }
                         {
                             row.row?.original?.video &&

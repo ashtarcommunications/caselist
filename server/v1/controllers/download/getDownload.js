@@ -9,7 +9,7 @@ const getDownload = {
             return res.status(404).json({ message: 'File not found' });
         }
 
-        res.status(200).sendFile(`${config.UPLOAD_DIR}/${req.query.path}`);
+        res.status(200).download(`${config.UPLOAD_DIR}/${req.query.path}`);
     },
 };
 
