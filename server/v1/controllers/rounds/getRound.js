@@ -3,7 +3,7 @@ import { query } from '../../helpers/mysql';
 
 const getRound = {
     GET: async (req, res) => {
-        const sql = (SQL`
+        const [round] = await query(SQL`
             SELECT R.* FROM rounds R
             INNER JOIN teams T ON T.team_id = R.team_id
             INNER JOIN schools S ON S.school_id = T.school_id
@@ -13,7 +13,7 @@ const getRound = {
             AND LOWER(T.name) = LOWER(${req.params.team})
             AND R.round_id = ${req.params.round}
         `);
-        const [round] = await query(sql);
+        if (!round) { return res.status(404).json({ message: 'Round not found' }); }
 
         return res.status(200).json(round);
     },
