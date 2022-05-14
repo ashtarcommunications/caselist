@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const StatesDropdown = ({ name = 'state', id = 'state', emptyOptionText = '', required = true, stateCode = '', changeStateCode }) => {
     const stateList = [
@@ -84,6 +85,15 @@ const StatesDropdown = ({ name = 'state', id = 'state', emptyOptionText = '', re
             }
         </select>
     );
+};
+
+StatesDropdown.propTypes = {
+    name: PropTypes.string,
+    id: PropTypes.string,
+    emptyOptionText: PropTypes.string,
+    required: PropTypes.bool,
+    stateCode: PropTypes.string.isRequired,
+    changeStateCode: PropTypes.func.isRequired,
 };
 
 export default StatesDropdown;

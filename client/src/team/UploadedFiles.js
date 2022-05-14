@@ -1,10 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './UploadedFiles.module.css';
 
-const UploadedFiles = ({ files, filename, handleResetFiles, showFilename }) => {
+const UploadedFiles = ({ files, filename, handleResetFiles, showFilename = false }) => {
     return (
         <div>
             {
@@ -28,6 +29,13 @@ const UploadedFiles = ({ files, filename, handleResetFiles, showFilename }) => {
             }
         </div>
     );
+};
+
+UploadedFiles.propTypes = {
+    files: PropTypes.array,
+    filename: PropTypes.string,
+    handleResetFiles: PropTypes.func.isRequired,
+    showFilename: PropTypes.bool,
 };
 
 export default UploadedFiles;

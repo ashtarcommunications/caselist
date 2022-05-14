@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 const ScrollToTop = ({ history }) => {
     useEffect(() => {
@@ -11,6 +12,10 @@ const ScrollToTop = ({ history }) => {
     }, [history]);
 
     return (null);
+};
+
+ScrollToTop.propTypes = {
+    history: PropTypes.object,
 };
 
 export default ScrollToTop;

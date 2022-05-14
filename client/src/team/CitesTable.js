@@ -1,4 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faAngleDown, faAngleUp, faCopy } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
@@ -47,10 +48,16 @@ const CiteCell = ({ row, event, handleToggleCites }) => (
     </div>
 );
 
+CiteCell.propTypes = {
+    row: PropTypes.object,
+    event: PropTypes.string,
+    handleToggleCites: PropTypes.func,
+};
+
 const CitesTable = ({
-    loading,
+    loading = false,
     event,
-    archived,
+    archived = false,
     cites = [],
     handleDeleteCiteConfirm,
     handleToggleCites,
@@ -152,6 +159,16 @@ const CitesTable = ({
             filterable={false}
         />
     );
+};
+
+CitesTable.propTypes = {
+    loading: PropTypes.bool,
+    event: PropTypes.string,
+    archived: PropTypes.bool,
+    cites: PropTypes.array,
+    handleDeleteCiteConfirm: PropTypes.func,
+    handleToggleCites: PropTypes.func,
+
 };
 
 export default CitesTable;

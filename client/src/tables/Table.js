@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useTable, useFilters, useSortBy } from 'react-table';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp, faSort } from '@fortawesome/free-solid-svg-icons';
@@ -127,6 +128,16 @@ const Table = ({ columns = [], data = [], hiddenColumns = [], className, loading
             </table>
         </div>
     );
+};
+
+Table.propTypes = {
+    columns: PropTypes.array,
+    data: PropTypes.array,
+    hiddenColumns: PropTypes.array,
+    className: PropTypes.string,
+    loading: PropTypes.bool,
+    noDataText: PropTypes.string,
+    filterable: PropTypes.bool,
 };
 
 export default Table;

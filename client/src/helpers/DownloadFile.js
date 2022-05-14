@@ -35,7 +35,7 @@ const DownloadFile = ({ path = '' }) => {
 };
 
 DownloadFile.propTypes = {
-    path: PropTypes.string,
+    path: PropTypes.string.isRequired,
 };
 
 export default DownloadFile;

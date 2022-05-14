@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import UFO from './ufo.svg';
@@ -26,6 +27,12 @@ const Error = ({ statusCode = null, message = '', is404 = false }) => {
             </div>
         </div>
     );
+};
+
+Error.propTypes = {
+    statusCode: PropTypes.number,
+    message: PropTypes.string,
+    is404: PropTypes.bool,
 };
 
 export default Error;

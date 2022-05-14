@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const RoundNumberDropdown = ({ className, value, onChange, disabled }) => {
     return (
@@ -23,6 +24,13 @@ const RoundNumberDropdown = ({ className, value, onChange, disabled }) => {
             <option value="Finals">Finals</option>
         </select>
     );
+};
+
+RoundNumberDropdown.propTypes = {
+    className: PropTypes.string,
+    value: PropTypes.string,
+    onChange: PropTypes.func.isRequired,
+    disabled: PropTypes.bool,
 };
 
 export default RoundNumberDropdown;

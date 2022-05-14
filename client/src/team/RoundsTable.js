@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faAngleDown, faAngleUp, faCalendarAlt, faFileDownload, faVideo } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
@@ -11,14 +12,14 @@ import DownloadFile from '../helpers/DownloadFile';
 import styles from './RoundsTable.module.css';
 
 const RoundsTable = ({
-    loading,
+    loading = false,
     event,
-    archived,
+    archived = false,
     rounds = [],
     handleDeleteRoundConfirm,
     handleToggleAll,
     handleToggleReport,
-    allRoundsOpen,
+    allRoundsOpen = false,
 }) => {
     const { isMobile } = useDeviceDetect();
 
@@ -239,6 +240,18 @@ const RoundsTable = ({
             loading={loading}
         />
     );
+};
+
+RoundsTable.propTypes = {
+    loading: PropTypes.bool,
+    event: PropTypes.string,
+    archived: PropTypes.bool,
+    rounds: PropTypes.array,
+    handleDeleteRoundConfirm: PropTypes.func,
+    handleToggleAll: PropTypes.func,
+    handleToggleReport: PropTypes.func,
+    allRoundsOpen: PropTypes.bool,
+
 };
 
 export default RoundsTable;

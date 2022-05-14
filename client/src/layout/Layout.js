@@ -1,11 +1,12 @@
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import { Navigate } from 'react-router-dom';
 import { AuthContext } from '../helpers/auth';
 import Header from './Header';
 import Footer from './Footer';
 import Sidebar from './Sidebar';
 
-import styles from './RouteWrapper.module.css';
+import styles from './Layout.module.css';
 
 const Layout = ({ privateRoute, children }) => {
     const auth = useContext(AuthContext);
@@ -28,6 +29,11 @@ const Layout = ({ privateRoute, children }) => {
             <Footer />
         </>
     );
+};
+
+Layout.propTypes = {
+    privateRoute: PropTypes.bool,
+    children: PropTypes.node,
 };
 
 export default Layout;

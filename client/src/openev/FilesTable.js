@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
 import Table from '../tables/Table';
 
 const FilesTable = ({ files, loading }) => {
@@ -18,6 +19,11 @@ const FilesTable = ({ files, loading }) => {
             loading={loading}
         />
     );
+};
+
+FilesTable.propTypes = {
+    files: PropTypes.array,
+    loading: PropTypes.bool,
 };
 
 export default FilesTable;

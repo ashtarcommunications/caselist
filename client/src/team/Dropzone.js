@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Controller } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
 
@@ -42,6 +43,13 @@ const Dropzone = ({ name, processing, onDrop, control }) => {
             }
         />
     );
+};
+
+Dropzone.propTypes = {
+    name: PropTypes.string,
+    processing: PropTypes.bool,
+    onDrop: PropTypes.func.isRequired,
+    control: PropTypes.func,
 };
 
 export default Dropzone;

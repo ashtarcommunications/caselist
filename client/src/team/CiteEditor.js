@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Controller, useWatch } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons';
@@ -138,6 +139,15 @@ const CiteEditor = ({ item, index, register, control, remove }) => {
             }
         </div>
     );
+};
+
+CiteEditor.propTypes = {
+    item: PropTypes.object,
+    index: PropTypes.number,
+    register: PropTypes.func.isRequired,
+    control: PropTypes.func.isRequired,
+    remove: PropTypes.func,
+
 };
 
 export default CiteEditor;

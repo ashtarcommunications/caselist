@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import { useForm, useFieldArray, useWatch } from 'react-hook-form';
 import { displaySide, roundName } from '@speechanddebate/nsda-js-utils';
@@ -116,6 +117,12 @@ const AddCite = ({ rounds, event, handleAddCite }) => {
             }
         </div>
     );
+};
+
+AddCite.propTypes = {
+    rounds: PropTypes.array,
+    event: PropTypes.string,
+    handleAddCite: PropTypes.func,
 };
 
 export default AddCite;

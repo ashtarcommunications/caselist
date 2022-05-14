@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -105,6 +106,10 @@ const TeamNotes = ({ teamData }) => {
             </form>
         </div>
     );
+};
+
+TeamNotes.propTypes = {
+    teamData: PropTypes.object,
 };
 
 export default TeamNotes;

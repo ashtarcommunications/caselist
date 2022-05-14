@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import styles from './ConfirmButton.module.css';
 
@@ -37,6 +38,13 @@ const ConfirmButton = ({ message = 'Are you sure?', handler, dismiss, requireInp
             </div>
         </form>
     );
+};
+
+ConfirmButton.propTypes = {
+    message: PropTypes.string,
+    handler: PropTypes.func.isRequired,
+    dismiss: PropTypes.func,
+    requireInput: PropTypes.bool,
 };
 
 export default ConfirmButton;
