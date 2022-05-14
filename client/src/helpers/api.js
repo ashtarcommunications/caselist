@@ -104,7 +104,7 @@ export const loadRound = async (caselist, school, team, round) => {
 };
 
 export const updateRound = async (caselist, school, team, round, body) => {
-    return fetchBase(`caselists/${caselist}/schools/${school}/teams/rounds/${body}`, { method: 'PUT' }, body);
+    return fetchBase(`caselists/${caselist}/schools/${school}/teams/${team}/rounds/${round}`, { method: 'PUT' }, body);
 };
 
 export const deleteRound = async (caselist, school, team, round) => {

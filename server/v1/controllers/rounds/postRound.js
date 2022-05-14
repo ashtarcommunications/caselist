@@ -1,7 +1,7 @@
 import SQL from 'sql-template-strings';
 import fs from 'fs';
 import path from 'path';
-import { displaySide } from '@speechanddebate/nsda-js-utils';
+import { displaySide, roundName } from '@speechanddebate/nsda-js-utils';
 import { query } from '../../helpers/mysql';
 import log from '../log/insertEventLog';
 import config from '../../../config';
@@ -40,10 +40,10 @@ const postRound = {
                 extension = '';
             }
             filename = '';
-            filename = `${req.params.school} ${req.params.team} `;
+            filename = `${req.params.school}-${req.params.team}-`;
             filename += `${displaySide(req.body.side, team.event)} `;
-            filename += `${req.body.tourn.trim()} `;
-            filename += parseInt(req.body.round) ? `Round ${req.body.round}` : req.body.round.trim();
+            filename += `${req.body.tournament.trim().replace(' ', '-')} `;
+            filename += req.body.round === 'All' ? 'All-Rounds' : roundName(req.body.round.trim()).replace(' ', '-');
             filename += `${extension}`;
 
             uploadDir = `${req.params.caselist}/${req.params.school}/${req.params.team}`;
@@ -63,7 +63,7 @@ const postRound = {
                     SELECT
                         T.team_id,
                         ${req.body.side?.trim()},
-                        ${req.body.tourn?.trim()},
+                        ${req.body.tournament?.trim()},
                         ${req.body.round?.trim()},
                         ${req.body.opponent?.trim() || null},
                         ${req.body.judge?.trim() || null},

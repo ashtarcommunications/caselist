@@ -1,8 +1,8 @@
 const getTabroomRounds = {
     GET: async (req, res) => {
         const rounds = [
-            { id: 1, tourn: 'Lexington', round: '1', side: 'A', opponent: 'Evil Empire XX', judge: 'Hardy' },
-            { id: 2, tourn: 'Lexington', round: '2', side: 'N', opponent: 'Evil Empire YY', judge: 'Palmer' },
+            { id: 1, tournament: 'Lexington', round: '1', side: 'A', opponent: 'Evil Empire XX', judge: 'Hardy' },
+            { id: 2, tournament: 'Lexington', round: '2', side: 'N', opponent: 'Evil Empire YY', judge: 'Palmer' },
         ];
 
         return res.status(200).json(rounds);

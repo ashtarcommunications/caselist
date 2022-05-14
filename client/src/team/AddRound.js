@@ -42,15 +42,15 @@ const AddRound = () => {
     } = useForm({
         mode: 'all',
         defaultValues: {
-            tourn: '',
+            tournament: '',
             side: '',
             round: '',
             opponent: '',
             judge: '',
             report: '',
-            video: '',
             autodetect: true,
             opensource: null,
+            video: '',
         },
     });
     const { fields, append, remove } = useFieldArray({ control, name: 'cites' });
@@ -65,17 +65,17 @@ const AddRound = () => {
     const [filename, setFilename] = useState();
 
     // Have to use a ref to focus the Combobox when used in a Controller
-    const tournRef = useRef();
+    const tournamentRef = useRef();
     useEffect(() => {
-        tournRef?.current?.focus();
-    }, [tournRef]);
+        tournamentRef?.current?.focus();
+    }, [tournamentRef]);
 
     // Calculate a filename for uploaded files
     useEffect(() => {
-        let computed = `${school} ${team} `;
-        computed += `${displaySide(watchFields.side, caselistData.event)} `;
-        computed += `${watchFields.tourn?.trim()} `;
-        computed += parseInt(watchFields.round) ? `Round ${watchFields.round}` : watchFields.round;
+        let computed = `${school}-${team}-`;
+        computed += `${displaySide(watchFields.side, caselistData.event)}-`;
+        computed += `${watchFields.tournament?.trim().replace(' ', '-')}-`;
+        computed += watchFields.round === 'All' ? 'All-Rounds' : roundName(watchFields.round).replace(' ', '-');
         setFilename(computed);
     }, [watchFields, school, team, caselistData]);
 
@@ -92,10 +92,10 @@ const AddRound = () => {
         try {
             setFetchingRounds(true);
             let tabroomRounds = await loadTabroomRounds(window.location.pathname) || [];
-            tabroomRounds = sortBy(tabroomRounds, ['tourn', 'round']);
+            tabroomRounds = sortBy(tabroomRounds, ['tournament', 'round']);
             tabroomRounds.unshift({
                 id: 0,
-                tourn: 'All Tournaments',
+                tournament: 'All Tournaments',
                 round: 'All',
                 side: 'A',
             });
@@ -118,7 +118,7 @@ const AddRound = () => {
         }
 
         // Ignore extra info if using the All Tournaments option
-        if (data.tourn === 'All Tournaments') {
+        if (data.tournament === 'All Tournaments') {
             data.round = 'All';
             data.opponent = null;
             data.judge = null;
@@ -173,10 +173,10 @@ const AddRound = () => {
             <form onSubmit={handleSubmit(addRoundHandler)} className={`pure-form pure-form-stacked ${isMobile && styles.mobile}`}>
 
                 <div>
-                    <label htmlFor="tourn">Tournament</label>
+                    <label htmlFor="tournament">Tournament</label>
                     <Controller
                         control={control}
-                        name="tourn"
+                        name="tournament"
                         rules={{ required: true, minLength: 2 }}
                         render={
                             ({
@@ -186,15 +186,15 @@ const AddRound = () => {
                                 <Combobox
                                     containerClassName={`${(!value || error) && styles.error}`}
                                     busy={fetchingRounds}
-                                    ref={tournRef}
+                                    ref={tournamentRef}
                                     hideCaret={fetchingRounds || rounds.length < 1}
                                     data={rounds}
                                     dataKey="id"
                                     textField={
                                         i => {
                                             if (typeof i === 'string') { return i; }
-                                            if (i.tourn === 'All Tournaments') { return 'All Tournaments / General Disclosure'; }
-                                            return `${i.tourn} ${roundName(i.round)} ${displaySide(i.side, caselistData.event)} vs ${i.opponent}`;
+                                            if (i.tournament === 'All Tournaments') { return 'All Tournaments / General Disclosure'; }
+                                            return `${i.tournament} ${roundName(i.round)} ${displaySide(i.side, caselistData.event)} vs ${i.opponent}`;
                                         }
                                     }
                                     hideEmptyPopup
@@ -207,7 +207,7 @@ const AddRound = () => {
                                             setValue('side', e.side, { shouldValidate: true });
                                             setValue('opponent', e.opponent ?? '', { shouldValidate: true });
                                             setValue('judge', e.judge ?? '', { shouldValidate: true });
-                                            return onChange(e.tourn);
+                                            return onChange(e.tournament);
                                         }
                                     }
                                     inputProps={
@@ -259,7 +259,7 @@ const AddRound = () => {
                                     className={(!value || error) && styles.error}
                                     value={value}
                                     onChange={onChange}
-                                    disabled={watchFields.tourn === 'All Tournaments'}
+                                    disabled={watchFields.tournament === 'All Tournaments'}
                                 />
                             )
                         }
@@ -272,7 +272,7 @@ const AddRound = () => {
                         name="opponent"
                         type="text"
                         {...register('opponent')}
-                        disabled={watchFields.tourn === 'All Tournaments'}
+                        disabled={watchFields.tournament === 'All Tournaments'}
                     />
                 </div>
 
@@ -282,7 +282,7 @@ const AddRound = () => {
                         name="judge"
                         type="text"
                         {...register('judge')}
-                        disabled={watchFields.tourn === 'All Tournaments'}
+                        disabled={watchFields.tournament === 'All Tournaments'}
                     />
                 </div>
 
@@ -299,7 +299,7 @@ const AddRound = () => {
                         className={styles.report}
                         name="report"
                         {...register('report')}
-                        disabled={watchFields.tourn === 'All Tournaments'}
+                        disabled={watchFields.tournament === 'All Tournaments'}
                     />
                 </div>
 
@@ -316,7 +316,7 @@ const AddRound = () => {
                         name="video"
                         type="text"
                         {...register('video')}
-                        disabled={watchFields.tourn === 'All Tournaments'}
+                        disabled={watchFields.tournament === 'All Tournaments'}
                     />
                 </div>
 
@@ -328,7 +328,7 @@ const AddRound = () => {
                             files={files}
                             filename={filename}
                             handleResetFiles={handleResetFiles}
-                            showFilename={!errors.tourn && !errors.side && !errors.round}
+                            showFilename={!errors.tournament && !errors.side && !errors.round}
                         />
                     :
                         <>

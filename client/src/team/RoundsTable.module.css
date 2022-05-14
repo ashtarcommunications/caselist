@@ -69,13 +69,25 @@
     font-size: 18px;
 }
 
-.rounds-table tr:hover .trash {
+.edit {
+    color: var(--yellow);
+    cursor: pointer;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 1s, opacity 1s linear;
+    margin: 0px 10px;
+    font-size: 18px;
+}
+
+.rounds-table tr:hover .trash,
+.rounds-table tr:hover .edit {
     visibility: visible;
     opacity: 1;
     transition: visibility 0s, opacity 2s linear;
 }
 
-.mobile .trash {
+.mobile .trash,
+.mobile .edit {
     opacity: 1;
     visibility: visible;
 }

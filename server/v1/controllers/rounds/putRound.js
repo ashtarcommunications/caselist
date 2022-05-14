@@ -16,14 +16,11 @@ const putRound = {
             AND R.round_id = ${parseInt(req.params.round)}
         `);
 
-        if (!round) { return res.status(400).json({ message: 'Caselist, school, or team not found' }); }
+        if (!round) { return res.status(404).json({ message: 'Round not found' }); }
         if (round.archived) { return res.status(401).json({ message: 'Caselist archived, no modifications allowed' }); }
 
         await query(SQL`
             UPDATE rounds R
-            INNER JOIN teams T ON T.team_id = R.team_id
-            INNER JOIN schools S ON S.school_id = T.school_id
-            INNER JOIN caselists C ON C.caselist_id = S.caselist_id
             SET
                 R.side = ${req.body.side},
                 R.tournament = ${req.body.tournament?.trim()},
@@ -31,14 +28,11 @@ const putRound = {
                 R.opponent = ${req.body.opponent?.trim() || null},
                 R.judge = ${req.body.judge?.trim() || null},
                 R.report = ${req.body.report?.trim() || null},
-                R.opensource = ${req.body.opensource?.trim()},
+                R.opensource = ${req.body.opensource?.trim() || null},
                 R.video = ${req.body.video?.trim() || null},
                 R.updated_at = CURRENT_TIMESTAMP,
                 R.updated_by_id = ${req.user_id}
-            WHERE C.name = ${req.params.caselist}
-            AND LOWER(S.name) = LOWER(${req.params.school})
-            AND LOWER(T.name = LOWER(${req.params.team})
-            AND R.round_id = ${parseInt(req.params.round)}
+            WHERE R.round_id = ${parseInt(req.params.round)}
         `);
 
         await query(SQL`
@@ -65,7 +59,7 @@ const putRound = {
                 SELECT
                     R.round_id,
                     (SELECT COALESCE(MAX(version), 0) + 1 FROM rounds_history RH WHERE RH.round_id = R.round_id) AS 'version',
-                    T.team_id,
+                    R.team_id,
                     R.side,
                     R.tournament,
                     R.round,

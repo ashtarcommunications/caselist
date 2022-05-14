@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faAngleDown, faAngleUp, faCalendarAlt, faFileDownload, faVideo } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faAngleDown, faAngleUp, faCalendarAlt, faFileDownload, faVideo, faEdit } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
 import { displaySide, roundName } from '@speechanddebate/nsda-js-utils';
 
@@ -21,6 +22,7 @@ const RoundsTable = ({
     handleToggleReport,
     allRoundsOpen = false,
 }) => {
+    const { caselist, school, team } = useParams();
     const { isMobile } = useDeviceDetect();
 
     const columns = useMemo(() => [
@@ -146,20 +148,29 @@ const RoundsTable = ({
         },
         {
             id: 'delete',
-            width: '25px',
+            width: '75px',
             disableSortBy: true,
             disableFilters: true,
             accessor: (row) => row,
             className: styles.center,
             Cell: (row) => (
                 !archived &&
-                <FontAwesomeIcon
-                    className={styles.trash}
-                    title="Delete round"
-                    icon={faTrash}
-                    id={row.value?.round_id}
-                    onClick={e => handleDeleteRoundConfirm(e)}
-                />
+                <>
+                    <Link to={`/${caselist}/${school}/${team}/edit/${row.row?.original?.round_id}`}>
+                        <FontAwesomeIcon
+                            className={styles.edit}
+                            title="Edit round"
+                            icon={faEdit}
+                        />
+                    </Link>
+                    <FontAwesomeIcon
+                        className={styles.trash}
+                        title="Delete round"
+                        icon={faTrash}
+                        id={row.row?.original?.round_id}
+                        onClick={e => handleDeleteRoundConfirm(e)}
+                    />
+                </>
             ),
         },
     ], [
@@ -170,6 +181,9 @@ const RoundsTable = ({
         event,
         archived,
         rounds,
+        caselist,
+        school,
+        team,
     ]);
 
     const mobileColumns = useMemo(() => [
@@ -186,12 +200,22 @@ const RoundsTable = ({
                         <p>
                             <span>Round: {row.row?.original?.round}</span>
                             {
-                                !archived && <FontAwesomeIcon
-                                    className={styles.trash}
-                                    icon={faTrash}
-                                    id={row.row?.original?.round_id}
-                                    onClick={e => handleDeleteRoundConfirm(e)}
-                                />
+                                !archived &&
+                                <>
+                                    <Link to={`/${caselist}/${school}/${team}/edit/${row.row?.original?.round_id}`}>
+                                        <FontAwesomeIcon
+                                            className={styles.edit}
+                                            title="Edit round"
+                                            icon={faEdit}
+                                        />
+                                    </Link>
+                                    <FontAwesomeIcon
+                                        className={styles.trash}
+                                        icon={faTrash}
+                                        id={row.row?.original?.round_id}
+                                        onClick={e => handleDeleteRoundConfirm(e)}
+                                    />
+                                </>
                             }
                         </p>
                         <p>Side: {row.row?.original?.side}</p>
@@ -228,7 +252,7 @@ const RoundsTable = ({
                 );
             },
         },
-    ], [handleDeleteRoundConfirm, archived]);
+    ], [handleDeleteRoundConfirm, archived, caselist, school, team]);
 
     return (
         <Table
