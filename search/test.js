@@ -5,6 +5,7 @@ import fetch from 'isomorphic-fetch';
 const test = async () => {
     const path = '/home/hardy/projects/caselist/server/uploads/test.docx';
     const file = fs.readFileSync(path);
+    console.log(file);
     const meta = await fetch(
         'http://localhost:9998/meta',
         {

@@ -3,11 +3,10 @@ import { query } from '../../helpers/mysql';
 
 const getCaselist = {
     GET: async (req, res) => {
-        const sql = (SQL`
+        const [caselist] = await query(SQL`
             SELECT * FROM caselists C
             wHERE C.name = ${req.params.caselist}
         `);
-        const [caselist] = await query(sql);
         if (!caselist) { return res.status(404).json({ message: 'Caselist not found' }); }
 
         return res.status(200).json(caselist);
