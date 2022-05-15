@@ -9,6 +9,7 @@
   "dependencies": {
     "@speechanddebate/eslint-config-nsda": "^1.0.10",
     "chokidar": "^3.5.2",
+    "dotenv": "^16.0.1",
     "isomorphic-fetch": "^3.0.0"
   },
   "scripts": {},

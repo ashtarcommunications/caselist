@@ -1,4 +1,4 @@
-FROM node:15.11.0 AS base
+FROM node:16.15.0 AS base
 WORKDIR /search
 COPY ./ ./
 

@@ -31,6 +31,7 @@ import TeamRounds from './team/TeamRounds';
 import AddRound from './team/AddRound';
 import EditRound from './team/EditRound';
 import OpenEvHome from './openev/OpenEvHome';
+import Search from './search/Search';
 
 import useScript from './helpers/useScript';
 
@@ -54,6 +55,14 @@ const App = () => {
                                 element={
                                     <Layout privateRoute>
                                         <OpenEvHome />
+                                    </Layout>
+                                }
+                            />
+                            <Route
+                                path="/search/*"
+                                element={
+                                    <Layout privateRoute>
+                                        <Search />
                                     </Layout>
                                 }
                             />

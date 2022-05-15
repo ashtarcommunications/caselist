@@ -1,6 +1,7 @@
 # Server
 Tabroom claim endpoints
 Archive importer
+Remove open source files on round delete + remove from solr
 Tests
 
 # Client

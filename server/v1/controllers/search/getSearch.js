@@ -5,7 +5,7 @@ const getSearch = {
         try {
             // TODO - clean URL param
             const response = await fetch(
-                `http://localhost:8983/solr/gettingstarted/select?df=content&fl=id%2C%20content&indent=true&q.op=OR&q=${req.query.q}&rows=10&start=1`,
+                `http://localhost:8983/solr/caselist/select?df=content&fl=id%2C%20content&indent=true&q.op=OR&q=${req.query.q.trim()}&rows=10&start=0`,
                 {
                     headers: {
                         Accept: 'application/json',
@@ -34,8 +34,8 @@ getSearch.GET.apiDoc = {
     ],
     responses: {
         200: {
-            description: 'Caselist',
-            content: { '*/*': { schema: { $ref: '#/components/schemas/Caselist' } } },
+            description: 'Search result',
+            content: { '*/*': { schema: { $ref: '#/components/schemas/SearchResult' } } },
         },
         default: { $ref: '#/components/responses/ErrorResponse' },
     },

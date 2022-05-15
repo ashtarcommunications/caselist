@@ -1,23 +1,9 @@
 import 'dotenv/config';
 import fs from 'fs';
-import chokidar from 'chokidar';
 import fetch from 'isomorphic-fetch';
 
-// Initialize watcher.
-const watcher = chokidar.watch(process.env.UPLOAD_DIR, {
-    ignored: /(^|[/\\])\../, // ignore dotfiles
-    persistent: true,
-    awaitWriteFinish: true,
-});
-
-// Something to use when events are received.
-const log = console.log.bind(console);
-
-// Add event listeners.
-watcher
-.on('add', async (path) => {
-    log(`File ${path} has been added`);
-    // if (path.indexOf('test') < 0) { return false; }
+const test = async () => {
+    const path = '/home/hardy/projects/caselist/server/uploads/test.docx';
     const file = fs.readFileSync(path);
     const meta = await fetch(
         'http://localhost:9998/meta',
@@ -56,7 +42,6 @@ watcher
         }
     );
     console.log(await post.json());
-})
-.on('change', path => log(`File ${path} has been changed`))
-.on('unlink', path => log(`File ${path} has been removed`))
-.on('error', error => log(`Watcher error: ${error}`));
+};
+
+test();
