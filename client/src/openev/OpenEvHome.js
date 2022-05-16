@@ -19,7 +19,7 @@ const OpenEvHome = () => {
             filteredFiles = openEvFiles.filter(f => f.camp === tag);
         } else {
             heading = `${year} ${tagAbbreviations[tag]}`;
-            filteredFiles = openEvFiles.filter(f => JSON.parse(f.tags)[tag]);
+            filteredFiles = openEvFiles.filter(f => JSON.parse(f.tags)?.[tag]);
         }
     }
 

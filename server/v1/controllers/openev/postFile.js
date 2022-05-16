@@ -7,41 +7,38 @@ import config from '../../../config';
 
 const postFile = {
     POST: async (req, res) => {
-        let filename;
+        // Convert base64 encoded file back into a buffer for saving
+        let arrayBuffer;
+        try {
+            arrayBuffer = Buffer.from(req.body.file, 'base64');
+        } catch (err) {
+            return res.status(400).json({ message: 'Invalid file' });
+        }
 
-        if (req.body.file && req.body.filename) {
-            // Convert base64 encoded file back into a buffer for saving
-            let arrayBuffer;
-            try {
-                arrayBuffer = Buffer.from(req.body.file, 'base64');
-            } catch (err) {
-                return res.status(400).json({ message: 'Invalid file' });
-            }
+        // Use the extension from the provided file, but disallow anything weird
+        let extension = path.extname(req.body.filename);
+        if (['.docx', '.doc', '.pdf', '.rtf', '.txt'].indexOf(extension) === -1) {
+            extension = '';
+        }
+        let filename = `${req.body.filename.trim()} ${req.body.camp.trim()} ${req.body.year}`;
+        if (req.body.lab) { filename += ` ${req.body.lab.trim()}`; }
+        filename += `${extension}`;
 
-            // Use the extension from the provided file, but disallow anything weird
-            let extension = path.extname(req.body.filename);
-            if (['.docx', '.doc', '.pdf', '.rtf', '.txt'].indexOf(extension) === -1) {
-                extension = '';
-            }
-            filename = `${req.body.filename.trim()} ${req.body.camp.trim()} ${req.body.year}`;
-            if (req.body.lab) { filename += ` ${req.body.lab.trim()}`; }
-            filename += `${extension}`;
+        const uploadPath = `${config.UPLOAD_DIR}/openev/${req.body.year}`;
+        const fullPath = `${uploadPath}/${filename}`;
 
-            const uploadPath = `${config.UPLOAD_DIR}/openev/${req.body.year}`;
-
-            try {
-                await fs.promises.mkdir(uploadPath, { recursive: true });
-                await fs.promises.writeFile(`${uploadPath}/${filename}`, arrayBuffer);
-            } catch (err) {
-                return res.status(500).json({ message: 'Failed to upload file' });
-            }
+        try {
+            await fs.promises.mkdir(uploadPath, { recursive: true });
+            await fs.promises.writeFile(fullPath, arrayBuffer);
+        } catch (err) {
+            return res.status(500).json({ message: 'Failed to upload file' });
         }
 
         try {
             await query(SQL`
                 INSERT INTO openev (path, year, camp, lab, tags, created_by_id)
                 VALUES (
-                    ${path}${filename},
+                    ${fullPath},
                     ${req.body.year},
                     ${req.body.camp?.trim()},
                     ${req.body.lab?.trim()},

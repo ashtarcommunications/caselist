@@ -47,7 +47,7 @@ const FilesTable = ({ files, loading }) => {
                     console.log(err);
                 }
                 return (
-                    <p>
+                    <p className={styles.tags}>
                         {
                             tags.map(t => (
                                 <Link to={`/openev/${year || startOfYear}/${t}`}>
@@ -67,6 +67,7 @@ const FilesTable = ({ files, loading }) => {
             data={files}
             className="table"
             loading={loading}
+            noDataText="No files found!"
         />
     );
 };

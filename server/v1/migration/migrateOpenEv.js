@@ -35,6 +35,25 @@ const shortTag = {
     Topicality: 't',
 };
 
+const convertCampName = (camp) => {
+    if (camp === 'Baylor') { return 'BDPW'; }
+    if (camp === 'Berkeley') { return 'CNDI'; }
+    if (camp === 'Emory') { return 'ENDI'; }
+    if (camp === 'Georgetown') { return 'GDS'; }
+    if (camp === 'Georgia') { return 'UGA'; }
+    if (camp === 'Gonzaga') { return 'GDI'; }
+    if (camp === 'Harvard') { return 'HDC'; }
+    if (camp === 'Hoya-Spartan Scholars') { return 'HSS'; }
+    if (camp === 'Michigan7') { return 'UM7'; }
+    if (camp === 'MichiganClassic') { return 'UMC'; }
+    if (camp === 'MoneyGram Foundation') { return 'MGF'; }
+    if (camp === 'Northwestern') { return 'NHSI'; }
+    if (camp === 'Samford') { return 'SSDI'; }
+    if (camp === 'Wake') { return 'RKS'; }
+    if (camp === 'Wyoming') { return 'WYO'; }
+    return camp;
+};
+
 const migrate = async () => {
     const years = ['2021'];
 
@@ -131,7 +150,7 @@ const migrate = async () => {
                                         ${f.title},
                                         ${fullPath},
                                         ${year},
-                                        ${f.camp},
+                                        ${convertCampName(f.camp)},
                                         ${f.lab},
                                         ${f.tags}
                                     )
