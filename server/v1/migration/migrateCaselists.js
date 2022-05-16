@@ -1,6 +1,6 @@
 // #!/usr/bin/env node
 // Invoke from CLI like:
-// node --experimental-specifier-resolution=node v1/migration/migrate.js
+// node --experimental-specifier-resolution=node v1/migration/migrateCaselists.js
 
 import Bottleneck from 'bottleneck';
 import fetch from 'isomorphic-fetch';

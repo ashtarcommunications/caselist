@@ -1,6 +1,10 @@
 .error {
     border: 1px solid var(--red) !important;
 }
+.warning {
+    color: var(--red);
+    font-size: 12px;
+}
 
 .info {
     color: var(--brightblue);

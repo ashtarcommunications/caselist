@@ -7,6 +7,7 @@ import { sortBy } from 'lodash';
 
 import { useStore } from '../helpers/store';
 import { loadTabroomChapters, addSchool } from '../helpers/api';
+import { notTitleCase, alpha } from '../helpers/common';
 import StatesDropdown from './StatesDropdown';
 
 import styles from './AddSchool.module.css';
@@ -67,9 +68,6 @@ const AddSchool = () => {
             toast.error(`Failed to add school: ${err.message}`);
         }
     };
-
-    const notTitleCase = /\b[a-z]/;
-    const alpha = /^[a-zA-Z ]+$/;
 
     return (
         <div className={styles.instructions}>

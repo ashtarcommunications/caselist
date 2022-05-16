@@ -76,6 +76,14 @@ const App = () => {
                                 }
                             />
                             <Route
+                                path="/openev/:year/:tag"
+                                element={
+                                    <Layout privateRoute caselist>
+                                        <OpenEvHome />
+                                    </Layout>
+                                }
+                            />
+                            <Route
                                 path="/search/*"
                                 element={
                                     <Layout privateRoute>

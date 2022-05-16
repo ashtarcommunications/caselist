@@ -1,3 +1,7 @@
+export const notTitleCase = /\b[a-z]/;
+
+export const alpha = /^[a-zA-Z ]+$/;
+
 export const campAbbreviations = {
     CNDI: 'Berkeley (CNDI)',
     BDL: 'Boston Debate League',
@@ -32,8 +36,8 @@ export const tagAbbreviations = {
     ld: 'Lincoln Douglas',
     pol: 'Politics',
     pf: 'Public Forum',
-    th: 'theory',
-    t: 'topicality',
+    th: 'Theory',
+    t: 'Topicality',
 };
 
 export default null;

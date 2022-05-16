@@ -1,121 +1,96 @@
-import React, { useCallback, useEffect, useState, useRef } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
-import { useForm, useFieldArray, useWatch } from 'react-hook-form';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { useForm, useWatch } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { displaySide, roundName } from '@speechanddebate/nsda-js-utils';
 
-import { useStore } from '../helpers/store';
-import { addRound } from '../helpers/api';
+import { addOpenEvFile } from '../helpers/api';
 import { useDeviceDetect } from '../helpers/mobile';
 
-import Error from '../layout/Error';
-
-import Breadcrumbs from '../layout/Breadcrumbs';
 import Dropzone from '../team/Dropzone';
 import UploadedFiles from '../team/UploadedFiles';
 
 import styles from './OpenEvUpload.module.css';
+import { notTitleCase } from '../helpers/common';
 
 const OpenEvUpload = () => {
-    const { caselist, year, school, team } = useParams();
-    const navigate = useNavigate();
+    const { year } = useParams();
     const { isMobile } = useDeviceDetect();
-
-    const { caselistData } = useStore();
 
     const {
         register,
         formState: { errors, isValid },
         handleSubmit,
-        reset,
+        setValue,
         control,
     } = useForm({
         mode: 'all',
         defaultValues: {
-            tournament: '',
-            side: '',
-            round: '',
-            opponent: '',
-            judge: '',
-            report: '',
-            autodetect: true,
-            opensource: null,
-            video: '',
+            title: '',
+            camp: '',
+            lab: '',
         },
     });
-    const { fields, append } = useFieldArray({ control, name: 'cites' });
     const watchFields = useWatch({ control });
 
     const [files, setFiles] = useState([]);
     const [fileContent, setFileContent] = useState(null);
     const [filename, setFilename] = useState();
 
-    // Have to use a ref to focus the Combobox when used in a Controller
-    const tournamentRef = useRef();
-    useEffect(() => {
-        tournamentRef?.current?.focus();
-    }, [tournamentRef]);
-
     // Calculate a filename for uploaded files
     useEffect(() => {
-        let computed = `${school}-${team}-`;
-        computed += `${displaySide(watchFields.side, caselistData.event)}-`;
-        computed += `${watchFields.tournament?.trim().replace(' ', '-')}-`;
-        computed += watchFields.round === 'All' ? 'All-Rounds' : roundName(watchFields.round).replace(' ', '-');
+        let computed = `${watchFields.title} - ${watchFields.camp} ${year}`;
+        if (watchFields.lab) {
+            computed += ` ${watchFields.lab}`;
+        }
         setFilename(computed);
-    }, [watchFields, school, team, caselistData]);
-
-    // Add a default cite
-    useEffect(() => {
-        if (fields.length < 1) {
-            append({ title: '', cites: '', open: true }, { shouldFocus: false });
-        }
-    }, [append, fields.length]);
-
-    const uploadFileHandler = async (data) => {
-        if (fileContent) {
-            data.opensource = fileContent;
-            data.filename = files[0].name;
-        } else {
-            data.opensource = null;
-            data.filename = null;
-        }
-
-        // Ignore extra info if using the All Tournaments option
-        if (data.tournament === 'All Tournaments') {
-            data.round = 'All';
-            data.opponent = null;
-            data.judge = null;
-            data.report = null;
-            data.video = null;
-        }
-
-        try {
-            const response = await addRound(caselist, school, team, data);
-            toast.success(response.message);
-            reset({}, { keepDefaultValues: true });
-            navigate(`/${caselist}/${school}/${team}`);
-        } catch (err) {
-            toast.error(`Failed to add round: ${err.message}`);
-            console.log(err);
-        }
-    };
+    }, [watchFields, year]);
 
     const handleResetFiles = () => {
         setFiles([]);
         setFileContent(null);
     };
 
-    const onDrop = useCallback((acceptedFiles) => {
-        console.log(acceptedFiles);
-    }, []);
+    const uploadFileHandler = async (data) => {
+        if (!fileContent) { return false; }
+        data.year = parseInt(year);
+        data.file = fileContent;
+        data.filename = files[0].name;
 
-    if (caselistData.archived) { return <Error message="This caselist is archived, no modifications allowed." />; }
+        try {
+            const response = await addOpenEvFile(data);
+            toast.success(response.message);
+            setValue('title', '');
+            handleResetFiles();
+        } catch (err) {
+            toast.error(`Failed to add file: ${err.message}`);
+            console.log(err);
+        }
+    };
+
+    const onDrop = useCallback((acceptedFiles) => {
+        setFiles(acceptedFiles);
+        acceptedFiles.forEach((file) => {
+            const reader = new FileReader();
+
+            reader.onabort = () => console.log('File reading was aborted');
+            reader.onerror = () => console.log('File reading has failed');
+            reader.onload = async () => {
+                // Convert to base64 for upload
+                const binaryStr = reader.result;
+                let binary = '';
+                const bytes = new Uint8Array(binaryStr);
+                const len = bytes.byteLength;
+                for (let i = 0; i < len; i++) {
+                    binary += String.fromCharCode(bytes[i]);
+                }
+                setFileContent(window.btoa(binary));
+            };
+            reader.readAsArrayBuffer(file);
+        });
+    }, []);
 
     return (
         <div>
-            <Breadcrumbs />
-
             <h2>Upload a file to Open Evidence {year}</h2>
 
             <form onSubmit={handleSubmit(uploadFileHandler)} className={`pure-form pure-form-stacked ${isMobile && styles.mobile}`}>
@@ -125,12 +100,11 @@ const OpenEvUpload = () => {
                             files={files}
                             filename={filename}
                             handleResetFiles={handleResetFiles}
-                            showFilename={!errors.tournament && !errors.side && !errors.round}
+                            showFilename={!errors.title && !errors.camp && !errors.lab}
                         />
                         :
                         <Dropzone
-                            name="opensource"
-                            // processing={processing}
+                            name="file"
                             onDrop={onDrop}
                             control={control}
                         />
@@ -143,6 +117,10 @@ const OpenEvUpload = () => {
                         type="text"
                         {...register('title')}
                     />
+                    {
+                        notTitleCase.test(watchFields.title) &&
+                        <p className={styles.warning}>Please use title case</p>
+                    }
                 </div>
 
                 <div>
@@ -153,26 +131,54 @@ const OpenEvUpload = () => {
                     >
                         <option value="">Choose a camp</option>
                         <option value="CNDI">Berkeley</option>
+                        <option value="BDL">Boston Debate League</option>
+                        <option value="DDI">Dartmouth DDI</option>
+                        <option value="DDIx">Dartmouth DDIx</option>
+                        <option value="ENDI">Emory (ENDI)</option>
+                        <option value="GDS">Georgetown (GDS)</option>
+                        <option value="GDI">Gonzaga (GDI)</option>
+                        <option value="JDI">Kansas (JDI)</option>
+                        <option value="MGC">Mean Green Comet</option>
+                        <option value="UM7">Michigan (7-Week)</option>
+                        <option value="UMC">Michigan (Classic)</option>
+                        <option value="MNDI">Michigan (MNDI)</option>
                         <option value="SDI">Michigan State (SDI)</option>
+                        <option value="MSDI">Missouri State (MSDI)</option>
+                        <option value="NSD">National Symposium for Debate</option>
+                        <option value="NHSI">Northwestern (NHSI)</option>
+                        <option value="SSDI">Samford</option>
+                        <option value="UTNIF">Texas (UTNIF)</option>
+                        <option value="TDI">The Debate Intensive</option>
+                        <option value="RKS">Wake Forest (RKS)</option>
                     </select>
                 </div>
 
                 <div>
-                    <label htmlFor="lab">Lab</label>
+                    <label htmlFor="lab">Lab (OPTIONAL - use initials)</label>
                     <input
                         name="lab"
                         type="text"
                         {...register('lab')}
                     />
+                    {
+                        watchFields.lab
+                        && watchFields.lab.charAt(0) !== watchFields.lab.charAt(0).toUpperCase()
+                        && <p className={styles.warning}>Lab initials should be in all caps</p>
+                    }
                 </div>
 
                 <div>
-                    <label htmlFor="aff">Aff</label>
+                    <label htmlFor="tags">Tags</label>
                     <input
                         name="aff"
                         type="checkbox"
                         {...register('aff')}
-                    />
+                    /> Affirmatives
+                    <input
+                        name="neg"
+                        type="checkbox"
+                        {...register('neg')}
+                    /> Case Negatives
                 </div>
 
                 <hr />

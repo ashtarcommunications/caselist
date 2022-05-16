@@ -23,9 +23,8 @@ const postFile = {
             if (['.docx', '.doc', '.pdf', '.rtf', '.txt'].indexOf(extension) === -1) {
                 extension = '';
             }
-            filename = `${req.body.filename} ${req.body.year} `;
-            filename += `${req.body.camp.trim()} `;
-            filename += `${req.body.lab.trim()}`;
+            filename = `${req.body.filename.trim()} ${req.body.camp.trim()} ${req.body.year}`;
+            if (req.body.lab) { filename += ` ${req.body.lab.trim()}`; }
             filename += `${extension}`;
 
             const uploadPath = `${config.UPLOAD_DIR}/openev/${req.body.year}`;
