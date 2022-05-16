@@ -1,0 +1,9 @@
+.tag {
+    display: inline-block;
+    text-align: center;
+    background-color: var(--brightblue);
+    color: white;
+    padding: 5px;
+    margin: 0px 10px;
+    min-width: 50px;
+}

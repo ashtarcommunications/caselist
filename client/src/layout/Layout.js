@@ -5,17 +5,22 @@ import { AuthContext } from '../helpers/auth';
 import Header from './Header';
 import Footer from './Footer';
 import Sidebar from './Sidebar';
+import OpenEvSidebar from '../openev/OpenEvSidebar';
 
 import styles from './Layout.module.css';
 
-const Layout = ({ privateRoute, children }) => {
+const Layout = ({ privateRoute, caselist = false, children }) => {
     const auth = useContext(AuthContext);
 
     return (
         <>
             <Header />
             <div className={styles.wrapper}>
-                {privateRoute && auth.user?.loggedIn && <Sidebar />}
+                {
+                    privateRoute
+                    && auth.user?.loggedIn
+                    && (caselist ? <OpenEvSidebar /> : <Sidebar />)
+                }
                 <div className={styles.main}>
                     {
                         // eslint-disable-next-line no-nested-ternary
@@ -33,6 +38,7 @@ const Layout = ({ privateRoute, children }) => {
 
 Layout.propTypes = {
     privateRoute: PropTypes.bool,
+    caselist: PropTypes.bool,
     children: PropTypes.node,
 };
 

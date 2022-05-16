@@ -1,7 +1,8 @@
 import React, { createContext, useState, useContext, useCallback, useMemo } from 'react';
 import { sortBy } from 'lodash';
+import { startOfYear } from '@speechanddebate/nsda-js-utils';
 
-import { loadCaselist, loadSchools, loadSchool, loadTeams } from './api';
+import { loadCaselist, loadSchools, loadSchool, loadTeams, loadOpenEvFiles } from './api';
 
 // Create a context for the store
 export const StoreContext = createContext();
@@ -65,24 +66,40 @@ export const ProvideStore = ({ children }) => {
         }
     }, []);
 
+    const [openEvFiles, setOpenEvFiles] = useState([]);
+    const fetchOpenEvFiles = useCallback(async (year) => {
+        try {
+            let files = await loadOpenEvFiles(year || startOfYear);
+            files = sortBy(files, 'name');
+            setOpenEvFiles(files);
+        } catch (err) {
+            setOpenEvFiles([]);
+            console.log(err);
+        }
+    }, []);
+
     const store = useMemo(() => ({
-        caselistData,
         fetchCaselist,
-        schools,
+        caselistData,
         fetchSchools,
-        schoolData,
+        schools,
         fetchSchool,
-        teams,
+        schoolData,
         fetchTeams,
+        teams,
+        fetchOpenEvFiles,
+        openEvFiles,
     }), [
         caselistData,
         fetchCaselist,
-        fetchSchool,
         fetchSchools,
-        fetchTeams,
-        schoolData,
         schools,
+        fetchSchool,
+        schoolData,
+        fetchTeams,
         teams,
+        fetchOpenEvFiles,
+        openEvFiles,
     ]);
 
     return (

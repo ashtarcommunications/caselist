@@ -31,6 +31,7 @@ import TeamRounds from './team/TeamRounds';
 import AddRound from './team/AddRound';
 import EditRound from './team/EditRound';
 import OpenEvHome from './openev/OpenEvHome';
+import OpenEvUpload from './openev/OpenEvUpload';
 import Search from './search/Search';
 
 import useScript from './helpers/useScript';
@@ -51,10 +52,26 @@ const App = () => {
                             <Route exact path="/privacy" element={<Layout><Markdown file={PrivacyPolicy} /></Layout>} />
                             <Route exact path="/terms" element={<Layout><Markdown file={Terms} /></Layout>} />
                             <Route
-                                path="/openev/*"
+                                path="/openev"
                                 element={
-                                    <Layout privateRoute>
+                                    <Layout privateRoute caselist>
                                         <OpenEvHome />
+                                    </Layout>
+                                }
+                            />
+                            <Route
+                                path="/openev/:year"
+                                element={
+                                    <Layout privateRoute caselist>
+                                        <OpenEvHome />
+                                    </Layout>
+                                }
+                            />
+                            <Route
+                                path="/openev/:year/upload"
+                                element={
+                                    <Layout privateRoute caselist>
+                                        <OpenEvUpload />
                                     </Layout>
                                 }
                             />
