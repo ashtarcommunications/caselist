@@ -1,11 +1,11 @@
-import React, { useContext, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 
 import { AuthContext } from '../helpers/auth';
 import { useStore } from '../helpers/store';
 import { useDeviceDetect } from '../helpers/mobile';
+
+import SearchForm from '../search/SearchForm';
 
 import styles from './Header.module.css';
 
@@ -13,18 +13,6 @@ const Header = () => {
     const auth = useContext(AuthContext);
     const { caselistData } = useStore();
     const { isMobile } = useDeviceDetect();
-
-    const [q, setQ] = useState('');
-    const navigate = useNavigate();
-
-    const handleChangeInput = (e) => {
-        setQ(e.currentTarget.value);
-    };
-
-    const handleSearch = (e) => {
-        e.preventDefault();
-        navigate(`/search?q=${q}`);
-    };
 
     // Set the header background based on the event/level combo
     const className = `header-${caselistData.level}-${caselistData.event}`;
@@ -34,12 +22,7 @@ const Header = () => {
             <h1><Link to="/">openCaselist</Link></h1>
             {
                 auth.user?.loggedIn &&
-                <form onSubmit={handleSearch} className={`${styles['pure-form']} ${styles.search}`}>
-                    <input type="text" placeholder="Search" onChange={handleChangeInput} />
-                    <button className="pure-button" type="submit">
-                        <FontAwesomeIcon icon={faSearch} className={styles.search} />
-                    </button>
-                </form>
+                <SearchForm />
             }
             <div className={`${styles.menu} pure-menu`}>
                 <ul>

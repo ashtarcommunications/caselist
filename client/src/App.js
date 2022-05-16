@@ -32,7 +32,7 @@ import AddRound from './team/AddRound';
 import EditRound from './team/EditRound';
 import OpenEvHome from './openev/OpenEvHome';
 import OpenEvUpload from './openev/OpenEvUpload';
-import Search from './search/Search';
+import SearchResults from './search/SearchResults';
 
 import useScript from './helpers/useScript';
 
@@ -87,7 +87,7 @@ const App = () => {
                                 path="/search/*"
                                 element={
                                     <Layout privateRoute>
-                                        <Search />
+                                        <SearchResults />
                                     </Layout>
                                 }
                             />

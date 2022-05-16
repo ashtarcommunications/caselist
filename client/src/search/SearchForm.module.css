@@ -1,0 +1,14 @@
+.search {
+    display: flex;
+    margin-left: auto;
+}
+
+.submit {
+    background-color: var(--green);
+    color: white;
+}
+
+.search.mobile {
+    margin-left: 20px;
+    margin-top: 20px;
+}

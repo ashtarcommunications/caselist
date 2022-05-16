@@ -27,15 +27,6 @@
     display: flex;
 }
 
-.search {
-    margin-left: auto;
-}
-
-.search button {
-    background-color: var(--green);
-    color: white;
-}
-
 .header-default,
 .header-college-cx {
     background-color: var(--darkblue);
@@ -56,11 +47,6 @@
 .mobile {
     padding: 20px;
     justify-content: left;
-}
-
-.mobile form.search {
-    margin-left: 20px;
-    margin-top: 20px;
 }
 
 .mobile .menu ul {
