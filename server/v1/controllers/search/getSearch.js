@@ -84,6 +84,13 @@ const getSearch = {
             URL += `&hl=true`; // Enable highlighted snippets
             URL += `&hl.fl=content`; // Highlight from the content field
             URL += `&hl.method=unified`; // Use the unified highlighter
+            URL += `&hl.usePhraseHighlighter=true`; // Use the phrase highlighter
+            URL += `&hl.highlightMultiTerm=true`; // Allow multi-phrase highlighting
+            URL += `&hl.snippets=3`; // Return multiple snippets
+            URL += `&hl.mergeContiguous=true`; // Merge multiple snippets into one
+            URL += `&hl.maxAnalyzedChars=500000`; // Increase the number of analyzed characters for long files
+            URL += `&hl.defaultSummary=true`; // Return leading text if it can't highlight
+
             URL += `&q=${encodeURIComponent(q)}`; // Search query
             const response = await fetch(URL, { headers: { Accept: 'application/json' } });
             const json = await response.json();
