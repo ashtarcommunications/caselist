@@ -88,7 +88,7 @@ const getSearch = {
             URL += `&hl.highlightMultiTerm=true`; // Allow multi-phrase highlighting
             URL += `&hl.snippets=3`; // Return multiple snippets
             URL += `&hl.mergeContiguous=true`; // Merge multiple snippets into one
-            URL += `&hl.maxAnalyzedChars=500000`; // Increase the number of analyzed characters for long files
+            URL += `&hl.maxAnalyzedChars=1000000`; // Increase the number of analyzed characters for long files
             URL += `&hl.defaultSummary=true`; // Return leading text if it can't highlight
 
             URL += `&q=${encodeURIComponent(q)}`; // Search query
