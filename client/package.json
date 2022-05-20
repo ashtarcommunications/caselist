@@ -11,7 +11,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.15",
-    "@speechanddebate/eslint-config-nsda": "^1.0.9",
+    "@speechanddebate/eslint-config-nsda": "^1.0.15",
     "@speechanddebate/nsda-js-utils": "^1.0.7",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
@@ -52,21 +52,7 @@
       {
         "files": [
           "**/*.js?(x)"
-        ],
-        "rules": {
-          "react/function-component-definition": [
-            2,
-            {
-              "namedComponents": "arrow-function"
-            }
-          ],
-          "react/no-unstable-nested-components": [
-            2,
-            {
-              "allowAsProps": true
-            }
-          ]
-        }
+        ]
       }
     ]
   },

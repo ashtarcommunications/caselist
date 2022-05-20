@@ -5,6 +5,8 @@ Remove open source files on round delete + remove from solr
 Tests
 
 # Client
+Convert to use NSDA utils fetch, reimplement 429
+Better error/404 handling
 Improve cite parser and markdown display
 Full-text search
 Open ev tag structure

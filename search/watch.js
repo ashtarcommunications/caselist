@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import fs from 'fs';
 import chokidar from 'chokidar';
-import fetch from 'isomorphic-fetch';
+import { fetch } from '@speechanddebate/nsda-js-utils';
 
 // Initialize watcher.
 const watcher = chokidar.watch(process.env.UPLOAD_DIR, {

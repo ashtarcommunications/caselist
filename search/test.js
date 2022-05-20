@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import fs from 'fs';
-import fetch from 'isomorphic-fetch';
+import { fetch } from '@speechanddebate/nsda-js-utils';
 
 const test = async () => {
     const path = '/home/hardy/projects/caselist/server/uploads/test.docx';
