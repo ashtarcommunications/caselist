@@ -27,7 +27,7 @@ export const query = async (sql) => {
     for (let i = 0; i < maxRetries; i++) {
         try {
             // For subsequent retries, wait the delay
-            // eslint-disable-next-line no-await-in-loop
+            // eslint-disable-next-line no-await-in-loop, no-promise-executor-return
             if (i > 0) { await new Promise(resolve => setTimeout(resolve, retryDelay)); }
 
             // eslint-disable-next-line no-await-in-loop

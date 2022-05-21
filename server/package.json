@@ -20,7 +20,7 @@
     "node": ">= 18.2.0"
   },
   "dependencies": {
-    "@speechanddebate/nsda-js-utils": "^1.0.7",
+    "@speechanddebate/nsda-js-utils": "^1.0.9",
     "aws-sdk": "^2.1040.0",
     "body-parser": "^1.18.3",
     "bottleneck": "^2.19.0",

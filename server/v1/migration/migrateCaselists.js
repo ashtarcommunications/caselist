@@ -3,7 +3,7 @@
 // node --experimental-specifier-resolution=node v1/migration/migrateCaselists.js
 
 import Bottleneck from 'bottleneck';
-import fetch from 'isomorphic-fetch';
+import { fetch } from '@speechanddebate/nsda-js-utils';
 import { parseString } from 'xml2js';
 import fs from 'fs';
 import { cwd } from 'process';

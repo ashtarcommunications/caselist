@@ -1,4 +1,4 @@
-import fetch from 'isomorphic-fetch';
+import { fetch } from '@speechanddebate/nsda-js-utils';
 import SQL from 'sql-template-strings';
 import { query } from '../../helpers/mysql';
 import config from '../../../config';
