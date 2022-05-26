@@ -17,7 +17,7 @@ const putRound = {
         `);
 
         if (!round) { return res.status(404).json({ message: 'Round not found' }); }
-        if (round.archived) { return res.status(401).json({ message: 'Caselist archived, no modifications allowed' }); }
+        if (round.archived) { return res.status(400).json({ message: 'Caselist archived, no modifications allowed' }); }
 
         await query(SQL`
             UPDATE rounds R

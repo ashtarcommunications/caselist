@@ -18,7 +18,7 @@ const deleteCite = {
         `);
 
         if (!cite) { return res.status(400).json({ message: 'Cite not found' }); }
-        if (cite.archived) { return res.status(401).json({ message: 'Caselist archived, no modifications allowed' }); }
+        if (cite.archived) { return res.status(400).json({ message: 'Caselist archived, no modifications allowed' }); }
 
         await query(SQL`
             INSERT INTO cites_history (

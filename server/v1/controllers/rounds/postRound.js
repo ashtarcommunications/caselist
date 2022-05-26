@@ -19,7 +19,7 @@ const postRound = {
         `);
 
         if (!team) { return res.status(400).json({ message: 'Team not found' }); }
-        if (team.archived) { return res.status(401).json({ message: 'Caselist archived, no modifications allowed' }); }
+        if (team.archived) { return res.status(400).json({ message: 'Caselist archived, no modifications allowed' }); }
 
         let uploadDir;
         let filename;
