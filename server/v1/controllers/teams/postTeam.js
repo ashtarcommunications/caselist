@@ -13,7 +13,7 @@ const postTeam = {
         `);
 
         if (!school) { return res.status(400).json({ message: 'School not found' }); }
-        if (school.archived) { return res.status(400).json({ message: 'Caselist archived, no modifications allowed' }); }
+        if (school.archived) { return res.status(403).json({ message: 'Caselist archived, no modifications allowed' }); }
 
         let name = '';
         let displayName = `${school.display_name} `;

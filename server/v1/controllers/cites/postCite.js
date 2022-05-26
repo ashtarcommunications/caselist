@@ -16,7 +16,7 @@ const postCite = {
         `);
 
         if (!round) { return res.status(400).json({ message: 'Round not found' }); }
-        if (round.archived) { return res.status(400).json({ message: 'Caselist archived, no modifications allowed' }); }
+        if (round.archived) { return res.status(403).json({ message: 'Caselist archived, no modifications allowed' }); }
 
         const cite = await query(SQL`
             INSERT INTO cites (round_id, title, cites, created_by_id, updated_by_id)

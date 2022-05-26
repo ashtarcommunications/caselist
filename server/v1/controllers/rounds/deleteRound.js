@@ -17,7 +17,7 @@ const deleteRound = {
         `);
 
         if (!round) { return res.status(400).json({ message: 'Round not found' }); }
-        if (round.archived) { return res.status(400).json({ message: 'Caselist archived, no modifications allowed' }); }
+        if (round.archived) { return res.status(403).json({ message: 'Caselist archived, no modifications allowed' }); }
 
         await query(SQL`
             INSERT INTO cites_history (

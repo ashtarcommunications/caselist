@@ -23,7 +23,7 @@ const postSchool = {
             return res.status(400).json({ message: 'Invalid caselist' });
         }
         if (caselist[0].archived) {
-            return res.status(400).json({ message: 'Caselist archived, no modifications allowed' });
+            return res.status(403).json({ message: 'Caselist archived, no modifications allowed' });
         }
 
         const newSchool = await query(SQL`
