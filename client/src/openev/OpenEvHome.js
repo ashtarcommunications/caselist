@@ -5,6 +5,7 @@ import { startOfYear } from '@speechanddebate/nsda-js-utils';
 import { useStore } from '../helpers/store';
 import { campAbbreviations, tagAbbreviations } from '../helpers/common';
 
+import Breadcrumbs from '../layout/Breadcrumbs';
 import Error from '../layout/Error';
 import FilesTable from './FilesTable';
 
@@ -30,6 +31,7 @@ const OpenEvHome = () => {
 
     return (
         <div>
+            <Breadcrumbs />
             <h1>Open Evidence Project {year}</h1>
             {
                 !tag &&
