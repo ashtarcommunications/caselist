@@ -7,6 +7,7 @@ import { useStore } from '../helpers/store';
 
 import Breadcrumbs from '../layout/Breadcrumbs';
 import Loader from '../loader/Loader';
+import Error from '../layout/Error';
 
 const Recent = () => {
     const [teams, setTeams] = useState([]);
@@ -35,6 +36,10 @@ const Recent = () => {
     }, [caselist]);
 
     if (fetching) { return <Loader />; }
+
+    if (caselistData.message instanceof Error) {
+        return <Error statusCode={caselistData.statusCode} message={caselistData.message} />;
+    }
 
     return (
         <div>

@@ -18,6 +18,7 @@ export const ProvideStore = ({ children }) => {
             }
         } catch (err) {
             console.log(err);
+            setCaselistData(err);
         }
     }, []);
 
@@ -31,8 +32,8 @@ export const ProvideStore = ({ children }) => {
                 setSchools(schoolList || []);
             }
         } catch (err) {
-            setSchools([]);
             console.log(err);
+            setSchools(err);
         }
     }, []);
 
@@ -42,6 +43,7 @@ export const ProvideStore = ({ children }) => {
             setSchoolData(await loadSchool(caselist, school) || {});
         } catch (err) {
             console.log(err);
+            setSchoolData(err);
         }
     }, []);
 
@@ -61,8 +63,8 @@ export const ProvideStore = ({ children }) => {
 
             setTeams(sortedTeams);
         } catch (err) {
-            setTeams([]);
             console.log(err);
+            setTeams([]);
         }
     }, []);
 
@@ -73,8 +75,8 @@ export const ProvideStore = ({ children }) => {
             files = sortBy(files, 'name');
             setOpenEvFiles(files);
         } catch (err) {
-            setOpenEvFiles([]);
             console.log(err);
+            setOpenEvFiles([]);
         }
     }, []);
 

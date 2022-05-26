@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import { AuthContext } from '../helpers/auth';
@@ -14,8 +14,12 @@ const Header = () => {
     const { caselistData } = useStore();
     const { isMobile } = useDeviceDetect();
 
+    const [className, setClassName] = useState();
+
     // Set the header background based on the event/level combo
-    const className = `header-${caselistData.level}-${caselistData.event}`;
+    useEffect(() => {
+        setClassName(`header-${caselistData.level}-${caselistData.event}`);
+    }, [caselistData.level, caselistData.event]);
 
     return (
         <header className={`${styles.header} ${styles[className]} ${isMobile && styles.mobile}`}>

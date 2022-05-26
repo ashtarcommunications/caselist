@@ -8,6 +8,7 @@ import { sortBy } from 'lodash';
 import { useStore } from '../helpers/store';
 import { loadTabroomChapters, addSchool } from '../helpers/api';
 import { notTitleCase, alpha } from '../helpers/common';
+import Error from '../layout/Error';
 import StatesDropdown from './StatesDropdown';
 
 import styles from './AddSchool.module.css';
@@ -68,6 +69,10 @@ const AddSchool = () => {
             toast.error(`Failed to add school: ${err.message}`);
         }
     };
+
+    if (caselistData.message) {
+        return <Error statusCode={caselistData.statusCode} message={caselistData.message} />;
+    }
 
     return (
         <div className={styles.instructions}>

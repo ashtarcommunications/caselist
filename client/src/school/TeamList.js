@@ -13,6 +13,7 @@ import { useDeviceDetect } from '../helpers/mobile';
 import Breadcrumbs from '../layout/Breadcrumbs';
 import Table from '../tables/Table';
 import Loader from '../loader/Loader';
+import Error from '../layout/Error';
 import AddTeam from './AddTeam';
 import ConfirmButton from '../helpers/ConfirmButton';
 
@@ -123,6 +124,15 @@ const TeamList = () => {
     const timestamp = moment(schoolData?.updated_at, 'YYYY-MM-DD HH:mm:ss').format('l');
 
     if (fetching) { return <Loader />; }
+
+    if (caselistData.message || schoolData.message) {
+        return (
+            <Error
+                statusCode={caselistData.statusCode || schoolData.statusCode}
+                message={caselistData.message || schoolData.message}
+            />
+        );
+    }
 
     return (
         <>

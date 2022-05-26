@@ -260,7 +260,7 @@ const RoundsTable = ({
             data={rounds}
             hiddenColumns={['created_at']}
             className={`${styles['rounds-table']} ${isMobile && styles.mobile}`}
-            noDataText="No rounds found"
+            noDataText="No rounds found!"
             loading={loading}
         />
     );

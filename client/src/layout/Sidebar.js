@@ -21,11 +21,11 @@ const Sidebar = () => {
     } = useStore();
 
     useEffect(() => {
-        if (caselist && !caselistData?.name) {
+        if (caselist) {
             fetchCaselist(caselist);
             fetchSchools(caselist);
         }
-    }, [caselist, caselistData, fetchCaselist, fetchSchools]);
+    }, [caselist, caselistData.name, fetchCaselist, fetchSchools]);
 
     useEffect(() => {
         if (caselist && school) {
@@ -40,7 +40,7 @@ const Sidebar = () => {
         setVisible(!visible);
     };
 
-    if (!caselistData.name) { return false; }
+    if (caselistData.message) { return false; }
 
     const filteredSchools = stateCode ? schools.filter(s => s.state === stateCode) : schools;
 

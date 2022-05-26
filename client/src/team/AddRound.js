@@ -164,6 +164,10 @@ const AddRound = () => {
 
     if (caselistData.archived) { return <Error message="This caselist is archived, no modifications allowed." />; }
 
+    if (caselistData.message) {
+        return <Error statusCode={caselistData.statusCode} message={caselistData.message} />;
+    }
+
     return (
         <div>
             <Breadcrumbs />

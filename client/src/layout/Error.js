@@ -8,6 +8,9 @@ import styles from './Error.module.css';
 const Error = ({ statusCode = null, message = '', is404 = false }) => {
     const location = useLocation();
     const navigate = useNavigate();
+
+    if (statusCode === 404) { is404 = true; }
+
     if (is404) {
         statusCode = 404;
         message = "Sorry, either that page doesn't exist or has ascended to the Ashtar Command!";

@@ -30,6 +30,8 @@ const Sidebar = () => {
         setVisible(!visible);
     };
 
+    if (openEvFiles.message) { return false; }
+
     const camps = [...new Set(openEvFiles.map(c => c.camp))].sort();
 
     let tags = [];

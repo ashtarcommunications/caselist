@@ -3,12 +3,18 @@ import Markdown from 'react-markdown';
 
 import { useStore } from '../helpers/store';
 
+import Error from '../layout/Error';
+
 import styles from './CaselistHome.module.css';
 
 const CaselistHome = () => {
     const { caselistData } = useStore();
 
     const markdown = '# # This would create Heading 1 - For Pocket/Title\n## ## This would create Heading 2 - Hat/Section\n### ### This would create Heading 3 - Block Title/Argument Title\n#### #### This would create Heading 4 - Tag';
+
+    if (caselistData.message) {
+        return <Error statusCode={caselistData.statusCode} message={caselistData.message} />;
+    }
 
     return (
         <div className={styles['caselist-home']}>

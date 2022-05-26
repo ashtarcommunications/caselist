@@ -5,11 +5,16 @@ import { startOfYear } from '@speechanddebate/nsda-js-utils';
 import { useStore } from '../helpers/store';
 import { campAbbreviations, tagAbbreviations } from '../helpers/common';
 
+import Error from '../layout/Error';
 import FilesTable from './FilesTable';
 
 const OpenEvHome = () => {
     const { year, tag } = useParams();
     const { openEvFiles } = useStore();
+
+    if (openEvFiles.message) {
+        return <Error statusCode={openEvFiles.statusCode} message={openEvFiles.message} />;
+    }
 
     let heading = `All ${year || startOfYear} Open Evidence Files`;
     let filteredFiles;

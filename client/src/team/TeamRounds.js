@@ -12,6 +12,7 @@ import { useDeviceDetect } from '../helpers/mobile';
 
 import ConfirmButton from '../helpers/ConfirmButton';
 import Loader from '../loader/Loader';
+import Error from '../layout/Error';
 import Breadcrumbs from '../layout/Breadcrumbs';
 import TeamNotes from './TeamNotes';
 import AddCite from './AddCite';
@@ -39,7 +40,8 @@ const TeamRounds = () => {
                 setTeamData(await loadTeam(caselist, school, team));
                 setFetching(false);
             } catch (err) {
-                setTeamData({ message: 'Team not found' });
+                console.log(err);
+                setTeamData(err);
                 setFetching(false);
             }
         };
@@ -59,6 +61,7 @@ const TeamRounds = () => {
                 }
             } catch (err) {
                 console.log(err);
+                setRounds(err);
             }
         };
         fetchData();
@@ -105,7 +108,8 @@ const TeamRounds = () => {
         setRounds(newRounds);
     }, [rounds]);
 
-    const allRoundsOpen = rounds?.filter(r => r.reportopen).length === rounds.length;
+    const allRoundsOpen = !rounds.message
+        && rounds?.filter(r => r.reportopen).length === rounds.length;
 
     const handleToggleAll = useCallback(() => {
         const newRounds = [...rounds];
@@ -127,6 +131,7 @@ const TeamRounds = () => {
                 );
             } catch (err) {
                 console.log(err);
+                setCites(err);
             }
         };
         fetchData();
@@ -203,6 +208,30 @@ const TeamRounds = () => {
     const timestamp = moment(teamData.updated_at, 'YYYY-MM-DD HH:mm:ss').format('l');
 
     if (fetching) { return <Loader />; }
+
+    if (
+        caselistData.message
+        || teamData.message
+        || rounds.message
+        || cites.message
+    ) {
+        return (
+            <Error
+                statusCode={
+                    caselistData.statusCode
+                   || teamData.statusCode
+                   || rounds.statusCode
+                   || cites.statusCode
+                }
+                message={
+                    caselistData.message
+                    || teamData.message
+                    || rounds.message
+                    || cites.message
+                }
+            />
+        );
+    }
 
     let lastNames = '';
     if (teamData.debater1_last) {

@@ -18,7 +18,6 @@ import ErrorBoundary from './layout/ErrorBoundary';
 import Markdown from './layout/Markdown';
 import PrivacyPolicy from './layout/PrivacyPolicy.md';
 import Terms from './layout/Terms.md';
-import Error from './layout/Error';
 
 import Home from './home/Home';
 import CaselistHome from './caselist/CaselistHome';
@@ -91,8 +90,6 @@ const App = () => {
                                     </Layout>
                                 }
                             />
-                            <Route exact path="/404" element={<Layout><Error is404 /></Layout>} />
-                            <Route exact path="/error" element={<Layout><Error /></Layout>} />
                             <Route exact path="/" element={<Layout><Home /></Layout>} />
                             <Route
                                 path="/:caselist/add"

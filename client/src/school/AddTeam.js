@@ -11,6 +11,7 @@ import { useStore } from '../helpers/store';
 import { addTeam, loadTabroomStudents } from '../helpers/api';
 import { useDeviceDetect } from '../helpers/mobile';
 import ConfirmButton from '../helpers/ConfirmButton';
+import Error from '../layout/Error';
 
 import 'react-widgets/styles.css';
 import styles from './AddTeam.module.css';
@@ -131,6 +132,15 @@ const AddTeam = () => {
         },
         );
     };
+
+    if (caselistData.message || teams.message) {
+        return (
+            <Error
+                statusCode={caselistData.statusCode || teams.statusCode}
+                message={caselistData.message || teams.message}
+            />
+        );
+    }
 
     return (
         <div>
