@@ -1,11 +1,19 @@
 import SQL from 'sql-template-strings';
+import fs from 'fs';
+import path from 'path';
+
 import { query } from '../../helpers/mysql';
 import log from '../log/insertEventLog';
+import { debugLogger } from '../../helpers/logger';
+import config from '../../../config';
 
 const putRound = {
     PUT: async (req, res) => {
         const [round] = await query(SQL`
-            SELECT C.archived
+            SELECT
+                C.archived,
+                R.opensource,
+                (SELECT COALESCE(MAX(version), 0) + 1 FROM rounds_history RH WHERE RH.round_id = R.round_id) AS 'version'
             FROM rounds R
             INNER JOIN teams T ON T.team_id = R.team_id
             INNER JOIN schools S ON S.school_id = T.school_id
@@ -18,6 +26,32 @@ const putRound = {
 
         if (!round) { return res.status(404).json({ message: 'Round not found' }); }
         if (round.archived) { return res.status(403).json({ message: 'Caselist archived, no modifications allowed' }); }
+
+        if (round.opensource && !req.body.opensource) {
+            const extension = path.extname(round.opensource);
+            const deletedExtension = `-DELETED-v${round.version}${extension}`;
+            const deletedPath = `${config.UPLOAD_DIR}/${round.opensource.replace(extension, deletedExtension)}`;
+            try {
+                await fs.promises.rename(`${config.UPLOAD_DIR}/${round.opensource}`, deletedPath);
+            } catch (err) {
+                debugLogger.info(`Failed to rename ${round.opensource}`);
+            }
+        }
+        const body = JSON.stringify({ delete: { id: round.opensource } });
+        try {
+            await fetch(
+                'http://localhost:8983/solr/caselist/update?commit=true',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body,
+                }
+            );
+        } catch (err) {
+            debugLogger.info(`Failed to remove ${round.opensource} from Solr`);
+        }
 
         await query(SQL`
             UPDATE rounds R

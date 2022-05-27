@@ -41,8 +41,8 @@ const postRound = {
             }
             filename = '';
             filename = `${req.params.school}-${req.params.team}-`;
-            filename += `${displaySide(req.body.side, team.event)} `;
-            filename += `${req.body.tournament.trim().replace(' ', '-')} `;
+            filename += `${displaySide(req.body.side, team.event)}-`;
+            filename += `${req.body.tournament.trim().replace(' ', '-')}-`;
             filename += req.body.round === 'All' ? 'All-Rounds' : roundName(req.body.round.trim()).replace(' ', '-');
             filename += `${extension}`;
 

@@ -1,4 +1,9 @@
 import SQL from 'sql-template-strings';
+import { fetch } from '@speechanddebate/nsda-js-utils';
+import fs from 'fs';
+import path from 'path';
+import { debugLogger } from '../../helpers/logger';
+import config from '../../../config';
 import { query } from '../../helpers/mysql';
 import log from '../log/insertEventLog';
 
@@ -52,6 +57,45 @@ const deleteTeam = {
             INNER JOIN rounds R ON R.round_id = CT.round_id
             WHERE R.team_id = ${parseInt(team.team_id)}
         `);
+
+        const rounds = await query(SQL`
+            SELECT
+                R.opensource,
+                (SELECT COALESCE(MAX(version), 0) + 1 FROM rounds_history RH WHERE RH.round_id = R.round_id) AS 'version'
+            FROM rounds R
+            WHERE R.team_id = ${parseInt(team.team_id)}
+        `);
+
+        /* eslint-disable no-restricted-syntax */
+        /* eslint-disable no-await-in-loop */
+        /* eslint-disable no-loop-func */
+        for (const r of rounds) {
+            if (r.opensource) {
+                const extension = path.extname(r.opensource);
+                const deletedExtension = `-DELETED-v${r.version}${extension}`;
+                const deletedPath = `${config.UPLOAD_DIR}/${r.opensource.replace(extension, deletedExtension)}`;
+                try {
+                    await fs.promises.rename(`${config.UPLOAD_DIR}/${r.opensource}`, deletedPath);
+                } catch (err) {
+                    debugLogger.info(`Failed to rename ${r.opensource}`);
+                }
+            }
+            const body = JSON.stringify({ delete: { id: r.opensource } });
+            try {
+                await fetch(
+                    'http://localhost:8983/solr/caselist/update?commit=true',
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body,
+                    }
+                );
+            } catch (err) {
+                debugLogger.info(`Failed to remove ${r.opensource} from Solr`);
+            }
+        }
 
         await query(SQL`
             INSERT INTO rounds_history (
