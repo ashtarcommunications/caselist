@@ -3,7 +3,7 @@ Tabroom claim endpoints
 Tests
 
 # Client
-Full-text search, inc. per=caselist, re-indexing and removal from index
+Full-text search, inc. per caselist, re-indexing and removal from index
 Tests
 
 # Misc
