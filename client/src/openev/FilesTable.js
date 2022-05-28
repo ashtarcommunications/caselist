@@ -16,10 +16,10 @@ const FilesTable = ({ files, loading }) => {
     const columns = useMemo(() => [
         {
             Header: 'Name',
-            accessor: row => row,
+            accessor: 'name',
             Cell: (row) => {
                 return (
-                    <DownloadFile path={row.value.path} text={row.value.name} />
+                    <DownloadFile path={row.row?.original?.path} text={row.value} />
                 );
             },
         },
@@ -36,12 +36,25 @@ const FilesTable = ({ files, loading }) => {
         },
         {
             Header: 'Tags',
-            accessor: 'tags',
+            accessor: (row) => {
+                // Convert the JSON into a comma delimited list of tags so the table filter can search it
+                let tags = '';
+                if (!row.tags) { return ''; }
+                try {
+                    const t = JSON.parse(row.tags);
+                    if (Object.keys(t).length > 0) {
+                        Object.keys(t)?.filter(f => t[f] === true)?.forEach(ft => { tags += `${tagAbbreviations[ft]},`; });
+                    }
+                } catch (err) {
+                    console.log(err);
+                }
+                return tags;
+            },
             Cell: (row) => {
                 const tags = [];
-                if (!row.value) { return false; }
+                if (!row.row?.original?.tags) { return false; }
                 try {
-                    const t = JSON.parse(row.value);
+                    const t = JSON.parse(row.row?.original?.tags);
                     if (Object.keys(t).length > 0) {
                         Object.keys(t)?.filter(f => t[f] === true)?.forEach(ft => tags.push(ft));
                     }
