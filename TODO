@@ -1,10 +1,9 @@
 # Server
 Tabroom claim endpoints
-Archive importer
 Tests
 
 # Client
-Full-text search, inc. re-indexing and removal from index
+Full-text search, inc. per=caselist, re-indexing and removal from index
 Tests
 
 # Misc

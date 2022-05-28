@@ -129,7 +129,7 @@ const migrate = async () => {
                                     const arrayBuffer = await file.arrayBuffer();
                                     const buffer = Buffer.from(arrayBuffer);
                                     try {
-                                        path = `openev/${year}/${page.replace(' ', '')}`;
+                                        path = `openev/${year}/${convertCampName(f.camp?.replace(' ', ''))}`;
                                         fullPath = `${path}/${f.filename}`;
                                         await fs.promises.mkdir(
                                             `${cwd()}/uploads/${path}`,
