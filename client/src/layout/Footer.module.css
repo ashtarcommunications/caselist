@@ -59,10 +59,11 @@
 
 .ufo svg {
     position: absolute;
+    bottom: -20px;
     width: 100%;
     fill: var(--white);
     opacity: 0;
-    animation: vertical 1.5s alternate infinite ease-in-out, fadein 20s ease-in 300s infinite;
+    animation: vertical 1.5s alternate infinite ease-in-out, fadein 60s ease-in 600s infinite;
 }
 
 @keyframes fadein {

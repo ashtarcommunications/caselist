@@ -6,33 +6,23 @@
     font-size: 12px;
 }
 
-.info {
-    color: var(--brightblue);
-    font-size: 14px;
-    margin: 0px 5px;
-    cursor: pointer;
+.tag {
+    margin: 10px 0px;
 }
 
-.report {
-    min-width: 400px;
-    min-height: 150px;
-}
-
-.switch {
+.tag input {
+    width: 15px;
+    height: 15px;
     vertical-align: middle;
 }
 
-.add-cite {
-    background-color: var(--green);
-    color: var(--white);
-    border-radius: 20px;
-    font-size: 12px;
-    margin-left: 10px;
+.tag span {
+    margin-left: 5px;
+    vertical-align: middle;
 }
 
-.prompt {
-    font-size: 12px;
-    margin-right: 50px;
+.tag label {
+    font-size: 14px;
 }
 
 .buttons {
@@ -50,10 +40,6 @@
     color: var(--white);
     margin-left: 20px;
     border-radius: 20px;
-}
-
-.mobile .report {
-    min-width: auto;
 }
 
 .mobile .add {

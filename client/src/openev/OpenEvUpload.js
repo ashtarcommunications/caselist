@@ -5,12 +5,12 @@ import { toast } from 'react-toastify';
 
 import { addOpenEvFile } from '../helpers/api';
 import { useDeviceDetect } from '../helpers/mobile';
+import { notTitleCase, campAbbreviations, campDisplayName, tagAbbreviations } from '../helpers/common';
 
 import Dropzone from '../team/Dropzone';
 import UploadedFiles from '../team/UploadedFiles';
 
 import styles from './OpenEvUpload.module.css';
-import { notTitleCase } from '../helpers/common';
 
 const OpenEvUpload = () => {
     const { year } = useParams();
@@ -38,7 +38,7 @@ const OpenEvUpload = () => {
 
     // Calculate a filename for uploaded files
     useEffect(() => {
-        let computed = `${watchFields.title} - ${watchFields.camp} ${year}`;
+        let computed = `${watchFields.title} - ${campDisplayName[watchFields.camp] || ''} ${year}`;
         if (watchFields.lab) {
             computed += ` ${watchFields.lab}`;
         }
@@ -56,9 +56,18 @@ const OpenEvUpload = () => {
         data.file = fileContent;
         data.filename = files[0].name;
 
+        data.tags = {};
+        Object.keys(tagAbbreviations).forEach(tag => {
+            if (data[tag]) {
+                data.tags[tag] = true;
+            }
+        });
+
         try {
             const response = await addOpenEvFile(data);
             toast.success(response.message);
+
+            // Reset title and file, leave rest of form for easier back-to-back upload
             setValue('title', '');
             handleResetFiles();
         } catch (err) {
@@ -111,11 +120,11 @@ const OpenEvUpload = () => {
                 }
 
                 <div>
-                    <label htmlFor="name">File Title</label>
+                    <label htmlFor="title">File Title (don&apos;t include camp name)</label>
                     <input
                         name="title"
                         type="text"
-                        {...register('title')}
+                        {...register('title', { required: true })}
                     />
                     {
                         notTitleCase.test(watchFields.title) &&
@@ -127,29 +136,18 @@ const OpenEvUpload = () => {
                     <label htmlFor="camp">Camp</label>
                     <select
                         name="camp"
-                        {...register('camp')}
+                        {...register('camp', { required: true })}
                     >
                         <option value="">Choose a camp</option>
-                        <option value="CNDI">Berkeley</option>
-                        <option value="BDL">Boston Debate League</option>
-                        <option value="DDI">Dartmouth DDI</option>
-                        <option value="DDIx">Dartmouth DDIx</option>
-                        <option value="ENDI">Emory (ENDI)</option>
-                        <option value="GDS">Georgetown (GDS)</option>
-                        <option value="GDI">Gonzaga (GDI)</option>
-                        <option value="JDI">Kansas (JDI)</option>
-                        <option value="MGC">Mean Green Comet</option>
-                        <option value="UM7">Michigan (7-Week)</option>
-                        <option value="UMC">Michigan (Classic)</option>
-                        <option value="MNDI">Michigan (MNDI)</option>
-                        <option value="SDI">Michigan State (SDI)</option>
-                        <option value="MSDI">Missouri State (MSDI)</option>
-                        <option value="NSD">National Symposium for Debate</option>
-                        <option value="NHSI">Northwestern (NHSI)</option>
-                        <option value="SSDI">Samford</option>
-                        <option value="UTNIF">Texas (UTNIF)</option>
-                        <option value="TDI">The Debate Intensive</option>
-                        <option value="RKS">Wake Forest (RKS)</option>
+                        {
+                            Object.keys(campAbbreviations).map(camp => {
+                                return (
+                                    <option key={camp} value={camp}>
+                                        {campAbbreviations[camp]}
+                                    </option>
+                                );
+                            })
+                        }
                     </select>
                 </div>
 
@@ -162,32 +160,36 @@ const OpenEvUpload = () => {
                     />
                     {
                         watchFields.lab
-                        && watchFields.lab.charAt(0) !== watchFields.lab.charAt(0).toUpperCase()
+                        && watchFields.lab !== watchFields.lab?.toUpperCase()
                         && <p className={styles.warning}>Lab initials should be in all caps</p>
                     }
                 </div>
 
                 <div>
                     <label htmlFor="tags">Tags</label>
-                    <input
-                        name="aff"
-                        type="checkbox"
-                        {...register('aff')}
-                    /> Affirmatives
-                    <input
-                        name="neg"
-                        type="checkbox"
-                        {...register('neg')}
-                    /> Case Negatives
+                    {
+                        Object.keys(tagAbbreviations).map(tag => {
+                            return (
+                                <div key={tag} className={styles.tag}>
+                                    <label htmlFor={tag}>
+                                        <input
+                                            id={tag}
+                                            type="checkbox"
+                                            {...register(tag)}
+                                        />
+                                        <span>{tagAbbreviations[tag]}</span>
+                                    </label>
+                                </div>
+                            );
+                        })
+
+                    }
                 </div>
 
                 <hr />
-                <p>
-                    File will be renamed:
-                </p>
 
                 <div className={styles.buttons}>
-                    <button type="submit" className={`pure-button ${styles.add}`} disabled={!isValid}>Upload</button>
+                    <button type="submit" className={`pure-button ${styles.add}`} disabled={!isValid || !fileContent}>Upload</button>
                     <Link to={`/openev/${year}`}>
                         <button type="button" className={`pure-button ${styles.cancel}`}>Cancel</button>
                     </Link>

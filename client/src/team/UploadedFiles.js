@@ -22,7 +22,7 @@ const UploadedFiles = ({ files, filename, handleResetFiles, showFilename = false
                         </p>
                         {
                             showFilename
-                            && <p>File will be renamed: {`${filename}.${file.path.split('.').pop() !== file.path ? file.path.split('.').pop() : null}`}</p>
+                            && <p className={styles.computed}>File will be renamed: {`${filename}.${file.path.split('.').pop() !== file.path ? file.path.split('.').pop() : null}`}</p>
                         }
                     </React.Fragment>
                 ))

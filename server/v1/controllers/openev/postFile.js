@@ -4,9 +4,48 @@ import path from 'path';
 import { query } from '../../helpers/mysql';
 import log from '../log/insertEventLog';
 import config from '../../../config';
+import { debugLogger } from '../../helpers/logger';
 
 const postFile = {
     POST: async (req, res) => {
+        const campDisplayName = {
+            BDPW: 'Baylor',
+            CNDI: 'CNDI',
+            BDL: 'BDL',
+            CDL: 'CDL',
+            DDI: 'DDI',
+            DDIx: 'DDIx',
+            ENDI: 'Emory',
+            GDS: 'Georgetown',
+            UGA: 'Georgia',
+            GMDI: 'George Mason',
+            GDI: 'GDI',
+            HDC: 'Harvard',
+            HSS: 'HSS',
+            JDI: 'JDI',
+            MGC: 'Mean Green',
+            UM7: 'Michigan 7',
+            UMC: 'Michigan Classic',
+            MNDI: 'MNDI',
+            SDI: 'SDI',
+            MSDI: 'MSDI',
+            MGF: 'MoneyGram',
+            NSD: 'NSD',
+            NAUDL: 'NAUDL',
+            NDI: 'NDI',
+            NHSI: 'Northwestern',
+            SSDI: 'Samford',
+            SCDI: 'SCDI',
+            UMKC: 'UMKC',
+            UTNIF: 'UTNIF',
+            UNT: 'UNT',
+            UTD: 'UTD',
+            TDI: 'TDI',
+            RKS: 'Wake',
+            WSDI: 'WSDI',
+            WYO: 'Wyoming',
+        };
+
         // Convert base64 encoded file back into a buffer for saving
         let arrayBuffer;
         try {
@@ -20,25 +59,33 @@ const postFile = {
         if (['.docx', '.doc', '.pdf', '.rtf', '.txt'].indexOf(extension) === -1) {
             extension = '';
         }
-        let filename = `${req.body.filename.trim()} ${req.body.camp.trim()} ${req.body.year}`;
+        let filename = `${req.body.title.trim()} - ${campDisplayName[req.body.camp.trim()]} ${req.body.year}`;
         if (req.body.lab) { filename += ` ${req.body.lab.trim()}`; }
-        filename += `${extension}`;
 
-        const uploadPath = `${config.UPLOAD_DIR}/openev/${req.body.year}`;
-        const fullPath = `${uploadPath}/${filename}`;
+        const uploadDir = `openev/${req.body.year}/${req.body.camp.trim()}`;
+        const filePath = `${uploadDir}/${filename}${extension}`;
+
+        const file = await query(SQL`
+            SELECT * FROM openev WHERE path = ${filePath}
+        `);
+        if (file.length > 0) {
+            return res.status(400).json({ message: 'File already exists' });
+        }
 
         try {
-            await fs.promises.mkdir(uploadPath, { recursive: true });
-            await fs.promises.writeFile(fullPath, arrayBuffer);
+            await fs.promises.mkdir(`${config.UPLOAD_DIR}/${uploadDir}`, { recursive: true });
+            await fs.promises.writeFile(`${config.UPLOAD_DIR}/${filePath}`, arrayBuffer);
         } catch (err) {
-            return res.status(500).json({ message: 'Failed to upload file' });
+            debugLogger.info(`Error while creating file ${filePath}: ${err.message}`);
+            return res.status(500).json({ message: 'Error while creating file' });
         }
 
         try {
             await query(SQL`
-                INSERT INTO openev (path, year, camp, lab, tags, created_by_id)
+                INSERT INTO openev (name, path, year, camp, lab, tags, created_by_id)
                 VALUES (
-                    ${fullPath},
+                    ${filename},
+                    ${filePath},
                     ${req.body.year},
                     ${req.body.camp?.trim()},
                     ${req.body.lab?.trim()},
@@ -47,7 +94,7 @@ const postFile = {
                 )
             `);
         } catch (err) {
-            return res.status(500).json({ message: 'Failed to upload OpenEv file' });
+            return res.status(500).json({ message: 'Error while saving file' });
         }
 
         await log({

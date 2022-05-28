@@ -5,6 +5,7 @@ import { startOfYear } from '@speechanddebate/nsda-js-utils';
 
 import { campAbbreviations, tagAbbreviations } from '../helpers/common';
 
+import DownloadFile from '../helpers/DownloadFile';
 import Table from '../tables/Table';
 
 import styles from './FilesTable.module.css';
@@ -18,9 +19,7 @@ const FilesTable = ({ files, loading }) => {
             accessor: row => row,
             Cell: (row) => {
                 return (
-                    <Link to={`/download?path=${row.value.path}`}>
-                        {row.value.name}
-                    </Link>
+                    <DownloadFile path={row.value.path} text={row.value.name} />
                 );
             },
         },
@@ -39,10 +38,13 @@ const FilesTable = ({ files, loading }) => {
             Header: 'Tags',
             accessor: 'tags',
             Cell: (row) => {
-                let tags = [];
+                const tags = [];
+                if (!row.value) { return false; }
                 try {
-                    const json = JSON.parse(row.value);
-                    tags = Object.keys(json).filter(t => t);
+                    const t = JSON.parse(row.value);
+                    if (Object.keys(t).length > 0) {
+                        Object.keys(t)?.filter(f => t[f] === true)?.forEach(ft => tags.push(ft));
+                    }
                 } catch (err) {
                     console.log(err);
                 }

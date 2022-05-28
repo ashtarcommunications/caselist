@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileDownload } from '@fortawesome/free-solid-svg-icons';
+import { toast } from 'react-toastify';
 
 import { downloadFile } from './api';
 
 import styles from './DownloadFile.module.css';
 
-const DownloadFile = ({ path = '' }) => {
+const DownloadFile = ({ path = '', text = '' }) => {
     const handleDownload = async () => {
         try {
             const file = await downloadFile(path);
@@ -21,21 +22,28 @@ const DownloadFile = ({ path = '' }) => {
             link.click();
         } catch (err) {
             console.log(err);
+            toast.error(err.message);
         }
     };
 
     return (
-        <FontAwesomeIcon
-            className={styles.download}
-            icon={faFileDownload}
-            title="Download"
-            onClick={handleDownload}
-        />
+        <span onClick={handleDownload}>
+            {
+                text &&
+                <span className={styles.link}>{text}</span>
+            }
+            <FontAwesomeIcon
+                className={styles.download}
+                icon={faFileDownload}
+                title="Download"
+            />
+        </span>
     );
 };
 
 DownloadFile.propTypes = {
     path: PropTypes.string.isRequired,
+    text: PropTypes.string,
 };
 
 export default DownloadFile;

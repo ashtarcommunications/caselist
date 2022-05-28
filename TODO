@@ -6,10 +6,7 @@ Tests
 # Client
 Improve cite parser and markdown display
 Full-text search, inc. re-indexing and removal from index
-Open ev tag structure
-Open ev filename vs title
 Open ev table filters
-Open ev upload page
 Open ev delete file
 Open ev permissions
 Tests

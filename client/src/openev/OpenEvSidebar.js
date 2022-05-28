@@ -32,15 +32,18 @@ const Sidebar = () => {
 
     if (openEvFiles.message) { return false; }
 
-    const camps = [...new Set(openEvFiles.map(c => c.camp))].sort();
+    const camps = [...new Set(openEvFiles.map(c => c.camp))]?.sort();
 
     let tags = [];
-    openEvFiles.forEach(c => {
+    openEvFiles.forEach(file => {
+        if (!file.tags) { return false; }
         try {
-            const t = JSON.parse(c.tags);
-            Object.keys(t).filter(f => t[f]).forEach(ft => tags.push(ft));
+            const t = JSON.parse(file.tags);
+            if (Object.keys(t).length > 0) {
+                Object.keys(t)?.filter(f => t[f] === true)?.forEach(ft => tags.push(ft));
+            }
         } catch (err) {
-            console.log(err);
+            // Ignore
         }
     });
     tags = [...new Set(tags)].sort();

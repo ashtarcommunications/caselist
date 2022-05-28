@@ -3,3 +3,7 @@
     cursor: pointer;
     margin-left: 20px
 }
+
+.computed {
+    color: var(--orange);
+}
