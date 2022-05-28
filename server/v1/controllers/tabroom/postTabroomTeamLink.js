@@ -13,7 +13,7 @@ const postTabroomTeamLink = {
         };
 
         try {
-            await fetch(url, { method: 'POST', body });
+            await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body });
         } catch (err) {
             debugLogger.error(`Failed to create Tabroom link to ${req.body.slug}`);
             return res.status(500).json({ message: 'Failed to link to tabroom' });
