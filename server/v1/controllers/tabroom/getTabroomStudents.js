@@ -1,9 +1,20 @@
+import config from '../../../config';
+import { debugLogger } from '../../helpers/logger';
+
 const getTabroomStudents = {
     GET: async (req, res) => {
-        const students = [
-            { id: 1, first: 'Aaron', last: 'Hardy', name: 'Aaron Hardy' },
-            { id: 2, first: 'Chris', last: 'Palmer', name: 'Chris Palmer' },
-        ];
+        let url = `${config.TABROOM_API_URL}`;
+        url += `/caselist/students?person_id=${req.user_id}`;
+        url += `&caselist_key=${config.TABROOM_CASELIST_KEY}`;
+
+        let students = [];
+        try {
+            const response = await fetch(url);
+            students = await response.json();
+        } catch (err) {
+            debugLogger.error('Failed to retrieve Tabroom students');
+            students = [];
+        }
 
         return res.status(200).json(students);
     },

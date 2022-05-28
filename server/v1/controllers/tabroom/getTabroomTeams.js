@@ -1,8 +1,20 @@
+import config from '../../../config';
+import { debugLogger } from '../../helpers/logger';
+
 const getTabroomTeams = {
     GET: async (req, res) => {
-        const teams = [
-            { id: 1, name: 'Northwestern XX' },
-        ];
+        let url = `${config.TABROOM_API_URL}`;
+        url += `/caselist/teams?person_id=${req.user_id}`;
+        url += `&caselist_key=${config.TABROOM_CASELIST_KEY}`;
+
+        let teams = [];
+        try {
+            const response = await fetch(url);
+            teams = await response.json();
+        } catch (err) {
+            debugLogger.error('Failed to retrieve Tabroom teams');
+            teams = [];
+        }
 
         return res.status(200).json(teams);
     },
@@ -18,7 +30,7 @@ getTabroomTeams.GET.apiDoc = {
                 '*/*': {
                     schema: {
                         type: 'array',
-                        items: { $ref: '#/components/schemas/School' },
+                        items: { $ref: '#/components/schemas/Team' },
                     },
                 },
             },

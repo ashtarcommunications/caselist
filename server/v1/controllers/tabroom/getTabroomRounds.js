@@ -1,9 +1,20 @@
+import config from '../../../config';
+import { debugLogger } from '../../helpers/logger';
+
 const getTabroomRounds = {
     GET: async (req, res) => {
-        const rounds = [
-            { id: 1, tournament: 'Lexington', round: '1', side: 'A', opponent: 'Evil Empire XX', judge: 'Hardy' },
-            { id: 2, tournament: 'Lexington', round: '2', side: 'N', opponent: 'Evil Empire YY', judge: 'Palmer' },
-        ];
+        let url = `${config.TABROOM_API_URL}`;
+        url += `/caselist/rounds?slug=${req.params.slug}`;
+        url += `&caselist_key=${config.TABROOM_CASELIST_KEY}`;
+
+        let rounds = [];
+        try {
+            const response = await fetch(url);
+            rounds = await response.json();
+        } catch (err) {
+            debugLogger.error('Failed to retrieve Tabroom chapters');
+            rounds = [];
+        }
 
         return res.status(200).json(rounds);
     },

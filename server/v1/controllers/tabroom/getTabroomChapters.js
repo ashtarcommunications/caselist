@@ -1,20 +1,20 @@
-// import fetch from 'isomorphic-fetch';
-// import config from '../../../config';
+import config from '../../../config';
+import { debugLogger } from '../../helpers/logger';
 
 const getTabroomChapters = {
     GET: async (req, res) => {
-        // let url = `${config.TABROOM_API_URL}`;
-        // url += `/caselist/chapters?person_id=${req.user.id}`;
-        // url += `&caselist_key=${config.TABROOM_CASELIST_KEY}`;
-        // const chapters = await fetch(url);
-        // const chapters = await fetch(
-        //     'http://localhost:10011/v1/caselist/chapters?person_id=17145&caselist_key=caselist-key'
-        // );
-        // const json = await chapters.json();
-        const chapters = [
-            { id: 6, name: 'Lexington HS', state: 'MA' },
-            { id: 958, name: 'NFA', state: 'NY' },
-        ];
+        let url = `${config.TABROOM_API_URL}`;
+        url += `/caselist/chapters?person_id=${req.user_id}`;
+        url += `&caselist_key=${config.TABROOM_CASELIST_KEY}`;
+
+        let chapters = [];
+        try {
+            const response = await fetch(url);
+            chapters = await response.json();
+        } catch (err) {
+            debugLogger.error('Failed to retrieve Tabroom chapters');
+            chapters = [];
+        }
 
         return res.status(200).json(chapters);
     },
