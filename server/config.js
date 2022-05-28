@@ -31,6 +31,7 @@ const config = {
     TABROOM_CASELIST_KEY: 'caselist-key',
     S3_BUCKET: 'caselist-files',
     UPLOAD_DIR: `${cwd()}/uploads`, // No trailing slash
+    ADMINS: [1],
 };
 
 if (process.env.NODE_ENV === 'production') {
@@ -47,6 +48,15 @@ configKeys.forEach((key) => {
     }
     if (config[key] === 'true') { config[key] = true; }
     if (config[key] === 'false') { config[key] = false; }
+
+    // ADMINS is a json string in .env, so convert if necessary
+    if (!Array.isArray(config.ADMINS)) {
+        try {
+            config.ADMINS = JSON.parse(config.ADMINS);
+        } catch (err) {
+            config.ADMINS = [];
+        }
+    }
 });
 
 export default config;

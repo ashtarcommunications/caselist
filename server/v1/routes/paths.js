@@ -35,6 +35,7 @@ import postTabroomTeamLink from '../controllers/tabroom/postTabroomTeamLink';
 
 import getFiles from '../controllers/openev/getFiles';
 import postFile from '../controllers/openev/postFile';
+import deleteFile from '../controllers/openev/deleteFile';
 
 import getDownload from '../controllers/download/getDownload';
 
@@ -67,6 +68,7 @@ export default [
     { path: '/tabroom/rounds', module: getTabroomRounds },
 
     { path: '/openev', module: { ...getFiles, ...postFile } },
+    { path: '/openev/{id}', module: deleteFile },
 
     { path: '/download', module: getDownload },
 ];

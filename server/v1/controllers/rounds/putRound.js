@@ -120,7 +120,7 @@ const putRound = {
             round_id: parseInt(req.params.round),
         });
 
-        return res.status(201).json({ message: 'Round successfully updated' });
+        return res.status(200).json({ message: 'Round successfully updated' });
     },
 };
 
@@ -163,7 +163,7 @@ putRound.PUT.apiDoc = {
         content: { '*/*': { schema: { $ref: '#/components/schemas/Round' } } },
     },
     responses: {
-        201: {
+        200: {
             description: 'Updated round',
             content: { '*/*': { schema: { $ref: '#/components/schemas/Round' } } },
         },

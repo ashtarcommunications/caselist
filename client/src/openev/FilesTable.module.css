@@ -13,3 +13,11 @@
     margin: 5px;
     min-width: 50px;
 }
+
+.trash {
+    color: var(--red);
+    cursor: pointer;
+    float: right;
+    margin-right: 20px;
+    font-size: 18px;
+}

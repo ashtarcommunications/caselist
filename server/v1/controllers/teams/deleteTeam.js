@@ -210,7 +210,7 @@ const deleteTeam = {
             team_id: team.team_id,
         });
 
-        return res.status(201).json({ message: 'Team successfully deleted' });
+        return res.status(200).json({ message: 'Team successfully deleted' });
     },
 };
 
@@ -241,7 +241,7 @@ deleteTeam.DELETE.apiDoc = {
         },
     ],
     responses: {
-        201: {
+        200: {
             description: 'Deleted team',
             content: { '*/*': { schema: { $ref: '#/components/schemas/Team' } } },
         },

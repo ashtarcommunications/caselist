@@ -59,7 +59,7 @@ const deleteCite = {
             cite_id: parseInt(req.params.cite),
         });
 
-        return res.status(201).json({ message: 'Cite successfully deleted' });
+        return res.status(200).json({ message: 'Cite successfully deleted' });
     },
 };
 
@@ -97,7 +97,7 @@ deleteCite.DELETE.apiDoc = {
         },
     ],
     responses: {
-        201: {
+        200: {
             description: 'Deleted cite',
             content: { '*/*': { schema: { $ref: '#/components/schemas/Cite' } } },
         },

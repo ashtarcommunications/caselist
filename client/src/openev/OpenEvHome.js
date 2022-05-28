@@ -1,17 +1,23 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { startOfYear } from '@speechanddebate/nsda-js-utils';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import { useStore } from '../helpers/store';
 import { campAbbreviations, tagAbbreviations } from '../helpers/common';
+import { AuthContext } from '../helpers/auth';
 
 import Breadcrumbs from '../layout/Breadcrumbs';
 import Error from '../layout/Error';
 import FilesTable from './FilesTable';
 
+import styles from './OpenEvHome.module.css';
+
 const OpenEvHome = () => {
     const { year, tag } = useParams();
     const { openEvFiles } = useStore();
+    const auth = useContext(AuthContext);
 
     if (openEvFiles.message) {
         return <Error statusCode={openEvFiles.statusCode} message={openEvFiles.message} />;
@@ -32,7 +38,7 @@ const OpenEvHome = () => {
     return (
         <div>
             <Breadcrumbs />
-            <h1>Open Evidence Project {year}</h1>
+            <h1>Open Evidence Project {year || startOfYear}</h1>
             {
                 !tag &&
                 <>
@@ -56,6 +62,15 @@ const OpenEvHome = () => {
                 </>
             }
             <h2>{heading}</h2>
+            {
+                !tag && (!year || parseInt(year) === startOfYear) && auth.user?.admin &&
+                <Link to={`/openev/${year || startOfYear}/upload`} className={styles.add}>
+                    <button type="button" className={`pure-button`}>
+                        <FontAwesomeIcon icon={faPlus} />
+                        <span> Add File</span>
+                    </button>
+                </Link>
+            }
             <FilesTable files={tag ? filteredFiles : openEvFiles} />
         </div>
     );

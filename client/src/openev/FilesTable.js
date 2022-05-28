@@ -1,17 +1,55 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback, useContext } from 'react';
 import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
 import { useParams, Link } from 'react-router-dom';
 import { startOfYear } from '@speechanddebate/nsda-js-utils';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import { campAbbreviations, tagAbbreviations } from '../helpers/common';
+import { deleteOpenEvFile } from '../helpers/api';
+import { AuthContext } from '../helpers/auth';
+import { useStore } from '../helpers/store';
 
 import DownloadFile from '../helpers/DownloadFile';
+import ConfirmButton from '../helpers/ConfirmButton';
 import Table from '../tables/Table';
 
 import styles from './FilesTable.module.css';
 
 const FilesTable = ({ files, loading }) => {
     const { year } = useParams();
+    const { fetchOpenEvFiles } = useStore();
+    const auth = useContext(AuthContext);
+
+    const handleDeleteFile = useCallback(async (id) => {
+        try {
+            toast.dismiss();
+            const response = await deleteOpenEvFile(parseInt(id));
+            fetchOpenEvFiles();
+            toast.success(response.message);
+        } catch (err) {
+            console.log(err);
+            toast.error(`Failed to delete file: ${err.message}`);
+        }
+    }, [fetchOpenEvFiles]);
+
+    const handleDeleteFileConfirm = useCallback((e) => {
+        const id = e.currentTarget.id;
+        if (!id) { return false; }
+        toast.warning(({ closeToast }) => (
+            <ConfirmButton
+                message={`Are you sure you want to delete this file?`}
+                handler={() => handleDeleteFile(id)}
+                dismiss={closeToast}
+            />),
+        {
+            autoClose: 15000,
+            closeOnClick: false,
+            closeButton: false,
+        },
+        );
+    }, [handleDeleteFile]);
 
     const columns = useMemo(() => [
         {
@@ -19,7 +57,20 @@ const FilesTable = ({ files, loading }) => {
             accessor: 'name',
             Cell: (row) => {
                 return (
-                    <DownloadFile path={row.row?.original?.path} text={row.value} />
+                    <>
+                        <DownloadFile path={row.row?.original?.path} text={row.value} />
+
+                        {
+                            row.row?.original?.year === startOfYear && auth?.user?.admin &&
+                            <FontAwesomeIcon
+                                className={styles.trash}
+                                title="Delete file"
+                                icon={faTrash}
+                                id={row.row?.original?.openev_id}
+                                onClick={e => handleDeleteFileConfirm(e)}
+                            />
+                        }
+                    </>
                 );
             },
         },
@@ -74,7 +125,7 @@ const FilesTable = ({ files, loading }) => {
                 );
             },
         },
-    ], [year]);
+    ], [year, handleDeleteFileConfirm, auth]);
 
     return (
         <Table

@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 
 import { addOpenEvFile } from '../helpers/api';
 import { useDeviceDetect } from '../helpers/mobile';
+import { useStore } from '../helpers/store';
 import { notTitleCase, campAbbreviations, campDisplayName, tagAbbreviations } from '../helpers/common';
 
 import Dropzone from '../team/Dropzone';
@@ -15,6 +16,12 @@ import styles from './OpenEvUpload.module.css';
 const OpenEvUpload = () => {
     const { year } = useParams();
     const { isMobile } = useDeviceDetect();
+    const { fetchOpenEvFiles } = useStore();
+
+    // Refetch files when unmounting so list is up to date with additions
+    useEffect(() => {
+        return () => fetchOpenEvFiles();
+    }, [fetchOpenEvFiles]);
 
     const {
         register,

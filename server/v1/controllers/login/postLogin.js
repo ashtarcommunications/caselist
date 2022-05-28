@@ -59,6 +59,11 @@ const postLogin = {
         `);
 
         res.cookie('caselist_token', nonce, { maxAge: 1209600000, httpOnly: false, path: '/' });
+
+        if (config.ADMINS?.includes(user.uidNumber)) {
+            res.cookie('caselist_admin', true, { maxAge: 1209600000, httpOnly: false, path: '/' });
+        }
+
         return res.status(201).json({ message: 'Successfully logged in', token: nonce });
     },
 };

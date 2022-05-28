@@ -141,6 +141,10 @@ export const addOpenEvFile = async (file) => {
     return fetchBase(`openev`, { method: 'POST' }, file);
 };
 
+export const deleteOpenEvFile = async (id) => {
+    return fetchBase(`openev/${id}`, { method: 'DELETE' });
+};
+
 export const downloadFile = async (path) => {
     return fetchBase(`download?path=${encodeURIComponent(path)}`, { raw: true, maxRetries: 0, headers: {} });
 };

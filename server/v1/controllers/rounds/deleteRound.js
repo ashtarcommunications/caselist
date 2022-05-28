@@ -141,7 +141,7 @@ const deleteRound = {
             round_id: parseInt(req.params.round),
         });
 
-        return res.status(201).json({ message: 'Round successfully deleted' });
+        return res.status(200).json({ message: 'Round successfully deleted' });
     },
 };
 
@@ -179,7 +179,7 @@ deleteRound.DELETE.apiDoc = {
         },
     ],
     responses: {
-        201: {
+        200: {
             description: 'Deleted round',
             content: { '*/*': { schema: { $ref: '#/components/schemas/Round' } } },
         },

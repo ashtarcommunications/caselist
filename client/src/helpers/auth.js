@@ -8,7 +8,8 @@ export const useAuth = () => {
 
     // Set any token from cookies
     const token = Cookies.get('caselist_token');
-    if (token && !user?.loggedIn) { setUser({ loggedIn: true, token }); }
+    const admin = Cookies.get('caselist_admin');
+    if (token && !user?.loggedIn) { setUser({ loggedIn: true, token, admin }); }
 
     const handleLogin = async (username, password) => {
         try {
