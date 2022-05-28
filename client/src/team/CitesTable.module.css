@@ -1,15 +1,17 @@
 .cites h1 {
     font-size: 14px;
+    font-weight: bold;
 }
 .cites h2 {
-    font-size: 12px;
+    font-size: 14px;
+    font-weight: bold;
 }
 .cites h3 {
-    font-size: 11px;
+    font-size: 12px;
+    font-weight: bold;
 }
 .cites h4 {
     font-size: 10px;
-    font-weight: bold;
 }
 .cites p {
     font-size: 10px;
