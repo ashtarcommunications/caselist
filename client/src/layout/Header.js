@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams, useLocation } from 'react-router-dom';
 
 import { AuthContext } from '../helpers/auth';
 import { useStore } from '../helpers/store';
@@ -12,6 +12,8 @@ import styles from './Header.module.css';
 const Header = () => {
     const auth = useContext(AuthContext);
     const { caselistData } = useStore();
+    const { caselist } = useParams();
+    const location = useLocation();
     const { isMobile } = useDeviceDetect();
 
     const [className, setClassName] = useState();
@@ -26,6 +28,7 @@ const Header = () => {
             <h1><Link to="/">openCaselist</Link></h1>
             {
                 auth.user?.loggedIn &&
+                (caselist || location.pathname.includes('openev')) &&
                 <SearchForm />
             }
             <div className={`${styles.menu} pure-menu`}>
