@@ -8,6 +8,7 @@ const getCaselist = {
             wHERE C.name = ${req.params.caselist}
         `);
         if (!caselist) { return res.status(404).json({ message: 'Caselist not found' }); }
+        caselist.archived = caselist.archived === 1;
 
         return res.status(200).json(caselist);
     },

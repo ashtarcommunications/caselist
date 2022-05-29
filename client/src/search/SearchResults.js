@@ -44,11 +44,12 @@ const SearchResults = () => {
                 <p>No results found.</p>
             }
 
+            <p>{results.length} results found</p>
             {
                 results.map(r => (
                     <div key={r.team_id || r.download_path || r.path}>
                         <h2>
-                            <Link to={`/${r.path}`}>
+                            <Link to={`${r.path}`}>
                                 {
                                     r.shard?.includes('openev') ?
                                         <span>

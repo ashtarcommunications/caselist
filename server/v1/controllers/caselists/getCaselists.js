@@ -11,6 +11,9 @@ const getCaselists = {
         }
 
         const caselists = await query(sql);
+        caselists.forEach(c => {
+            c.archived = c.archived === 1;
+        });
 
         return res.status(200).json(caselists);
     },
