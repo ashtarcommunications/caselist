@@ -1,3 +1,7 @@
 .results input {
     min-width: 400px !important;
 }
+
+.snippet {
+    font-size: 12px;
+}

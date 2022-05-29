@@ -6,7 +6,7 @@ export const setupMocks = () => {
     debugLogger.info('Setting up mocks...');
 
     global.fetch = (url) => {
-        let json = {};
+        let json = [];
         if (url.includes('chapters')) {
             json = [
                 { id: 1, name: 'Lexington HS', state: 'MA' },
@@ -31,9 +31,47 @@ export const setupMocks = () => {
             ];
         }
 
+        if (url.includes('solr')) {
+            json = {
+                responseHeader: {},
+                response: { docs: [
+                    {
+                        type: ['file'],
+                        id: '/ndtceda21/Northwestern/HaPa/test.docx',
+                        shard: ['ndtceda21'],
+                        caselist: ['ndtceda21'],
+                        caselist_display_name: ['NDT/CEDA 2021'],
+                        school: ['Northwestern'],
+                        team: ['HaPa'],
+                        team_display_name: ['Northwestern HaPa'],
+                        year: ['2021'],
+                        path: ['/ndtceda21/Northwestern/HaPa/test.docx'],
+                    },
+                    {
+                        type: ['cite'],
+                        id: '/ndtceda21/Northwestern/HaPa#1',
+                        title: ['Cite Title'],
+                        shard: ['ndtceda21'],
+                        caselist: ['ndtceda21'],
+                        caselist_display_name: ['NDT/CEDA 2021'],
+                        school: ['Northwestern'],
+                        team: ['HaPa'],
+                        team_display_name: ['Northwestern HaPa'],
+                        path: ['/ndtceda21/Northwestern/HaPa#1'],
+                    },
+                ] },
+                highlighting: {
+                    '/ndtceda21/Northwestern/HaPa/test.docx': { content: ['File contents'] },
+                    '/ndtceda21/Northwestern/HaPa#1': { content: ['Cite contents'] },
+                },
+            };
+        }
+
         const response = {
             json: () => json,
-            status: () => 200,
+            text: () => JSON.stringify(json),
+            status: 200,
+            statusText: 'Success',
         };
 
         return Promise.resolve(response);

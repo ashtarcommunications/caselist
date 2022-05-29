@@ -149,6 +149,6 @@ export const downloadFile = async (path) => {
     return fetchBase(`download?path=${encodeURIComponent(path)}`, { raw: true, maxRetries: 0, headers: {} });
 };
 
-export const loadSearch = async (q) => {
-    return fetchBase(`search?q=${encodeURI(q)}`);
+export const loadSearch = async (q, shard) => {
+    return fetchBase(`search?q=${encodeURI(q)}&shard=${encodeURI(shard)}`);
 };

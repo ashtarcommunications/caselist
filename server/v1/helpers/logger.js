@@ -76,3 +76,19 @@ export const queryLogger = winston.createLogger({
         new winston.transports.Console(),
     ],
 });
+
+export const solrLogger = winston.createLogger({
+    level: 'debug',
+    format: winston.format.combine(
+        winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+        winston.format.json(),
+    ),
+    exitOnError: false,
+    silent: process.env.NODE_ENV === 'test',
+    transports: [
+        new winston.transports.Console(),
+        new winston.transports.File({
+            filename: './logs/solr.log',
+        }),
+    ],
+});

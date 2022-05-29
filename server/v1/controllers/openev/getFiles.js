@@ -6,7 +6,7 @@ const getFiles = {
     GET: async (req, res) => {
         const year = req.query.year || startOfYear;
         const caselists = await query(SQL`
-            SELECT * FROM openev WHERE year = ${year} AND (deleted IS NULL OR deleted <> 1)
+            SELECT * FROM openev WHERE year = ${year}
         `);
 
         return res.status(200).json(caselists);

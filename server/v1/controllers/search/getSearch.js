@@ -2,39 +2,24 @@ import { fetch } from '@speechanddebate/nsda-js-utils';
 import SQL from 'sql-template-strings';
 import { query } from '../../helpers/mysql';
 import config from '../../../config';
+import { debugLogger } from '../../helpers/logger';
 
 const getSearch = {
     GET: async (req, res) => {
-        const q = req.query.q.trim();
-        const caselist = req.params.caselist;
+        const q = req.query.q?.trim();
+        const shard = req.query.shard?.trim();
         const like = `%${q}%`;
-
-        const schoolSQL = (SQL`
-            SELECT
-                'school' AS 'type',
-                S.name,
-                S.display_name,
-                C.name
-            FROM schools S
-            INNER JOIN caselists C ON C.caselist_id = S.caselist_id
-        `);
-        schoolSQL.append(SQL`
-            WHERE S.display_name LIKE ${like}
-        `);
-        if (caselist) {
-            schoolSQL.append(SQL`
-                AND LOWER(C.name) = LOWER(${caselist})
-            `);
-        }
-        const schools = await query(schoolSQL);
 
         const teamSQL = (SQL`
             SELECT
                 'team' AS 'type',
-                T.name,
-                T.display_name,
+                T.team_id,
+                T.name AS 'team',
+                T.display_name AS 'team_display_name',
                 S.name AS 'school',
-                C.name AS 'caselist'
+                C.name AS 'caselist',
+                C.display_name AS 'caselist_display_name',
+                CONCAT(C.name, '/', S.name, '/', T.name) AS 'path'
             FROM teams T
             INNER JOIN schools S ON S.school_id = T.school_id
             INNER JOIN caselists C ON C.caselist_id = S.caselist_id
@@ -42,42 +27,21 @@ const getSearch = {
         teamSQL.append(SQL`
             WHERE T.display_name LIKE ${like}
         `);
-        if (caselist) {
+        if (shard) {
             teamSQL.append(SQL`
-                AND LOWER(C.name) = LOWER(${caselist})
+                AND LOWER(C.name) = LOWER(${shard})
             `);
         }
         const teams = await query(teamSQL);
 
-        const citeSQL = (SQL`
-            SELECT
-                'cite' AS 'type',
-                CT.title,
-                CT.cites,
-                T.name AS 'team',
-                S.name AS 'school',
-                C.name AS 'caselist'
-            FROM cites CT
-            INNER JOIN rounds R ON R.round_id = CT.round_id
-            INNER JOIN teams T ON T.team_id = R.team_id
-            INNER JOIN schools S ON S.school_id = T.school_id
-            INNER JOIN caselists C ON C.caselist_id = S.caselist_id
-        `);
-        citeSQL.append(SQL`
-            WHERE CT.cites LIKE ${like}
-        `);
-        if (caselist) {
-            citeSQL.append(SQL`
-                AND LOWER(C.name) = LOWER(${caselist})
-            `);
-        }
-        const cites = await query(citeSQL);
-
         let solr = [];
         try {
             let URL = config.SOLR_QUERY_URL;
-            URL += `df=content`; // Search field
-            URL += `&fl=id`; // Fields to return
+            URL += `df=content,title,path`; // Search fields
+            if (shard) {
+                URL += `&fq=shard:${shard}`; // Shard to search in
+            }
+            URL += `&fl=id,shard,type,caselist,caselist_display_name,school,team,team_display_name,year,path`; // Fields to return
             URL += `&indent=false`; // Don't format JSON to save whitespace
             URL += `&q.op=OR`; // Search operator
             URL += `&rows=100&start=0`; // Rows to return
@@ -90,24 +54,33 @@ const getSearch = {
             URL += `&hl.mergeContiguous=true`; // Merge multiple snippets into one
             URL += `&hl.maxAnalyzedChars=1000000`; // Increase the number of analyzed characters for long files
             URL += `&hl.defaultSummary=true`; // Return leading text if it can't highlight
-
             URL += `&q=${encodeURIComponent(q)}`; // Search query
+
             const response = await fetch(URL, { headers: { Accept: 'application/json' } });
             const json = await response.json();
 
             solr = json?.response?.docs?.map(d => {
                 return {
-                    // Strip the upload path from the id to get the download path
-                    type: 'opensource',
-                    path: d.id.replace(`${config.UPLOAD_DIR}/`, ''),
+                    type: d.type?.[0],
+                    shard: d.shard?.[0],
+                    caselist: d.caselist?.[0],
+                    caselist_display_name: d.caselist_display_name?.[0],
+                    school: d.school?.[0],
+                    team: d.team?.[0],
+                    team_display_name: d.team_display_name?.[0],
+                    year: d.year?.[0],
+                    path: d.shard?.[0]?.includes('openev') ? `openev/${d.year?.[0]}` : `${d.caselist?.[0]}/${d.school?.[0]}/${d.team?.[0]}`,
+                    download_path: d.path?.[0],
+                    title: d.title?.[0] || d.path?.[0]?.split('/')?.pop(),
                     snippet: json?.highlighting?.[d.id]?.content?.[0],
                 };
             });
         } catch (err) {
-            console.log(err);
+            debugLogger.info(err.message);
+            solr = [];
         }
 
-        const combinedResults = [...schools, ...teams, ...cites, ...solr];
+        const combinedResults = [...teams, ...solr];
 
         return res.status(200).json(combinedResults);
     },
@@ -119,8 +92,8 @@ getSearch.GET.apiDoc = {
     parameters: [
         {
             in: 'query',
-            name: 'caselist',
-            description: 'Caselist to search in',
+            name: 'shard',
+            description: 'Shard to search in',
             schema: { type: 'string' },
         },
         {
