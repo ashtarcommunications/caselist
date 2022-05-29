@@ -5,8 +5,9 @@ import School from './School';
 import Team from './Team';
 import Round from './Round';
 import TabroomChapter from './TabroomChapter';
-import TabroomStudent from './TabroomStudent';
 import TabroomRound from './TabroomRound';
+import TabroomStudent from './TabroomStudent';
+import TabroomLink from './TabroomLink';
 import File from './File';
 import Update from './Update';
 import Updates from './Updates';
@@ -24,8 +25,9 @@ export default {
     Recent,
     Round,
     TabroomChapter,
-    TabroomStudent,
     TabroomRound,
+    TabroomStudent,
+    TabroomLink,
     File,
     Update,
     Updates,

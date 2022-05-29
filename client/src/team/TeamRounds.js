@@ -7,7 +7,7 @@ import { Link, useParams } from 'react-router-dom';
 import { normalizeSide, roundName } from '@speechanddebate/nsda-js-utils';
 
 import { useStore } from '../helpers/store';
-import { loadTeam, loadRounds, deleteRound, loadCites, deleteCite, addCite, addTabroomTeamLink } from '../helpers/api';
+import { loadTeam, loadRounds, deleteRound, loadCites, deleteCite, addCite, addTabroomLink } from '../helpers/api';
 import { useDeviceDetect } from '../helpers/mobile';
 
 import ConfirmButton from '../helpers/ConfirmButton';
@@ -191,7 +191,7 @@ const TeamRounds = () => {
 
     const handleLinkPage = async () => {
         try {
-            const response = await addTabroomTeamLink(window.location.pathname);
+            const response = await addTabroomLink(window.location.pathname);
             toast.success(response.message);
         } catch (err) {
             toast.error(`Failed to link page: ${err.message}`);

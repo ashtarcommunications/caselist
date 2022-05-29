@@ -28,10 +28,9 @@ import deleteCite from '../controllers/cites/deleteCite';
 import postLogin from '../controllers/login/postLogin';
 
 import getTabroomChapters from '../controllers/tabroom/getTabroomChapters';
-import getTabroomTeams from '../controllers/tabroom/getTabroomTeams';
 import getTabroomStudents from '../controllers/tabroom/getTabroomStudents';
 import getTabroomRounds from '../controllers/tabroom/getTabroomRounds';
-import postTabroomTeamLink from '../controllers/tabroom/postTabroomTeamLink';
+import postTabroomLink from '../controllers/tabroom/postTabroomLink';
 
 import getFiles from '../controllers/openev/getFiles';
 import postFile from '../controllers/openev/postFile';
@@ -63,9 +62,9 @@ export default [
     { path: '/caselists/{caselist}/schools/{school}/teams/{team}/cites/{cite}', module: { ...deleteCite } },
 
     { path: '/tabroom/chapters', module: getTabroomChapters },
-    { path: '/tabroom/teams', module: { ...getTabroomTeams, ...postTabroomTeamLink } },
-    { path: '/tabroom/students', module: getTabroomStudents },
     { path: '/tabroom/rounds', module: getTabroomRounds },
+    { path: '/tabroom/students', module: getTabroomStudents },
+    { path: '/tabroom/link', module: postTabroomLink },
 
     { path: '/openev', module: { ...getFiles, ...postFile } },
     { path: '/openev/{id}', module: deleteFile },

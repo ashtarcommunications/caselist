@@ -117,20 +117,16 @@ export const loadTabroomChapters = async () => {
     return fetchBase(`tabroom/chapters`);
 };
 
-export const loadTabroomTeams = async () => {
-    return fetchBase(`tabroom/teams`);
+export const loadTabroomRounds = async (slug) => {
+    return fetchBase(`tabroom/rounds?slug=${slug}`);
 };
 
 export const loadTabroomStudents = async () => {
     return fetchBase(`tabroom/students`);
 };
 
-export const loadTabroomRounds = async (slug) => {
-    return fetchBase(`tabroom/rounds?slug=${slug}`);
-};
-
-export const addTabroomTeamLink = async (link) => {
-    return fetchBase(`tabroom/teams`, { method: 'POST' }, { link });
+export const addTabroomLink = async (slug) => {
+    return fetchBase(`tabroom/link`, { method: 'POST' }, { slug });
 };
 
 export const loadOpenEvFiles = async (year) => {

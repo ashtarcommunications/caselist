@@ -1,15 +1,17 @@
+import crypto from 'crypto';
 import log from '../log/insertEventLog';
 import config from '../../../config';
 import { debugLogger } from '../../helpers/logger';
 
-const postTabroomTeamLink = {
+const postTabroomLink = {
     POST: async (req, res) => {
-        let url = `${config.TABROOM_API_URL}`;
-        url += `/caselist/link?person_id=${req.user_id}`;
-        url += `&caselist_key=${config.TABROOM_CASELIST_KEY}`;
+        const url = `${config.TABROOM_API_URL}/caselist/link`;
+        const hash = crypto.createHash('sha256').update(config.TABROOM_CASELIST_KEY).digest('hex');
 
         const body = {
+            person_id: req.user_id,
             slug: req.body.slug,
+            caselist_key: hash,
         };
 
         try {
@@ -29,22 +31,22 @@ const postTabroomTeamLink = {
     },
 };
 
-postTabroomTeamLink.POST.apiDoc = {
-    summary: 'Creates a tabroom team link',
-    operationId: 'postTabroomTeamLink',
+postTabroomLink.POST.apiDoc = {
+    summary: 'Creates a tabroom link',
+    operationId: 'postTabroomLink',
     requestBody: {
         description: 'The link to create',
         required: true,
-        content: { '*/*': { schema: { $ref: '#/components/schemas/TabroomStudent' } } },
+        content: { '*/*': { schema: { $ref: '#/components/schemas/TabroomLink' } } },
     },
     responses: {
         201: {
             description: 'Created link',
-            content: { '*/*': { schema: { $ref: '#/components/schemas/TabroomStudent' } } },
+            content: { '*/*': { schema: { $ref: '#/components/schemas/TabroomLink' } } },
         },
         default: { $ref: '#/components/responses/ErrorResponse' },
     },
     security: [{ cookie: [] }],
 };
 
-export default postTabroomTeamLink;
+export default postTabroomLink;

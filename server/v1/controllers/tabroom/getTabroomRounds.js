@@ -1,11 +1,13 @@
+import crypto from 'crypto';
 import config from '../../../config';
 import { debugLogger } from '../../helpers/logger';
 
 const getTabroomRounds = {
     GET: async (req, res) => {
+        const hash = crypto.createHash('sha256').update(config.TABROOM_CASELIST_KEY).digest('hex');
         let url = `${config.TABROOM_API_URL}`;
         url += `/caselist/rounds?slug=${req.params.slug}`;
-        url += `&caselist_key=${config.TABROOM_CASELIST_KEY}`;
+        url += `&caselist_key=${hash}`;
 
         let rounds = [];
         try {
