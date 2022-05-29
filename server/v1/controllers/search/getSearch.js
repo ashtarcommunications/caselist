@@ -69,8 +69,8 @@ const getSearch = {
                     team: d.team?.[0],
                     team_display_name: d.team_display_name?.[0],
                     year: d.year?.[0],
-                    path: d.shard?.[0]?.includes('openev') ? `openev/${d.year?.[0]}` : `${d.caselist?.[0]}/${d.school?.[0]}/${d.team?.[0]}`,
-                    download_path: d.path?.[0],
+                    path: d.path?.[0],
+                    download_path: d.download_path?.[0],
                     title: d.title?.[0] || d.path?.[0]?.split('/')?.pop(),
                     snippet: json?.highlighting?.[d.id]?.content?.[0],
                 };

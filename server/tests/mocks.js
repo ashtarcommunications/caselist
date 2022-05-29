@@ -50,6 +50,7 @@ export const setupMocks = () => {
                     {
                         type: ['cite'],
                         id: '/ndtceda21/Northwestern/HaPa#1',
+                        cite_id: 1,
                         title: ['Cite Title'],
                         shard: ['ndtceda21'],
                         caselist: ['ndtceda21'],

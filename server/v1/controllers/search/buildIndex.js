@@ -12,7 +12,8 @@ export const buildIndex = async () => {
 
     const opensource = await query(SQL`
         SELECT
-            DISTINCT R.opensource AS 'path',
+            DISTINCT R.opensource AS 'download_path',
+            CONCAT(C.name, '/', S.name, '/', T.name) AS 'path',
             C.name AS 'shard',
             C.name AS 'caselist',
             C.display_name AS 'caselist_display_name',
@@ -30,7 +31,8 @@ export const buildIndex = async () => {
 
     const openev = await query(SQL`
         SELECT
-            DISTINCT O.path AS 'path',
+            DISTINCT O.path AS 'download_path',
+            CONCAT('openev', '/', O.year) AS 'path',
             O.year AS 'year',
             CONCAT('openev-', O.year) AS 'shard'
         FROM openev O
@@ -137,7 +139,7 @@ export const buildIndex = async () => {
             S.name AS 'school',
             C.name AS 'caselist',
             C.display_name AS 'caselist_display_name',
-            CONCAT(C.name, '/', S.name, '/', T.name) AS 'path'
+            CONCAT(C.name, '/', S.name, '/', T.name, '#', CT.cite_id) AS 'path'
         FROM cites CT
         INNER JOIN rounds R ON R.round_id = CT.round_id
         INNER JOIN teams T ON T.team_id = R.team_id

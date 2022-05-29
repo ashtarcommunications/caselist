@@ -36,7 +36,7 @@ const SearchForm = () => {
 
     return (
         <form onSubmit={handleSearch} className={`pure-form ${styles.search} ${isMobile && styles.mobile}`}>
-            <input type="text" value={q} placeholder="Search" onChange={handleChangeInput} required minLength={3} />
+            <input type="search" value={q} placeholder="Search" onChange={handleChangeInput} required minLength={3} />
             <button className={`pure-button ${styles.submit}`} type="submit" disabled={!q || q?.length < 3}>
                 <FontAwesomeIcon icon={faSearch} />
             </button>

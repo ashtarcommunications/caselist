@@ -46,7 +46,7 @@ const SearchResults = () => {
 
             {
                 results.map(r => (
-                    <div key={r.team_id || r.path}>
+                    <div key={r.team_id || r.download_path || r.path}>
                         <h2>
                             <Link to={`/${r.path}`}>
                                 {
@@ -61,12 +61,12 @@ const SearchResults = () => {
                                 }
                             </Link>
                         </h2>
-                        {r.type === 'cite' && <p>Cite: {r.title}</p>}
+                        {r.type === 'cite' && <p>Cite: <Link to={`${r.path}`}>{r.title}</Link></p>}
                         {
                             r.type === 'file' &&
                             <p>
                                 <span>File: </span>
-                                <DownloadFile path={r.path} text={r.title} />
+                                <DownloadFile path={r.download_path} text={r.title} />
                             </p>
                         }
                         {r.snippet && <p className={styles.snippet}>{r.snippet}</p>}

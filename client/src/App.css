@@ -83,6 +83,10 @@ label {
     margin-top: 20px;
 }
 
+.pure-form input {
+  line-height: normal;
+}
+
 /* react-widget modifications */
 .rw-widget,
 .rw-widget div,
