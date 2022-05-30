@@ -10,6 +10,7 @@ import { sortBy } from 'lodash';
 import { useStore } from '../helpers/store';
 import { addTeam, loadTabroomStudents } from '../helpers/api';
 import { useDeviceDetect } from '../helpers/mobile';
+import { alphanumericDash } from '../helpers/common';
 import ConfirmButton from '../helpers/ConfirmButton';
 import Error from '../layout/Error';
 
@@ -31,7 +32,7 @@ const AddTeam = () => {
         reset,
         control,
         setValue,
-        formState: { isValid },
+        formState: { errors, isValid },
     } = useForm({
         mode: 'all',
         defaultValues: {
@@ -183,7 +184,16 @@ const AddTeam = () => {
                                 <Controller
                                     control={control}
                                     name={`debater${i + 1}_first`}
-                                    rules={{ required: true, minLength: 2 }}
+                                    rules={
+                                        {
+                                            required: true,
+                                            minLength: 2,
+                                            validate: {
+                                                alphanumericDash: v => alphanumericDash.test(v) || 'Only letters and numbers allowed',
+                                                length: v => v.length === v.trim().length || 'No leading/trailing spaces allowed',
+                                            },
+                                        }
+                                    }
                                     render={
                                         ({
                                             field: { onChange, onBlur, value },
@@ -219,7 +229,16 @@ const AddTeam = () => {
                                 <Controller
                                     control={control}
                                     name={`debater${i + 1}_last`}
-                                    rules={{ required: true, minLength: 2 }}
+                                    rules={
+                                        {
+                                            required: true,
+                                            minLength: 2,
+                                            validate: {
+                                                alphanumericDash: v => alphanumericDash.test(v) || 'Only letters and numbers allowed',
+                                                length: v => v.length === v.trim().length || 'No leading/trailing spaces allowed',
+                                            },
+                                        }
+                                    }
                                     render={
                                         ({
                                             field: { onChange, onBlur, value },
@@ -282,6 +301,11 @@ const AddTeam = () => {
                 {
                     showWarning &&
                     <p className={styles.warning}>Please use title case for debater names</p>
+                }
+                {
+                    Object.keys(errors).map(e => (
+                        <p key={e} className={styles.warning}>{errors[e]?.message}</p>
+                    ))
                 }
                 <button className={`${styles['add-team-button']} pure-button`} type="submit" disabled={!isValid}>Add</button>
             </form>

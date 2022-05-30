@@ -119,6 +119,7 @@ const EditRound = () => {
                     <input
                         name="tournament"
                         type="text"
+                        maxLength={255}
                         {...register('tournament', { required: true })}
                     />
                 </div>
@@ -172,6 +173,7 @@ const EditRound = () => {
                     <input
                         name="opponent"
                         type="text"
+                        maxLength={255}
                         {...register('opponent')}
                         disabled={watchFields.tournament === 'All Tournaments'}
                     />
@@ -182,6 +184,7 @@ const EditRound = () => {
                     <input
                         name="judge"
                         type="text"
+                        maxLength={255}
                         {...register('judge')}
                         disabled={watchFields.tournament === 'All Tournaments'}
                     />
@@ -215,7 +218,8 @@ const EditRound = () => {
                     </label>
                     <input
                         name="video"
-                        type="text"
+                        type="url"
+                        maxLength={2000}
                         {...register('video')}
                         disabled={watchFields.tournament === 'All Tournaments'}
                     />

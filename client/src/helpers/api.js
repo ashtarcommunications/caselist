@@ -145,5 +145,5 @@ export const downloadFile = async (path) => {
 };
 
 export const loadSearch = async (q, shard) => {
-    return fetchBase(`search?q=${encodeURI(q)}&shard=${encodeURI(shard)}`);
+    return fetchBase(`search?q=${encodeURI(q)}&shard=${encodeURI(shard)}`, { maxRetries: 0 });
 };

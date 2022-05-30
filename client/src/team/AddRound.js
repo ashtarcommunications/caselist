@@ -274,7 +274,9 @@ const AddRound = () => {
                     <label htmlFor="opponent">Opponent</label>
                     <input
                         name="opponent"
+                        className={errors?.opponent && styles.error}
                         type="text"
+                        maxLength={255}
                         {...register('opponent')}
                         disabled={watchFields.tournament === 'All Tournaments'}
                     />
@@ -285,6 +287,7 @@ const AddRound = () => {
                     <input
                         name="judge"
                         type="text"
+                        maxLength={255}
                         {...register('judge')}
                         disabled={watchFields.tournament === 'All Tournaments'}
                     />
@@ -318,7 +321,8 @@ const AddRound = () => {
                     </label>
                     <input
                         name="video"
-                        type="text"
+                        type="url"
+                        maxLength={2000}
                         {...register('video')}
                         disabled={watchFields.tournament === 'All Tournaments'}
                     />

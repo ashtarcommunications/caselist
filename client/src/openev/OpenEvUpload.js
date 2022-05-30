@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { addOpenEvFile } from '../helpers/api';
 import { useDeviceDetect } from '../helpers/mobile';
 import { useStore } from '../helpers/store';
-import { notTitleCase, campAbbreviations, campDisplayName, tagAbbreviations } from '../helpers/common';
+import { alphanumeric, alphanumericDash, notTitleCase, campAbbreviations, campDisplayName, tagAbbreviations } from '../helpers/common';
 
 import Dropzone from '../team/Dropzone';
 import UploadedFiles from '../team/UploadedFiles';
@@ -131,11 +131,20 @@ const OpenEvUpload = () => {
                     <input
                         name="title"
                         type="text"
-                        {...register('title', { required: true })}
+                        {
+                            ...register('title', {
+                                required: true,
+                                validate: { alphanumericDash: v => alphanumericDash.test(v) || 'Only letters and numbers allowed' },
+                            })
+                        }
                     />
                     {
                         notTitleCase.test(watchFields.title) &&
                         <p className={styles.warning}>Please use title case</p>
+                    }
+                    {
+                        errors.title &&
+                        <p className={styles.warning}>{errors.title?.message}</p>
                     }
                 </div>
 
@@ -164,11 +173,21 @@ const OpenEvUpload = () => {
                         name="lab"
                         type="text"
                         {...register('lab')}
+                        {
+                            ...register('lab', {
+                                required: false,
+                                validate: { alphanumeric: v => !v || alphanumeric.test(v) || 'Only letters and numbers allowed' },
+                            })
+                        }
                     />
                     {
                         watchFields.lab
                         && watchFields.lab !== watchFields.lab?.toUpperCase()
                         && <p className={styles.warning}>Lab initials should be in all caps</p>
+                    }
+                    {
+                        errors.lab &&
+                        <p className={styles.warning}>{errors.lab?.message}</p>
                     }
                 </div>
 

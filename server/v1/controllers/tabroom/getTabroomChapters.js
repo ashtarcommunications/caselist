@@ -39,6 +39,7 @@ getTabroomChapters.GET.apiDoc = {
         },
         default: { $ref: '#/components/responses/ErrorResponse' },
     },
+    security: [{ cookie: [] }],
 };
 
 export default getTabroomChapters;

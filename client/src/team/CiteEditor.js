@@ -20,6 +20,7 @@ const CiteEditor = ({ item, index, register, control, remove }) => {
                     <label htmlFor={`cites.${index}.title`}>Cite Title</label>
                     <input
                         id={`cites.${index}.title`}
+                        maxLength={255}
                         {...register(`cites.${index}.title`)}
                         type="text"
                         defaultValue={cites?.[index]?.title}

@@ -1,14 +1,30 @@
 import { fetch } from '@speechanddebate/nsda-js-utils';
 import SQL from 'sql-template-strings';
+import rateLimiter from 'express-rate-limit';
 import { query } from '../../helpers/mysql';
 import config from '../../../config';
 import { debugLogger } from '../../helpers/logger';
+
+const searchLimiter = rateLimiter({
+    windowMs: 60 * 1000, // 1 minute
+    max: 2, // limit each user to 2 searches/minute
+    keyGenerator: (req) => (req.user_id ? req.user_id : req.ip),
+    handler: (req, res) => {
+        debugLogger.info(`2 searches/1m rate limit enforced on user ${req.user_id}`);
+        res.status(429).send({ message: 'You can only run 2 searches per minute. Wait and try again.' });
+    },
+    skip: req => req.method === 'OPTIONS',
+});
 
 const getSearch = {
     GET: async (req, res) => {
         const q = req.query.q?.trim();
         const shard = req.query.shard?.trim();
         const like = `%${q}%`;
+
+        if (q.match(/[|~^;?!&%$*+=]/)) {
+            return res.status(400).json({ message: 'Invalid search query' });
+        }
 
         const teamSQL = (SQL`
             SELECT
@@ -85,6 +101,7 @@ const getSearch = {
 
         return res.status(200).json(combinedResults);
     },
+    'x-express-openapi-additional-middleware': [searchLimiter],
 };
 
 getSearch.GET.apiDoc = {
@@ -112,6 +129,7 @@ getSearch.GET.apiDoc = {
         },
         default: { $ref: '#/components/responses/ErrorResponse' },
     },
+    security: [{ cookie: [] }],
 };
 
 export default getSearch;

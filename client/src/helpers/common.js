@@ -2,6 +2,10 @@ export const notTitleCase = /\b[a-z]/;
 
 export const alpha = /^[a-zA-Z ]+$/;
 
+export const alphanumeric = /^[a-zA-Z0-9 ]+$/;
+
+export const alphanumericDash = /^[a-zA-Z0-9 -]+$/;
+
 export const campAbbreviations = {
     BDPW: 'Baylor',
     CNDI: 'Berkeley (CNDI)',

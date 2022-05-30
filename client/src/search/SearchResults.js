@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { loadSearch } from '../helpers/api';
 
@@ -27,6 +28,7 @@ const SearchResults = () => {
             } catch (err) {
                 setFetching(false);
                 setResults([]);
+                toast.error(err.message);
                 console.log(err);
             }
         };

@@ -12,7 +12,7 @@ import { ProvideStore } from './helpers/store';
 import { history } from './helpers/api';
 
 import Layout from './layout/Layout';
-import ScrollToTop from './layout/ScrollToTop';
+import ScrollToTopOrAnchor from './layout/ScrollToTopOrAnchor';
 import ErrorBoundary from './layout/ErrorBoundary';
 
 import Markdown from './layout/Markdown';
@@ -42,7 +42,7 @@ const App = () => {
     return (
         <ProvideAuth>
             <Router history={history}>
-                <ScrollToTop history={history} />
+                <ScrollToTopOrAnchor history={history} />
                 <ProvideStore>
                     <ErrorBoundary>
                         <Routes>

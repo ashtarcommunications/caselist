@@ -39,6 +39,8 @@ getFiles.GET.apiDoc = {
         },
         default: { $ref: '#/components/responses/ErrorResponse' },
     },
+    security: [{ cookie: [] }],
+
 };
 
 export default getFiles;

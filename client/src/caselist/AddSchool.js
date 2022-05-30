@@ -7,7 +7,7 @@ import { sortBy } from 'lodash';
 
 import { useStore } from '../helpers/store';
 import { loadTabroomChapters, addSchool } from '../helpers/api';
-import { notTitleCase, alpha } from '../helpers/common';
+import { notTitleCase, alphanumericDash } from '../helpers/common';
 import Error from '../layout/Error';
 import StatesDropdown from './StatesDropdown';
 
@@ -58,7 +58,11 @@ const AddSchool = () => {
             const chapter = chapters.find(c => c.name === data.name);
             const newSchool = await addSchool(
                 caselist,
-                { displayName: data.name, state: data.state, chapter_id: chapter?.id || null },
+                {
+                    displayName: data.name,
+                    state: data.state || null,
+                    chapter_id: chapter?.id || null,
+                },
             );
             fetchSchools(caselist);
             reset({}, { keepDefaultValues: true });
@@ -126,7 +130,7 @@ const AddSchool = () => {
                                 )
                                     || 'Invalid school name, use a short version without a school designation',
                                 titleCase: v => !notTitleCase.test(v) || 'School name should be title case',
-                                alpha: v => alpha.test(v) || 'Only letters allowed',
+                                alphanumericDash: v => alphanumericDash.test(v) || 'Only letters and numbers allowed',
                                 length: v => v.length === v.trim().length || 'No leading/trailing spaces allowed',
                             },
                         }
