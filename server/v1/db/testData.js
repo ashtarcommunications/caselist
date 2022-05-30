@@ -5,11 +5,11 @@ const years = [2017, 2018, 2019, 2020];
 years.forEach(async (y) => {
     await query(SQL`
         INSERT INTO caselists (name, display_name, year, event, level, team_size, archived) VALUES
-            ('ndtceda${y}', 'NDT/CEDA ${y}', ${y}, 'cx', 'college', 2, 1),
-            ('hspolicy${y}', 'HS Policy ${y}', ${y}, 'cx', 'hs', 2, 1),
-            ('hsld${y}', 'HS LD ${y}', ${y}, 'ld', 'hs', 1, 1),
-            ('hspf${y}', 'HS PF ${y}', ${y}, 'pf', 'hs', 2, 1),
-            ('nfald${y}', 'NFA LD ${y}', ${y}, 'ld', 'college', 1, 1);
+            ('ndtceda${y.toString().slice(-2)}', 'NDT/CEDA ${y}', ${y}, 'cx', 'college', 2, 1),
+            ('hspolicy${y.toString().slice(-2)}', 'HS Policy ${y}', ${y}, 'cx', 'hs', 2, 1),
+            ('hsld${y.toString().slice(-2)}', 'HS LD ${y}', ${y}, 'ld', 'hs', 1, 1),
+            ('hspf${y.toString().slice(-2)}', 'HS PF ${y}', ${y}, 'pf', 'hs', 2, 1),
+            ('nfald${y.toString().slice(-2)}', 'NFA LD ${y}', ${y}, 'ld', 'college', 1, 1);
     `);
 });
 

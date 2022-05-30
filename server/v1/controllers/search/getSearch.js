@@ -33,6 +33,7 @@ const getSearch = {
                 T.name AS 'team',
                 T.display_name AS 'team_display_name',
                 S.name AS 'school',
+                S.display_name AS 'school_display_name',
                 C.name AS 'caselist',
                 C.display_name AS 'caselist_display_name',
                 CONCAT(C.name, '/', S.name, '/', T.name) AS 'path'
@@ -41,7 +42,7 @@ const getSearch = {
             INNER JOIN caselists C ON C.caselist_id = S.caselist_id
         `);
         teamSQL.append(SQL`
-            WHERE T.display_name LIKE ${like}
+            WHERE (T.display_name LIKE ${like} OR T.debater1_last LIKE ${like} OR T.debater2_last LIKE ${like})
         `);
         if (shard) {
             teamSQL.append(SQL`
@@ -57,7 +58,7 @@ const getSearch = {
             if (shard) {
                 URL += `&fq=shard:${shard}`; // Shard to search in
             }
-            URL += `&fl=id,shard,type,caselist,caselist_display_name,school,team,team_display_name,title,year,path`; // Fields to return
+            URL += `&fl=id,shard,type,caselist,caselist_display_name,school,school_display_name,team,team_id,team_display_name,cite_id,title,year,path,download_path`; // Fields to return
             URL += `&indent=false`; // Don't format JSON to save whitespace
             URL += `&q.op=OR`; // Search operator
             URL += `&rows=100&start=0`; // Rows to return
@@ -70,6 +71,8 @@ const getSearch = {
             URL += `&hl.mergeContiguous=true`; // Merge multiple snippets into one
             URL += `&hl.maxAnalyzedChars=1000000`; // Increase the number of analyzed characters for long files
             URL += `&hl.defaultSummary=true`; // Return leading text if it can't highlight
+            URL += `&hl.tag.pre=<b>`; // Opening tag for highlight
+            URL += `&hl.tag.post=</b>`; // Closing tag for highlight
             URL += `&q=${encodeURIComponent(q)}`; // Search query
 
             const response = await fetch(URL, { headers: { Accept: 'application/json' } });
@@ -77,16 +80,19 @@ const getSearch = {
 
             solr = json?.response?.docs?.map(d => {
                 return {
-                    type: d.type?.[0],
                     shard: d.shard?.[0],
+                    year: d.year?.[0],
+                    type: d.type?.[0],
                     caselist: d.caselist?.[0],
                     caselist_display_name: d.caselist_display_name?.[0],
                     school: d.school?.[0],
+                    school_display_name: d.school_display_name?.[0],
                     team: d.team?.[0],
+                    team_id: d.team_id?.[0],
                     team_display_name: d.team_display_name?.[0],
-                    year: d.year?.[0],
                     path: d.path?.[0],
                     download_path: d.download_path?.[0],
+                    cite_id: d.cite_id?.[0],
                     title: d.title?.[0] || d.path?.[0]?.split('/')?.pop(),
                     snippet: json?.highlighting?.[d.id]?.content?.[0],
                 };
@@ -95,7 +101,6 @@ const getSearch = {
             debugLogger.info(err.message);
             solr = [];
         }
-        console.log(solr);
 
         const combinedResults = [...teams, ...solr];
 
@@ -110,14 +115,15 @@ getSearch.GET.apiDoc = {
     parameters: [
         {
             in: 'query',
-            name: 'shard',
-            description: 'Shard to search in',
+            name: 'q',
+            description: 'Search query',
+            required: true,
             schema: { type: 'string' },
         },
         {
             in: 'query',
-            name: 'q',
-            description: 'Search query',
+            name: 'shard',
+            description: 'Shard to search in',
             required: true,
             schema: { type: 'string' },
         },

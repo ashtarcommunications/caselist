@@ -22,6 +22,7 @@ export const buildIndex = async (killPool = false, recent = false) => {
             C.name AS 'caselist',
             C.display_name AS 'caselist_display_name',
             S.name AS 'school',
+            S.display_name AS 'school_display_name',
             T.name AS 'team',
             T.team_id AS 'team_id',
             T.display_name AS 'team_display_name',
@@ -96,12 +97,15 @@ export const buildIndex = async (killPool = false, recent = false) => {
             meta.caselist = file.caselist;
             meta.caselist_display_name = file.caselist_display_name;
             meta.school = file.school;
+            meta.school_display_name = file.school_display_name;
             meta.team = file.team;
             meta.team_display_name = file.team_display_name;
             meta.team_id = file.team_id;
             meta.round_id = file.round_id;
             meta.year = file.year;
             meta.path = file.path;
+            meta.download_path = file.download_path;
+            meta.title = file.download_path.split('/').pop();
         } catch (err) {
             solrLogger.error(`Failed to extract metadata for ${file.download_path}: ${err.message}`);
             continue;
@@ -157,13 +161,15 @@ export const buildIndex = async (killPool = false, recent = false) => {
             CT.cite_id,
             CT.round_id,
             CT.title,
-            CT.cites,
+            CT.cites AS 'content',
+            C.name AS 'shard',
+            C.name AS 'caselist',
+            C.display_name AS 'caselist_display_name',
+            S.name AS 'school',
+            S.display_name AS 'school_display_name',
             T.name AS 'team',
             T.team_id AS 'team_id',
             T.display_name AS 'team_display_name',
-            S.name AS 'school',
-            C.name AS 'caselist',
-            C.display_name AS 'caselist_display_name',
             CONCAT(C.name, '/', S.name, '/', T.name, '#', CT.cite_id) AS 'path'
         FROM cites CT
         INNER JOIN rounds R ON R.round_id = CT.round_id
@@ -183,7 +189,7 @@ export const buildIndex = async (killPool = false, recent = false) => {
 
     for (const cite of cites) {
         // Assemble the data for ingestion into Solr
-        const body = JSON.stringify([{ ...cite, id: `${cite.path}`, content: cite.cites }]);
+        const body = JSON.stringify([{ ...cite, id: `${cite.path}` }]);
 
         // Ingest cite into Solr
         try {
