@@ -1,4 +1,6 @@
 /* eslint-disable no-restricted-syntax, no-await-in-loop, no-continue */
+// Run from CLI like:
+// node --experimental-specifier-resolution=node -e 'import("./v1/controllers/search/buildIndex").then(m => m.buildIndex(true));'
 import fs from 'fs';
 import { fetch } from '@speechanddebate/nsda-js-utils';
 
@@ -7,7 +9,7 @@ import { pool, query } from '../../helpers/mysql';
 import config from '../../../config';
 import { solrLogger } from '../../helpers/logger';
 
-export const buildIndex = async () => {
+export const buildIndex = async (killPool = false) => {
     solrLogger.info('Starting reindex of Solr...');
 
     const opensource = await query(SQL`
@@ -44,21 +46,21 @@ export const buildIndex = async () => {
     const files = [...opensource, ...openev];
 
     for (const file of files) {
-        solrLogger.info(`Loading contents of ${file.path}...`);
+        solrLogger.info(`Loading contents of ${file.download_path}...`);
         let contents;
         try {
-            contents = fs.readFileSync(`${config.UPLOAD_DIR}/${file.path}`);
+            contents = fs.readFileSync(`${config.UPLOAD_DIR}/${file.download_path}`);
         } catch (err) {
-            solrLogger.error(`Failed to load ${file.path}: ${err.message}`);
+            solrLogger.error(`Failed to load ${file.download_path}: ${err.message}`);
             continue;
         }
 
         // Extract the file metadata with Tika
-        solrLogger.info(`Extracting metadata for ${file.path}...`);
+        solrLogger.info(`Extracting metadata for ${file.download_path}...`);
         let meta;
         try {
             const response = await fetch(
-                'http://localhost:9998/meta',
+                config.TIKA_META_URL,
                 {
                     method: 'PUT',
                     headers: {
@@ -80,16 +82,16 @@ export const buildIndex = async () => {
             meta.year = file.year;
             meta.path = file.path;
         } catch (err) {
-            solrLogger.error(`Failed to extract metadata for ${file.path}: ${err.message}`);
+            solrLogger.error(`Failed to extract metadata for ${file.download_path}: ${err.message}`);
             continue;
         }
 
         // Extract the text content of the file with Tika
-        solrLogger.info(`Extracting text content for ${file.path}...`);
+        solrLogger.info(`Extracting text content for ${file.download_path}...`);
         let textContents;
         try {
             const text = await fetch(
-                'http://localhost:9998/tika',
+                config.TIKA_URL,
                 {
                     method: 'PUT',
                     headers: {
@@ -100,18 +102,18 @@ export const buildIndex = async () => {
             );
             textContents = await text.text();
         } catch (err) {
-            solrLogger.error(`Failed to extract text content for ${file.path}: ${err.message}`);
+            solrLogger.error(`Failed to extract text content for ${file.download_path}: ${err.message}`);
             continue;
         }
 
         // Assemble the data for ingestion into Solr
-        const body = JSON.stringify([{ ...meta, id: file.path, content: textContents }]);
+        const body = JSON.stringify([{ ...meta, id: file.download_path, content: textContents }]);
 
         // Ingest into Solr
-        solrLogger.info(`Ingesting ${file.path} into Solr...`);
+        solrLogger.info(`Ingesting ${file.download_path} into Solr...`);
         try {
             await fetch(
-                'http://localhost:8983/solr/caselist/update?commit=true',
+                config.SOLR_UPDATE_URL,
                 {
                     method: 'POST',
                     headers: {
@@ -120,9 +122,9 @@ export const buildIndex = async () => {
                     body,
                 }
             );
-            solrLogger.info(`Successfully ingested ${file.path} into Solr...`);
+            solrLogger.info(`Successfully ingested ${file.download_path} into Solr...`);
         } catch (err) {
-            solrLogger.error(`Failed to ingest ${file.path} into Solr: ${err.message}`);
+            solrLogger.error(`Failed to ingest ${file.download_path} into Solr: ${err.message}`);
             continue;
         }
     }
@@ -151,12 +153,12 @@ export const buildIndex = async () => {
 
     for (const cite of cites) {
         // Assemble the data for ingestion into Solr
-        const body = JSON.stringify([{ ...cite, id: `${cite.path}#${cite.cite_id}`, content: cite.cites }]);
+        const body = JSON.stringify([{ ...cite, id: `${cite.path}`, content: cite.cites }]);
 
         // Ingest cite into Solr
         try {
             await fetch(
-                'http://localhost:8983/solr/caselist/update?commit=true',
+                config.SOLR_UPDATE_URL,
                 {
                     method: 'POST',
                     headers: {
@@ -171,8 +173,10 @@ export const buildIndex = async () => {
         }
     }
 
+    if (killPool) {
+        pool.end();
+    }
     solrLogger.info('Finished reindex of Solr.');
-    pool.end();
 };
 
 export default buildIndex;

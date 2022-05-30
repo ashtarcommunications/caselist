@@ -44,7 +44,7 @@ const SearchResults = () => {
                 <p>No results found.</p>
             }
 
-            <p>{results.length} results found</p>
+            {results.length > 0 && <p>{results.length} results found</p>}
             {
                 results.map(r => (
                     <div key={r.team_id || r.download_path || r.path}>

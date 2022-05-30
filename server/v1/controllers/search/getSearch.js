@@ -37,11 +37,11 @@ const getSearch = {
         let solr = [];
         try {
             let URL = config.SOLR_QUERY_URL;
-            URL += `df=content,title,path`; // Search fields
+            URL += `df=content`; // Default search field
             if (shard) {
                 URL += `&fq=shard:${shard}`; // Shard to search in
             }
-            URL += `&fl=id,shard,type,caselist,caselist_display_name,school,team,team_display_name,year,path`; // Fields to return
+            URL += `&fl=id,shard,type,caselist,caselist_display_name,school,team,team_display_name,title,year,path`; // Fields to return
             URL += `&indent=false`; // Don't format JSON to save whitespace
             URL += `&q.op=OR`; // Search operator
             URL += `&rows=100&start=0`; // Rows to return
@@ -74,11 +74,12 @@ const getSearch = {
                     title: d.title?.[0] || d.path?.[0]?.split('/')?.pop(),
                     snippet: json?.highlighting?.[d.id]?.content?.[0],
                 };
-            });
+            }) || [];
         } catch (err) {
             debugLogger.info(err.message);
             solr = [];
         }
+        console.log(solr);
 
         const combinedResults = [...teams, ...solr];
 

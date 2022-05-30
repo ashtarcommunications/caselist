@@ -6,7 +6,6 @@ envconfig();
 // Default (Dev config)
 const config = {
     PORT: 10010,
-    SOLR_QUERY_URL: `http://localhost:8983/solr/caselist/select?`,
     SLOWDOWN_RATE_WINDOW: 15 * 60 * 1000,
     SLOWDOWN_RATE_AFTER: 1000,
     SLOWDOWN_RATE_DELAY: 500,
@@ -31,6 +30,11 @@ const config = {
     TABROOM_CASELIST_KEY: 'caselist-key',
     S3_BUCKET: 'caselist-files',
     UPLOAD_DIR: `${cwd()}/uploads`, // No trailing slash
+    SOLR_QUERY_URL: `http://localhost:8983/solr/caselist/select?`, // Trailing ?
+    SOLR_UPDATE_URL: 'http://localhost:8983/solr/caselist/update?commit=true',
+    TIKA_URL: 'http://localhost:9998/tika',
+    TIKA_META_URL: 'http://localhost:9998/meta',
+    REBUILD_SOLR: false,
     ADMINS: [1],
 };
 

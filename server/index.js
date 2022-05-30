@@ -16,6 +16,8 @@ import errorHandler from './v1/helpers/error';
 import auth from './v1/helpers/auth';
 import { debugLogger, requestLogger, errorLogger } from './v1/helpers/logger';
 import { setupMocks } from './tests/mocks';
+import { deleteIndex } from './v1/controllers/search/deleteIndex';
+import { buildIndex } from './v1/controllers/search/buildIndex';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,6 +30,12 @@ debugLogger.info('Initializing API...');
 // Use mocks for external fetch requests in dev/test
 if (process.env.NODE_ENV !== 'production') {
     setupMocks();
+}
+
+// Optionally rebuild Solr index on startup, normally want to keep existing index
+if (config.REBUILD_SOLR) {
+    await deleteIndex();
+    await buildIndex();
 }
 
 // Enable Helmet security

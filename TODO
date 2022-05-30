@@ -1,13 +1,11 @@
 # Server
-Index from scratch script
-Delete index in re-indexing script
 Add to index on post
 Remove from index on delete
 Tests
 
 # Client
 Shard selector to search results
-Better search results page
+Better search results page, inc. snippet as HTML
 Tests
 
 # Misc
