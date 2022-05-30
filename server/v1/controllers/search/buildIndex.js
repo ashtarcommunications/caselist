@@ -1,6 +1,8 @@
 /* eslint-disable no-restricted-syntax, no-await-in-loop, no-continue */
 // Run from CLI like:
-// node --experimental-specifier-resolution=node -e 'import("./v1/controllers/search/buildIndex").then(m => m.buildIndex(true));'
+// node --experimental-specifier-resolution=node -e 'import("./v1/controllers/search/buildIndex").then(m => m.buildIndex(true, false));'
+// First parameter tells the script to kill the MySQL pool if running from the CLI
+// Second parameter tells the script to only index new documents/cites from the last hour
 import fs from 'fs';
 import { fetch } from '@speechanddebate/nsda-js-utils';
 
@@ -9,10 +11,10 @@ import { pool, query } from '../../helpers/mysql';
 import config from '../../../config';
 import { solrLogger } from '../../helpers/logger';
 
-export const buildIndex = async (killPool = false) => {
+export const buildIndex = async (killPool = false, recent = false) => {
     solrLogger.info('Starting reindex of Solr...');
 
-    const opensource = await query(SQL`
+    const opensourceSQL = (SQL`
         SELECT
             DISTINCT R.opensource AS 'download_path',
             CONCAT(C.name, '/', S.name, '/', T.name) AS 'path',
@@ -21,7 +23,9 @@ export const buildIndex = async (killPool = false) => {
             C.display_name AS 'caselist_display_name',
             S.name AS 'school',
             T.name AS 'team',
-            T.display_name AS 'team_display_name'
+            T.team_id AS 'team_id',
+            T.display_name AS 'team_display_name',
+            R.round_id AS 'round_id'
         FROM rounds R
         INNER JOIN teams T ON T.team_id = R.team_id
         INNER JOIN schools S ON S.school_id = T.school_id
@@ -29,9 +33,16 @@ export const buildIndex = async (killPool = false) => {
         WHERE R.opensource IS NOT NULL
     `);
 
+    if (recent) {
+        opensourceSQL.append(SQL`
+            AND R.updated_at >= DATE_SUB(CURRENT_TIMESTAMP, INTERVAL 1 HOUR)
+        `);
+    }
+    const opensource = await query(opensourceSQL);
+
     solrLogger.info(`Found ${opensource.length} open source files...`);
 
-    const openev = await query(SQL`
+    const openevSQL = (SQL`
         SELECT
             DISTINCT O.path AS 'download_path',
             CONCAT('openev', '/', O.year) AS 'path',
@@ -40,6 +51,14 @@ export const buildIndex = async (killPool = false) => {
         FROM openev O
         WHERE O.path IS NOT NULL
     `);
+
+    if (recent) {
+        openevSQL.append(SQL`
+            AND O.updated_at >= DATE_SUB(CURRENT_TIMESTAMP, INTERVAL 1 HOUR)
+        `);
+    }
+
+    const openev = await query(openevSQL);
 
     solrLogger.info(`Found ${openev.length} OpenEv files...`);
 
@@ -79,6 +98,8 @@ export const buildIndex = async (killPool = false) => {
             meta.school = file.school;
             meta.team = file.team;
             meta.team_display_name = file.team_display_name;
+            meta.team_id = file.team_id;
+            meta.round_id = file.round_id;
             meta.year = file.year;
             meta.path = file.path;
         } catch (err) {
@@ -130,13 +151,15 @@ export const buildIndex = async (killPool = false) => {
     }
 
     solrLogger.info(`Ingesting cites into Solr...`);
-    const cites = await query(SQL`
+    const citesSQL = (SQL`
         SELECT
             'cite' AS 'type',
             CT.cite_id,
+            CT.round_id,
             CT.title,
             CT.cites,
             T.name AS 'team',
+            T.team_id AS 'team_id',
             T.display_name AS 'team_display_name',
             S.name AS 'school',
             C.name AS 'caselist',
@@ -148,6 +171,13 @@ export const buildIndex = async (killPool = false) => {
         INNER JOIN schools S ON S.school_id = T.school_id
         INNER JOIN caselists C ON C.caselist_id = S.caselist_id
     `);
+
+    if (recent) {
+        citesSQL.append(SQL`
+            WHERE CT.updated_at >= DATE_SUB(CURRENT_TIMESTAMP, INTERVAL 1 HOUR)
+        `);
+    }
+    const cites = await query(citesSQL);
 
     solrLogger.info(`Found ${cites.length} cites...`);
 

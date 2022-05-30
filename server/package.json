@@ -35,6 +35,7 @@
     "ldap-authentication": "^2.2.7",
     "moment-timezone": "^0.5.25",
     "mysql2": "^1.6.5",
+    "node-cron": "^3.0.0",
     "sql-template-strings": "^2.2.2",
     "uuid": "^3.3.2",
     "winston": "^3.2.1",

@@ -1,11 +1,7 @@
 # Server
-Sanitize user inputs
-Add to index on post
-Remove from index on delete
 Tests
 
 # Client
-Sanitize user inputs
 Fix default search shard
 Shard selector to search results
 Better search results page, inc. snippet as HTML

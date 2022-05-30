@@ -1,6 +1,8 @@
 import SQL from 'sql-template-strings';
 import { query } from '../../helpers/mysql';
 import log from '../log/insertEventLog';
+import config from '../../../config';
+import { solrLogger } from '../../helpers/logger';
 
 const deleteCite = {
     DELETE: async (req, res) => {
@@ -59,7 +61,26 @@ const deleteCite = {
             cite_id: parseInt(req.params.cite),
         });
 
-        return res.status(200).json({ message: 'Cite successfully deleted' });
+        res.status(200).json({ message: 'Cite successfully deleted' });
+
+        // Delete cite from Solr - wait till after reponse to not slow down UI
+        try {
+            await fetch(
+                config.SOLR_UPDATE_URL,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ delete: { query: `cite_id:${req.params.cite}` } }),
+                }
+            );
+            solrLogger.info(`Removed cite ${req.params.cite} from Solr`);
+        } catch (err) {
+            solrLogger.info(`Failed to remove cite ${req.params.cite} from Solr: ${err.message}`);
+        }
+
+        return true;
     },
 };
 

@@ -5,7 +5,7 @@ import { fetch, startOfYear } from '@speechanddebate/nsda-js-utils';
 import config from '../../../config';
 import { query } from '../../helpers/mysql';
 import log from '../log/insertEventLog';
-import { debugLogger } from '../../helpers/logger';
+import { solrLogger, debugLogger } from '../../helpers/logger';
 
 const deleteFile = {
     DELETE: async (req, res) => {
@@ -29,22 +29,6 @@ const deleteFile = {
             return res.status(500).json({ message: 'Failed to delete file' });
         }
 
-        const body = JSON.stringify({ delete: { id: file.path } });
-        try {
-            await fetch(
-                'http://localhost:8983/solr/caselist/update?commit=true',
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body,
-                }
-            );
-        } catch (err) {
-            debugLogger.info(`Failed to remove ${file.path} from Solr`);
-        }
-
         await query(SQL`
             DELETE FROM openev WHERE openev_id = ${parseInt(req.params.id)}
         `);
@@ -55,7 +39,26 @@ const deleteFile = {
             description: `Deleted openev #${req.params.id} at ${file.path}`,
         });
 
-        return res.status(200).json({ message: 'File successfully deleted' });
+        res.status(200).json({ message: 'File successfully deleted' });
+
+        // Delete open ev document from Solr - wait till afer response to not slow down UI
+        try {
+            await fetch(
+                config.SOLR_UPDATE_URL,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ delete: { id: file.path } }),
+                }
+            );
+            solrLogger.info(`Removed ${file.path} from Solr`);
+        } catch (err) {
+            solrLogger.info(`Failed to remove ${file.path} from Solr: ${err.message}`);
+        }
+
+        return true;
     },
 };
 

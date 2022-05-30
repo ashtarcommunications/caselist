@@ -2,7 +2,7 @@ import SQL from 'sql-template-strings';
 import { fetch } from '@speechanddebate/nsda-js-utils';
 import fs from 'fs';
 import path from 'path';
-import { debugLogger } from '../../helpers/logger';
+import { solrLogger, debugLogger } from '../../helpers/logger';
 import config from '../../../config';
 import { query } from '../../helpers/mysql';
 import log from '../log/insertEventLog';
@@ -79,21 +79,6 @@ const deleteTeam = {
                 } catch (err) {
                     debugLogger.info(`Failed to rename ${r.opensource}`);
                 }
-            }
-            const body = JSON.stringify({ delete: { id: r.opensource } });
-            try {
-                await fetch(
-                    'http://localhost:8983/solr/caselist/update?commit=true',
-                    {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body,
-                    }
-                );
-            } catch (err) {
-                debugLogger.info(`Failed to remove ${r.opensource} from Solr`);
             }
         }
 
@@ -210,7 +195,26 @@ const deleteTeam = {
             team_id: team.team_id,
         });
 
-        return res.status(200).json({ message: 'Team successfully deleted' });
+        res.status(200).json({ message: 'Team successfully deleted' });
+
+        // Delete open source documents and cites from Solr - wait till after response to not slow down UI
+        try {
+            await fetch(
+                config.SOLR_UPDATE_URL,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ delete: { query: `team_id:${team.team_id}` } }),
+                }
+            );
+            solrLogger.info(`Removed open source and cites for team ${team.team_id} from Solr`);
+        } catch (err) {
+            solrLogger.info(`Failed to remove open source and cites for team ${team.team_id} from Solr: ${err.message}`);
+        }
+
+        return true;
     },
 };
 

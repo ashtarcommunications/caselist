@@ -6,7 +6,7 @@ import { fetch } from '@speechanddebate/nsda-js-utils';
 import config from '../../../config';
 import { query } from '../../helpers/mysql';
 import log from '../log/insertEventLog';
-import { debugLogger } from '../../helpers/logger';
+import { solrLogger, debugLogger } from '../../helpers/logger';
 
 const deleteRound = {
     DELETE: async (req, res) => {
@@ -37,21 +37,6 @@ const deleteRound = {
             } catch (err) {
                 debugLogger.info(`Failed to rename ${round.opensource}`);
             }
-        }
-        const body = JSON.stringify({ delete: { id: round.opensource } });
-        try {
-            await fetch(
-                'http://localhost:8983/solr/caselist/update?commit=true',
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body,
-                }
-            );
-        } catch (err) {
-            debugLogger.info(`Failed to remove ${round.opensource} from Solr`);
         }
 
         await query(SQL`
@@ -141,7 +126,26 @@ const deleteRound = {
             round_id: parseInt(req.params.round),
         });
 
-        return res.status(200).json({ message: 'Round successfully deleted' });
+        res.status(200).json({ message: 'Round successfully deleted' });
+
+        // Delete open source and cites from Solr - wait till after response to not slow down UI
+        try {
+            await fetch(
+                config.SOLR_UPDATE_URL,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ delete: { query: `round_id:${req.params.round}` } }),
+                }
+            );
+            solrLogger.info(`Removed open source and cites for round ${req.params.round} from Solr`);
+        } catch (err) {
+            solrLogger.info(`Failed to remove open source and cites for round ${req.params.round} from Solr: ${err.message}`);
+        }
+
+        return true;
     },
 };
 

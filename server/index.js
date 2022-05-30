@@ -1,4 +1,5 @@
 import express from 'express';
+import cron from 'node-cron';
 import helmet from 'helmet';
 import rateLimiter from 'express-rate-limit';
 import slowDown from 'express-slow-down';
@@ -33,10 +34,23 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // Optionally rebuild Solr index on startup, normally want to keep existing index
+// Also run a cron job to add new files/cites to Solr every hour
 if (config.REBUILD_SOLR) {
-    await deleteIndex();
-    await buildIndex();
+    try {
+        await deleteIndex();
+        await buildIndex(false, false);
+    } catch (err) {
+        debugLogger.error(err.message);
+    }
 }
+cron.schedule('5 * * * *', async () => {
+    debugLogger.info('Ingesting recent files and cites into Solr...');
+    try {
+        await buildIndex(false, true);
+    } catch (err) {
+        debugLogger.error(err.message);
+    }
+});
 
 // Enable Helmet security
 app.use(helmet());
