@@ -11,6 +11,10 @@
     margin-top: 20px;
 }
 
+.login label {
+    text-align: left;
+}
+
 .button {
     margin-top: 20px;
     background-color: var(--green);
@@ -21,4 +25,17 @@
     width: 200px;
     margin-left: auto;
     margin-right: auto;
+}
+
+.remember {
+    font-size: 12px;
+}
+
+.error {
+    color: var(--red);
+    font-size: 14px;
+}
+
+.invalid {
+    border: 1px solid var(--red) !important;
 }

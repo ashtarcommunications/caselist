@@ -26,8 +26,8 @@ const config = {
     DB_CONNECTION_TIMEOUT: 60000,
     DB_RETRIES: 5,
     DB_RETRY_DELAY: 100,
-    LDAP_URL: 'ldap://localhost:6363',
-    TABROOM_API_URL: 'http://localhost:10011/v1',
+    LDAP_URL: 'ldaps://localhost:6363',
+    TABROOM_API_URL: 'http://localhost:10011/v1', // No trailing slash
     TABROOM_CASELIST_KEY: 'caselist-key',
     S3_BUCKET: 'caselist-files',
     UPLOAD_DIR: `${cwd()}/uploads`, // No trailing slash

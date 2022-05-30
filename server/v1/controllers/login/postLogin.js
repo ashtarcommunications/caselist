@@ -3,14 +3,24 @@ import crypto from 'crypto';
 import SQL from 'sql-template-strings';
 import { query } from '../../helpers/mysql';
 import config from '../../../config';
+import { debugLogger } from '../../helpers/logger';
 
 const postLogin = {
     POST: async (req, res) => {
         const username = req.body.username.trim();
         const password = req.body.password;
+        const remember = req.body.remember;
 
-        // TODO - figure out how to mock this
+        const ldapErrors = {
+            ECONNREFUSED: 'Failed to connect to Tabroom',
+            ERR_ASSERTION: 'Failed to provide username and password',
+            ENOTFOUND: 'Failed to connect to Tabroom',
+            49: 'Invalid username or password',
+            80: 'Failed to connect to Tabroom',
+        };
+
         let auth = authenticate;
+
         if (process.env.NODE_ENV !== 'production') {
             auth = () => {
                 return {
@@ -20,7 +30,7 @@ const postLogin = {
                 };
             };
         }
-        // TODO - figure out error handling with correct codes
+
         let user;
         try {
             user = await auth({
@@ -32,12 +42,8 @@ const postLogin = {
                 username,
             });
         } catch (err) {
-            console.log(`LDAP error: ${err}`);
-            return res.status(401).json({ message: 'Invalid username or password' });
-            // return res.status(500).json({
-            //     message: 'Failure with authentication service',
-            //     error: err
-            // });
+            debugLogger.info(`LDAP error ${err.code}: ${err}`);
+            return res.status(401).json({ message: ldapErrors[err.code] || 'Error connecting to Tabroom' });
         }
 
         if (!user || !user.uidNumber) {
@@ -45,7 +51,7 @@ const postLogin = {
         }
 
         const nonce = crypto.randomBytes(16).toString('hex');
-        const hash = crypto.createHash('sha512').update(nonce).digest('hex');
+        const hash = crypto.createHash('sha256').update(nonce).digest('hex');
 
         await query(SQL`
             INSERT INTO users (user_id, email, display_name)
@@ -55,13 +61,15 @@ const postLogin = {
 
         await query(SQL`
             INSERT INTO sessions (token, user_id, ip, expires_at)
-            VALUES (${hash}, ${user.uidNumber}, ${req.ip}, DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 1 MONTH))
+            VALUES (${hash}, ${user.uidNumber}, ${req.ip}, DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 2 WEEK))
         `);
 
-        res.cookie('caselist_token', nonce, { maxAge: 1209600000, httpOnly: false, path: '/' });
+        // Expire cookies in 2 weeks if "remember me" is checked, otherwise default to session cookie
+        // Express sets maxAge in milliseconds, not seconds
+        res.cookie('caselist_token', nonce, { maxAge: remember ? (1000 * 60 * 60 * 24 * 14) : undefined, httpOnly: false, path: '/' });
 
         if (config.ADMINS?.includes(user.uidNumber)) {
-            res.cookie('caselist_admin', true, { maxAge: 1209600000, httpOnly: false, path: '/' });
+            res.cookie('caselist_admin', true, { maxAge: remember ? (1000 * 60 * 60 * 24 * 14) : undefined, httpOnly: false, path: '/' });
         }
 
         return res.status(201).json({ message: 'Successfully logged in', token: nonce });
@@ -79,7 +87,7 @@ postLogin.POST.apiDoc = {
     responses: {
         201: {
             description: 'Logged in',
-            content: { '*/*': { schema: { $ref: '#/components/schemas/School' } } },
+            content: { '*/*': { schema: { $ref: '#/components/schemas/Login' } } },
         },
         default: { $ref: '#/components/responses/ErrorResponse' },
     },

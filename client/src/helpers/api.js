@@ -26,15 +26,14 @@ export const fetchBase = async (path, options = {}, body = {}) => {
         return options.raw ? response : response.json();
     } catch (err) {
         if (err.statusCode === 401) {
-            history.push('/login');
-            return false;
+            history.push('/');
         }
         throw err;
     }
 };
 
-export const login = async (username, password) => {
-    return fetchBase(`login`, { method: 'POST' }, { username, password });
+export const login = async (username, password, remember) => {
+    return fetchBase(`login`, { method: 'POST' }, { username, password, remember });
 };
 
 export const loadCaselists = async (archived) => {

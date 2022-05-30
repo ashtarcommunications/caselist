@@ -3,6 +3,7 @@ const Login = {
     properties: {
         username: { type: 'string' },
         password: { type: 'string' },
+        remember: { type: 'boolean' },
     },
 };
 

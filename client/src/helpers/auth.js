@@ -11,14 +11,15 @@ export const useAuth = () => {
     const admin = Cookies.get('caselist_admin');
     if (token && !user?.loggedIn) { setUser({ loggedIn: true, token, admin }); }
 
-    const handleLogin = async (username, password) => {
+    const handleLogin = async (username, password, remember) => {
         try {
-            const response = await login(username, password);
-            // Cookies.set('caselist_token', response.token);
+            const response = await login(username, password, remember);
             setUser({ loggedIn: true, token: response.token });
+            return true;
         } catch (err) {
             console.log(err);
             setUser({ loggedIn: false, token: null });
+            throw err;
         }
     };
 
@@ -26,6 +27,7 @@ export const useAuth = () => {
         try {
             Cookies.set('caselist_token', '', { HttpOnly: false });
             Cookies.remove('caselist_token');
+            Cookies.remove('caselist_admin');
             setUser({ loggedIn: false, token: null });
         } catch (err) {
             console.log(err);

@@ -1,8 +1,13 @@
 # Server
+Index from scratch script
+Delete index in re-indexing script
+Add to index on post
+Remove from index on delete
 Tests
 
 # Client
-Full-text search, inc. per caselist, re-indexing and removal from index
+Shard selector to search results
+Better search results page
 Tests
 
 # Misc

@@ -4,7 +4,7 @@ import { query } from './mysql';
 import { debugLogger } from './logger';
 
 const auth = async (req) => {
-    const hash = crypto.createHash('sha512').update(req.cookies.caselist_token).digest('hex');
+    const hash = crypto.createHash('sha256').update(req.cookies.caselist_token).digest('hex');
     const sql = (SQL`
         SELECT * FROM sessions WHERE token = ${hash}
     `);
