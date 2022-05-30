@@ -10,7 +10,7 @@ import styles from './CaselistHome.module.css';
 const CaselistHome = () => {
     const { caselistData } = useStore();
 
-    const markdown = '# # This would create Heading 1 - For Pocket/Title\n## ## This would create Heading 2 - Hat/Section\n### ### This would create Heading 3 - Block Title/Argument Title\n#### #### This would create Heading 4 - Tag';
+    const markdown = '# # This would create Heading 1 - Pocket/Title\n## ## This would create Heading 2 - Hat/Section\n### ### This would create Heading 3 - Block Title/Argument Title\n#### #### This would create Heading 4 - Tag';
 
     if (caselistData.message) {
         return <Error statusCode={caselistData.statusCode} message={caselistData.message} />;
@@ -25,14 +25,9 @@ const CaselistHome = () => {
                     debate community.
                 </p>
 
-                <p>To add a school, use the button on the sidebar.</p>
-
                 <h2>How to use this site</h2>
 
-                <p>
-                    You can create cites in markdown syntax or upload directly to the caselist
-                    using Verbatim v6+.
-                </p>
+                <p>To add a school, use the button on the sidebar.</p>
 
                 <p>
                     On your school home page, you can create new teams by using the form at
@@ -40,12 +35,17 @@ const CaselistHome = () => {
                 </p>
 
                 <p>
-                    You are strongly encouraged to use markdown syntax for your cite entries,
-                    such as that produced automatically in Verbatim. If you are pasting
-                    directly from Word, it will be unformatted text.
+                    You are strongly encouraged to create cites using
+                    <a href="https://www.markdownguide.org/" target="_blank" rel="noopener noreferrer"> markdown </a>
+                    syntax, such as that produced automatically in Verbatim.
+                    If you are pasting directly from Word, it will be unformatted text.
                 </p>
 
-                <p>You can create heading levels in markdown syntax using #</p>
+                <p>
+                    You can create heading levels in
+                    <a href="https://www.markdownguide.org/" target="_blank" rel="noopener noreferrer"> markdown </a>
+                    syntax using #
+                </p>
                 <Markdown className="cites">{markdown}</Markdown>
             </div>
         </div>
