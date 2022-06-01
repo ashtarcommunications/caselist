@@ -6,12 +6,6 @@
   "author": "Aaron Hardy <support@paperlessdebate.com> (https://paperlessdebate.com)",
   "homepage": "https://paperlessdebate.com",
   "license": "GPL3",
-  "dependencies": {
-    "@speechanddebate/eslint-config-nsda": "^1.0.15",
-    "@speechanddebate/nsda-js-utils": "^1.0.9",
-    "chokidar": "^3.5.2",
-    "dotenv": "^16.0.1"
-  },
   "scripts": {},
   "eslintConfig": {
     "extends": [

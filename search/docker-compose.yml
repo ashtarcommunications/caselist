@@ -7,20 +7,13 @@ services:
     ports: 
       - 8983:8983
     volumes:
-      - /var/solr:/var/solr
+      - ${SOLR_DIR:-/var/solr}:/var/solr
+    command:
+      - solr-precreate
+      - caselist
   tika:
     image: apache/tika:latest
     container_name: tika
     restart: always
     ports:
         - 9998:9998
-  # rclone:
-  #   image: pfidr/rclone:latest
-  #   container_name: rclone
-  #   restart: always
-  #   environment:
-  #     - SYNC_SRC=s3://places
-  #     - SYNC_DEST=/opt/
-  #     - CRON=/5 * * * *
-  #   volumes:
-  #     - /config:/config
