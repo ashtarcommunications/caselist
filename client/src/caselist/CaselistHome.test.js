@@ -13,9 +13,10 @@ describe('CaselistHome', () => {
     });
 
     it('Renders an error message without caselistData', async () => {
+        const defaultCaselistData = store.caselistData;
         store.caselistData = { message: 'No caselistData' };
         render(<CaselistHome />);
         await waitFor(() => assert.isOk(screen.queryAllByText('No caselistData'), 'Error message exists'));
-        store.caselistData = { caselist_id: 1, name: 'test', display_name: 'Test Caselist', event: 'cx', level: 'hs' };
+        store.caselistData = defaultCaselistData;
     });
 });

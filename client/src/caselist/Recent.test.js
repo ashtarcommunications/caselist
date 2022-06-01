@@ -24,10 +24,11 @@ describe('Recent', () => {
     });
 
     it('Renders an error message without caselistData', async () => {
+        const defaultCaselistData = store.caselistData;
         store.caselistData = { message: 'No caselistData' };
         render(<Recent />);
         await waitFor(() => assert.isOk(screen.queryAllByText('No caselistData'), 'Error message exists'));
-        store.caselistData = { caselist_id: 1, name: 'test', display_name: 'Test Caselist', event: 'cx', level: 'hs' };
+        store.caselistData = defaultCaselistData;
     });
 
     it('Handles failure to fetch recent modifications', async () => {
