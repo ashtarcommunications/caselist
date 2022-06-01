@@ -80,7 +80,7 @@ const AddSchool = () => {
 
     return (
         <div className={styles.instructions}>
-            <h1>Add a school to {caselistData.name}</h1>
+            <h1>Add a school to {caselistData.display_name}</h1>
             <p>
                 Use the form below to add a school to the caselist. School names should conform
                 to the following rules:

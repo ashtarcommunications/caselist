@@ -5,7 +5,7 @@ export const StoreContext = createContext();
 
 export const store = {
     fetchCaselist: jest.fn().mockResolvedValue({}),
-    caselistData: { caselist_id: 1, name: 'Test', event: 'cx', level: 'hs' },
+    caselistData: { caselist_id: 1, name: 'test', display_name: 'Test Caselist', event: 'cx', level: 'hs' },
     fetchSchools: jest.fn().mockResolvedValue([]),
     schools: [],
     fetchSchool: jest.fn().mockResolvedValue({}),

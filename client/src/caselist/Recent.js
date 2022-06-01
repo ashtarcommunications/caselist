@@ -27,9 +27,9 @@ const Recent = () => {
                     setFetching(false);
                 }
             } catch (err) {
-                setTeams([]);
-                setFetching(false);
                 console.log(err);
+                setFetching(false);
+                setTeams([]);
             }
         };
         fetchData();
@@ -37,19 +37,19 @@ const Recent = () => {
 
     if (fetching) { return <Loader />; }
 
-    if (caselistData.message instanceof Error) {
+    if (caselistData.message) {
         return <Error statusCode={caselistData.statusCode} message={caselistData.message} />;
     }
 
     return (
         <div>
             <Breadcrumbs />
-            <h1>Recently Modified</h1>
+            <h1>Recently Modified in {caselistData.display_name}</h1>
             {!fetching && teams.length === 0 && <p>No recent modifications</p>}
             {
                 teams.map(t => (
-                    <p>
-                        <Link key={t.team_id} to={`/${caselist}/${t.school_name}/${t.team_name}`}>
+                    <p key={t.team_id}>
+                        <Link to={`/${caselist}/${t.school_name}/${t.team_name}`}>
                             <span>{t.team_display_name}</span>
                             {
                                 t.tournament &&

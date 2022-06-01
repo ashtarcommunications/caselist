@@ -11,7 +11,7 @@ describe('AddSchool', () => {
     it('Renders and submits an add school form', async () => {
         // Check form renders
         render(<AddSchool />);
-        await waitFor(() => assert.isOk(screen.queryByText('Add a school to Test'), 'Heading exists'));
+        await waitFor(() => assert.isOk(screen.queryByText('Add a school to Test Caselist'), 'Heading exists'));
         await waitFor(() => assert.isOk(screen.queryByText('School Name'), 'State input exists'));
         await waitFor(() => assert.isOk(screen.queryByText('State'), 'State input exists'));
         assert.strictEqual(loadTabroomChapters.mock.calls.length, 1, 'Fetched Tabroom chapters');
@@ -44,7 +44,7 @@ describe('AddSchool', () => {
         addSchool.mockRejectedValue({ message: 'Failed to create school' });
 
         render(<AddSchool />);
-        await waitFor(() => assert.isOk(screen.queryByText('Add a school to Test'), 'Heading exists'));
+        await waitFor(() => assert.isOk(screen.queryByText('Add a school to Test Caselist'), 'Heading exists'));
 
         fireEvent.change(document.querySelector('input'), { target: { value: 'Test School' } });
         fireEvent.change(document.querySelector('select'), { target: { value: 'CO' } });
@@ -59,14 +59,14 @@ describe('AddSchool', () => {
         store.caselistData = { message: 'No caselistData' };
         render(<AddSchool />);
         await waitFor(() => assert.isOk(screen.queryAllByText('No caselistData'), 'Error message exists'));
-        store.caselistData = { caselist_id: 1, name: 'Test', event: 'cx', level: 'hs' };
+        store.caselistData = { caselist_id: 1, name: 'test', display_name: 'Test Caselist', event: 'cx', level: 'hs' };
     });
 
     it('Handles failure to fetch Tabroom chapters', async () => {
         loadTabroomChapters.mockRejectedValue(() => { throw new Error('Failed to fetch Tabroom chapters'); });
         render(<AddSchool />);
         assert.strictEqual(loadTabroomChapters.mock.calls.length, 1, 'Attempted to fetch Tabroom chapters');
-        await waitFor(() => assert.isOk(screen.queryByText('Add a school to Test'), 'Heading exists'));
+        await waitFor(() => assert.isOk(screen.queryByText('Add a school to Test Caselist'), 'Heading exists'));
     });
 
     afterEach(() => {
