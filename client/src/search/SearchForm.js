@@ -15,12 +15,10 @@ const SearchForm = () => {
     const location = useLocation();
 
     const [q, setQ] = useState('');
-    const [shard, setShard] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
         setQ(params.get('q') || '');
-        setShard(params.get('shard') || location.pathname?.includes('openev') ? `openev-${year || startOfYear}` : caselist || '');
     }, [params, caselist, year, location]);
 
     const handleChangeInput = (e) => {
@@ -30,7 +28,16 @@ const SearchForm = () => {
     const handleSearch = (e) => {
         e.preventDefault();
         if (!q) { return false; }
-        navigate(`/search?q=${q}&shard=${shard}`);
+        let url;
+        if (caselist) {
+            url = `/${caselist}/search?q=${q}`;
+        } else if (year) {
+            url = `/openev/${year}/search?q=${q}`;
+        } else if (location.pathname.includes('openev')) {
+            url = `/openev/${startOfYear}/search?q=${q}`;
+        }
+        if (!url) { return false; }
+        navigate(url);
         setQ('');
     };
 

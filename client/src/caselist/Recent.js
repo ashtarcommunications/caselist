@@ -57,7 +57,7 @@ const Recent = () => {
                                     <span> - {t.tournament} </span>
                                     <span>{roundName(t.round)} </span>
                                     <span>{displaySide(t.side, caselistData.event)} </span>
-                                    <span>vs {t.opponent}</span>
+                                    {t.opponent && <span>vs {t.opponent}</span>}
                                 </>
                             }
                         </Link>

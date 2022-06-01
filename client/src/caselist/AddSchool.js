@@ -167,6 +167,7 @@ const AddSchool = () => {
                                 inputProps={
                                     {
                                         onFocus: fetchChapters,
+                                        id: 'name',
                                     }
                                 }
                             />

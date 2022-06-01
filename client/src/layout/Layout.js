@@ -9,7 +9,7 @@ import OpenEvSidebar from '../openev/OpenEvSidebar';
 
 import styles from './Layout.module.css';
 
-const Layout = ({ privateRoute, caselist = false, children }) => {
+const Layout = ({ privateRoute, openev = false, children }) => {
     const auth = useContext(AuthContext);
 
     return (
@@ -19,7 +19,7 @@ const Layout = ({ privateRoute, caselist = false, children }) => {
                 {
                     privateRoute
                     && auth.user?.loggedIn
-                    && (caselist ? <OpenEvSidebar /> : <Sidebar />)
+                    && (openev ? <OpenEvSidebar /> : <Sidebar />)
                 }
                 <div className={styles.main}>
                     {
@@ -38,7 +38,7 @@ const Layout = ({ privateRoute, caselist = false, children }) => {
 
 Layout.propTypes = {
     privateRoute: PropTypes.bool,
-    caselist: PropTypes.bool,
+    openev: PropTypes.bool,
     children: PropTypes.node,
 };
 

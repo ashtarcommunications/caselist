@@ -14,7 +14,7 @@ const DownloadFile = ({ path = '', text = '' }) => {
             const file = await downloadFile(path);
             if (!file) { return false; }
             const content = await file.blob();
-            const filename = file.headers.get('Content-Disposition').match(/filename="(.*?)"$/)[1];
+            const filename = file.headers?.get('Content-Disposition')?.match(/filename="(.*?)"$/)[1];
 
             const link = document.createElement('a');
             link.href = window.URL.createObjectURL(content);

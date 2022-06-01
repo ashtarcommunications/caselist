@@ -10,6 +10,7 @@ import { ToastContainer } from 'react-toastify';
 import { ProvideAuth } from './helpers/auth';
 import { ProvideStore } from './helpers/store';
 import { history } from './helpers/api';
+import useScript from './helpers/useScript';
 
 import Layout from './layout/Layout';
 import ScrollToTopOrAnchor from './layout/ScrollToTopOrAnchor';
@@ -33,8 +34,6 @@ import OpenEvHome from './openev/OpenEvHome';
 import OpenEvUpload from './openev/OpenEvUpload';
 import SearchResults from './search/SearchResults';
 
-import useScript from './helpers/useScript';
-
 const App = () => {
     // Inject analytics script
     useScript(process.env.REACT_APP_ANALYTICS_URL, { domain: process.env.REACT_APP_DOMAIN });
@@ -46,6 +45,7 @@ const App = () => {
                 <ProvideStore>
                     <ErrorBoundary>
                         <Routes>
+                            <Route exact path="/" element={<Layout><Home /></Layout>} />
                             <Route exact path="/login" element={<Layout><Login /></Layout>} />
                             <Route exact path="/logout" element={<Logout />} />
                             <Route exact path="/privacy" element={<Layout><Markdown file={PrivacyPolicy} /></Layout>} />
@@ -53,7 +53,7 @@ const App = () => {
                             <Route
                                 path="/openev"
                                 element={
-                                    <Layout privateRoute caselist>
+                                    <Layout privateRoute openev>
                                         <OpenEvHome />
                                     </Layout>
                                 }
@@ -61,7 +61,7 @@ const App = () => {
                             <Route
                                 path="/openev/:year"
                                 element={
-                                    <Layout privateRoute caselist>
+                                    <Layout privateRoute openev>
                                         <OpenEvHome />
                                     </Layout>
                                 }
@@ -69,28 +69,27 @@ const App = () => {
                             <Route
                                 path="/openev/:year/upload"
                                 element={
-                                    <Layout privateRoute caselist>
+                                    <Layout privateRoute openev>
                                         <OpenEvUpload />
+                                    </Layout>
+                                }
+                            />
+                            <Route
+                                path="/openev/:year/search"
+                                element={
+                                    <Layout privateRoute openev>
+                                        <SearchResults />
                                     </Layout>
                                 }
                             />
                             <Route
                                 path="/openev/:year/:tag"
                                 element={
-                                    <Layout privateRoute caselist>
+                                    <Layout privateRoute openev>
                                         <OpenEvHome />
                                     </Layout>
                                 }
                             />
-                            <Route
-                                path="/search/*"
-                                element={
-                                    <Layout privateRoute>
-                                        <SearchResults />
-                                    </Layout>
-                                }
-                            />
-                            <Route exact path="/" element={<Layout><Home /></Layout>} />
                             <Route
                                 path="/:caselist/add"
                                 element={
@@ -104,6 +103,14 @@ const App = () => {
                                 element={
                                     <Layout privateRoute>
                                         <Recent />
+                                    </Layout>
+                                }
+                            />
+                            <Route
+                                path="/:caselist/search"
+                                element={
+                                    <Layout privateRoute>
+                                        <SearchResults />
                                     </Layout>
                                 }
                             />

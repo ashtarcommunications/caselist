@@ -20,11 +20,15 @@ const Header = () => {
 
     // Set the header background based on the event/level combo
     useEffect(() => {
-        setClassName(`header-${caselistData.level}-${caselistData.event}`);
+        if (caselistData.event && caselistData.level) {
+            setClassName(`header-${caselistData.level}-${caselistData.event}`);
+        } else {
+            setClassName('');
+        }
     }, [caselistData.level, caselistData.event]);
 
     return (
-        <header className={`${styles.header} ${styles[className]} ${isMobile && styles.mobile}`}>
+        <header className={`${styles.header} ${styles[className]} ${isMobile ? styles.mobile : ''}`}>
             <h1><Link to="/">openCaselist</Link></h1>
             {
                 auth.user?.loggedIn &&
