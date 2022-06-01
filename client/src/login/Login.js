@@ -1,15 +1,15 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
-import { AuthContext } from '../helpers/auth';
+import { useAuth } from '../helpers/auth';
 
 import styles from './Login.module.css';
 
 const Login = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const auth = useContext(AuthContext);
+    const auth = useAuth();
 
     const {
         register,

@@ -1,9 +1,12 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useMemo, useContext } from 'react';
 import Cookies from 'js-cookie';
 import { login } from './api';
 
-// Hook to track user state and log in or out
-export const useAuth = () => {
+// Create a context for auth info
+export const AuthContext = createContext();
+
+// Auth Context provider
+export const ProvideAuth = ({ children }) => {
     const [user, setUser] = useState(null);
 
     // Set any token from cookies
@@ -35,22 +38,17 @@ export const useAuth = () => {
         }
     };
 
-    return {
+    const auth = useMemo(() => ({
         user,
         handleLogin,
         handleLogout,
-    };
-};
+    }), [user]);
 
-// Create a context for auth info
-export const AuthContext = createContext();
-
-// Auth Context provider
-export const ProvideAuth = ({ children }) => {
-    const auth = useAuth();
     return (
         <AuthContext.Provider value={auth}>
             {children}
         </AuthContext.Provider>
     );
 };
+
+export const useAuth = () => useContext(AuthContext);

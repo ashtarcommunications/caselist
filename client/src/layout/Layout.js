@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Navigate } from 'react-router-dom';
-import { AuthContext } from '../helpers/auth';
+import { useAuth } from '../helpers/auth';
 import Header from './Header';
 import Footer from './Footer';
 import Sidebar from './Sidebar';
@@ -10,7 +10,7 @@ import OpenEvSidebar from '../openev/OpenEvSidebar';
 import styles from './Layout.module.css';
 
 const Layout = ({ privateRoute, openev = false, children }) => {
-    const auth = useContext(AuthContext);
+    const auth = useAuth();
 
     return (
         <>

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { startOfYear } from '@speechanddebate/nsda-js-utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,7 +6,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import { useStore } from '../helpers/store';
 import { campAbbreviations, tagAbbreviations } from '../helpers/common';
-import { AuthContext } from '../helpers/auth';
+import { useAuth } from '../helpers/auth';
 
 import Breadcrumbs from '../layout/Breadcrumbs';
 import Error from '../layout/Error';
@@ -17,7 +17,7 @@ import styles from './OpenEvHome.module.css';
 const OpenEvHome = () => {
     const { year, tag } = useParams();
     const { openEvFiles } = useStore();
-    const auth = useContext(AuthContext);
+    const auth = useAuth();
 
     if (openEvFiles.message) {
         return <Error statusCode={openEvFiles.statusCode} message={openEvFiles.message} />;

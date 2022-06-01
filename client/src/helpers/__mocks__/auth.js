@@ -1,22 +1,20 @@
-import React, { createContext } from 'react';
+import React, { createContext, useContext } from 'react';
 
-export const useAuth = () => {
-    return {
-        user: { token: 'token', loggedIn: true, admin: true },
-        handleLogin: jest.fn().mockResolvedValue(true),
-        handleLogout: jest.fn().mockResolvedValue(true),
-    };
-};
-
-// Create a context for auth info
 export const AuthContext = createContext();
+
+export const auth = {
+    user: { token: 'token', loggedIn: true, admin: true },
+    handleLogin: jest.fn().mockResolvedValue(true),
+    handleLogout: jest.fn().mockResolvedValue(true),
+};
 
 // Auth Context provider
 export const ProvideAuth = ({ children }) => {
-    const auth = useAuth();
     return (
         <AuthContext.Provider value={auth}>
             {children}
         </AuthContext.Provider>
     );
 };
+
+export const useAuth = () => useContext(AuthContext);

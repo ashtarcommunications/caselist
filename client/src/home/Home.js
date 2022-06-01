@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../helpers/auth';
+
+import { useAuth } from '../helpers/auth';
 import Login from '../login/Login';
 import styles from './Home.module.css';
 
@@ -10,7 +11,7 @@ import afa from './afa.png';
 import cndi from './cndi.png';
 
 const Home = () => {
-    const auth = useContext(AuthContext);
+    const auth = useAuth();
     return (
         <div className={styles.home}>
             <h1>Welcome to openCaselist</h1>

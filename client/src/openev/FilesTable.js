@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useContext } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import { useParams, Link } from 'react-router-dom';
@@ -8,7 +8,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import { campAbbreviations, tagAbbreviations } from '../helpers/common';
 import { deleteOpenEvFile } from '../helpers/api';
-import { AuthContext } from '../helpers/auth';
+import { useAuth } from '../helpers/auth';
 import { useStore } from '../helpers/store';
 
 import DownloadFile from '../helpers/DownloadFile';
@@ -20,7 +20,7 @@ import styles from './FilesTable.module.css';
 const FilesTable = ({ files, loading }) => {
     const { year } = useParams();
     const { fetchOpenEvFiles } = useStore();
-    const auth = useContext(AuthContext);
+    const auth = useAuth();
 
     const handleDeleteFile = useCallback(async (id) => {
         try {

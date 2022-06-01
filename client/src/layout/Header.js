@@ -1,7 +1,7 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useParams, useLocation } from 'react-router-dom';
 
-import { AuthContext } from '../helpers/auth';
+import { useAuth } from '../helpers/auth';
 import { useStore } from '../helpers/store';
 import { useDeviceDetect } from '../helpers/mobile';
 
@@ -10,7 +10,7 @@ import SearchForm from '../search/SearchForm';
 import styles from './Header.module.css';
 
 const Header = () => {
-    const auth = useContext(AuthContext);
+    const auth = useAuth();
     const { caselistData } = useStore();
     const { caselist } = useParams();
     const location = useLocation();

@@ -1,6 +1,5 @@
 import React, { createContext, useContext } from 'react';
 
-// Create a context for the store
 export const StoreContext = createContext();
 
 export const store = {
@@ -16,7 +15,6 @@ export const store = {
     openEvFiles: [],
 };
 
-// Store Context provider
 export const ProvideStore = ({ children }) => {
     return (
         <StoreContext.Provider value={store}>
