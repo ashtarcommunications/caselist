@@ -3,7 +3,6 @@ import { assert } from 'chai';
 
 import { wrappedRender as render, fireEvent, waitFor } from '../setupTests';
 import StatesDropdown from './StatesDropdown';
-// eslint-disable-next-line import/named
 
 describe('StatesDropdown', () => {
     const mockChangeStateCode = jest.fn();
