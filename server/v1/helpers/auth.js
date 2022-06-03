@@ -4,6 +4,12 @@ import { query } from './mysql';
 import { debugLogger } from './logger';
 
 const auth = async (req) => {
+    if (!req.cookies.caselist_token) {
+        const err = new Error('Not Authorized');
+        err.status = 401;
+        throw err;
+    }
+
     const hash = crypto.createHash('sha256').update(req.cookies.caselist_token).digest('hex');
     const sql = (SQL`
         SELECT * FROM sessions WHERE token = ${hash}

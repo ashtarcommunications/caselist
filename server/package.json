@@ -2,8 +2,8 @@
   "scripts": {
     "start": "NODE_ENV='production' NODE_OPTIONS='--max_old_space_size=8000' node --experimental-specifier-resolution=node --use_strict index.js",
     "dev": "NODE_ENV='development' nodemon --experimental-specifier-resolution=node --use-strict index.js",
-    "test": "NODE_ENV='test' mocha 'v1/**/*.test.js'",
-    "cover": "rm -fr ./node_modules/.cache; NODE_ENV='test' nyc mocha 'v1/**/*.test.js'",
+    "test": "NODE_ENV='test' NODE_OPTIONS='--experimental-vm-modules --experimental-specifier-resolution=node' jest --watch",
+    "cover": "NODE_ENV='test' NODE_OPTIONS='--experimental-vm-modules --experimental-specifier-resolution=node' jest --watch --coverage",
     "lint": "eslint --ignore-path ../.gitignore ."
   },
   "name": "caselist-api",
@@ -50,9 +50,9 @@
     "nodemon": "^2.0.15",
     "supertest": "^4.0.2"
   },
-  "mocha": {
-    "use_strict": true,
-    "exit": true
+  "jest": {
+    "transform": {},
+    "globalTeardown": "./tests/globalTeardown.js"
   },
   "eslintConfig": {
     "extends": "@speechanddebate/eslint-config-nsda",

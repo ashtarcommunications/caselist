@@ -44,13 +44,13 @@ const CaselistDropdown = () => {
     const filteredCaselists = caselists.filter(c => c.year === year).sort();
 
     const handleChangeYear = (e) => {
-        setYear(parseInt(e.currentTarget.value));
+        setYear(parseInt(e.target.value));
     };
 
     const handleChangeCaselist = (e) => {
-        const selected = caselists.find(c => c.name === e.currentTarget.value) || {};
+        const selected = caselists.find(c => c.name === e.target.value) || {};
         document.title = `openCaselist - ${selected.display_name}`;
-        navigate(`/${e.currentTarget.value}`);
+        navigate(`/${e.target.value}`);
     };
 
     return (
@@ -60,6 +60,7 @@ const CaselistDropdown = () => {
                     className={styles.select}
                     onChange={handleChangeYear}
                     value={year}
+                    name="year"
                 >
                     {
                         years.map(y => {
@@ -74,7 +75,7 @@ const CaselistDropdown = () => {
                         })
                     }
                 </select>
-                <select onChange={handleChangeCaselist} value={caselist} className={styles.select}>
+                <select onChange={handleChangeCaselist} value={caselist} className={styles.select} name="caselist">
                     <option value="">Choose a Caselist</option>
                     {
                         filteredCaselists.map(c => {

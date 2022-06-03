@@ -7,7 +7,7 @@ export const history = createBrowserHistory();
 // https://github.com/facebook/jest/issues/10894
 // https://github.com/facebook/create-react-app/issues/9935
 export const login = jest.fn().mockResolvedValue({ message: 'Successfully logged in ' });
-export const loadCaselists = jest.fn().mockResolvedValue([{ caselist_id: 1, name: 'Test Caselist' }]);
+export const loadCaselists = jest.fn().mockResolvedValue([{ caselist_id: 1, name: 'testcaselist', display_name: 'Test Caselist', year: 2022 }]);
 export const loadCaselist = jest.fn().mockResolvedValue({ caselist_id: 1, name: 'Test Caselist' });
 export const loadRecent = jest.fn().mockResolvedValue([{ team_id: 1, team_display_name: 'Test Team' }]);
 export const loadSchools = jest.fn().mockResolvedValue([]);
