@@ -3,6 +3,12 @@ Tests
 
 # Client
 Tests
+Change empty table text
+Hide table filters if no content
+Clear quick add cite box after submission
+Warn on entering cite if empty title/contents
+Explanatory text for examples of cite title/content
+Reenable add team submit button after deleting debater
 
 # Misc
 Repo README
