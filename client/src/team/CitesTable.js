@@ -149,6 +149,8 @@ const CitesTable = ({
         },
     ], [handleToggleCites, handleDeleteCiteConfirm, archived, event]);
 
+    if (cites.length === 0) { return false; }
+
     return (
         <Table
             columns={isMobile ? mobileColumns : columns}

@@ -133,7 +133,7 @@ const FilesTable = ({ files, loading }) => {
             data={files}
             className="table"
             loading={loading}
-            noDataText="No files found!"
+            noDataText="No files uploaded yet!"
         />
     );
 };

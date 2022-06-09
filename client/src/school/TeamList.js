@@ -149,7 +149,7 @@ const TeamList = () => {
                     columns={columns}
                     data={data}
                     className={`${styles['team-table']} ${isMobile && styles.mobile}`}
-                    noDataText="No teams found"
+                    noDataText="No teams yet - add one with the form below"
                     loading={fetching}
                 />
             </div>

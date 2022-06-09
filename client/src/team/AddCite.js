@@ -22,6 +22,7 @@ const AddCite = ({ rounds, event, handleAddCite }) => {
         formState: { isValid },
         handleSubmit,
         reset,
+        setValue,
         control,
     } = useForm({
         mode: 'all',
@@ -43,6 +44,8 @@ const AddCite = ({ rounds, event, handleAddCite }) => {
         try {
             handleAddCite(data);
             reset({}, { keepDefaultValues: true });
+            // The nested cites field doesn't get reset for some reason, so do it manually
+            setValue('cites.0.cites', '');
             setShowForm(false);
         } catch (err) {
             console.log(err);

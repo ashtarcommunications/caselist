@@ -67,6 +67,7 @@ const Table = ({ columns = [], data = [], hiddenColumns = [], className, loading
                                 <tr>
                                     {
                                         filterable &&
+                                        data.length > 0 &&
                                         headerGroup.headers.map(column => (
                                             <th key={column.id} {...column.getHeaderProps()}>
                                                 {

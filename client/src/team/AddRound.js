@@ -63,6 +63,7 @@ const AddRound = () => {
     const [files, setFiles] = useState([]);
     const [fileContent, setFileContent] = useState(null);
     const [filename, setFilename] = useState();
+    const [invalidCite, setInvalidCite] = useState(false);
 
     // Have to use a ref to focus the Combobox when used in a Controller
     const tournamentRef = useRef();
@@ -85,6 +86,15 @@ const AddRound = () => {
             append({ title: '', cites: '', open: true }, { shouldFocus: false });
         }
     }, [append, fields.length]);
+
+    // Check for invalid cites
+    useEffect(() => {
+        let invalid = false;
+        watchFields.cites?.forEach(c => {
+            if ((c.title && !c.cites) || (c.cites && !c.title)) { invalid = true; }
+        });
+        setInvalidCite(invalid);
+    }, [watchFields]);
 
     const fetchRounds = async () => {
         // Don't refetch on subsequent clicks
@@ -395,6 +405,14 @@ const AddRound = () => {
                     document. They&apos;re the best way to see an overview of your past arguments
                     and improve the quality of your disclosure.
                 </p>
+                <p className={styles.prompt}>
+                    The Cite Title should be the name of the argument, e.g. &quot;Sample DA&quot;.
+                    The content should give full citation information for each card,
+                    and can be formatted with
+                    <a href="https://www.markdownguide.org/" target="_blank" rel="noopener noreferrer"> markdown </a>
+                    syntax, such as that produced automatically in
+                    <a href="https://paperlessdebate.com" target="_blank" rel="noopener noreferrer"> Verbatim.</a>
+                </p>
                 {
                     fields.map((item, index) => {
                         return (
@@ -410,8 +428,15 @@ const AddRound = () => {
                     })
                 }
 
+                {
+                    invalidCite &&
+                    <p className={styles.warning}>
+                        Cite entries must have a title and contents
+                    </p>
+                }
+
                 <div className={styles.buttons}>
-                    <button type="submit" className={`pure-button ${styles.add}`} disabled={!isValid}>Add Round</button>
+                    <button type="submit" className={`pure-button ${styles.add}`} disabled={!isValid || invalidCite}>Add Round</button>
                     <Link to={`/${caselist}/${school}/${team}`}>
                         <button type="button" className={`pure-button ${styles.cancel}`}>Cancel</button>
                     </Link>
