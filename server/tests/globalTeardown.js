@@ -1,6 +1,6 @@
 import { pool } from '../v1/helpers/mysql';
 
-const globalTeardown = async () => {
+const globalTeardown = () => {
     pool.end();
 };
 

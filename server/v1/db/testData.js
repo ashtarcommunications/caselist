@@ -76,7 +76,7 @@ const schools = [
 schools.forEach(async (s) => {
     await query(SQL`
         INSERT INTO schools (caselist_id, name, display_name, state, chapter_id) VALUES
-            (1, ${s.replaceAll(' ', '')}, ${s}, NULL, 1)
+            (1001, ${s.replaceAll(' ', '')}, ${s}, NULL, 1)
     `);
 });
 

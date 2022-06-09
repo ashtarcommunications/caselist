@@ -4,7 +4,8 @@ import { query } from '../v1/helpers/mysql';
 const testFixtures = async () => {
     await query(SQL`
         INSERT INTO caselists (caselist_id, name, display_name, year, event, level, team_size, archived) VALUES
-            (1, 'testcaselist', 'Test Caselist', 2022, 'cx', 'hs', 2, 1);
+            (1, 'testcaselist', 'Test Caselist', 2022, 'cx', 'hs', 2, 0),
+            (2, 'archivedcaselist', 'Archived Caselist', 2022, 'cx', 'hs', 2, 1);
     `);
 
     await query(SQL`
