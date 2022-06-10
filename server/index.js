@@ -43,14 +43,16 @@ if (config.REBUILD_SOLR) {
         debugLogger.error(err.message);
     }
 }
-cron.schedule('5 * * * *', async () => {
-    debugLogger.info('Ingesting recent files and cites into Solr...');
-    try {
-        await buildIndex(false, true);
-    } catch (err) {
-        debugLogger.error(err.message);
-    }
-});
+if (process.env.NODE_ENV !== 'test') {
+    cron.schedule('5 * * * *', async () => {
+        debugLogger.info('Ingesting recent files and cites into Solr...');
+        try {
+            await buildIndex(false, true);
+        } catch (err) {
+            debugLogger.error(err.message);
+        }
+    });
+}
 
 // Enable Helmet security
 app.use(helmet());
@@ -176,8 +178,10 @@ app.use(errorHandler);
 
 // Start server
 const port = process.env.PORT || config.PORT || 10010;
-app.listen(port, () => {
-    debugLogger.info(`Server started. Listening on port ${port}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+    app.listen(port, () => {
+        debugLogger.info(`server started. listening on port ${port}`);
+    });
+}
 
 export default app;

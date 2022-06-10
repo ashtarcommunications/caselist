@@ -1,14 +1,8 @@
 import { assert } from 'chai';
 import request from 'supertest';
-import testFixtures from '../../../tests/testFixtures';
-import testTeardown from '../../../tests/testTeardown';
 import server from '../../../index';
 
 describe('GET /v1/caselists{caselist}/recent', () => {
-    beforeEach(async () => {
-        await testFixtures();
-    });
-
     it('should return a list of recent modifications for a caselist', async () => {
         const res = await request(server)
             .get(`/v1/caselists/testcaselist/recent`)
@@ -37,9 +31,5 @@ describe('GET /v1/caselists{caselist}/recent', () => {
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(401);
-    });
-
-    afterEach(async () => {
-        await testTeardown();
     });
 });

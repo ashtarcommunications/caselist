@@ -1,14 +1,8 @@
 import { assert } from 'chai';
 import request from 'supertest';
-import testFixtures from '../../../tests/testFixtures';
-import testTeardown from '../../../tests/testTeardown';
 import server from '../../../index';
 
 describe('GET /v1/caselists', () => {
-    beforeEach(async () => {
-        await testFixtures();
-    });
-
     it('should return a list of caselists optionally archived', async () => {
         let res = await request(server)
             .get(`/v1/caselists?archived=false`)
@@ -44,9 +38,5 @@ describe('GET /v1/caselists', () => {
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(401);
-    });
-
-    afterEach(async () => {
-        await testTeardown();
     });
 });
