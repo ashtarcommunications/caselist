@@ -32,6 +32,7 @@ const AddTeam = () => {
         reset,
         control,
         setValue,
+        unregister,
         formState: { errors, isValid },
     } = useForm({
         mode: 'all',
@@ -109,6 +110,7 @@ const AddTeam = () => {
 
     const removeStudentHandler = () => {
         if (teamSize <= caselistData.teamSize) { return false; }
+        unregister([`debater${teamSize}_first`, `debater${teamSize}_last`]);
         setTeamSize(teamSize - 1);
     };
 
@@ -143,6 +145,7 @@ const AddTeam = () => {
         );
     }
 
+    console.log(errors);
     return (
         <div>
             <h3>Add a {caselistData.team_size > 1 ? 'Team' : 'Debater'}</h3>
