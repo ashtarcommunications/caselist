@@ -3,7 +3,7 @@ import { query } from '../../helpers/mysql';
 
 const getCites = {
     GET: async (req, res) => {
-        let sql = (SQL`
+        const sql = (SQL`
             SELECT
                 CT.*,
                 R.side,
@@ -20,8 +20,8 @@ const getCites = {
             AND LOWER(S.name) = LOWER(${req.params.school})
             AND LOWER(T.name) = LOWER(${req.params.team})
         `);
-        if (req.params.side) {
-            sql += SQL`AND LOWER(R.side) = LOWER(${req.params.side})`;
+        if (req.query?.side) {
+            sql.append(SQL`AND LOWER(R.side) = LOWER(${req.query?.side})`);
         }
         const cites = await query(sql);
 

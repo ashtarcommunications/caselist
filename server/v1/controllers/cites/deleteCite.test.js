@@ -29,7 +29,7 @@ describe('DELETE /v1/caselists/{caselist}/schools/{school}/teams/{team}/cites/{c
         assert.strictEqual(history[0].count, 1, 'Cite history entry');
     });
 
-    it('should return a 404 for a non-existing cite', async () => {
+    it('should return a 400 for a non-existing cite', async () => {
         await request(server)
             .delete(`/v1/caselists/testcaselist/schools/testschool/teams/testteam/cites/3`)
             .set('Accept', 'application/json')

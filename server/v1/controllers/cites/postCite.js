@@ -13,6 +13,7 @@ const postCite = {
             WHERE C.name = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${req.params.school})
             AND LOWER(T.name) = LOWER(${req.params.team})
+            AND R.round_id = ${req.body.round_id}
         `);
 
         if (!round) { return res.status(400).json({ message: 'Round not found' }); }
