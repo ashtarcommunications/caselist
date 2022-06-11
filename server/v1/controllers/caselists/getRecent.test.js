@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import request from 'supertest';
 import server from '../../../index';
 
-describe('GET /v1/caselists{caselist}/recent', () => {
+describe('GET /v1/caselists/{caselist}/recent', () => {
     it('should return a list of recent modifications for a caselist', async () => {
         const res = await request(server)
             .get(`/v1/caselists/testcaselist/recent`)

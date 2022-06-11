@@ -1,0 +1,12 @@
+DELETE FROM openev WHERE openev_id < 10;
+DELETE FROM cites WHERE cite_id < 10;
+DELETE FROM cites_history WHERE cite_id < 10;
+DELETE FROM rounds WHERE round_id < 10;
+DELETE FROM rounds_history WHERE round_id < 10;
+DELETE FROM teams WHERE team_id < 10;
+DELETE FROM teams_history WHERE team_id < 10;
+DELETE FROM schools WHERE school_id < 10;
+DELETE FROM schools_history WHERE school_id < 10;
+DELETE FROM caselists WHERE caselist_id < 10;
+DELETE FROM sessions WHERE session_id < 10 OR user_id < 10;
+DELETE FROM users WHERE user_id < 10;

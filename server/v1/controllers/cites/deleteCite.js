@@ -19,6 +19,7 @@ const deleteCite = {
             AND CT.cite_id = ${parseInt(req.params.cite)}
         `);
 
+        // Return a 400 so the UI displays a toast instead of a 404
         if (!cite) { return res.status(400).json({ message: 'Cite not found' }); }
         if (cite.archived) { return res.status(403).json({ message: 'Caselist archived, no modifications allowed' }); }
 

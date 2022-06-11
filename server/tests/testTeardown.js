@@ -12,7 +12,7 @@ const testTeardown = async () => {
     await query(SQL`DELETE FROM schools WHERE school_id < 10`);
     await query(SQL`DELETE FROM schools_history WHERE school_id < 10`);
     await query(SQL`DELETE FROM caselists WHERE caselist_id < 10`);
-    await query(SQL`DELETE FROM sessions WHERE session_id < 10`);
+    await query(SQL`DELETE FROM sessions WHERE session_id < 10 OR user_id < 10`);
     await query(SQL`DELETE FROM users WHERE user_id < 10`);
 };
 

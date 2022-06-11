@@ -10,24 +10,28 @@ const testFixtures = async () => {
 
     await query(SQL`
         INSERT INTO schools (school_id, caselist_id, name, display_name, state, chapter_id) VALUES
-            (1, 1, 'testschool', 'Test School', NULL, 1);
+            (1, 1, 'testschool', 'Test School', NULL, 1),
+            (2, 2, 'archivedschool', 'Archived School', NULL, 1);
     `);
 
     await query(SQL`
         INSERT INTO teams (team_id, school_id, display_name, name, notes, debater1_first, debater1_last, debater2_first, debater2_last) VALUES
-            (1, 1, 'Test Team', 'testteam', 'Sample Notes', 'Aaron', 'Hardy', 'Chris', 'Palmer');
+            (1, 1, 'Test Team', 'testteam', 'Sample Notes', 'Aaron', 'Hardy', 'Chris', 'Palmer'),
+            (2, 2, 'Archived Team', 'archivedteam', 'Sample Notes', 'Aaron', 'Hardy', 'Chris', 'Palmer');
     `);
 
     await query(SQL`
         INSERT INTO rounds (round_id, team_id, side, tournament, round, opponent, judge, report, tourn_id, external_id) VALUES
             (1, 1, 'A', 'Test Tournament', '1', 'Evil Empire XX', 'Hardy', 'Report', 1234, 1234),
-            (2, 1, 'N', 'Test Tournament', '2', 'Evil Empire YY', 'Hardy', 'Report', 1234, 1234);
+            (2, 1, 'N', 'Test Tournament', '2', 'Evil Empire YY', 'Hardy', 'Report', 1234, 1234),
+            (3, 2, 'A', 'Archived Round', '1', 'Evil Empire XX', 'Hardy', 'Report', 1234, 1234);
     `);
 
     await query(SQL`
         INSERT INTO cites (cite_id, round_id, title, cites) VALUES
             (1, 1, 'Test Aff Title', '# Aff Cites'),
-            (2, 2, 'Test Neg Title', '# Neg Cites');
+            (2, 2, 'Test Neg Title', '# Neg Cites'),
+            (3, 3, 'Archived Cite', '# Archived Cite');
     `);
 
     await query(SQL`
