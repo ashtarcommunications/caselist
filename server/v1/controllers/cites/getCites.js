@@ -20,7 +20,7 @@ const getCites = {
             AND LOWER(S.name) = LOWER(${req.params.school})
             AND LOWER(T.name) = LOWER(${req.params.team})
         `);
-        if (req.query?.side) {
+        if (req.query?.side && ['A', 'N'].indexOf(req.query?.side) > -1) {
             sql.append(SQL`AND LOWER(R.side) = LOWER(${req.query?.side})`);
         }
         const cites = await query(sql);
