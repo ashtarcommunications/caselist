@@ -17,7 +17,9 @@ export const ProvideAuth = ({ children }) => {
     const handleLogin = async (username, password, remember) => {
         try {
             const response = await login(username, password, remember);
-            setUser({ loggedIn: true, token: response.token });
+            setUser({ loggedIn: true, token: response.token, admin: response.admin });
+            Cookies.set('caselist_token', response.token, { HttpOnly: false });
+            Cookies.set('caselist_admin', response.admin, { HttpOnly: false });
             return true;
         } catch (err) {
             console.log(err);

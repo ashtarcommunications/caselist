@@ -72,7 +72,7 @@ const postLogin = {
             res.cookie('caselist_admin', true, { maxAge: remember ? (1000 * 60 * 60 * 24 * 14) : undefined, httpOnly: false, path: '/', sameSite: 'Lax' });
         }
 
-        return res.status(201).json({ message: 'Successfully logged in', token: nonce });
+        return res.status(201).json({ message: 'Successfully logged in', token: nonce, admin: config.ADMINS?.includes(user.uidNumber) });
     },
 };
 
