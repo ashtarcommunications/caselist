@@ -26,6 +26,7 @@ status.GET.apiDoc = {
         },
         default: { $ref: '#/components/responses/ErrorResponse' },
     },
+    security: [],
     tags: ['status'],
 };
 
@@ -39,6 +40,7 @@ status.POST.apiDoc = {
         },
         default: { $ref: '#/components/responses/ErrorResponse' },
     },
+    security: [],
     tags: ['status'],
 };
 
@@ -52,6 +54,7 @@ status.PUT.apiDoc = {
         },
         default: { $ref: '#/components/responses/ErrorResponse' },
     },
+    security: [],
     tags: ['status'],
 };
 
@@ -65,6 +68,7 @@ status.PATCH.apiDoc = {
         },
         default: { $ref: '#/components/responses/ErrorResponse' },
     },
+    security: [],
     tags: ['status'],
 };
 
@@ -78,6 +82,7 @@ status.DELETE.apiDoc = {
         },
         default: { $ref: '#/components/responses/ErrorResponse' },
     },
+    security: [],
     tags: ['status'],
 };
 

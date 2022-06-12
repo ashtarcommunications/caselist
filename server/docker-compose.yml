@@ -9,9 +9,9 @@ services:
         - /net/configs/caselist/server/production.env:/api/.env
   api-swagger:
     image: swaggerapi/swagger-ui
-    container_name: api-swagger
+    container_name: caselist_swagger
     restart: always
     ports:
-        - 10010:8080
+        - 10012:8080
     environment:
         URL: https://api.opencaselist.com/v1/docs
