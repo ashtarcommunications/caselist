@@ -1,0 +1,9 @@
+version: '2.4'
+services:
+  api:
+    image: caselist_client:latest
+    container_name: caselist_client
+    restart: always
+    network_mode: "host"
+    volumes:
+        - /net/configs/caselist/client/production.env:/app/.env
