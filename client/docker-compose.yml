@@ -7,4 +7,4 @@ services:
     ports:
         - 5835:5835
     volumes:
-        - /net/configs/caselist/client/production.env:/app/.env
+        - /net/configs/caselist/client/production.env:/app/.env.production
