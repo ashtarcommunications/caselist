@@ -66,10 +66,28 @@ const postLogin = {
 
         // Expire cookies in 2 weeks if "remember me" is checked, otherwise default to session cookie
         // Express sets maxAge in milliseconds, not seconds
-        res.cookie('caselist_token', nonce, { maxAge: remember ? (1000 * 60 * 60 * 24 * 14) : undefined, httpOnly: false, path: '/', sameSite: 'Lax' });
+        res.cookie(
+            'caselist_token',
+            nonce,
+            {
+                maxAge: remember ? (1000 * 60 * 60 * 24 * 14) : undefined,
+                httpOnly: false,
+                path: '/',
+                sameSite: 'Lax',
+                domain: 'opencaselist.com',
+            });
 
         if (config.ADMINS?.includes(user.uidNumber)) {
-            res.cookie('caselist_admin', true, { maxAge: remember ? (1000 * 60 * 60 * 24 * 14) : undefined, httpOnly: false, path: '/', sameSite: 'Lax' });
+            res.cookie(
+                'caselist_admin',
+                true,
+                {
+                    maxAge: remember ? (1000 * 60 * 60 * 24 * 14) : undefined,
+                    httpOnly: false,
+                    path: '/',
+                    sameSite: 'Lax',
+                    domain: 'opencaselist.com',
+                });
         }
 
         return res.status(201).json({ message: 'Successfully logged in', token: nonce, admin: config.ADMINS?.includes(user.uidNumber) });
