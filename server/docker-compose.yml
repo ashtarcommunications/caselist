@@ -7,6 +7,7 @@ services:
     network_mode: "host"
     volumes:
         - /net/configs/caselist/server/production.env:/api/.env
+        - /var/www/caselist:/api/uploads
   api-swagger:
     image: swaggerapi/swagger-ui
     container_name: caselist_swagger
