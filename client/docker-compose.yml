@@ -4,6 +4,7 @@ services:
     image: caselist_client:latest
     container_name: caselist_client
     restart: always
-    network_mode: "host"
+    ports:
+        - 5835:5835
     volumes:
         - /net/configs/caselist/client/production.env:/app/.env

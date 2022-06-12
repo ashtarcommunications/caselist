@@ -4,7 +4,8 @@ services:
     image: caselist_server:latest
     container_name: caselist_server
     restart: always
-    network_mode: "host"
+    ports:
+        - 5834:5834
     volumes:
         - /net/configs/caselist/server/production.env:/api/.env
         - /var/www/caselist:/api/uploads
