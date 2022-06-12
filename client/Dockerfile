@@ -9,4 +9,4 @@ ENV NODE_ENV=${NODE_ENV}
 RUN npm run build
 
 EXPOSE 5835
-CMD cd build && serve -l 5835
+CMD cd build && serve -s -l 5835

@@ -17,7 +17,7 @@ import Table from '../tables/Table';
 
 import styles from './FilesTable.module.css';
 
-const FilesTable = ({ files, loading }) => {
+const FilesTable = ({ files }) => {
     const { year } = useParams();
     const { fetchOpenEvFiles } = useStore();
     const auth = useAuth();
@@ -132,15 +132,13 @@ const FilesTable = ({ files, loading }) => {
             columns={columns}
             data={files}
             className="table"
-            loading={loading}
-            noDataText="No files uploaded yet!"
+            noDataText=""
         />
     );
 };
 
 FilesTable.propTypes = {
     files: PropTypes.array,
-    loading: PropTypes.bool,
 };
 
 export default FilesTable;
