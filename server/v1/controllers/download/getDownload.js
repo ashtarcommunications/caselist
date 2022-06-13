@@ -3,7 +3,7 @@ import rateLimiter from 'express-rate-limit';
 import { debugLogger } from '../../helpers/logger';
 import config from '../../../config';
 
-const downloadLimiter = rateLimiter({
+export const downloadLimiter = rateLimiter({
     windowMs: 60 * 1000, // 1 minute
     max: 5, // limit each user to 5 downloads/minute
     keyGenerator: (req) => (req.user_id ? req.user_id : req.ip),
