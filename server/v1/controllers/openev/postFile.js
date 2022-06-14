@@ -80,22 +80,18 @@ const postFile = {
             return res.status(500).json({ message: 'Error while creating file' });
         }
 
-        try {
-            await query(SQL`
-                INSERT INTO openev (name, path, year, camp, lab, tags, created_by_id)
-                VALUES (
-                    ${filename},
-                    ${filePath},
-                    ${req.body.year},
-                    ${req.body.camp?.trim()},
-                    ${req.body.lab?.trim()},
-                    ${JSON.stringify(req.body.tags)},
-                    ${req.user_id}
-                )
-            `);
-        } catch (err) {
-            return res.status(500).json({ message: 'Error while saving file' });
-        }
+        await query(SQL`
+            INSERT INTO openev (name, path, year, camp, lab, tags, created_by_id)
+            VALUES (
+                ${filename},
+                ${filePath},
+                ${req.body.year},
+                ${req.body.camp?.trim()},
+                ${req.body.lab?.trim()},
+                ${JSON.stringify(req.body.tags)},
+                ${req.user_id}
+            )
+        `);
 
         await log({
             user_id: req.user_id,
