@@ -1,4 +1,5 @@
 import SQL from 'sql-template-strings';
+import { startOfYear } from '@speechanddebate/nsda-js-utils';
 import { query } from '../v1/helpers/mysql';
 
 const testFixtures = async () => {
@@ -36,18 +37,22 @@ const testFixtures = async () => {
 
     await query(SQL`
         INSERT INTO openev (openev_id, name, path, year, camp, lab, tags) VALUES
-            (1, '/openev/2022/Test/Test.docx', 'Test.docx', 2022, 'Test', 'AA', '{"da":true,"cp":true}');
+            (1, 'Test.docx', 'openev/2022/Test/Test.docx', ${startOfYear}, 'Test', 'AA', '{"da":true,"cp":true}'),
+            (2, 'archived', 'openev/archived', 2020, 'Test', 'BB', '{"da":true,"cp":true}');
     `);
 
     await query(SQL`
         INSERT INTO users (user_id, email, display_name) VALUES
-            (1, 'test@test.com', 'Test User')
+            (1, 'test@test.com', 'Test User'),
+            (2, 'user@test.com', 'Non-Admin');
+
     `);
 
-    // token = SHA256 hash of 'test'
+    // token = SHA256 hash of 'test' (1) and 'user' (2)
     await query(SQL`
         INSERT INTO sessions (session_id, token, user_id, expires_at) VALUES
-            (1, '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 1, DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 1 DAY))
+            (1, '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 1, DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 1 DAY)),
+            (2, '04f8996da763b7a969b1028ee3007569eaf3a635486ddab211d512c85b9df8fb', 2, DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 1 DAY));
     `);
 };
 

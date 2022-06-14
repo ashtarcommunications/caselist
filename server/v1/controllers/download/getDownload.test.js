@@ -6,6 +6,7 @@ import { downloadLimiter } from './getDownload';
 
 describe('GET /v1/download', () => {
     beforeEach(async () => {
+        await fs.promises.mkdir(`${config.UPLOAD_DIR}`, { recursive: true });
         await fs.promises.writeFile(`${config.UPLOAD_DIR}/test`, 'test');
     });
 
