@@ -3,7 +3,7 @@ Tests
 
 # Client
 Tests
-Prevent large upload files from slowing down add round page
+Fix multiple cite box opening bug
 
 # Misc
 Repo README

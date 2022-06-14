@@ -49,6 +49,9 @@ const processFile = (
                 toast.error('File could not be processed for cites. Are you sure this is a Verbatim file?');
                 return false;
             }
+            if (html.length > 1000000) {
+                toast.warn('This looks like a very large file, which may slow down your browser. Are you sure it\'s a speech document?');
+            }
 
             // Put the HTML string into a DOM element so we can manipulate as an array
             const div = document.createElement('div');
