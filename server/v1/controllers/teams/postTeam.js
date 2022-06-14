@@ -31,17 +31,28 @@ const postTeam = {
             displayName = `${school.display_name} Novices`;
         }
 
+        const like = `${name}%`;
         const team = await (query(SQL`
                 SELECT T.*
                 FROM teams T
                 INNER JOIN schools S ON S.school_id = T.school_id
                 INNER JOIN caselists C ON S.caselist_id = C.caselist_id
                 WHERE C.name = ${req.params.caselist}
-                AND LOWER(S.name) = LOWER(${req.params.school})
-                AND LOWER(T.name) = LOWER(${name})
+                    AND LOWER(S.name) = LOWER(${req.params.school})
+                    AND LOWER(T.name) LIKE ${like}
+                ORDER BY T.name
         `));
+
+        // If there's an existing team with that name, add a number to the name
         if (team && team.length > 0) {
-            return res.status(400).json({ message: 'Team already exists' });
+            let i = 1;
+            const lastChar = team[team.length - 1]?.name?.slice(-1);
+            const highestNumber = parseInt(lastChar);
+            if (highestNumber) {
+                i = highestNumber + 1;
+            }
+            name += i;
+            displayName += i;
         }
 
         const newTeam = await query(SQL`
