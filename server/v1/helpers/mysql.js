@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import mysql from 'mysql2';
 import config from '../../config';
 import { debugLogger, queryLogger } from './logger';

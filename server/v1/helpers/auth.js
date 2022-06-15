@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import crypto from 'crypto';
 import SQL from 'sql-template-strings';
 import { query } from './mysql';

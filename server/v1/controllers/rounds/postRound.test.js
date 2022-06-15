@@ -30,12 +30,12 @@ describe('POST /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds', (
             .expect(201);
 
         const newRound = await query(SQL`
-            SELECT COUNT(*) AS 'count' FROM rounds WHERE tournament = 'Test Post Round' AND team_id = 1
+            SELECT COUNT(*) AS 'count' FROM rounds WHERE tournament = 'Test Post Round'
         `);
         assert.strictEqual(newRound[0].count, 1, 'Round inserted');
 
         const roundsHistory = await query(SQL`
-            SELECT COUNT(*) AS 'count' FROM rounds_history WHERE tournament = 'Test Post Round' AND team_id = 1
+            SELECT COUNT(*) AS 'count' FROM rounds_history WHERE tournament = 'Test Post Round'
         `);
         assert.strictEqual(roundsHistory[0].count, 1, 'Round History inserted');
 

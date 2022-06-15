@@ -1,4 +1,5 @@
 /* eslint-disable no-restricted-syntax, no-await-in-loop, no-continue */
+/* istanbul ignore file */
 // Run from CLI like:
 // node --experimental-specifier-resolution=node -e 'import("./v1/controllers/search/buildIndex").then(m => m.buildIndex(true, false));'
 // First parameter tells the script to kill the MySQL pool if running from the CLI

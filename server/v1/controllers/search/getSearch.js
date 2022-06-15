@@ -5,7 +5,7 @@ import { query } from '../../helpers/mysql';
 import config from '../../../config';
 import { debugLogger } from '../../helpers/logger';
 
-const searchLimiter = rateLimiter({
+export const searchLimiter = rateLimiter({
     windowMs: 60 * 1000, // 1 minute
     max: 2, // limit each user to 2 searches/minute
     keyGenerator: (req) => (req.user_id ? req.user_id : req.ip),

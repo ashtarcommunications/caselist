@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 const errorHandler = (err, req, res, next) => {
     // Delegate to default express error handler if headers are already sent
     if (res.headersSent) {

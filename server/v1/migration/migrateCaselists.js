@@ -1,6 +1,7 @@
 // #!/usr/bin/env node
 // Invoke from CLI like:
 // node --experimental-specifier-resolution=node v1/migration/migrateCaselists.js
+/* istanbul ignore file */
 
 import Bottleneck from 'bottleneck';
 import { fetch } from '@speechanddebate/nsda-js-utils';

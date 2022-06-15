@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import express from 'express';
 import cron from 'node-cron';
 import helmet from 'helmet';

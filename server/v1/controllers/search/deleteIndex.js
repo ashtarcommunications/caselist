@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 // Run from CLI like:
 // node --experimental-specifier-resolution=node -e 'import("./v1/controllers/search/deleteIndex").then(m => m.deleteIndex());'
 import { fetch } from '@speechanddebate/nsda-js-utils';

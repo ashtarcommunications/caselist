@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import winston from 'winston';
 
 export const debugLogger = winston.createLogger({

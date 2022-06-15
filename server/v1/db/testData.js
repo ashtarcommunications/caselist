@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import SQL from 'sql-template-strings';
 import { pool, query } from '../helpers/mysql';
 
