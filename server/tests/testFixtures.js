@@ -22,10 +22,10 @@ const testFixtures = async () => {
     `);
 
     await query(SQL`
-        INSERT INTO rounds (round_id, team_id, side, tournament, round, opponent, judge, report, tourn_id, external_id) VALUES
-            (1, 1, 'A', 'Test Tournament', '1', 'Evil Empire XX', 'Hardy', 'Report', 1234, 1234),
-            (2, 1, 'N', 'Test Tournament', '2', 'Evil Empire YY', 'Hardy', 'Report', 1234, 1234),
-            (3, 2, 'A', 'Archived Round', '1', 'Evil Empire XX', 'Hardy', 'Report', 1234, 1234);
+        INSERT INTO rounds (round_id, team_id, side, tournament, round, opponent, judge, report, opensource, tourn_id, external_id) VALUES
+            (1, 1, 'A', 'Test Tournament', '1', 'Evil Empire XX', 'Hardy', 'Report', 'test.docx', 1234, 1234),
+            (2, 1, 'N', 'Test Tournament', '2', 'Evil Empire YY', 'Hardy', 'Report', 'test.docx', 1234, 1234),
+            (3, 2, 'A', 'Archived Round', '1', 'Evil Empire XX', 'Hardy', 'Report', 'test.docx', 1234, 1234);
     `);
 
     await query(SQL`

@@ -9,13 +9,13 @@ import server from '../../../index';
 describe('DELETE /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{round}', () => {
     beforeEach(async () => {
         await fs.promises.mkdir(`${config.UPLOAD_DIR}`, { recursive: true });
-        await fs.promises.writeFile(`${config.UPLOAD_DIR}/test`, 'test');
+        await fs.promises.writeFile(`${config.UPLOAD_DIR}/test.docx`, 'test');
     });
 
     it('should delete a round', async () => {
         const newRound = await query(SQL`
             INSERT INTO rounds (team_id, tournament, side, round, opensource) VALUES
-                (1, 'Test Tourn', 'A', '1', 'test');
+                (1, 'Test Tourn', 'A', '1', 'test.docx');
         `);
         await query(SQL`
             INSERT INTO cites (round_id, title, cites) VALUES
@@ -40,18 +40,25 @@ describe('DELETE /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{
         assert.strictEqual(cites[0].count, 0, 'Cite deleted');
 
         const roundsHistory = await query(SQL`
-            SELECT COUNT(*) AS 'count' FROM rounds_history WHERE round_id = ${newRound.insertId}
+            SELECT * FROM rounds_history WHERE round_id = ${newRound.insertId}
         `);
-        assert.strictEqual(roundsHistory[0].count, 1, 'Round history entry');
+        assert.strictEqual(roundsHistory.length, 1, 'Round history entry');
+
         const citesHistory = await query(SQL`
             SELECT COUNT(*) AS 'count' FROM cites_history WHERE round_id = ${newRound.insertId}
         `);
         assert.strictEqual(citesHistory[0].count, 1, 'Cite history entry');
 
         try {
-            await fs.promises.access(`${config.UPLOAD_DIR}/test`, fs.constants.F_OK);
+            await fs.promises.access(`${config.UPLOAD_DIR}/test.docx`, fs.constants.F_OK);
         } catch (err) {
             assert.isOk(err, 'File deleted');
+        }
+
+        try {
+            await fs.promises.access(`${config.UPLOAD_DIR}/test-DELETED-v${roundsHistory[0].version}.docx`, fs.constants.F_OK);
+        } catch (err) {
+            assert.isNotOk(err, 'No error accessing deleted file');
         }
     });
 
@@ -83,7 +90,9 @@ describe('DELETE /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{
 
     afterEach(async () => {
         try {
-            await fs.promises.rm(`${config.UPLOAD_DIR}/test`);
+            let files = await fs.promises.readdir(config.UPLOAD_DIR);
+            files = files.filter(f => f.startsWith('test'));
+            await Promise.all(files.map(f => fs.promises.rm(`${config.UPLOAD_DIR}/${f}`)));
         } catch {
             // Do Nothing
         }
