@@ -54,11 +54,11 @@ const Sidebar = () => {
     }
 
     return (
-        <div className={`${styles.sidebar} ${!visible && styles['sidebar-collapsed']}`}>
+        <div className={`${styles.sidebar} ${!visible ? styles['sidebar-collapsed'] : undefined}`}>
             <div className={styles.toggle} onClick={handleToggleVisible} title="Click to toggle sidebar">
                 <span>{visible ? '«' : '»'}</span>
             </div>
-            <div className={!visible && styles['sidebar-contents-collapsed']}>
+            <div className={!visible ? styles['sidebar-contents-collapsed'] : undefined}>
                 <h2>
                     <span>Files By Camp ({year || startOfYear}) </span>
                 </h2>
@@ -107,7 +107,7 @@ const Sidebar = () => {
                 </h2>
                 {
                     years.map(y => (
-                        <ul>
+                        <ul key={y}>
                             <li>
                                 <Link to={`/openev/${y}`}>{y} Open Ev</Link>
                                 <span> | </span>

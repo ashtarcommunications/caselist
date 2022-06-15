@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { useEffect } from 'react';
 
 const useScript = (url, data = {}) => {

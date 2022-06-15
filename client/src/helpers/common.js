@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 export const notTitleCase = /\b[a-z]/;
 
 export const alpha = /^[a-zA-Z ]+$/;
