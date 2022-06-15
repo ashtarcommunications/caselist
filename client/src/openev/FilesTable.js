@@ -116,7 +116,7 @@ const FilesTable = ({ files }) => {
                     <p className={styles.tags}>
                         {
                             tags.map(t => (
-                                <Link to={`/openev/${year || startOfYear}/${t}`}>
+                                <Link key={t} to={`/openev/${year || startOfYear}/${t}`}>
                                     <span className={styles.tag}>{tagAbbreviations[t]}</span>
                                 </Link>
                             ))

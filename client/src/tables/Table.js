@@ -26,8 +26,9 @@ const Table = ({ columns = [], data = [], hiddenColumns = [], className, loading
             <table {...getTableProps()} className={`pure-table pure-table-bordered ${className}`}>
                 <thead>
                     {
-                        headerGroups.map(headerGroup => (
-                            <React.Fragment key={headerGroup.id}>
+                        headerGroups.map((headerGroup, index) => (
+                            // eslint-disable-next-line react/no-array-index-key
+                            <React.Fragment key={index}>
                                 <tr {...headerGroup.getHeaderGroupProps()}>
                                     {
                                         headerGroup.headers.map(column => (
