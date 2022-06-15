@@ -17,7 +17,7 @@ const postTeam = {
 
         let name = '';
         let displayName = `${school.display_name} `;
-        for (let i = 0; i < school.team_size; i++) {
+        for (let i = 0; i < 4; i++) {
             const debater = `debater${i + 1}_last`;
             name += `${req.body?.[debater]?.slice(0, 2)}`;
             displayName += `${req.body?.[debater]?.slice(0, 2)}`;

@@ -97,7 +97,7 @@ const speedLimiter = slowDown({
     delayMs: config.SLOWDOWN_RATE_DELAY || 50, // Add 50ms of delay per request above 1000
     maxDelayMs: config.SLOWDOWN_MAX_DELAY || 10000, // Cap max delay at 10s per request
     keyGenerator: (req) => (req.user_id ? req.user_id : req.ip),
-    skip: req => req.method === 'OPTIONS',
+    skip: req => req.method === 'OPTIONS' || process.env.NODE_ENV === 'test',
 });
 
 // Rate limit all requests
@@ -109,7 +109,7 @@ const getLimiter = rateLimiter({
         debugLogger.info(`1000 requests/15m rate limit enforced on user ${req.user_id}`);
         res.status(429).send({ message: 'You have exceeded the allowed number of page views per 15 minutes. Wait and try again.' });
     },
-    skip: req => req.method === 'OPTIONS',
+    skip: req => req.method === 'OPTIONS' || process.env.NODE_ENV === 'test',
 });
 
 // Rate limit modification requests to prevent abuse
@@ -121,7 +121,7 @@ const modificationLimiter = rateLimiter({
         debugLogger.info(`5 modifications/1m rate limit enforced on user ${req.user_id}`);
         res.status(429).send({ message: 'You have exceeded the allowed number of modifications per minute. Wait and try again.' });
     },
-    skip: req => req.method === 'OPTIONS' || req.method === 'GET',
+    skip: req => req.method === 'OPTIONS' || req.method === 'GET' || process.env.NODE_ENV === 'test',
 });
 
 // Super rate limit modification requests to stop bot abuse
@@ -134,7 +134,7 @@ const superModificationLimiter = rateLimiter({
         debugLogger.info(`100 modifications/1d rate limit enforced on user ${req.user_id}`);
         res.status(429).send({ message: 'You have exceeded the allowed number of modifications per day. Wait and try again.' });
     },
-    skip: req => req.method === 'OPTIONS' || req.method === 'GET',
+    skip: req => req.method === 'OPTIONS' || req.method === 'GET' || process.env.NODE_ENV === 'test',
 });
 
 // Parse body and cookies

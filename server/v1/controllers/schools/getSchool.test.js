@@ -17,7 +17,7 @@ describe('GET /v1/caselists/{caselist}/schools/{school}', () => {
         assert.property(res.body, 'name', 'name property');
         assert.property(res.body, 'display_name', 'display_name property');
         assert.property(res.body, 'state', 'state property');
-        assert.property(res.body, 'chapter_id', 'chapter_id[] property');
+        assert.property(res.body, 'chapter_id', 'chapter_id property');
         assert.property(res.body, 'archived', 'archived property');
         assert.property(res.body, 'updated_by', 'updated_by property');
     });
