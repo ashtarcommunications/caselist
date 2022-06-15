@@ -39,11 +39,10 @@ const postRound = {
             if (['.docx', '.doc', '.pdf', '.rtf', '.txt'].indexOf(extension) === -1) {
                 extension = '';
             }
-            filename = '';
             filename = `${req.params.school}-${req.params.team}-`;
             filename += `${displaySide(req.body.side, team.event)}-`;
-            filename += `${req.body.tournament.trim().replace(' ', '-')}-`;
-            filename += req.body.round === 'All' ? 'All-Rounds' : roundName(req.body.round.trim()).replace(' ', '-');
+            filename += `${req.body.tournament.trim().replaceAll(' ', '-')}-`;
+            filename += req.body.round === 'All' ? 'All-Rounds' : roundName(req.body.round.trim()).replaceAll(' ', '-');
             filename += `${extension}`;
 
             uploadDir = `${req.params.caselist}/${req.params.school}/${req.params.team}`;

@@ -13,8 +13,8 @@ const getRounds = {
             AND LOWER(S.name) = LOWER(${req.params.school})
             AND LOWER(T.name = ${req.params.team})
         `);
-        if (req.params.side) {
-            sql.append(`AND LOWER(R.side) = LOWER(${req.params.side})`);
+        if (req.query.side) {
+            sql.append(SQL`AND LOWER(R.side) = LOWER(${req.query.side})`);
         }
         sql.append(`ORDER BY R.tournament, R.round`);
 

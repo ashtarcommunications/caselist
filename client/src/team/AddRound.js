@@ -75,8 +75,8 @@ const AddRound = () => {
     useEffect(() => {
         let computed = `${school}-${team}-`;
         computed += `${displaySide(watchFields.side, caselistData.event)}-`;
-        computed += `${watchFields.tournament?.trim().replace(' ', '-')}-`;
-        computed += watchFields.round === 'All' ? 'All-Rounds' : roundName(watchFields.round).replace(' ', '-');
+        computed += `${watchFields.tournament?.trim().replaceAll(' ', '-')}-`;
+        computed += watchFields.round === 'All' ? 'All-Rounds' : roundName(watchFields.round).replaceAll(' ', '-');
         setFilename(computed);
     }, [watchFields, school, team, caselistData]);
 
