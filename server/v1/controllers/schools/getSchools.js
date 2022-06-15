@@ -4,7 +4,7 @@ import { query } from '../../helpers/mysql';
 const getSchools = {
     GET: async (req, res) => {
         const schools = await query(SQL`
-            SELECT S.* FROM schools S
+            SELECT S.*, C.archived FROM schools S
             INNER JOIN caselists C ON S.caselist_id = C.caselist_id
             wHERE C.name = ${req.params.caselist}
             ORDER BY S.display_name
