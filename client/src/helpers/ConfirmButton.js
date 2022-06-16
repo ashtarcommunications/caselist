@@ -22,6 +22,7 @@ const ConfirmButton = ({ message = 'Are you sure?', handler, dismiss, requireInp
             }
             <div>
                 <button
+                    name="confirm"
                     type="submit"
                     className="pure-button green-button"
                     disabled={requireInput && confirm !== 'I am certain'}

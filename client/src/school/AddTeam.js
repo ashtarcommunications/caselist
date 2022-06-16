@@ -145,7 +145,6 @@ const AddTeam = () => {
         );
     }
 
-    console.log(errors);
     return (
         <div>
             <h3>Add a {caselistData.team_size > 1 ? 'Team' : 'Debater'}</h3>
@@ -205,6 +204,7 @@ const AddTeam = () => {
                                             <div className={styles.first}>
                                                 <label htmlFor={`debater${i + 1}_first`}>Debater #{i + 1} First</label>
                                                 <Combobox
+                                                    id={`debater${i + 1}_first`}
                                                     containerClassName={`${styles.combo} ${error && styles.error}`}
                                                     busy={fetching}
                                                     hideCaret={fetching || students.length < 1}
@@ -250,6 +250,7 @@ const AddTeam = () => {
                                             <div>
                                                 <label htmlFor={`debater${i + 1}_last`}>Debater #{i + 1} Last</label>
                                                 <Combobox
+                                                    id={`debater${i + 1}_last`}
                                                     containerClassName={`${styles.combo} ${error && styles.error}`}
                                                     busy={fetching}
                                                     hideCaret={fetching || students.length < 1}
