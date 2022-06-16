@@ -2,10 +2,11 @@ import React from 'react';
 import { assert } from 'chai';
 
 import { wrappedRender as render, screen, fireEvent, waitFor } from '../setupTests';
-import AddSchool from './AddSchool';
 import { loadTabroomChapters, addSchool } from '../helpers/api';
 // eslint-disable-next-line import/named
 import { store } from '../helpers/store';
+
+import AddSchool from './AddSchool';
 
 describe('AddSchool', () => {
     it('Renders and submits an add school form', async () => {

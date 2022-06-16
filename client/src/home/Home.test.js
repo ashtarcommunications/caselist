@@ -21,7 +21,7 @@ describe('Home', () => {
         assert.isNotOk(screen.queryByText('Login'), 'No login screen when logged in');
     });
 
-    it('Renders a homepage', async () => {
+    it('Renders a login screen', async () => {
         auth.user.loggedIn = false;
         render(<Home />);
         assert.isOk(screen.queryByText('Login'), 'Login screen');

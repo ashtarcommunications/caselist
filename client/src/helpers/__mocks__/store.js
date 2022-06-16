@@ -13,7 +13,7 @@ export const store = {
     fetchTeams: jest.fn().mockResolvedValue({}),
     teams: [],
     fetchOpenEvFiles: jest.fn().mockResolvedValue([{ openev_id: 1, name: 'Test.docx', path: '/test', year: startOfYear, camp: 'CNDI', tags: '{"da":true,"cp":true}' }]),
-    openEvFiles: [],
+    openEvFiles: [{ openev_id: 1, name: 'Test.docx', path: '/test', year: startOfYear, camp: 'CNDI', tags: '{"da":true}' }],
 };
 
 export const ProvideStore = ({ children }) => {

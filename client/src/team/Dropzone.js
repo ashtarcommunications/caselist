@@ -49,7 +49,7 @@ Dropzone.propTypes = {
     name: PropTypes.string,
     processing: PropTypes.bool,
     onDrop: PropTypes.func.isRequired,
-    control: PropTypes.func,
+    control: PropTypes.object,
 };
 
 export default Dropzone;
