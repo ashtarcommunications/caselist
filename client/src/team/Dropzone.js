@@ -7,7 +7,7 @@ import Loader from '../loader/Loader';
 
 import styles from './Dropzone.module.css';
 
-const Dropzone = ({ name, processing, onDrop, control }) => {
+const Dropzone = ({ name = 'dropzone', processing, onDrop, control }) => {
     const { getRootProps, getInputProps } = useDropzone({
         onDrop,
         multiple: false,
