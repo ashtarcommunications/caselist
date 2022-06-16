@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const RoundNumberDropdown = ({ className, value, onChange, disabled }) => {
+const RoundNumberDropdown = ({ id = 'round', className, value, onChange, disabled }) => {
     return (
-        <select className={className} name="round" value={value} onChange={onChange} disabled={disabled}>
+        <select id={id} className={className} name="round" value={value} onChange={onChange} disabled={disabled}>
             <option value="" />
             <option value="All">All</option>
             <option value="1">1</option>
@@ -27,6 +27,7 @@ const RoundNumberDropdown = ({ className, value, onChange, disabled }) => {
 };
 
 RoundNumberDropdown.propTypes = {
+    id: PropTypes.string,
     className: PropTypes.string,
     value: PropTypes.string,
     onChange: PropTypes.func.isRequired,

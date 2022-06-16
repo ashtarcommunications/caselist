@@ -198,6 +198,7 @@ const AddRound = () => {
                                 fieldState: { error },
                             }) => (
                                 <Combobox
+                                    id="tournament"
                                     containerClassName={`${(!value || error) && styles.error}`}
                                     busy={fetchingRounds}
                                     ref={tournamentRef}
@@ -248,6 +249,7 @@ const AddRound = () => {
                                 fieldState: { error },
                             }) => (
                                 <SideDropdown
+                                    id="side"
                                     className={(!value || error) && styles.error}
                                     value={value}
                                     onChange={onChange}
@@ -270,6 +272,7 @@ const AddRound = () => {
                                 fieldState: { error },
                             }) => (
                                 <RoundNumberDropdown
+                                    id="round"
                                     className={(!value || error) && styles.error}
                                     value={value}
                                     onChange={onChange}
