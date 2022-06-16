@@ -9,7 +9,7 @@ export const store = {
     fetchSchools: jest.fn().mockResolvedValue([]),
     schools: [{ school_id: 1, name: 'testschool', display_name: 'Test School', state: 'CO' }],
     fetchSchool: jest.fn().mockResolvedValue({}),
-    schoolData: { school_id: 1, name: 'testschool', display_name: 'Test School', state: 'CO' },
+    schoolData: { school_id: 1, name: 'testschool', display_name: 'Test School', state: 'CO', updated_by: 'Test User' },
     fetchTeams: jest.fn().mockResolvedValue([{ team_id: 1, name: 'testteam', display_name: 'Test Team', debater1_first: 'Aaron', debater1_last: 'Hardy' }]),
     teams: [{ team_id: 1, name: 'testteam', display_name: 'Test Team', debater1_first: 'Aaron', debater1_last: 'Hardy', debater2_first: 'Chris', debater2_last: 'Palmer' }],
     fetchOpenEvFiles: jest.fn().mockResolvedValue([{ openev_id: 1, name: 'Test.docx', path: '/test', year: startOfYear, camp: 'CNDI', tags: '{"da":true,"cp":true}' }]),
