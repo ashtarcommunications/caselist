@@ -34,6 +34,6 @@ export const loadOpenEvFiles = jest.fn().mockResolvedValue([]);
 export const addOpenEvFile = jest.fn().mockResolvedValue({ message: 'Successfully added file' });
 export const deleteOpenEvFile = jest.fn().mockResolvedValue({ message: 'Successfully deleted file' });
 export const downloadFile = jest.fn().mockResolvedValue({ blob: () => true });
-export const loadSearch = jest.fn().mockResolvedValue([]);
+export const loadSearch = jest.fn().mockResolvedValue([{ type: 'team', team_id: 1, path: '/', downloadPath: '/', shard: 'test', team_display_name: 'Test Team', title: 'Test Cite', snippet: 'Test Snippet' }]);
 
 export default null;

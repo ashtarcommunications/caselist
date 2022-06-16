@@ -18,7 +18,7 @@ global.window.URL.createObjectURL = () => '';
 export const wrappedRender = (component) => {
     return render(
         <ProvideAuth>
-            <MemoryRouter>
+            <MemoryRouter initialEntries={['/?q=test']}>
                 <ProvideStore>
                     {component}
                 </ProvideStore>
