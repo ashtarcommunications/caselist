@@ -59,7 +59,7 @@ const AddCite = ({ rounds, event, handleAddCite }) => {
                     <>
                         <h2>Add cites to {school} {team}</h2>
 
-                        <form onSubmit={handleSubmit(handleSubmitCite)} className={`pure-form pure-form-stacked ${isMobile && styles.mobile}`}>
+                        <form onSubmit={handleSubmit(handleSubmitCite)} className={`pure-form pure-form-stacked ${isMobile ? styles.mobile : undefined}`}>
                             <label htmlFor="selectround">Link to round</label>
                             <select id="selectround" name="round_id" className={styles.selectround} {...register('round_id', { required: true })}>
                                 {
@@ -68,7 +68,7 @@ const AddCite = ({ rounds, event, handleAddCite }) => {
                                         ? `${r.tournament} ${displaySide(r.side, event)}`
                                         : `${r.tournament} ${roundName(r.round)} ${displaySide(r.side)} vs ${r.opponent}`;
                                         return (
-                                            <option value={r.round_id}>
+                                            <option key={r.round_id} value={r.round_id}>
                                                 {name}
                                             </option>
                                         );
@@ -79,6 +79,8 @@ const AddCite = ({ rounds, event, handleAddCite }) => {
                                 fields.map((item, index) => {
                                     return (
                                         <CiteEditor
+                                            // eslint-disable-next-line react/no-array-index-key
+                                            key={index}
                                             item={item}
                                             index={index}
                                             register={register}
@@ -107,7 +109,7 @@ const AddCite = ({ rounds, event, handleAddCite }) => {
                         </form>
                     </>
                 :
-                    <div className={`${styles['add-cite']} ${isMobile && styles.mobile}`}>
+                    <div className={`${styles['add-cite']} ${isMobile ? styles.mobile : undefined}`}>
                         <button
                             type="button"
                             className={`pure-button ${styles.add}`}

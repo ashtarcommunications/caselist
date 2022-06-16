@@ -14,7 +14,7 @@ const CiteEditor = ({ item, index, register, control, remove }) => {
     const { isMobile } = useDeviceDetect();
 
     return (
-        <div key={item.id} className={isMobile && styles.mobile}>
+        <div key={item.id} className={isMobile ? styles.mobile : undefined}>
             <div className={styles.citetitle}>
                 <div>
                     <label htmlFor={`cites.${index}.title`}>Cite Title</label>
@@ -146,7 +146,7 @@ CiteEditor.propTypes = {
     item: PropTypes.object,
     index: PropTypes.number,
     register: PropTypes.func.isRequired,
-    control: PropTypes.func.isRequired,
+    control: PropTypes.object.isRequired,
     remove: PropTypes.func,
 
 };
