@@ -15,6 +15,8 @@ jest.mock('./helpers/useScript');
 
 global.window.scrollTo = () => true;
 global.window.URL.createObjectURL = () => '';
+global.navigator.clipboard = {};
+global.navigator.clipboard.writeText = jest.fn();
 
 export const wrappedRender = (component) => {
     return render(
