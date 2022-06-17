@@ -84,7 +84,6 @@ const EditRound = () => {
 
     const updateRoundHandler = async (data) => {
         try {
-            console.log(round);
             const response = await updateRound(caselist, school, team, round, data);
             toast.success(response.message);
             reset({}, { keepDefaultValues: true });

@@ -18,9 +18,6 @@ describe('SearchForm', () => {
         render(<SearchForm />);
         assert.isOk(document.querySelector('input'), 'Form exists');
         const button = screen.getByRole('button');
-        assert.isTrue(button.disabled);
-        fireEvent.change(document.querySelector('input'), { target: { value: 'test' } });
-        assert.isFalse(button.disabled);
         fireEvent.click(button);
         await waitFor(() => assert.isAtLeast(useNavigate.mock.calls.length, 1, 'Navigated to next page'));
     });
