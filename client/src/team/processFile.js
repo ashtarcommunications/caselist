@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import * as mammoth from 'mammoth/mammoth.browser';
 import Turndown from 'turndown';
 import { toast } from 'react-toastify';
