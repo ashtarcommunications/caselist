@@ -122,8 +122,8 @@ describe('AddTeam', () => {
     });
 
     afterEach(() => {
-        loadTabroomStudents.mockReset();
-        addTeam.mockReset();
-        store.fetchTeams.mockReset();
+        loadTabroomStudents.mockClear();
+        addTeam.mockClear();
+        store.fetchTeams.mockClear();
     });
 });

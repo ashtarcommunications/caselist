@@ -48,7 +48,7 @@ describe('TeamList', () => {
     });
 
     afterEach(() => {
-        deleteTeam.mockReset();
-        store.fetchTeams.mockReset();
+        deleteTeam.mockClear();
+        store.fetchTeams.mockClear();
     });
 });

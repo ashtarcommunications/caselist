@@ -51,17 +51,23 @@ const TeamRounds = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await loadRounds(caselist, school, team);
-                if (response) {
-                    setRounds(
-                        side
-                        ? response.filter(r => r.side === normalizeSide(side))
-                        : response
-                    );
-                }
+                let response = await loadRounds(caselist, school, team);
+                const newRounds = side
+                    ? response.filter(r => r.side === normalizeSide(side))
+                    : response;
+                setRounds(newRounds);
+
+                response = await loadCites(caselist, school, team);
+                const newCites = side
+                    ? response.filter(cite => newRounds.map(
+                        round => round.round_id
+                    ).indexOf(cite.round_id) > -1)
+                    : response;
+                setCites(newCites);
             } catch (err) {
                 console.log(err);
                 setRounds(err);
+                setCites(err);
             }
         };
         fetchData();
@@ -71,6 +77,7 @@ const TeamRounds = () => {
         try {
             toast.dismiss();
             const response = await deleteRound(caselist, school, team, parseInt(id));
+            console.log(response);
             toast.success(response.message);
             setRounds(rounds.filter(r => r.round_id !== parseInt(id)));
             setCites(cites.filter(c => c.round_id !== parseInt(id)));
@@ -118,24 +125,6 @@ const TeamRounds = () => {
         });
         setRounds(newRounds);
     }, [allRoundsOpen, rounds]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await loadCites(caselist, school, team);
-                setCites(side
-                    ? response.filter(cite => rounds.map(
-                        round => round.round_id
-                    ).indexOf(cite.round_id) > -1)
-                    : response
-                );
-            } catch (err) {
-                console.log(err);
-                setCites(err);
-            }
-        };
-        fetchData();
-    }, [caselist, school, team, side, rounds]);
 
     const handleDeleteCite = useCallback(async (id) => {
         try {
@@ -252,7 +241,7 @@ const TeamRounds = () => {
     }
 
     return (
-        <div className={isMobile && styles.mobile}>
+        <div className={isMobile ? styles.mobile : undefined}>
             <Breadcrumbs />
             <h1 className={styles.teamname}>
                 {teamData.display_name} {!caselistData.archived && lastNames && `(${lastNames})`}
@@ -277,7 +266,7 @@ const TeamRounds = () => {
                 <Link to={`/${caselist}/${school}/${team}`}>
                     <button
                         type="button"
-                        className={`pure-button ${styles.side} ${!side && styles['selected-side']}`}
+                        className={`pure-button ${styles.side} ${!side ? styles['selected-side'] : undefined}`}
                     >
                         All
                     </button>
@@ -285,7 +274,7 @@ const TeamRounds = () => {
                 <Link to={`/${caselist}/${school}/${team}/Aff`}>
                     <button
                         type="button"
-                        className={`pure-button ${styles.side} ${side === 'Aff' && styles['selected-side']}`}
+                        className={`pure-button ${styles.side} ${side === 'Aff' ? styles['selected-side'] : undefined}`}
                     >
                         Aff
                     </button>
@@ -293,7 +282,7 @@ const TeamRounds = () => {
                 <Link to={`/${caselist}/${school}/${team}/Neg`}>
                     <button
                         type="button"
-                        className={`pure-button ${styles.side} ${side === 'Neg' && styles['selected-side']}`}
+                        className={`pure-button ${styles.side} ${side === 'Neg' ? styles['selected-side'] : undefined}`}
                     >
                         Neg
                     </button>

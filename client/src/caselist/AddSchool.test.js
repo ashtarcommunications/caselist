@@ -72,7 +72,7 @@ describe('AddSchool', () => {
     });
 
     afterEach(() => {
-        loadTabroomChapters.mockReset();
-        addSchool.mockReset();
+        loadTabroomChapters.mockClear();
+        addSchool.mockClear();
     });
 });

@@ -16,35 +16,7 @@ jest.mock('react-router-dom', () => ({
 }));
 
 describe('EditRound', () => {
-    it('Displays an error message on failure', async () => {
-        updateRound.mockRejectedValue({ message: 'Failed to update round' });
-
-        render(<EditRound />);
-        await waitFor(() => assert.isNotOk(document.querySelector('.loader'), 'Loader disappears'));
-
-        fireEvent.change(document.querySelector('input[name="tournament"]'), { target: { value: 'Update' } });
-        await waitFor(() => assert.strictEqual(document.querySelector('input[name="tournament"]').value, 'Update', 'Correct tournament value'));
-
-        const button = document.querySelector('button[type="submit"]');
-        button.disabled = false;
-        fireEvent.click(button);
-        await waitFor(() => assert.isOk(screen.queryByText(/Failed to update round/), 'Failure notification exists'));
-    });
-
     it('Renders and submits an edit round form', async () => {
-        loadRound.mockImplementation(() => ({
-            round_id: 1,
-            tournament: 'Tournament',
-            side: 'A',
-            round: '1',
-            judge: 'Judge',
-            opponent: 'Opponent',
-            report: 'Report',
-            opensource: '/test.docx',
-            video: 'Video',
-        }));
-        updateRound.mockResolvedValue({ message: 'Successfully updated round' });
-
         render(<EditRound />);
         await waitFor(() => assert.isOk(document.querySelector('.loader'), 'Loader exists'));
         await waitFor(() => assert.isNotOk(document.querySelector('.loader'), 'Loader disappears'));
@@ -70,6 +42,21 @@ describe('EditRound', () => {
         await waitFor(() => assert.strictEqual(document.querySelector('input[name="tournament"]').value, '', 'Tournament reset'));
     });
 
+    it('Displays an error message on failure', async () => {
+        updateRound.mockRejectedValue({ message: 'Failed to update round' });
+
+        render(<EditRound />);
+        await waitFor(() => assert.isNotOk(document.querySelector('.loader'), 'Loader disappears'));
+
+        fireEvent.change(document.querySelector('input[name="tournament"]'), { target: { value: 'Update' } });
+        await waitFor(() => assert.strictEqual(document.querySelector('input[name="tournament"]').value, 'Update', 'Correct tournament value'));
+
+        const button = document.querySelector('button[type="submit"]');
+        button.disabled = false;
+        fireEvent.click(button);
+        await waitFor(() => assert.isOk(screen.queryByText(/Failed to update round/), 'Failure notification exists'));
+    });
+
     it('Renders an error message for an archived caselist', async () => {
         store.caselistData.archived = true;
         render(<EditRound />);
@@ -86,8 +73,8 @@ describe('EditRound', () => {
     });
 
     afterEach(() => {
-        updateRound.mockReset();
-        loadRound.mockReset();
-        useNavigate.mockReset();
+        updateRound.mockClear();
+        loadRound.mockClear();
+        useNavigate.mockClear();
     });
 });

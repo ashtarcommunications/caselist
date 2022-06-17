@@ -53,6 +53,6 @@ describe('TeamNotes', () => {
     });
 
     afterEach(() => {
-        updateTeam.mockReset();
+        updateTeam.mockClear();
     });
 });

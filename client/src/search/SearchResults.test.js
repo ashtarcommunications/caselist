@@ -54,7 +54,7 @@ describe('SearchResults', () => {
     });
 
     afterEach(() => {
-        loadSearch.mockReset();
-        useParams.mockReset();
+        loadSearch.mockClear();
+        useParams.mockClear();
     });
 });

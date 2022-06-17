@@ -36,7 +36,6 @@ const AddRound = () => {
         register,
         formState: { errors, isValid },
         handleSubmit,
-        reset,
         setValue,
         control,
     } = useForm({
@@ -139,7 +138,6 @@ const AddRound = () => {
         try {
             const response = await addRound(caselist, school, team, data);
             toast.success(response.message);
-            reset({}, { keepDefaultValues: true });
             navigate(`/${caselist}/${school}/${team}`);
         } catch (err) {
             toast.error(`Failed to add round: ${err.message}`);

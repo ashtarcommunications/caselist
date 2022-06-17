@@ -39,6 +39,6 @@ describe('Recent', () => {
     });
 
     afterEach(() => {
-        loadRecent.mockReset();
+        loadRecent.mockClear();
     });
 });

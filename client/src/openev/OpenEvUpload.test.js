@@ -85,6 +85,6 @@ describe('Open Ev Upload', () => {
     });
 
     afterEach(() => {
-        addOpenEvFile.mockReset();
+        addOpenEvFile.mockClear();
     });
 });

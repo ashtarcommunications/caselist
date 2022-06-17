@@ -42,7 +42,7 @@ describe('FilesTable', () => {
     });
 
     afterEach(() => {
-        deleteOpenEvFile.mockReset();
-        store.fetchOpenEvFiles.mockReset();
+        deleteOpenEvFile.mockClear();
+        store.fetchOpenEvFiles.mockClear();
     });
 });

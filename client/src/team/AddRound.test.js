@@ -74,8 +74,6 @@ describe('AddRound', () => {
         fireEvent.click(button);
         await waitFor(() => assert.isOk(screen.queryByText('Successfully added round'), 'Success notification exists'));
         await waitFor(() => assert.strictEqual(addRound.mock.calls.length, 1, 'Called addRound'));
-        await waitFor(() => assert.strictEqual(tournament.value, '', 'Tournament reset'));
-        await waitFor(() => assert.isNotOk(screen.queryByText(/Test Cite/), 'Cites reset'));
     });
 
     it('Disables inputs for All Tournament', async () => {
@@ -130,8 +128,8 @@ describe('AddRound', () => {
     });
 
     afterEach(() => {
-        loadTabroomRounds.mockReset();
-        addRound.mockReset();
-        useNavigate.mockReset();
+        loadTabroomRounds.mockClear();
+        addRound.mockClear();
+        useNavigate.mockClear();
     });
 });

@@ -35,6 +35,6 @@ describe('ConfirmButton', () => {
     });
 
     afterEach(async () => {
-        mockHandler.mockReset();
+        mockHandler.mockClear();
     });
 });

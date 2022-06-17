@@ -23,6 +23,6 @@ describe('SearchForm', () => {
     });
 
     afterEach(() => {
-        useNavigate.mockReset();
+        useNavigate.mockClear();
     });
 });

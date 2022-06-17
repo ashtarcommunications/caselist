@@ -55,7 +55,7 @@ describe('Login', () => {
     });
 
     afterEach(() => {
-        auth.handleLogin.mockReset();
-        useNavigate.mockReset();
+        auth.handleLogin.mockClear();
+        useNavigate.mockClear();
     });
 });

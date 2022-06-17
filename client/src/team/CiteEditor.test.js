@@ -56,6 +56,6 @@ describe('CiteEditor', () => {
     });
 
     afterEach(async () => {
-        useWatch.mockReset();
+        useWatch.mockClear();
     });
 });

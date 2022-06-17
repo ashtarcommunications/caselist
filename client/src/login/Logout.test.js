@@ -20,6 +20,6 @@ describe('Logout', () => {
     });
 
     afterEach(() => {
-        auth.handleLogout.mockReset();
+        auth.handleLogout.mockClear();
     });
 });
