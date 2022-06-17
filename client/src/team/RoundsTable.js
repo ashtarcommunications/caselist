@@ -103,6 +103,7 @@ const RoundsTable = ({
                             row.value?.report &&
                             <span className={styles.caret}>
                                 <FontAwesomeIcon
+                                    className="togglereport"
                                     icon={
                                         row.row?.original?.reportopen
                                         ? faAngleDown
