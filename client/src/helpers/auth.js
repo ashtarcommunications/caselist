@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import React, { createContext, useState, useMemo, useContext } from 'react';
 import Cookies from 'js-cookie';
 import { login } from './api';

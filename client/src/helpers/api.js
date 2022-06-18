@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { createBrowserHistory } from 'history';
 import { fetch } from '@speechanddebate/nsda-js-utils';
 

@@ -122,7 +122,7 @@ describe('PUT /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{rou
             .expect(401);
     });
 
-    afterEach(async () => {
+    afterAll(async () => {
         try {
             let files = await fs.promises.readdir(config.UPLOAD_DIR);
             files = files.filter(f => f.startsWith('test'));

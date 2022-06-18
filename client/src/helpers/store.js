@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import React, { createContext, useState, useContext, useCallback, useMemo } from 'react';
 import { sortBy } from 'lodash';
 import { startOfYear } from '@speechanddebate/nsda-js-utils';
