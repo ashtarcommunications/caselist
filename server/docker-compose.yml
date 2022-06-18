@@ -14,6 +14,6 @@ services:
     container_name: caselist_swagger
     restart: always
     ports:
-        - 10012:8080
+        - 5835:8080
     environment:
         URL: https://api.opencaselist.com/v1/docs

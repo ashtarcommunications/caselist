@@ -5,6 +5,6 @@ services:
     container_name: caselist_client
     restart: always
     ports:
-        - 5835:5835
+        - 5836:5836
     volumes:
         - /net/configs/caselist/client/production.env:/app/.env.production
