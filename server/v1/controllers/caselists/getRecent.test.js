@@ -12,6 +12,7 @@ describe('GET /v1/caselists/{caselist}/recent', () => {
             .expect(200);
 
         assert.isArray(res.body, 'Response is an array');
+        assert.property(res.body[0], 'round_id', 'round_id property');
         assert.property(res.body[0], 'team_id', 'team_id property');
         assert.property(res.body[0], 'side', 'side property');
         assert.property(res.body[0], 'tournament', 'tournament property');

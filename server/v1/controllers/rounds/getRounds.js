@@ -19,6 +19,7 @@ const getRounds = {
         sql.append(`ORDER BY R.tournament, R.round`);
 
         const rounds = await query(sql);
+        console.log(rounds);
 
         return res.status(200).json(rounds);
     },

@@ -20,7 +20,6 @@ const ScrollToTopOrAnchor = ({ history }) => {
         if (hash === '') {
             window.scrollTo(0, 0);
         } else {
-            console.log('in hash');
             let retries = 0;
             const id = hash.replace('#', '');
             const scroll = () => {

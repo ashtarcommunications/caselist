@@ -10,7 +10,7 @@ import Loader from '../loader/Loader';
 import Error from '../layout/Error';
 
 const Recent = () => {
-    const [teams, setTeams] = useState([]);
+    const [rounds, setRounds] = useState([]);
     const [fetching, setFetching] = useState(false);
 
     const { caselist } = useParams();
@@ -23,13 +23,13 @@ const Recent = () => {
                 if (caselist) {
                     setFetching(true);
                     const response = await loadRecent(caselist);
-                    setTeams(response || []);
+                    setRounds(response || []);
                     setFetching(false);
                 }
             } catch (err) {
                 console.log(err);
                 setFetching(false);
-                setTeams([]);
+                setRounds([]);
             }
         };
         fetchData();
@@ -45,19 +45,19 @@ const Recent = () => {
         <div>
             <Breadcrumbs />
             <h1>Recently Modified in {caselistData.display_name}</h1>
-            {!fetching && teams.length === 0 && <p>No recent modifications</p>}
+            {!fetching && rounds.length === 0 && <p>No recent modifications</p>}
             {
-                teams.map(t => (
-                    <p key={t.team_id}>
-                        <Link to={`/${caselist}/${t.school_name}/${t.team_name}`}>
-                            <span>{t.team_display_name}</span>
+                rounds.map(r => (
+                    <p key={r.round_id}>
+                        <Link to={`/${caselist}/${r.school_name}/${r.team_name}`}>
+                            <span>{r.team_display_name}</span>
                             {
-                                t.tournament &&
+                                r.tournament &&
                                 <>
-                                    <span> - {t.tournament} </span>
-                                    <span>{roundName(t.round)} </span>
-                                    <span>{displaySide(t.side, caselistData.event)} </span>
-                                    {t.opponent && <span>vs {t.opponent}</span>}
+                                    <span> - {r.tournament} </span>
+                                    <span>{roundName(r.round)} </span>
+                                    <span>{displaySide(r.side, caselistData.event)} </span>
+                                    {r.opponent && <span>vs {r.opponent}</span>}
                                 </>
                             }
                         </Link>

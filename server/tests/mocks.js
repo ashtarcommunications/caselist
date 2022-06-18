@@ -35,7 +35,7 @@ export const setupMocks = () => {
                 response: { docs: [
                     {
                         type: ['file'],
-                        id: '/ndtceda21/Northwestern/HaPa/test.docx',
+                        id: 'ndtceda21/Northwestern/HaPa/test.docx',
                         shard: ['ndtceda21'],
                         caselist: ['ndtceda21'],
                         caselist_display_name: ['NDT/CEDA 2021'],
@@ -44,11 +44,11 @@ export const setupMocks = () => {
                         team: ['HaPa'],
                         team_display_name: ['Northwestern HaPa'],
                         year: ['2021'],
-                        path: ['/ndtceda21/Northwestern/HaPa/test.docx'],
+                        path: ['ndtceda21/Northwestern/HaPa/test.docx'],
                     },
                     {
                         type: ['cite'],
-                        id: '/ndtceda21/Northwestern/HaPa#1',
+                        id: 'ndtceda21/Northwestern/HaPa#1',
                         cite_id: 1,
                         title: ['Cite Title'],
                         shard: ['ndtceda21'],
@@ -58,12 +58,12 @@ export const setupMocks = () => {
                         school_display_name: ['Northwestern'],
                         team: ['HaPa'],
                         team_display_name: ['Northwestern HaPa'],
-                        path: ['/ndtceda21/Northwestern/HaPa#1'],
+                        path: ['ndtceda21/Northwestern/HaPa#1'],
                     },
                 ] },
                 highlighting: {
-                    '/ndtceda21/Northwestern/HaPa/test.docx': { content: ['File contents'] },
-                    '/ndtceda21/Northwestern/HaPa#1': { content: ['Cite contents'] },
+                    'ndtceda21/Northwestern/HaPa/test.docx': { content: ['File contents'] },
+                    'ndtceda21/Northwestern/HaPa#1': { content: ['Cite contents'] },
                 },
             };
         }

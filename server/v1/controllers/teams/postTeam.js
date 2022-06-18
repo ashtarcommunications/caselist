@@ -19,8 +19,10 @@ const postTeam = {
         let displayName = `${school.display_name} `;
         for (let i = 0; i < 4; i++) {
             const debater = `debater${i + 1}_last`;
-            name += `${req.body?.[debater]?.slice(0, 2)}`;
-            displayName += `${req.body?.[debater]?.slice(0, 2)}`;
+            if (req.body?.[debater]) {
+                name += `${req.body?.[debater]?.slice(0, 2)}`;
+                displayName += `${req.body?.[debater]?.slice(0, 2)}`;
+            }
         }
         if (req.body.debater1_first?.trim() === 'All' && req.body.debater1_last?.trim() === 'Teams') {
             name = 'All';

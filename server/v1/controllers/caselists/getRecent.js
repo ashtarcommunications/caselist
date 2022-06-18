@@ -5,6 +5,7 @@ const getRecent = {
     GET: async (req, res) => {
         const sql = (SQL`
             SELECT
+                R.round_id,
                 R.team_id,
                 R.side,
                 R.tournament,

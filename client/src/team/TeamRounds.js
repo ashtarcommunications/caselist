@@ -77,7 +77,6 @@ const TeamRounds = () => {
         try {
             toast.dismiss();
             const response = await deleteRound(caselist, school, team, parseInt(id));
-            console.log(response);
             toast.success(response.message);
             setRounds(rounds.filter(r => r.round_id !== parseInt(id)));
             setCites(cites.filter(c => c.round_id !== parseInt(id)));
