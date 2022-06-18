@@ -2,7 +2,7 @@ import React from 'react';
 import { assert } from 'chai';
 import { useForm, useWatch } from 'react-hook-form';
 
-import { wrappedRender as render, waitFor, fireEvent } from '../setupTests';
+import { wrappedRender as render, screen, waitFor, fireEvent } from '../setupTests';
 
 import CiteEditor from './CiteEditor';
 
@@ -31,6 +31,10 @@ describe('CiteEditor', () => {
         await waitFor(() => assert.isOk(document.querySelector('input[type="text"]'), 'Renders a title'));
         await waitFor(() => assert.isOk(document.querySelector('textarea'), 'Renders a cite box'));
         await waitFor(() => assert.isOk(document.querySelector('input[type="checkbox"]'), 'Renders an open toggle'));
+
+        // Convert button works without erroring
+        fireEvent.click(screen.getByLabelText(/Convert/));
+
         fireEvent.click(document.querySelector('.trash'));
         await waitFor(() => assert.strictEqual(mockRemove.mock.calls.length, 1, 'Called remove'));
     });

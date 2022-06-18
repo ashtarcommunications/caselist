@@ -22,7 +22,7 @@ const SearchForm = () => {
     }, [params, caselist, year, location]);
 
     const handleChangeInput = (e) => {
-        setQ(e.currentTarget.value);
+        setQ(e.target.value);
     };
 
     const handleSearch = (e) => {
