@@ -27,21 +27,29 @@ const CiteEditor = ({ item, index, register, control, remove }) => {
                     />
                 </div>
                 <span className={styles.caret}>
-                    <label htmlFor={`cites.${index}.open`}>
-                        <input
-                            id={`cites.${index}.open`}
-                            {...register(`cites.${index}.open`)}
-                            type="checkbox"
-                            defaultChecked={cites?.[index]?.open}
-                        />
-                        <FontAwesomeIcon
-                            icon={
-                                cites?.[index]?.open
-                                ? faAngleDown
-                                : faAngleUp
-                            }
-                        />
-                    </label>
+                    <Controller
+                        control={control}
+                        name={`cites.${index}.open`}
+                        render={
+                            ({ field: { onChange, value } }) => (
+                                <label htmlFor={`cites.${index}.open`}>
+                                    <input
+                                        id={`cites.${index}.open`}
+                                        type="checkbox"
+                                        onChange={(e) => onChange(e.target.checked)}
+                                        checked={value}
+                                    />
+                                    <FontAwesomeIcon
+                                        icon={
+                                            cites?.[index]?.open
+                                            ? faAngleDown
+                                            : faAngleUp
+                                        }
+                                    />
+                                </label>
+                            )
+                        }
+                    />
                 </span>
                 {
                     remove &&
