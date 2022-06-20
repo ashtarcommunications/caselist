@@ -96,7 +96,7 @@ const migrate = async () => {
                         console.log(`Found ${teams.length} teams for ${school}`);
 
                         for (const team of teams) {
-                            console.log(`Processing team ${team.name}...`);
+                            console.log(`Processing team ${team.name?.replace(' Aff', '').replace(' Neg', '')}...`);
                             await teamInfoLimiter.schedule(async () => {
                                 const teamInfoURL = `${baseURL}${encodeURIComponent(school)}/pages/WebHome/objects/Caselist.TeamClass/${team.number}/`;
                                 response = await fetch(teamInfoURL, { mode: 'cors', headers: { Accept: 'application/xml', 'Content-Type': 'application/xml' } });
@@ -120,6 +120,29 @@ const migrate = async () => {
                                     t.display_name += `${t[debater]?.slice(0, 2)}`;
                                 }
 
+                                const existingTeam = await (query(SQL`
+                                    SELECT T.*
+                                    FROM teams T
+                                    WHERE
+                                        T.name = ${t.name}
+                                        AND T.school_id = ${newSchool.insertId}
+                                    ORDER BY T.name
+                                `));
+
+                                // If there's an existing team with that name, add a number to the name
+                                if (existingTeam && existingTeam.length > 0) {
+                                    let i = 1;
+                                    const lastChar = existingTeam[existingTeam.length - 1]
+                                        ?.name
+                                        ?.slice(-1);
+                                    const highestNumber = parseInt(lastChar);
+                                    if (highestNumber) {
+                                        i = highestNumber + 1;
+                                    }
+                                    t.name += i;
+                                    t.displayName += i;
+                                }
+
                                 const newTeam = await query(SQL`
                                     INSERT INTO teams (school_id, name, display_name, debater1_first, debater1_last, debater2_first, debater2_last)
                                     VALUES (
@@ -135,14 +158,18 @@ const migrate = async () => {
 
                                 await roundsLimiter.schedule(async () => {
                                     const affRoundsURL = `${baseURL}${encodeURIComponent(school)}/pages/${encodeURIComponent(t.aff)}/objects`;
-                                    response = await fetch(affRoundsURL, { mode: 'cors', headers: { Accept: 'application/xml', 'Content-Type': 'application/xml' } });
-                                    text = await response.text();
-                                    xml = await parseXML(text);
-                                    const affRounds = xml?.objects?.objectSummary
-                                        ?.filter(r => r.className[0] === 'Caselist.RoundClass')
-                                        ?.map(r => r.number[0]) ?? [];
-
-                                    console.log(`Found ${affRounds.length} aff rounds for ${team.name}...`);
+                                    let affRounds = [];
+                                    try {
+                                        response = await fetch(affRoundsURL, { mode: 'cors', headers: { Accept: 'application/xml', 'Content-Type': 'application/xml' } });
+                                        text = await response.text();
+                                        xml = await parseXML(text);
+                                        affRounds = xml?.objects?.objectSummary
+                                            ?.filter(r => r.className[0] === 'Caselist.RoundClass')
+                                            ?.map(r => r.number[0]) ?? [];
+                                    } catch (err) {
+                                        console.log(`Failed to find rounds at ${t.aff}`);
+                                    }
+                                    console.log(`Found ${affRounds.length} aff rounds for ${t.aff}...`);
                                     for (const round of affRounds) {
                                         await affRoundInfoLimiter.schedule(async () => {
                                             const roundInfoURL = `${baseURL}${encodeURIComponent(school)}/pages/${encodeURIComponent(t.aff)}/objects/Caselist.RoundClass/${round}/`;
@@ -218,42 +245,51 @@ const migrate = async () => {
                                             for (const cite of r.cites) {
                                                 await affCitesInfoLimiter.schedule(async () => {
                                                     const citesInfoURL = `${baseURL}${encodeURIComponent(school)}/pages/${encodeURIComponent(t.aff)}/objects/Caselist.CitesClass/${cite}/`;
-                                                    response = await fetch(citesInfoURL, { mode: 'cors', headers: { Accept: 'application/xml', 'Content-Type': 'application/xml' } });
-                                                    text = await response.text();
-                                                    xml = await parseXML(text);
-                                                    const citesInfo = xml?.object?.property ?? [];
+                                                    let citesInfo = [];
                                                     const c = {};
-                                                    citesInfo.forEach(prop => {
-                                                        if (prop.$.name === 'Title') { c.title = prop.value[0]; }
-                                                        if (prop.$.name === 'Cites') { c.cites = prop.value[0]; }
-                                                        if (prop.$.name === 'EntryDate') {
-                                                            const parseDate = prop.value[0].split(' ');
-                                                            c.created_at = `${parseDate[5]}-${month[parseDate[1]]}-${parseDate[2]} ${parseDate[3]}`;
-                                                        }
-                                                    });
-                                                    await query(SQL`
-                                                        INSERT INTO cites (round_id, title, cites, created_at)
-                                                        VALUES (
-                                                            ${newAffRound.insertId},
-                                                            ${c.title},
-                                                            ${c.cites},
-                                                            ${c.created_at}
-                                                        )
-                                                    `);
+                                                    try {
+                                                        response = await fetch(citesInfoURL, { mode: 'cors', headers: { Accept: 'application/xml', 'Content-Type': 'application/xml' } });
+                                                        text = await response.text();
+                                                        xml = await parseXML(text);
+                                                        citesInfo = xml?.object?.property ?? [];
+                                                        citesInfo.forEach(prop => {
+                                                            if (prop.$.name === 'Title') { c.title = prop.value[0]; }
+                                                            if (prop.$.name === 'Cites') { c.cites = prop.value[0]; }
+                                                            if (prop.$.name === 'EntryDate') {
+                                                                const parseDate = prop.value[0].split(' ');
+                                                                c.created_at = `${parseDate[5]}-${month[parseDate[1]]}-${parseDate[2]} ${parseDate[3]}`;
+                                                            }
+                                                        });
+                                                        await query(SQL`
+                                                            INSERT INTO cites (round_id, title, cites, created_at)
+                                                            VALUES (
+                                                                ${newAffRound.insertId},
+                                                                ${c.title},
+                                                                ${c.cites},
+                                                                ${c.created_at}
+                                                            )
+                                                        `);
+                                                    } catch (err) {
+                                                        console.log(`Failed to find cite at ${citesInfoURL}`);
+                                                    }
                                                 });
                                             }
                                         });
                                     }
 
                                     const negRoundsURL = `${baseURL}${encodeURIComponent(school)}/pages/${encodeURIComponent(t.neg)}/objects`;
-                                    response = await fetch(negRoundsURL, { mode: 'cors', headers: { Accept: 'application/xml', 'Content-Type': 'application/xml' } });
-                                    text = await response.text();
-                                    xml = await parseXML(text);
-                                    const negRounds = xml?.objects?.objectSummary
-                                        ?.filter(r => r.className[0] === 'Caselist.RoundClass')
-                                        ?.map(r => r.number[0]) ?? [];
-
-                                    console.log(`Found ${negRounds.length} neg rounds for ${team.name}...`);
+                                    let negRounds = [];
+                                    try {
+                                        response = await fetch(negRoundsURL, { mode: 'cors', headers: { Accept: 'application/xml', 'Content-Type': 'application/xml' } });
+                                        text = await response.text();
+                                        xml = await parseXML(text);
+                                        negRounds = xml?.objects?.objectSummary
+                                            ?.filter(r => r.className[0] === 'Caselist.RoundClass')
+                                            ?.map(r => r.number[0]) ?? [];
+                                    } catch (err) {
+                                        console.log(`Failed to find rounds at ${t.neg}`);
+                                    }
+                                    console.log(`Found ${negRounds.length} neg rounds for ${t.neg}...`);
                                     for (const round of negRounds) {
                                         await negRoundInfoLimiter.schedule(async () => {
                                             const roundInfoURL = `${baseURL}${encodeURIComponent(school)}/pages/${encodeURIComponent(t.neg)}/objects/Caselist.RoundClass/${round}/`;
@@ -327,28 +363,33 @@ const migrate = async () => {
                                             for (const cite of r.cites) {
                                                 await negCitesInfoLimiter.schedule(async () => {
                                                     const citesInfoURL = `${baseURL}${encodeURIComponent(school)}/pages/${encodeURIComponent(t.neg)}/objects/Caselist.CitesClass/${cite}/`;
-                                                    response = await fetch(citesInfoURL, { mode: 'cors', headers: { Accept: 'application/xml', 'Content-Type': 'application/xml' } });
-                                                    text = await response.text();
-                                                    xml = await parseXML(text);
-                                                    const citesInfo = xml?.object?.property || [];
+                                                    let citesInfo = [];
                                                     const c = {};
-                                                    citesInfo.forEach(prop => {
-                                                        if (prop.$.name === 'Title') { c.title = prop.value[0]; }
-                                                        if (prop.$.name === 'Cites') { c.cites = prop.value[0]; }
-                                                        if (prop.$.name === 'EntryDate') {
-                                                            const parseDate = prop.value[0].split(' ');
-                                                            c.created_at = `${parseDate[5]}-${month[parseDate[1]]}-${parseDate[2]} ${parseDate[3]}`;
-                                                        }
-                                                    });
-                                                    await query(SQL`
-                                                        INSERT INTO cites (round_id, title, cites, created_at)
-                                                        VALUES (
-                                                            ${newNegRound.insertId},
-                                                            ${c.title},
-                                                            ${c.cites},
-                                                            ${c.created_at}
-                                                        )
-                                                    `);
+                                                    try {
+                                                        response = await fetch(citesInfoURL, { mode: 'cors', headers: { Accept: 'application/xml', 'Content-Type': 'application/xml' } });
+                                                        text = await response.text();
+                                                        xml = await parseXML(text);
+                                                        citesInfo = xml?.object?.property || [];
+                                                        citesInfo.forEach(prop => {
+                                                            if (prop.$.name === 'Title') { c.title = prop.value[0]; }
+                                                            if (prop.$.name === 'Cites') { c.cites = prop.value[0]; }
+                                                            if (prop.$.name === 'EntryDate') {
+                                                                const parseDate = prop.value[0].split(' ');
+                                                                c.created_at = `${parseDate[5]}-${month[parseDate[1]]}-${parseDate[2]} ${parseDate[3]}`;
+                                                            }
+                                                        });
+                                                        await query(SQL`
+                                                            INSERT INTO cites (round_id, title, cites, created_at)
+                                                            VALUES (
+                                                                ${newNegRound.insertId},
+                                                                ${c.title},
+                                                                ${c.cites},
+                                                                ${c.created_at}
+                                                            )
+                                                        `);
+                                                    } catch (err) {
+                                                        console.log(`Failed to find cite at ${citesInfoURL}`);
+                                                    }
                                                 });
                                             }
                                         });
