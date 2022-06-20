@@ -37,7 +37,7 @@ const month = {
 };
 
 const migrate = async () => {
-    const caselists = ['opencaselist21'];
+    const caselists = ['opencaselist14'];
     const excludedSpaces = ['XWiki', 'Sandbox', 'Panels', 'Main', 'Caselist'];
 
     const schoolsLimiter = new Bottleneck({ maxConcurrent: 1, minTime: 50 });
@@ -50,11 +50,6 @@ const migrate = async () => {
     const negCitesInfoLimiter = new Bottleneck({ maxConcurrent: 1, minTime: 50 });
 
     try {
-        await query(SQL`DELETE FROM cites WHERE round_id > 10`);
-        await query(SQL`DELETE FROM rounds WHERE team_id > 20`);
-        await query(SQL`DELETE FROM teams WHERE school_id > 19`);
-        await query(SQL`DELETE FROM schools WHERE caselist_id > 25`);
-
         /* eslint-disable no-restricted-syntax */
         for (const caselist of caselists) {
             const baseURL = `https://opencaselist.paperlessdebate.com/rest/wikis/${caselist}/spaces/`;
@@ -66,8 +61,7 @@ const migrate = async () => {
                 let xml = await parseXML(text);
                 const schools = xml?.spaces?.space
                     ?.filter(s => excludedSpaces.indexOf(s.name?.[0]) === -1)
-                    ?.map(s => s.name?.[0])
-                    ?.filter(s => s === 'Cal Berkeley');
+                    ?.map(s => s.name?.[0]);
 
                 for (const school of schools) {
                     await teamsLimiter.schedule(async () => {
