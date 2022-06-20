@@ -13,6 +13,8 @@ Search - a more or less off-the-shelf deployment of Apache Solr and Apache Tika,
 
 Client - A React frontend client built with Create React App, hosted in production in its own Docker container using Serve
 
+The docker-compose.yml file at the root of the project will build and deploy all the containers below.
+
 ## Server
 More extensive developer documentation is auto-generated according to the OpenAPI spec at: https://api.opencaselist.com
 
@@ -54,7 +56,7 @@ Run the test suite with `npm run test` or `npm run test-cover` if you want code 
 
 Production docker container can be built with
 
-`docker build -t caselist_api .`
+`docker build -t caselist-api .`
 
 and then deployed with
 
@@ -92,7 +94,7 @@ Set up a `.env` or `.env.production` file with environment variable overrides if
 
 Create a docker container with a minified production build with:
 
-`docker build -t caselist_client .`
+`docker build -t caselist-client .`
 
 Start a production container serving the minified bundle using serve with:
 
