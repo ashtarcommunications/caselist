@@ -1,17 +1,17 @@
 version: '2.4'
 services:
-  api:
-    image: caselist_server:latest
-    container_name: caselist_server
+  caselist-api:
+    image: caselist-api:latest
+    container_name: caselist-api
     restart: always
     ports:
         - 5834:5834
     volumes:
         - /net/configs/caselist/server/production.env:/api/.env
         - /var/www/caselist:/api/uploads
-  api-swagger:
+  caselist-swagger:
     image: swaggerapi/swagger-ui
-    container_name: caselist_swagger
+    container_name: caselist-swagger
     restart: always
     ports:
         - 5835:8080

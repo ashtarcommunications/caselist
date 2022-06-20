@@ -1,0 +1,48 @@
+version: '2.4'
+services:
+  caselist-api:
+    image: caselist-api:latest
+    build:
+      context: ./server
+    container_name: caselist-api
+    restart: always
+    ports:
+        - 5834:5834
+    volumes:
+        - /net/configs/caselist/server/production.env:/api/.env
+        - /var/www/caselist:/api/uploads
+  caselist-swagger:
+    image: swaggerapi/swagger-ui
+    container_name: caselist-swagger
+    restart: always
+    ports:
+        - 5835:8080
+    environment:
+        URL: https://api.opencaselist.com/v2/docs
+  caselist-client:
+    image: caselist-client:latest
+    build:
+      context: ./client
+    container_name: caselist-client
+    restart: always
+    ports:
+        - 5836:5836
+    volumes:
+        - /net/configs/caselist/client/production.env:/app/.env.production
+  solr:
+    image: solr:latest
+    container_name: solr
+    restart: always
+    ports: 
+      - 8983:8983
+    volumes:
+      - ${SOLR_DIR:-/var/solr}:/var/solr
+    command:
+      - solr-precreate
+      - caselist
+  tika:
+    image: apache/tika:latest
+    container_name: tika
+    restart: always
+    ports:
+        - 9998:9998

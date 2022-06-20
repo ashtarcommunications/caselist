@@ -1,8 +1,8 @@
 version: '2.4'
 services:
-  api:
-    image: caselist_client:latest
-    container_name: caselist_client
+  caselist-client:
+    image: caselist-client:latest
+    container_name: caselist-client
     restart: always
     ports:
         - 5836:5836
