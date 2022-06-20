@@ -49,9 +49,11 @@ const migrate = async () => {
     const affCitesInfoLimiter = new Bottleneck({ maxConcurrent: 1, minTime: 50 });
     const negCitesInfoLimiter = new Bottleneck({ maxConcurrent: 1, minTime: 50 });
 
+    console.log('Starting caselist migration...');
     try {
         /* eslint-disable no-restricted-syntax */
         for (const caselist of caselists) {
+            console.log(`Starting migration of caselist ${caselist}`);
             const baseURL = `https://opencaselist.paperlessdebate.com/rest/wikis/${caselist}/spaces/`;
             /* eslint-disable no-await-in-loop */
             /* eslint-disable no-loop-func */
@@ -63,7 +65,10 @@ const migrate = async () => {
                     ?.filter(s => excludedSpaces.indexOf(s.name?.[0]) === -1)
                     ?.map(s => s.name?.[0]);
 
+                console.log(`Found ${schools.length} schools...`);
+
                 for (const school of schools) {
+                    console.log(`Processing school ${school}...`);
                     await teamsLimiter.schedule(async () => {
                         const teamsURL = `${baseURL}${encodeURIComponent(school)}/pages/WebHome/objects`;
                         response = await fetch(teamsURL, { mode: 'cors', headers: { Accept: 'application/xml', 'Content-Type': 'application/xml' } });
@@ -87,9 +92,11 @@ const migrate = async () => {
                         const teams = xml?.objects?.objectSummary
                             ?.filter(t => t.className[0] === 'Caselist.TeamClass')
                             ?.map(t => ({ name: t.headline[0].split('.')[1], number: t.number[0] }));
-                        teams.length = 1;
+
+                        console.log(`Found ${teams.length} teams for ${school}`);
 
                         for (const team of teams) {
+                            console.log(`Processing team ${team}...`);
                             await teamInfoLimiter.schedule(async () => {
                                 const teamInfoURL = `${baseURL}${encodeURIComponent(school)}/pages/WebHome/objects/Caselist.TeamClass/${team.number}/`;
                                 response = await fetch(teamInfoURL, { mode: 'cors', headers: { Accept: 'application/xml', 'Content-Type': 'application/xml' } });
@@ -135,6 +142,7 @@ const migrate = async () => {
                                         ?.filter(r => r.className[0] === 'Caselist.RoundClass')
                                         ?.map(r => r.number[0]);
 
+                                    console.log(`Found ${affRounds.length} aff rounds for ${team}...`);
                                     for (const round of affRounds) {
                                         await affRoundInfoLimiter.schedule(async () => {
                                             const roundInfoURL = `${baseURL}${encodeURIComponent(school)}/pages/${encodeURIComponent(t.aff)}/objects/Caselist.RoundClass/${round}/`;
@@ -245,6 +253,7 @@ const migrate = async () => {
                                         ?.filter(r => r.className[0] === 'Caselist.RoundClass')
                                         ?.map(r => r.number[0]);
 
+                                    console.log(`Found ${negRounds.length} neg rounds for ${team}...`);
                                     for (const round of negRounds) {
                                         await negRoundInfoLimiter.schedule(async () => {
                                             const roundInfoURL = `${baseURL}${encodeURIComponent(school)}/pages/${encodeURIComponent(t.neg)}/objects/Caselist.RoundClass/${round}/`;
@@ -352,6 +361,7 @@ const migrate = async () => {
             });
         }
 
+        console.log('Finished migration.');
         pool.end();
 
         return true;
