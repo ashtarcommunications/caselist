@@ -96,7 +96,7 @@ const migrate = async () => {
                         console.log(`Found ${teams.length} teams for ${school}`);
 
                         for (const team of teams) {
-                            console.log(`Processing team ${team}...`);
+                            console.log(`Processing team ${team.name}...`);
                             await teamInfoLimiter.schedule(async () => {
                                 const teamInfoURL = `${baseURL}${encodeURIComponent(school)}/pages/WebHome/objects/Caselist.TeamClass/${team.number}/`;
                                 response = await fetch(teamInfoURL, { mode: 'cors', headers: { Accept: 'application/xml', 'Content-Type': 'application/xml' } });
@@ -142,7 +142,7 @@ const migrate = async () => {
                                         ?.filter(r => r.className[0] === 'Caselist.RoundClass')
                                         ?.map(r => r.number[0]) ?? [];
 
-                                    console.log(`Found ${affRounds.length} aff rounds for ${team}...`);
+                                    console.log(`Found ${affRounds.length} aff rounds for ${team.name}...`);
                                     for (const round of affRounds) {
                                         await affRoundInfoLimiter.schedule(async () => {
                                             const roundInfoURL = `${baseURL}${encodeURIComponent(school)}/pages/${encodeURIComponent(t.aff)}/objects/Caselist.RoundClass/${round}/`;
@@ -253,7 +253,7 @@ const migrate = async () => {
                                         ?.filter(r => r.className[0] === 'Caselist.RoundClass')
                                         ?.map(r => r.number[0]) ?? [];
 
-                                    console.log(`Found ${negRounds.length} neg rounds for ${team}...`);
+                                    console.log(`Found ${negRounds.length} neg rounds for ${team.name}...`);
                                     for (const round of negRounds) {
                                         await negRoundInfoLimiter.schedule(async () => {
                                             const roundInfoURL = `${baseURL}${encodeURIComponent(school)}/pages/${encodeURIComponent(t.neg)}/objects/Caselist.RoundClass/${round}/`;
