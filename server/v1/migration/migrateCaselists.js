@@ -91,7 +91,7 @@ const migrate = async () => {
 
                         const teams = xml?.objects?.objectSummary
                             ?.filter(t => t.className[0] === 'Caselist.TeamClass')
-                            ?.map(t => ({ name: t.headline[0].split('.')[1], number: t.number[0] }));
+                            ?.map(t => ({ name: t.headline[0].split('.')[1], number: t.number[0] })) ?? [];
 
                         console.log(`Found ${teams.length} teams for ${school}`);
 
@@ -140,7 +140,7 @@ const migrate = async () => {
                                     xml = await parseXML(text);
                                     const affRounds = xml?.objects?.objectSummary
                                         ?.filter(r => r.className[0] === 'Caselist.RoundClass')
-                                        ?.map(r => r.number[0]);
+                                        ?.map(r => r.number[0]) ?? [];
 
                                     console.log(`Found ${affRounds.length} aff rounds for ${team}...`);
                                     for (const round of affRounds) {
@@ -251,7 +251,7 @@ const migrate = async () => {
                                     xml = await parseXML(text);
                                     const negRounds = xml?.objects?.objectSummary
                                         ?.filter(r => r.className[0] === 'Caselist.RoundClass')
-                                        ?.map(r => r.number[0]);
+                                        ?.map(r => r.number[0]) ?? [];
 
                                     console.log(`Found ${negRounds.length} neg rounds for ${team}...`);
                                     for (const round of negRounds) {
