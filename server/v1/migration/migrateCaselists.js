@@ -221,7 +221,7 @@ const migrate = async () => {
                                                     response = await fetch(citesInfoURL, { mode: 'cors', headers: { Accept: 'application/xml', 'Content-Type': 'application/xml' } });
                                                     text = await response.text();
                                                     xml = await parseXML(text);
-                                                    const citesInfo = xml?.object?.property;
+                                                    const citesInfo = xml?.object?.property ?? [];
                                                     const c = {};
                                                     citesInfo.forEach(prop => {
                                                         if (prop.$.name === 'Title') { c.title = prop.value[0]; }
@@ -330,7 +330,7 @@ const migrate = async () => {
                                                     response = await fetch(citesInfoURL, { mode: 'cors', headers: { Accept: 'application/xml', 'Content-Type': 'application/xml' } });
                                                     text = await response.text();
                                                     xml = await parseXML(text);
-                                                    const citesInfo = xml?.object?.property;
+                                                    const citesInfo = xml?.object?.property || [];
                                                     const c = {};
                                                     citesInfo.forEach(prop => {
                                                         if (prop.$.name === 'Title') { c.title = prop.value[0]; }
