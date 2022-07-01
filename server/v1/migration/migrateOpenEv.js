@@ -127,10 +127,13 @@ const migrate = async () => {
                                 let fullPath = null;
                                 if (f.url) {
                                     console.log(`Downloading ${f.url}...`);
-                                    const file = await fetch(f.url, { mode: 'cors' });
-                                    const arrayBuffer = await file.arrayBuffer();
-                                    const buffer = Buffer.from(arrayBuffer);
                                     try {
+                                        const file = await fetch(f.url, { mode: 'cors' });
+                                        const arrayBuffer = await file.arrayBuffer();
+                                        const buffer = Buffer.from(arrayBuffer);
+                                        if (!buffer) {
+                                            throw new Error(`Invalid file at ${f.url}`);
+                                        }
                                         path = `openev/${year}/${convertCampName(f.camp?.replace(' ', ''))}`;
                                         fullPath = `${path}/${f.filename}`;
                                         await fs.promises.mkdir(
