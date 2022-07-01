@@ -56,7 +56,7 @@ const convertCampName = (camp) => {
 };
 
 const migrate = async () => {
-    const years = ['2021'];
+    const years = ['2013'];
 
     const pagesLimiter = new Bottleneck({ maxConcurrent: 1, minTime: 50 });
     const objectsLimiter = new Bottleneck({ maxConcurrent: 1, minTime: 50 });

@@ -38,11 +38,11 @@ jobs:
 
     - name: Lint
       run: |
-        npm run lint
+        cd client && npm run lint
 
     - name: Test
       run: |
-        npm run test
+        cd client && npm run test
 
     - name: If tests passed change SLACK_COLOR and SLACK_TITLE accordingly
       if: success()
@@ -70,11 +70,11 @@ jobs:
 
     - name: Lint
       run: |
-        npm run lint
+        cd server && npm run lint
 
     - name: Test
       run: |
-        npm run test
+        cd server && npm run test
 
     - name: If tests passed change SLACK_COLOR and SLACK_TITLE accordingly
       if: success()
