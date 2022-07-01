@@ -162,6 +162,7 @@ const migrate = async () => {
                     });
                 }
             });
+            console.log(`Finished migration of Open Ev ${year}.`);
         }
 
         pool.end();
