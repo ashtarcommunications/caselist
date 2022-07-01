@@ -63,7 +63,11 @@ const migrate = async () => {
                 let xml = await parseXML(text);
                 const schools = xml?.spaces?.space
                     ?.filter(s => excludedSpaces.indexOf(s.name?.[0]) === -1)
-                    ?.map(s => s.name?.[0]);
+                    ?.map(s => s.name?.[0])
+                    ?.filter(s => !s.includes(' Aff'))
+                    ?.filter(s => !s.includes(' Neg'))
+                    ?.filter(s => !s.includes(' aff'))
+                    ?.filter(s => !s.includes(' neg'));
 
                 console.log(`Found ${schools.length} schools...`);
 
