@@ -65,6 +65,7 @@ const migrate = async () => {
     try {
         /* eslint-disable no-restricted-syntax */
         for (const year of years) {
+            console.log(`Starting migration of Open Ev ${year}...`);
             const baseURL = `https://openev.debatecoaches.org/rest/wikis/openev/spaces/${year}/pages`;
             /* eslint-disable no-await-in-loop */
             /* eslint-disable no-loop-func */
@@ -76,6 +77,7 @@ const migrate = async () => {
                     ?.map(p => p.name?.[0]);
 
                 for (const page of pages) {
+                    console.log(`Migrating ${page}...`);
                     await objectsLimiter.schedule(async () => {
                         const objectsURL = `${baseURL}/${page}/objects/AttachedFileClass`;
                         response = await fetch(objectsURL, { mode: 'cors', headers: { Accept: 'application/xml', 'Content-Type': 'application/xml' } });
@@ -84,6 +86,8 @@ const migrate = async () => {
 
                         const objects = xml?.objects?.objectSummary
                             ?.map(t => t.number[0]);
+
+                        console.log(`Found ${objects.length} objects in ${page}...`);
 
                         // Array to track already downloaded files so we can skip duplicate objects
                         const downloadedFiles = [];
@@ -122,6 +126,7 @@ const migrate = async () => {
                                 let path = null;
                                 let fullPath = null;
                                 if (f.url) {
+                                    console.log(`Downloading ${f.url}...`);
                                     const file = await fetch(f.url, { mode: 'cors' });
                                     const arrayBuffer = await file.arrayBuffer();
                                     const buffer = Buffer.from(arrayBuffer);
