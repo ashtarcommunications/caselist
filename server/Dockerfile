@@ -7,10 +7,8 @@ RUN apt-get update && apt-get install vim -y
 RUN npm i
 
 RUN mkdir uploads
-RUN chown www-data:www-data uploads
-
 RUN mkdir logs
-RUN chown www-data:www-data logs
+RUN chown -R www-data:www-data ./
 
 USER www-data:www-data
 
