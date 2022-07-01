@@ -40,6 +40,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "lint": "eslint --ext js src",
     "test": "react-scripts test",
     "test-silent": "react-scripts test --silent",
     "test-cover": "react-scripts test --coverage --watchAll",
