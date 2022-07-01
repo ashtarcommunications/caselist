@@ -74,7 +74,7 @@ const migrate = async () => {
                 let text = await response.text();
                 let xml = await parseXML(text);
                 const pages = xml?.pages?.pageSummary
-                    ?.map(p => p.name?.[0]);
+                    ?.map(p => p.name?.[0]) ?? [];
 
                 for (const page of pages) {
                     console.log(`Migrating ${page}...`);
@@ -85,7 +85,7 @@ const migrate = async () => {
                         xml = await parseXML(text);
 
                         const objects = xml?.objects?.objectSummary
-                            ?.map(t => t.number[0]);
+                            ?.map(t => t.number[0]) ?? [];
 
                         console.log(`Found ${objects.length} objects in ${page}...`);
 
