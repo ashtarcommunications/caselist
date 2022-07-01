@@ -33,20 +33,20 @@ jobs:
       run: echo COMMIT_VERSION=$(echo $GITHUB_SHA) >> $GITHUB_ENV
 
     - name: Publish client image to Registry
-      uses: elgohr/Publish-Docker-Github-Action@master
+      uses: elgohr/Publish-Docker-Github-Action@v4
       with:
         name: caselist-client
-        username: ${{ secrets.REGSITRY_USER }}
+        username: ${{ secrets.REGISTRY_USER }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
         registry: registry.speechanddebate.org
         tags: "${{ env.COMMIT_VERSION }}"
         context: client
     
     - name: Publish server image to Registry
-      uses: elgohr/Publish-Docker-Github-Action@master
+      uses: elgohr/Publish-Docker-Github-Action@v4
       with:
         name: caselist-server
-        username: ${{ secrets.REGSITRY_USER }}
+        username: ${{ secrets.REGISTRY_USER }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
         registry: registry.speechanddebate.org
         tags: "${{ env.COMMIT_VERSION }}"
