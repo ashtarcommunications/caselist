@@ -63,8 +63,6 @@ const migrate = async () => {
     const fileLimiter = new Bottleneck({ maxConcurrent: 1, minTime: 50 });
 
     try {
-        await query(SQL`DELETE FROM openev`);
-
         /* eslint-disable no-restricted-syntax */
         for (const year of years) {
             const baseURL = `https://openev.debatecoaches.org/rest/wikis/openev/spaces/${year}/pages`;
@@ -75,8 +73,7 @@ const migrate = async () => {
                 let text = await response.text();
                 let xml = await parseXML(text);
                 const pages = xml?.pages?.pageSummary
-                    ?.map(p => p.name?.[0])
-                    ?.filter(p => p === 'SDI');
+                    ?.map(p => p.name?.[0]);
 
                 for (const page of pages) {
                     await objectsLimiter.schedule(async () => {
@@ -87,7 +84,6 @@ const migrate = async () => {
 
                         const objects = xml?.objects?.objectSummary
                             ?.map(t => t.number[0]);
-                        // objects.length = 1;
 
                         // Array to track already downloaded files so we can skip duplicate objects
                         const downloadedFiles = [];
