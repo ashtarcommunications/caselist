@@ -144,22 +144,22 @@ const migrate = async () => {
                                             `${cwd()}/uploads/${fullPath}`,
                                             buffer,
                                         );
+
+                                        await query(SQL`
+                                            INSERT INTO openev (name, path, year, camp, lab, tags)
+                                            VALUES (
+                                                ${f.title},
+                                                ${fullPath},
+                                                ${year},
+                                                ${convertCampName(f.camp)},
+                                                ${f.lab},
+                                                ${f.tags}
+                                            )
+                                        `);
                                     } catch (err) {
                                         console.log(err);
                                     }
                                 }
-
-                                await query(SQL`
-                                    INSERT INTO openev (name, path, year, camp, lab, tags)
-                                    VALUES (
-                                        ${f.title},
-                                        ${fullPath},
-                                        ${year},
-                                        ${convertCampName(f.camp)},
-                                        ${f.lab},
-                                        ${f.tags}
-                                    )
-                                `);
                             });
                         }
                     });
