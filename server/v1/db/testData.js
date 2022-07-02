@@ -2,7 +2,7 @@
 import SQL from 'sql-template-strings';
 import { pool, query } from '../helpers/mysql';
 
-const years = [2017, 2018, 2019, 2020];
+const years = [2017, 2018, 2019, 2020, 2021];
 years.forEach(async (y) => {
     await query(SQL`
         INSERT INTO caselists (name, display_name, year, event, level, team_size, archived) VALUES

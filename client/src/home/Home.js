@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { startOfYear } from '@speechanddebate/nsda-js-utils';
 
 import { useAuth } from '../helpers/auth';
 import Login from '../login/Login';
@@ -12,6 +13,7 @@ import cndi from './cndi.png';
 
 const Home = () => {
     const auth = useAuth();
+    const shortYear = startOfYear.toString().slice(-2);
     return (
         <div className={styles.home}>
             <h1>Welcome to openCaselist</h1>
@@ -22,13 +24,13 @@ const Home = () => {
                 :
                 <>
                     <div className={styles.caselists}>
-                        <Link to="/ndtceda21"><div className={`${styles.caselist} ${styles.ndt}`}>NDT-CEDA</div></Link>
-                        <Link to="/hspolicy21"><div className={`${styles.caselist} ${styles.policy}`}>NDCA HS Policy</div></Link>
-                        <Link to="/hsld21"><div className={`${styles.caselist} ${styles.ld}`}>NDCA HS LD</div></Link>
+                        <Link to={`/ndtceda${shortYear}`}><div className={`${styles.caselist} ${styles.ndt}`}>NDT-CEDA</div></Link>
+                        <Link to={`/hspolicy${shortYear}`}><div className={`${styles.caselist} ${styles.policy}`}>NDCA HS Policy</div></Link>
+                        <Link to={`/hsld${shortYear}`}><div className={`${styles.caselist} ${styles.ld}`}>NDCA HS LD</div></Link>
                     </div>
                     <div className={styles.caselists}>
-                        <Link to="/hspf21"><div className={`${styles.caselist} ${styles.pf}`}>NDCA HS PF</div></Link>
-                        <Link to="/nfald21"><div className={`${styles.caselist} ${styles.nfa}`}>NFA-LD</div></Link>
+                        <Link to={`/hspf${shortYear}`}><div className={`${styles.caselist} ${styles.pf}`}>NDCA HS PF</div></Link>
+                        <Link to={`/nfald${shortYear}`}><div className={`${styles.caselist} ${styles.nfa}`}>NFA-LD</div></Link>
                         <Link to="/openev"><div className={`${styles.caselist} ${styles.openev}`}>Open Evidence Project</div></Link>
                     </div>
                 </>

@@ -1,9 +1,9 @@
 INSERT INTO caselists (caselist_id, name, display_name, year, event, level, team_size, archived) VALUES
-    (1001, 'ndtceda21', 'NDT/CEDA 2021-22', 2021, 'cx', 'college', 2, 0),
-    (1002, 'hspolicy21', 'HS Policy 2021-22', 2021, 'cx', 'hs', 2, 0),
-    (1003, 'hsld21', 'HS LD 2021-22', 2021, 'ld', 'hs', 1, 0),
-    (1004, 'hspf21', 'HS PF 2021-22', 2021, 'pf', 'hs', 2, 0),
-    (1005, 'nfald21', 'NFA LD 2021-22', 2021, 'ld', 'college', 1, 0);
+    (1001, 'ndtceda22', 'NDT/CEDA 2022-23', 2022, 'cx', 'college', 2, 0),
+    (1002, 'hspolicy22', 'HS Policy 2022-23', 2022, 'cx', 'hs', 2, 0),
+    (1003, 'hsld22', 'HS LD 2022-23', 2022, 'ld', 'hs', 1, 0),
+    (1004, 'hspf22', 'HS PF 2022-23', 2022, 'pf', 'hs', 2, 0),
+    (1005, 'nfald22', 'NFA LD 2022-23', 2022, 'ld', 'college', 1, 0);
 
 INSERT INTO schools (school_id, caselist_id, name, display_name, state, chapter_id) VALUES
     (1001, 1001, 'Northwestern', 'Northwestern', NULL, 1),
@@ -28,5 +28,5 @@ INSERT INTO cites (cite_id, round_id, title, cites) VALUES
     (1002, 1002, 'Test Neg Title', '# Test 1NC\n## Heading Two\n### neg cites and stuff');
 
 INSERT INTO openev (openev_id, path, name, year, camp, lab, tags) VALUES
-    (1001, '/openev/2021/SDI/AA/Test.docx', 'Test.docx', 2021, 'SDI', 'AA', '{"da":true,"cp":true}'),
-    (1002, '/openev/2021/CNDI/BB/Test2.docx', 'Test2.docx', 2021, 'CNDI', 'BB', '{"k":true,"aff":true}');
+    (1001, '/openev/2022/SDI/AA/Test.docx', 'Test.docx', 2022, 'SDI', 'AA', '{"da":true,"cp":true}'),
+    (1002, '/openev/2022/CNDI/BB/Test2.docx', 'Test2.docx', 2022, 'CNDI', 'BB', '{"k":true,"aff":true}');
