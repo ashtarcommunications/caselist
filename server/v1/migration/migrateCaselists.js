@@ -208,17 +208,17 @@ const migrate = async () => {
                                             let path = null;
                                             let fullPath = null;
                                             if (r.opensource) {
-                                                const file = await fetch(r.opensource, { mode: 'cors' });
-                                                const arrayBuffer = await file.arrayBuffer();
-                                                const buffer = Buffer.from(arrayBuffer);
-                                                const filename = r.opensource
-                                                    ?.split('#')
-                                                    ?.shift()
-                                                    ?.split('?')
-                                                    ?.shift()
-                                                    ?.split('/')
-                                                    ?.pop();
                                                 try {
+                                                    const file = await fetch(r.opensource, { mode: 'cors' });
+                                                    const arrayBuffer = await file.arrayBuffer();
+                                                    const buffer = Buffer.from(arrayBuffer);
+                                                    const filename = r.opensource
+                                                        ?.split('#')
+                                                        ?.shift()
+                                                        ?.split('?')
+                                                        ?.shift()
+                                                        ?.split('/')
+                                                        ?.pop();
                                                     path = `${caselist}/${school.replace(' ', '')}/${t.name}`;
                                                     fullPath = `${path}/${filename}`;
                                                     await fs.promises.mkdir(
@@ -327,17 +327,17 @@ const migrate = async () => {
                                             let path = null;
                                             let fullPath = null;
                                             if (r.opensource) {
-                                                const file = await fetch(r.opensource, { mode: 'cors' });
-                                                const arrayBuffer = await file.arrayBuffer();
-                                                const buffer = Buffer.from(arrayBuffer);
-                                                const filename = r.opensource
-                                                    ?.split('#')
-                                                    ?.shift()
-                                                    ?.split('?')
-                                                    ?.shift()
-                                                    ?.split('/')
-                                                    ?.pop();
                                                 try {
+                                                    const file = await fetch(r.opensource, { mode: 'cors' });
+                                                    const arrayBuffer = await file.arrayBuffer();
+                                                    const buffer = Buffer.from(arrayBuffer);
+                                                    const filename = r.opensource
+                                                        ?.split('#')
+                                                        ?.shift()
+                                                        ?.split('?')
+                                                        ?.shift()
+                                                        ?.split('/')
+                                                        ?.pop();
                                                     path = `${caselist}/${school.replace(' ', '')}/${t.name}`;
                                                     fullPath = `${path}/${filename}`;
                                                     await fs.promises.mkdir(
