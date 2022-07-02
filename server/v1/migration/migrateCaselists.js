@@ -127,11 +127,12 @@ const migrate = async () => {
                                     t.display_name += `${t[debater]?.slice(0, 2)}`;
                                 }
 
+                                const like = `${t.name}%`;
                                 const existingTeam = await (query(SQL`
                                     SELECT T.*
                                     FROM teams T
                                     WHERE
-                                        T.name = ${t.name}
+                                        T.name LIKE ${like}
                                         AND T.school_id = ${newSchool.insertId}
                                     ORDER BY T.name
                                 `));
