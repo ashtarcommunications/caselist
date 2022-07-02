@@ -67,7 +67,9 @@ const migrate = async () => {
                     ?.filter(s => !s.includes(' Aff'))
                     ?.filter(s => !s.includes(' Neg'))
                     ?.filter(s => !s.includes(' aff'))
-                    ?.filter(s => !s.includes(' neg'));
+                    ?.filter(s => !s.includes(' neg'))
+                    ?.filter(s => !s.includes('.'))
+                    ?.filter(s => !s.includes('('));
 
                 console.log(`Found ${schools.length} schools...`);
 
