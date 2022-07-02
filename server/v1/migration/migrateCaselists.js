@@ -38,7 +38,7 @@ const month = {
 
 const migrate = async () => {
     const caselists = ['opencaselist14'];
-    const excludedSpaces = ['XWiki', 'Sandbox', 'Panels', 'Main', 'Caselist', 'Macros', 'ListPages'];
+    const excludedSpaces = ['XWiki', 'Sandbox', 'Panels', 'Main', 'Caselist', 'Macros', 'ListPages', 'Notifications', 'Code'];
 
     const schoolsLimiter = new Bottleneck({ maxConcurrent: 1, minTime: 50 });
     const teamsLimiter = new Bottleneck({ maxConcurrent: 1, minTime: 50 });
