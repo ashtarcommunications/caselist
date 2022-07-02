@@ -1,3 +1,7 @@
 .caselist-home {
     text-align: left;
 }
+
+.archived {
+    color: var(--red);
+}

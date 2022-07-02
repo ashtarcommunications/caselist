@@ -42,3 +42,11 @@
 .sidebar-contents-collapsed * {
     display: none;
 }
+
+.archived {
+    color: var(--red);
+}
+
+.schools {
+    margin-top: 20px;
+}

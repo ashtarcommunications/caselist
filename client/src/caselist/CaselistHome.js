@@ -19,6 +19,12 @@ const CaselistHome = () => {
     return (
         <div className={styles['caselist-home']}>
             <h1>{caselistData.display_name}</h1>
+            {
+                caselistData.archived &&
+                <h2 className={styles.archived}>
+                    This caselist is archived, no changes are allowed
+                </h2>
+            }
             <div>
                 <p>
                     This site provides a space for collaborative intel for the
@@ -48,6 +54,15 @@ const CaselistHome = () => {
                 </p>
                 <Markdown className="cites">{markdown}</Markdown>
             </div>
+            <iframe
+                width="560"
+                height="315"
+                src={process.env.REACT_APP_TUTORIAL_VIDEO}
+                title="How to use openCaselist"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+            />
         </div>
     );
 };

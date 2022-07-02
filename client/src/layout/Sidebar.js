@@ -53,7 +53,10 @@ const Sidebar = () => {
                 <CaselistDropdown />
                 {
                     caselistData.archived
-                    ? <p>THIS CASELIST IS ARCHIVED, NO CHANGES ARE ALLOWED</p>
+                    ?
+                        <p className={styles.archived}>
+                            This caselist is archived, no changes are allowed
+                        </p>
                     : false
                 }
                 <h2>
@@ -87,7 +90,7 @@ const Sidebar = () => {
                 }
                 {
                     filteredSchools && filteredSchools.length > 0 &&
-                        <div>
+                        <div className={styles.schools}>
                             <ul>
                                 {
                                     filteredSchools.map(s => {

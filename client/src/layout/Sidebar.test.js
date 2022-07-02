@@ -54,7 +54,7 @@ describe('Sidebar', () => {
         await waitFor(() => screen.queryByText(`${startOfYear}-${startOfYear + 1}`));
         await waitFor(() => screen.queryByText(/Choose a Caselist/));
         await waitFor(() => screen.queryByText(/Test Caselist/));
-        assert.isOk(screen.queryByText(/ARCHIVED/));
+        assert.isOk(screen.queryByText(/archived/));
         store.caselistData = defaultCaselistData;
     });
 });
