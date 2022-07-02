@@ -38,7 +38,7 @@ const month = {
 
 const migrate = async () => {
     const caselists = ['opencaselist14'];
-    const excludedSpaces = ['XWiki', 'Sandbox', 'Panels', 'Main', 'Caselist', 'Macros'];
+    const excludedSpaces = ['XWiki', 'Sandbox', 'Panels', 'Main', 'Caselist', 'Macros', 'ListPages'];
 
     const schoolsLimiter = new Bottleneck({ maxConcurrent: 1, minTime: 50 });
     const teamsLimiter = new Bottleneck({ maxConcurrent: 1, minTime: 50 });
@@ -69,7 +69,8 @@ const migrate = async () => {
                     ?.filter(s => !s.includes(' aff'))
                     ?.filter(s => !s.includes(' neg'))
                     ?.filter(s => !s.includes('.'))
-                    ?.filter(s => !s.includes('('));
+                    ?.filter(s => !s.includes('('))
+                    ?.filter(s => !s.includes(')'));
 
                 console.log(`Found ${schools.length} schools...`);
 
