@@ -20,7 +20,7 @@ To solve these problems, what was needed was not a "wiki" per se, but a storehou
 
 ## The XWiki era (version 2)
 
-So, I built one. The idea behind "structured data" is to provide a common format for tracking metadata about disclosure (which team did it come from, which round, which side, who was the opponent, is there an open source document available?, etc...). Rather than a mish-mash of poorly edited text, all disclosure could instead be easily organized, searched, and archived using the same systme for everyone.
+So, I built one. The idea behind "structured data" is to provide a common format for tracking metadata about disclosure (which team did it come from, which round, which side, who was the opponent, is there an open source document available?, etc...). Rather than a mish-mash of poorly edited text, all disclosure could instead be easily organized, searched, and archived using the same system for everyone.
 
 At the time, there were very limited options for free, open source, self-hostable systems that would support structured data storage, including large-scale downloadable file management and community-based open editing, without extensive custom development. Ideally, the system needed to:
 * Support structured data storage and metadata
