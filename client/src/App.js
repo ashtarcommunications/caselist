@@ -17,6 +17,8 @@ import ScrollToTopOrAnchor from './layout/ScrollToTopOrAnchor';
 import ErrorBoundary from './layout/ErrorBoundary';
 
 import Markdown from './layout/Markdown';
+import FAQ from './layout/FAQ.md';
+import History from './layout/History.md';
 import PrivacyPolicy from './layout/PrivacyPolicy.md';
 import Terms from './layout/Terms.md';
 
@@ -48,6 +50,8 @@ const App = () => {
                             <Route exact path="/" element={<Layout><Home /></Layout>} />
                             <Route exact path="/login" element={<Layout><Login /></Layout>} />
                             <Route exact path="/logout" element={<Logout />} />
+                            <Route exact path="/faq" element={<Layout><Markdown file={FAQ} /></Layout>} />
+                            <Route exact path="/history" element={<Layout><Markdown file={History} /></Layout>} />
                             <Route exact path="/privacy" element={<Layout><Markdown file={PrivacyPolicy} /></Layout>} />
                             <Route exact path="/terms" element={<Layout><Markdown file={Terms} /></Layout>} />
                             <Route

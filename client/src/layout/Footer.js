@@ -20,8 +20,12 @@ const Footer = () => {
                 <span className={styles.divider}> | </span>
                 <a href="https://paperlessdebate.com/#contact" rel="noopener noreferrer" target="_blank">Contact</a>
                 <span className={styles.divider}> | </span>
+                <a href="/faq">FAQ</a>
+                <span className={styles.divider}> | </span>
                 <span>Created by </span>
                 <span><a href="https://paperlessdebate.com" rel="noopener noreferrer" target="_blank">Ashtar</a></span>
+                <span className={styles.divider}> | </span>
+                <Link to="/history">History</Link>
                 <span className={styles.divider}> | </span>
                 <Link to="/privacy">Privacy Policy</Link>
                 <span className={styles.divider}> | </span>
