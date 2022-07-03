@@ -32,9 +32,9 @@ INSERT INTO caselists (caselist_id, name, display_name, year, event, level, team
     (1028, 'hspf20', 'HS PF 2020-21', 2020, 'pf', 'hs', 2, 1),
     (1029, 'hspf21', 'HS PF 2021-22', 2021, 'pf', 'hs', 2, 1),
 
-    (1030, 'nfald16', 'NFA LD 2016-17', 2016, 'ld', 'college', 1, 0),
-    (1031, 'nfald17', 'NFA LD 2017-18', 2017, 'ld', 'college', 1, 0),
-    (1032, 'nfald18', 'NFA LD 2018-19', 2018, 'ld', 'college', 1, 0),
-    (1033, 'nfald19', 'NFA LD 2019-20', 2019, 'ld', 'college', 1, 0),
-    (1034, 'nfald20', 'NFA LD 2020-21', 2020, 'ld', 'college', 1, 0),
-    (1035, 'nfald21', 'NFA LD 2021-22', 2021, 'ld', 'college', 1, 0);
+    (1030, 'nfald16', 'NFA LD 2016-17', 2016, 'ld', 'college', 1, 1),
+    (1031, 'nfald17', 'NFA LD 2017-18', 2017, 'ld', 'college', 1, 1),
+    (1032, 'nfald18', 'NFA LD 2018-19', 2018, 'ld', 'college', 1, 1),
+    (1033, 'nfald19', 'NFA LD 2019-20', 2019, 'ld', 'college', 1, 1),
+    (1034, 'nfald20', 'NFA LD 2020-21', 2020, 'ld', 'college', 1, 1),
+    (1035, 'nfald21', 'NFA LD 2021-22', 2021, 'ld', 'college', 1, 1);
