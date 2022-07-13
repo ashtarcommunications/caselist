@@ -49,6 +49,13 @@ const CaselistDropdown = () => {
 
     const handleChangeCaselist = (e) => {
         const selected = caselists.find(c => c.name === e.target.value) || {};
+
+        // For static archived sites, redirect to the archived URL
+        if (selected?.archived && selected?.archive_url) {
+            window.location.href = selected?.archive_url;
+            return false;
+        }
+
         document.title = `openCaselist - ${selected.display_name}`;
         navigate(`/${e.target.value}`);
     };
