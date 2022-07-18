@@ -21,7 +21,7 @@ INSERT INTO caselists (caselist_id, name, display_name, year, event, level, team
     (1019, 'hspolicy20', 'HS Policy 2020-21', 2020, 'cx', 'hs', 2, 1, NULL),
     (1020, 'hspolicy21', 'HS Policy 2021-22', 2021, 'cx', 'hs', 2, 1, NULL),
 
-    (1021, 'hsld13', 'HS LD 2013-14', 2013, 'ld', 'hs', 1, 1, 'https://hsld13.paperlessdebate.com');
+    (1021, 'hsld13', 'HS LD 2013-14', 2013, 'ld', 'hs', 1, 1, 'https://hsld13.paperlessdebate.com'),
     (1022, 'hsld14', 'HS LD 2014-15', 2014, 'ld', 'hs', 1, 1, NULL),
     (1023, 'hsld15', 'HS LD 2015-16', 2015, 'ld', 'hs', 1, 1, NULL),
     (1024, 'hsld16', 'HS LD 2016-17', 2016, 'ld', 'hs', 1, 1, NULL),
