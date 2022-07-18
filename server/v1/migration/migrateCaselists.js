@@ -129,8 +129,8 @@ const migrate = async () => {
                                 t.display_name = `${school} `;
                                 for (let i = 0; i < 2; i++) {
                                     const debater = `debater${i + 1}_last`;
-                                    t.name += `${t[debater]?.slice(0, 2)} || ''`;
-                                    t.display_name += `${t[debater]?.slice(0, 2)} || ''`;
+                                    t.name += `${t[debater]?.slice(0, 2) || ''}`;
+                                    t.display_name += `${t[debater]?.slice(0, 2) || ''}`;
                                 }
 
                                 const like = `${t.name}%`;
