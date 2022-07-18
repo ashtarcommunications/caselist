@@ -90,26 +90,28 @@ const migrate = async () => {
                                 ?.filter(t => t.className[0] === 'Caselist.StateClass')
                                 ?.map(t => t.headline[0])[0] || null;
 
-                            newSchool = await query(SQL`
-                                INSERT INTO schools (caselist_id, name, display_name, state)
-                                SELECT
-                                    caselist_id,
-                                    ${school.replaceAll(' ', '')},
-                                    ${school},
-                                    ${state}
-                                FROM caselists WHERE name = ${caselist}
-                            `);
-
                             teams = xml?.objects?.objectSummary
                                 ?.filter(t => t.className[0] === 'Caselist.TeamClass')
                                 ?.map(t => ({ name: t.headline[0].split('.')[1], number: t.number[0] })) ?? [];
                             console.log(`Found ${teams.length} teams for ${school}`);
+
+                            if (teams.length > 0) {
+                                newSchool = await query(SQL`
+                                    INSERT INTO schools (caselist_id, name, display_name, state)
+                                    SELECT
+                                        caselist_id,
+                                        ${school.replaceAll(' ', '')},
+                                        ${school},
+                                        ${state}
+                                    FROM caselists WHERE name = ${caselist}
+                                `);
+                            }
                         } catch (err) {
                             console.log(`Failed to find teams for ${school}`);
                         }
 
                         for (const team of teams) {
-                            console.log(`Processing team ${team.name?.replace(' Aff', '').replace(' Neg', '')}...`);
+                            console.log(`Processing ${school} team ${team.name?.replace(' Aff', '').replace(' Neg', '')}...`);
                             await teamInfoLimiter.schedule(async () => {
                                 const teamInfoURL = `${baseURL}${encodeURIComponent(school)}/pages/WebHome/objects/Caselist.TeamClass/${team.number}/`;
                                 response = await fetch(teamInfoURL, { mode: 'cors', headers: { Accept: 'application/xml', 'Content-Type': 'application/xml' } });
