@@ -225,7 +225,7 @@ const migrate = async () => {
                                                         ?.shift()
                                                         ?.split('/')
                                                         ?.pop();
-                                                    path = `${caselist}/${school.replace(' ', '')}/${t.name}`;
+                                                    path = `${caselist}/${school.replaceAll(' ', '')}/${t.name}`;
                                                     fullPath = `${path}/${filename}`;
                                                     await fs.promises.mkdir(
                                                         `${cwd()}/uploads/${path}`,
@@ -344,7 +344,7 @@ const migrate = async () => {
                                                         ?.shift()
                                                         ?.split('/')
                                                         ?.pop();
-                                                    path = `${caselist}/${school.replace(' ', '')}/${t.name}`;
+                                                    path = `${caselist}/${school.replaceAll(' ', '')}/${t.name}`;
                                                     fullPath = `${path}/${filename}`;
                                                     await fs.promises.mkdir(
                                                         `${cwd()}/uploads/${path}`,
