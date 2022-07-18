@@ -77,30 +77,36 @@ const migrate = async () => {
                 for (const school of schools) {
                     console.log(`Processing school ${school}...`);
                     await teamsLimiter.schedule(async () => {
-                        const teamsURL = `${baseURL}${encodeURIComponent(school)}/pages/WebHome/objects`;
-                        response = await fetch(teamsURL, { mode: 'cors', headers: { Accept: 'application/xml', 'Content-Type': 'application/xml' } });
-                        text = await response.text();
-                        xml = await parseXML(text);
+                        let newSchool;
+                        let teams = [];
 
-                        const state = xml?.objects?.objectSummary
-                            ?.filter(t => t.className[0] === 'Caselist.StateClass')
-                            ?.map(t => t.headline[0])[0] || null;
+                        try {
+                            const teamsURL = `${baseURL}${encodeURIComponent(school)}/pages/WebHome/objects`;
+                            response = await fetch(teamsURL, { mode: 'cors', headers: { Accept: 'application/xml', 'Content-Type': 'application/xml' } });
+                            text = await response.text();
+                            xml = await parseXML(text);
 
-                        const newSchool = await query(SQL`
-                            INSERT INTO schools (caselist_id, name, display_name, state)
-                            SELECT
-                                caselist_id,
-                                ${school.replaceAll(' ', '')},
-                                ${school},
-                                ${state}
-                            FROM caselists WHERE name = ${caselist}
-                        `);
+                            const state = xml?.objects?.objectSummary
+                                ?.filter(t => t.className[0] === 'Caselist.StateClass')
+                                ?.map(t => t.headline[0])[0] || null;
 
-                        const teams = xml?.objects?.objectSummary
-                            ?.filter(t => t.className[0] === 'Caselist.TeamClass')
-                            ?.map(t => ({ name: t.headline[0].split('.')[1], number: t.number[0] })) ?? [];
+                            newSchool = await query(SQL`
+                                INSERT INTO schools (caselist_id, name, display_name, state)
+                                SELECT
+                                    caselist_id,
+                                    ${school.replaceAll(' ', '')},
+                                    ${school},
+                                    ${state}
+                                FROM caselists WHERE name = ${caselist}
+                            `);
 
-                        console.log(`Found ${teams.length} teams for ${school}`);
+                            teams = xml?.objects?.objectSummary
+                                ?.filter(t => t.className[0] === 'Caselist.TeamClass')
+                                ?.map(t => ({ name: t.headline[0].split('.')[1], number: t.number[0] })) ?? [];
+                            console.log(`Found ${teams.length} teams for ${school}`);
+                        } catch (err) {
+                            console.log(`Failed to find teams for ${school}`);
+                        }
 
                         for (const team of teams) {
                             console.log(`Processing team ${team.name?.replace(' Aff', '').replace(' Neg', '')}...`);
@@ -123,8 +129,8 @@ const migrate = async () => {
                                 t.display_name = `${school} `;
                                 for (let i = 0; i < 2; i++) {
                                     const debater = `debater${i + 1}_last`;
-                                    t.name += `${t[debater]?.slice(0, 2)}`;
-                                    t.display_name += `${t[debater]?.slice(0, 2)}`;
+                                    t.name += `${t[debater]?.slice(0, 2)} || ''`;
+                                    t.display_name += `${t[debater]?.slice(0, 2)} || ''`;
                                 }
 
                                 const like = `${t.name}%`;
