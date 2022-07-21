@@ -11,6 +11,7 @@ services:
     volumes:
         - /net/configs/caselist/server/production.env:/api/.env
         - /var/www/caselist:/api/uploads
+        - /var/log/caselist:/api/logs
   caselist-swagger:
     image: swaggerapi/swagger-ui
     container_name: caselist-swagger
