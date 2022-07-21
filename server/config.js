@@ -30,10 +30,10 @@ const config = {
     TABROOM_CASELIST_KEY: 'caselist-key',
     S3_BUCKET: 'caselist-files',
     UPLOAD_DIR: `${cwd()}/uploads`, // No trailing slash
-    SOLR_QUERY_URL: `http://localhost:8983/solr/caselist/select?`, // Trailing ?
-    SOLR_UPDATE_URL: 'http://localhost:8983/solr/caselist/update?commit=true',
-    TIKA_URL: 'http://localhost:9998/tika',
-    TIKA_META_URL: 'http://localhost:9998/meta',
+    SOLR_QUERY_URL: `http://solr:8983/solr/caselist/select?`, // Trailing ?
+    SOLR_UPDATE_URL: 'http://solr:8983/solr/caselist/update?commit=true',
+    TIKA_URL: 'http://tika:9998/tika', // Assumes running on same docker-compose network
+    TIKA_META_URL: 'http://tika:9998/meta', // Assumes running on same docker-compose network
     REBUILD_SOLR: false,
     ADMINS: [1],
 };
