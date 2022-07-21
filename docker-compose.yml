@@ -19,7 +19,7 @@ services:
     ports:
         - 5835:8080
     environment:
-        URL: https://api.opencaselist.com/v2/docs
+        URL: https://api.opencaselist.com/v1/docs
   caselist-client:
     image: caselist-client:latest
     build:
