@@ -111,7 +111,7 @@ const Sidebar = () => {
                             <li>
                                 <Link to={`/openev/${y}`}>{y} Open Ev</Link>
                                 <span> | </span>
-                                <a href={`https://#/${y}.zip`} target="_blank" rel="noopener noreferrer">
+                                <a href={`https://s3.amazonaws.com/openev/${y}OpenEv.zip`} target="_blank" rel="noopener noreferrer">
                                     <FontAwesomeIcon
                                         className={styles.download}
                                         icon={faFileDownload}
