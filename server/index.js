@@ -39,7 +39,8 @@ if (process.env.NODE_ENV !== 'production') {
 if (config.REBUILD_SOLR) {
     try {
         await deleteIndex();
-        await buildIndex(false, false);
+        // Rebuild the index async so server can start up, reindex takes a while
+        buildIndex(false, false);
     } catch (err) {
         debugLogger.error(err.message);
     }
