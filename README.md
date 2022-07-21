@@ -62,6 +62,14 @@ and then deployed with
 
 `docker-compose up -d`
 
+Ensure the following 3 mounted volumes exist and are writeable:
+
+`/var/log/caselist` - server logs
+
+`/var/www/caselist` - uploads, preferably simlinked to NFS
+
+`/var/solr` - solr index and data
+
 ### Environment variables
 
 The Express app also runs a cron job using node-cron to add newly uploaded cites and documents to the Solr index every hour.
