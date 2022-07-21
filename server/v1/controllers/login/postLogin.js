@@ -74,10 +74,10 @@ const postLogin = {
                 httpOnly: false,
                 path: '/',
                 sameSite: 'Lax',
-                domain: 'opencaselist.com',
+                domain: config.COOKIE_DOMAIN,
             });
 
-        if (config.ADMINS?.includes(user.uidNumber)) {
+        if (config.ADMINS?.includes(parseInt(user.uidNumber))) {
             res.cookie(
                 'caselist_admin',
                 true,
@@ -86,7 +86,7 @@ const postLogin = {
                     httpOnly: false,
                     path: '/',
                     sameSite: 'Lax',
-                    domain: 'opencaselist.com',
+                    domain: config.COOKIE_DOMAIN,
                 });
         }
 

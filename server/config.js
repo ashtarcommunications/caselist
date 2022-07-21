@@ -25,6 +25,7 @@ const config = {
     DB_CONNECTION_TIMEOUT: 60000,
     DB_RETRIES: 5,
     DB_RETRY_DELAY: 100,
+    COOKIE_DOMAIN: 'localhost',
     LDAP_URL: 'ldaps://localhost:6363',
     TABROOM_API_URL: 'http://localhost:10011/v1', // No trailing slash
     TABROOM_CASELIST_KEY: 'caselist-key',
@@ -39,6 +40,7 @@ const config = {
 };
 
 if (process.env.NODE_ENV === 'production') {
+    config.COOKIE_DOMAIN = 'opencaselist.com';
     config.LDAP_URL = 'ldaps://ldap.tabroom.com:636';
     config.TABROOM_API_URL = 'https://www.tabroom.com/v1';
 }
