@@ -13,6 +13,7 @@ const getTabroomChapters = {
         try {
             const response = await fetch(url);
             chapters = await response.json();
+            if (!Array.isArray(chapters)) { chapters = []; }
         } catch (err) {
             debugLogger.error('Failed to retrieve Tabroom chapters');
             chapters = [];

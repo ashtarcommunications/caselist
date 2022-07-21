@@ -13,6 +13,7 @@ const getTabroomRounds = {
         try {
             const response = await fetch(url);
             rounds = await response.json();
+            if (!Array.isArray(rounds)) { rounds = []; }
         } catch (err) {
             debugLogger.error('Failed to retrieve Tabroom chapters');
             rounds = [];

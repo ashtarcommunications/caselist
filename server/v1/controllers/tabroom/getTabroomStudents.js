@@ -13,6 +13,7 @@ const getTabroomStudents = {
         try {
             const response = await fetch(url);
             students = await response.json();
+            if (!Array.isArray(students)) { students = []; }
         } catch (err) {
             debugLogger.error('Failed to retrieve Tabroom students');
             students = [];
