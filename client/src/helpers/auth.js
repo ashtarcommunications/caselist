@@ -19,8 +19,6 @@ export const ProvideAuth = ({ children }) => {
         try {
             const response = await login(username, password, remember);
             setUser({ loggedIn: true, token: response.token, admin: response.admin });
-            Cookies.set('caselist_token', response.token, { HttpOnly: false, expires: remember ? 14 : null, sameSite: 'Lax' });
-            Cookies.set('caselist_admin', response.admin, { HttpOnly: false, expires: remember ? 14 : null, sameSite: 'Lax' });
             return true;
         } catch (err) {
             console.log(err);
@@ -31,7 +29,7 @@ export const ProvideAuth = ({ children }) => {
 
     const handleLogout = () => {
         try {
-            Cookies.set('caselist_token', '', { HttpOnly: false });
+            // Remove dev and production cookies
             Cookies.remove('caselist_token');
             Cookies.remove('caselist_token', { path: '/', domain: '.opencaselist.com' });
             Cookies.remove('caselist_admin');
