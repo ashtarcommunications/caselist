@@ -22,7 +22,7 @@ export const ProvideAuth = ({ children }) => {
             return true;
         } catch (err) {
             console.log(err);
-            setUser({ loggedIn: false, token: null });
+            setUser({ loggedIn: false, token: null, admin: null });
             throw err;
         }
     };
@@ -34,10 +34,10 @@ export const ProvideAuth = ({ children }) => {
             Cookies.remove('caselist_token', { path: '/', domain: '.opencaselist.com' });
             Cookies.remove('caselist_admin');
             Cookies.remove('caselist_admin', { path: '/', domain: '.opencaselist.com' });
-            setUser({ loggedIn: false, token: null });
+            setUser({ loggedIn: false, token: null, admin: null });
         } catch (err) {
             console.log(err);
-            setUser({ loggedIn: false, token: null });
+            setUser({ loggedIn: false, token: null, admin: null });
         }
     };
 

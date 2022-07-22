@@ -90,7 +90,7 @@ const postLogin = {
                 });
         }
 
-        return res.status(201).json({ message: 'Successfully logged in', token: nonce, admin: config.ADMINS?.includes(user.uidNumber) });
+        return res.status(201).json({ message: 'Successfully logged in', token: nonce, admin: config.ADMINS?.includes(parseInt(user.uidNumber)) });
     },
 };
 
