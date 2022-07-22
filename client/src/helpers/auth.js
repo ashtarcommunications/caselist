@@ -1,5 +1,5 @@
 /* istanbul ignore file */
-import React, { createContext, useState, useMemo, useContext } from 'react';
+import React, { createContext, useState, useContext } from 'react';
 import Cookies from 'js-cookie';
 import { login } from './api';
 
@@ -41,11 +41,12 @@ export const ProvideAuth = ({ children }) => {
         }
     };
 
-    const auth = useMemo(() => ({
+    // eslint-disable-next-line react/jsx-no-constructed-context-values
+    const auth = {
         user,
         handleLogin,
         handleLogout,
-    }), [user]);
+    };
 
     return (
         <AuthContext.Provider value={auth}>
