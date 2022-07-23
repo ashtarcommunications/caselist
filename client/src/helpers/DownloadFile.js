@@ -14,7 +14,9 @@ const DownloadFile = ({ path = '', text = '' }) => {
             const file = await downloadFile(path);
             if (!file) { return false; }
             const content = await file.blob();
-            const filename = file.headers?.get('Content-Disposition')?.match(/filename="(.*?)"$/)[1];
+            // Handle weird UTF-8 encoding https://stackoverflow.com/questions/40939380/how-to-get-file-name-from-content-disposition
+            let filename = file.headers?.get('Content-Disposition')?.split('filename=')[1].split(';')[0];
+            filename = filename.replaceAll('"', '').trim();
 
             const link = document.createElement('a');
             link.href = window.URL.createObjectURL(content);
