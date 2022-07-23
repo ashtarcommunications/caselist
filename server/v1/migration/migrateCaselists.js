@@ -362,7 +362,7 @@ const migrate = async () => {
                                             }
 
                                             const newNegRound = await query(SQL`
-                                                INSERT INTO rounds (team_id, tournament, side, round, opponent, judge, report, video, created_at)
+                                                INSERT INTO rounds (team_id, tournament, side, round, opponent, judge, report, opensource, video, created_at)
                                                 VALUES (
                                                     ${newTeam.insertId},
                                                     ${r.tournament},
@@ -371,6 +371,7 @@ const migrate = async () => {
                                                     ${r.opponent},
                                                     ${r.judge},
                                                     ${r.report},
+                                                    ${fullPath},
                                                     ${r.video},
                                                     ${r.created_at}
                                                 )
