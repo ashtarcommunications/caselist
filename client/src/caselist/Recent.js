@@ -5,6 +5,7 @@ import { Link, useParams } from 'react-router-dom';
 import { loadRecent } from '../helpers/api';
 import { useStore } from '../helpers/store';
 
+import DownloadFile from '../helpers/DownloadFile';
 import Breadcrumbs from '../layout/Breadcrumbs';
 import Loader from '../loader/Loader';
 import Error from '../layout/Error';
@@ -61,6 +62,10 @@ const Recent = () => {
                                 </>
                             }
                         </Link>
+                        {
+                            r.opensource &&
+                            <DownloadFile path={r.opensource} />
+                        }
                     </p>
                 ))
             }
