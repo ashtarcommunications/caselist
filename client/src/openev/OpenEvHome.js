@@ -63,7 +63,7 @@ const OpenEvHome = () => {
             }
             <h2>{heading}</h2>
             {
-                !tag && (!year || parseInt(year) === startOfYear) && auth.user?.admin &&
+                !tag && auth.user?.admin &&
                 <Link to={`/openev/${year || startOfYear}/upload`} className={styles.add}>
                     <button type="button" className={`pure-button`}>
                         <FontAwesomeIcon icon={faPlus} />

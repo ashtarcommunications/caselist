@@ -49,7 +49,7 @@ const Sidebar = () => {
     tags = [...new Set(tags)].sort();
 
     const years = [];
-    for (let i = startOfYear; i >= 2013; i--) {
+    for (let i = startOfYear; i >= 2010; i--) {
         years.push(i);
     }
 
