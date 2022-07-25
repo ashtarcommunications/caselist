@@ -20,7 +20,10 @@ export const fetchBase = async (path, options = {}, body = {}) => {
         ...options,
     };
 
-    if (fetchOptions.method === 'GET') { delete fetchOptions.body; }
+    if (fetchOptions.method === 'GET') {
+        delete fetchOptions.body;
+        delete fetchOptions.headers?.['Content-Type'];
+    }
 
     try {
         const response = await fetch(`${base}/${path}`, fetchOptions);

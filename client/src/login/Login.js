@@ -65,9 +65,9 @@ const Login = () => {
             {serverError && <p className={styles.error}>{serverError}</p>}
 
             <p>
-                <a href="https://www.tabroom.com">Forgot Password?</a>
+                <a href="https://www.tabroom.com/user/login/forgot.mhtml">Forgot Password?</a>
                 <span> | </span>
-                <a href="https://www.tabroom.com">Register</a>
+                <a href="https://www.tabroom.com/user/login/new_user.mhtml">Register</a>
             </p>
         </div>
     );

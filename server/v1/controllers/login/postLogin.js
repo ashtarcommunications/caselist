@@ -15,7 +15,7 @@ const postLogin = {
             ECONNREFUSED: 'Failed to connect to Tabroom',
             ERR_ASSERTION: 'Failed to provide username and password',
             ENOTFOUND: 'Failed to connect to Tabroom',
-            49: 'Invalid username or password',
+            49: 'Invalid username or password - if sure they\'re correct, try resetting password on Tabroom',
             80: 'Failed to connect to Tabroom',
         };
 
@@ -47,7 +47,7 @@ const postLogin = {
         }
 
         if (!user || !user.uidNumber) {
-            return res.status(401).json({ message: 'Invalid username or password' });
+            return res.status(401).json({ message: 'Invalid username or password - if sure they\'re correct, try resetting password on Tabroom' });
         }
 
         const nonce = crypto.randomBytes(16).toString('hex');
