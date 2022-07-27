@@ -45,7 +45,7 @@ const Login = () => {
 
     return (
         <div className={styles.login}>
-            <p>Login with your <a href="https://tabroom.com">Tabroom.com</a> username and password</p>
+            <p>Login with your <a href="https://www.tabroom.com">Tabroom.com</a> username and password</p>
             <form className={`${styles['login-form']} pure-form pure-form-stacked`} onSubmit={handleSubmit(onSubmit)}>
                 <div>
                     <label htmlFor="username">Username</label>
