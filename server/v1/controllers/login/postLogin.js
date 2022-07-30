@@ -91,7 +91,7 @@ const postLogin = {
         }
 
         let expires = new Date(Date.now() + (1000 * 60 * 60 * 24 * 14));
-        expires = expires.toUTCString();
+        expires = expires.toISOString();
 
         return res.status(201).json({ message: 'Successfully logged in', token: nonce, expires, admin: config.ADMINS?.includes(parseInt(user.uidNumber)) });
     },
