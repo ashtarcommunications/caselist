@@ -15,8 +15,10 @@ describe('POST /v1/login', () => {
             .send(body)
             .expect('Content-Type', /json/)
             .expect(201);
+        console.log(res.body);
 
         assert.property(res.body, 'token', 'Token property');
+        assert.property(res.body, 'expires', 'Expires property');
         assert.property(res.body, 'admin', 'Admin property');
     });
 });
