@@ -87,7 +87,9 @@ export const tagAbbreviations = {
     aff: 'Affirmatives',
     neg: 'Case Negatives',
     cp: 'Counterplans',
+    atcp: 'Counterplan Answers',
     da: 'Disadvantages',
+    atda: 'Disadvantage Answers',
     impact: 'Impact Files',
     atk: 'Kritik Answers',
     k: 'Kritiks',
@@ -96,6 +98,7 @@ export const tagAbbreviations = {
     pf: 'Public Forum',
     th: 'Theory',
     t: 'Topicality',
+    f: 'Framework',
 };
 
 export default null;
