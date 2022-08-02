@@ -44,7 +44,7 @@ getTabroomRounds.GET.apiDoc = {
                 '*/*': {
                     schema: {
                         type: 'array',
-                        items: { $ref: '#/components/schemas/School' },
+                        items: { $ref: '#/components/schemas/TabroomRound' },
                     },
                 },
             },
