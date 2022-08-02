@@ -6,7 +6,13 @@ const getTabroomRounds = {
     GET: async (req, res) => {
         const hash = crypto.createHash('sha256').update(config.TABROOM_CASELIST_KEY).digest('hex');
         let url = `${config.TABROOM_API_URL}`;
-        url += `/caselist/rounds?slug=${req.params.slug}`;
+
+        // If no slug, default to the current user's rounds, since you're always allowed to look up your own
+        if (req.params.slug) {
+            url += `/caselist/rounds?slug=${req.params.slug}`;
+        } else {
+            url += `/caselist/rounds?person_id=${req.user_id}`;
+        }
         url += `&caselist_key=${hash}`;
 
         let rounds = [];
@@ -15,7 +21,7 @@ const getTabroomRounds = {
             rounds = await response.json();
             if (!Array.isArray(rounds)) { rounds = []; }
         } catch (err) {
-            debugLogger.error('Failed to retrieve Tabroom chapters');
+            debugLogger.error('Failed to retrieve Tabroom rounds');
             rounds = [];
         }
 
@@ -24,14 +30,14 @@ const getTabroomRounds = {
 };
 
 getTabroomRounds.GET.apiDoc = {
-    summary: 'Returns list of rounds linked to a user on Tabroom',
+    summary: 'Returns list of rounds linked to a user or slug on Tabroom',
     operationId: 'getTabroomRounds',
     parameters: [
         {
             in: 'query',
             name: 'slug',
             description: 'Slug of page to match rounds',
-            required: true,
+            required: false,
             schema: {
                 type: 'string',
             },
@@ -44,7 +50,7 @@ getTabroomRounds.GET.apiDoc = {
                 '*/*': {
                     schema: {
                         type: 'array',
-                        items: { $ref: '#/components/schemas/School' },
+                        items: { $ref: '#/components/schemas/TabroomRound' },
                     },
                 },
             },

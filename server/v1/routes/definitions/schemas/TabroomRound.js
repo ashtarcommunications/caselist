@@ -7,6 +7,8 @@ const TabroomRound = {
         side: { type: 'string' },
         opponent: { type: 'string' },
         judge: { type: 'string' },
+        start_time: { type: 'string' },
+        share: { type: 'string' },
     },
 };
 

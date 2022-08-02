@@ -17,8 +17,8 @@ export const setupMocks = () => {
 
         if (url.includes('rounds')) {
             json = [
-                { id: 1, tournament: 'Lexington', round: '1', side: 'A', opponent: 'Evil Empire XX', judge: 'Hardy' },
-                { id: 2, tournament: 'Lexington', round: '2', side: 'N', opponent: 'Evil Empire YY', judge: 'Palmer' },
+                { id: 1, tournament: 'Lexington', round: '1', side: 'A', opponent: 'Evil Empire XX', judge: 'Hardy', start_time: '2022-08-01 00:00:00' },
+                { id: 2, tournament: 'Lexington', round: '2', side: 'N', opponent: 'Evil Empire YY', judge: 'Palmer', start_time: '2022-08-02 00:00:00' },
             ];
         }
 
