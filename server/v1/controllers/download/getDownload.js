@@ -16,6 +16,10 @@ export const downloadLimiter = rateLimiter({
 
 const getDownload = {
     GET: async (req, res) => {
+        if (req.query.path.includes('..') || req.query.path.startsWith('/')) {
+            return res.status(400).json({ message: 'Path not allowed' });
+        }
+
         try {
             await fs.promises.access(`${config.UPLOAD_DIR}/${req.query.path}`, fs.constants.F_OK);
         } catch (err) {
