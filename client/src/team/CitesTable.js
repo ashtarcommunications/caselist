@@ -1,9 +1,10 @@
 import React, { useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faAngleDown, faAngleUp, faCopy } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faAngleDown, faAngleUp, faCopy, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import Markdown from 'react-markdown';
+import moment from 'moment';
 import { roundName, displaySide } from '@speechanddebate/nsda-js-utils';
 
 import { useDeviceDetect } from '../helpers/mobile';
@@ -11,42 +12,46 @@ import Table from '../tables/Table';
 
 import styles from './CitesTable.module.css';
 
-const CiteCell = ({ row, event, handleToggleCites }) => (
-    <div className={styles.cites}>
-        {
-            row.row?.original?.citesopen && row.row?.original?.tournament &&
-            <p className={styles.roundinfo}>
-                <span>{row.row?.original?.tournament}</span>
-                <span> | </span>
-                <span>{roundName(row.row?.original?.round)}</span>
-                <span> | </span>
-                <span>{displaySide(row.row?.original?.side, event)}</span>
-                {row.row?.original?.opponent && <span> vs {row.row?.original?.opponent}</span>}
-                {row.row?.original?.judge && <span> | {row.row?.original?.judge}</span>}
-            </p>
-        }
-        <h1
-            onClick={e => handleToggleCites(e)}
-            id={row.row?.original?.cite_id}
-        >
-            <span>{row.value?.title}</span>
-            <span className={styles.caret}>
-                <FontAwesomeIcon
-                    icon={
-                        row.row?.original?.citesopen
-                        ? faAngleDown
-                        : faAngleUp
-                    }
-                />
+const CiteCell = ({ row, event, handleToggleCites }) => {
+    const createdAt = moment(row.row?.original?.created_at).format('l');
+    return (
+        <div className={styles.cites}>
+            {
+                row.row?.original?.citesopen && row.row?.original?.tournament &&
+                <p title={`Created ${createdAt}`} className={styles.roundinfo}>
+                    <span>{row.row?.original?.tournament}</span>
+                    <span> | </span>
+                    <span>{roundName(row.row?.original?.round)}</span>
+                    <span> | </span>
+                    <span>{displaySide(row.row?.original?.side, event)}</span>
+                    {row.row?.original?.opponent && <span> vs {row.row?.original?.opponent}</span>}
+                    {row.row?.original?.judge && <span> | {row.row?.original?.judge}</span>}
+                </p>
+            }
+            <h1
+                title={`Created ${createdAt}`}
+                onClick={e => handleToggleCites(e)}
+                id={row.row?.original?.cite_id}
+            >
+                <span>{row.value?.title}</span>
+                <span className={styles.caret}>
+                    <FontAwesomeIcon
+                        icon={
+                            row.row?.original?.citesopen
+                            ? faAngleDown
+                            : faAngleUp
+                        }
+                    />
+                </span>
+            </h1>
+            <span
+                className={`cites ${!row.row?.original?.citesopen && styles.citesclosed}`}
+            >
+                <Markdown>{row.value?.cites}</Markdown>
             </span>
-        </h1>
-        <span
-            className={`cites ${!row.row?.original?.citesopen && styles.citesclosed}`}
-        >
-            <Markdown>{row.value?.cites}</Markdown>
-        </span>
-    </div>
-);
+        </div>
+    );
+};
 
 CiteCell.propTypes = {
     row: PropTypes.object,
@@ -78,11 +83,27 @@ const CitesTable = ({
     const columns = useMemo(() => {
         return [
             {
+                id: 'created_at',
+                accessor: 'created_at',
+            },
+            {
                 id: 'cites',
                 width: 'auto',
-                Header: 'Cites',
                 accessor: row => row,
                 className: styles.cites,
+                Header: (row) => {
+                    return (
+                        <>
+                            <span>Cites</span>
+                            <FontAwesomeIcon
+                                icon={faCalendarAlt}
+                                title="Sort by date"
+                                className={styles.calendar}
+                                onClick={() => row.toggleSortBy('created_at')}
+                            />
+                        </>
+                    );
+                },
                 Cell: (row) => (
                     <CiteCell row={row} event={event} handleToggleCites={handleToggleCites} />
                 ),
@@ -155,6 +176,7 @@ const CitesTable = ({
         <Table
             columns={isMobile ? mobileColumns : columns}
             data={cites}
+            hiddenColumns={['created_at']}
             className={`${styles['cites-table']} ${isMobile && styles.mobile}`}
             noDataText="No cites found!"
             loading={loading}

@@ -18,6 +18,7 @@ describe('CitesTable', () => {
             />
         );
         assert.isOk(screen.queryByText(/Title/), 'Cite title exists');
+        assert.isOk(document.querySelector('.calendar'), 'Calendar sort exists');
         assert.isOk(screen.queryByText(/Cite Content/), 'Cite content exists');
 
         fireEvent.click(screen.queryByText(/Title/));

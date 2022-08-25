@@ -17,6 +17,13 @@
     font-size: 12px;
 }
 
+.calendar {
+    color: var(--brightblue);
+    cursor: pointer;
+    margin: 0px 10px;
+    font-size: 18px;
+}
+
 .roundinfo {
     color: var(--darkgray);
 }

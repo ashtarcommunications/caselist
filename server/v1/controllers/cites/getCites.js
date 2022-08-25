@@ -23,6 +23,9 @@ const getCites = {
         if (req.query?.side && ['A', 'N'].indexOf(req.query?.side) > -1) {
             sql.append(SQL`AND LOWER(R.side) = LOWER(${req.query?.side})`);
         }
+        sql.append(SQL`
+            ORDER BY CT.title
+        `);
         const cites = await query(sql);
 
         return res.status(200).json(cites);
