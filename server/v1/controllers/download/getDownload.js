@@ -5,11 +5,11 @@ import config from '../../../config';
 
 export const downloadLimiter = rateLimiter({
     windowMs: 60 * 1000, // 1 minute
-    max: 5, // limit each user to 5 downloads/minute
+    max: 10, // limit each user to 5 downloads/minute
     keyGenerator: (req) => (req.user_id ? req.user_id : req.ip),
     handler: (req, res) => {
-        debugLogger.info(`5 downloads/1m rate limit enforced on user ${req.user_id}`);
-        res.status(429).send({ message: 'You can only download 5 files per minute. Wait and try again.' });
+        debugLogger.info(`10 downloads/1m rate limit enforced on user ${req.user_id}`);
+        res.status(429).send({ message: 'You can only download 10 files per minute. Wait and try again.' });
     },
     skip: req => req.method === 'OPTIONS',
 });

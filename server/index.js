@@ -95,8 +95,8 @@ app.use(expressWinston.logger({
 // Slow down requests before they hit the rate limiter
 const speedLimiter = slowDown({
     windowMs: config.SLOWDOWN_RATE_WINDOW || 15 * 60 * 1000, // 15 minutes
-    delayAfter: config.SLOWDOWN_RATE_AFTER || 1000, // Allow 1000 requests per 15 minutes
-    delayMs: config.SLOWDOWN_RATE_DELAY || 50, // Add 50ms of delay per request above 1000
+    delayAfter: config.SLOWDOWN_RATE_AFTER || 1500, // Allow 1500 requests per 15 minutes
+    delayMs: config.SLOWDOWN_RATE_DELAY || 50, // Add 50ms of delay per request above 1500
     maxDelayMs: config.SLOWDOWN_MAX_DELAY || 10000, // Cap max delay at 10s per request
     keyGenerator: (req) => (req.user_id ? req.user_id : req.ip),
     skip: req => req.method === 'OPTIONS' || process.env.NODE_ENV === 'test' || config.ADMINS?.includes(req.user_id),
@@ -105,10 +105,10 @@ const speedLimiter = slowDown({
 // Rate limit all requests
 const getLimiter = rateLimiter({
     windowMs: config.GET_RATE_WINDOW || 15 * 60 * 1000, // 15 minutes
-    max: config.GET_RATE_MAX || 1500, // limit each user to 1000 requests per windowMs
+    max: config.GET_RATE_MAX || 2000, // limit each user to 2000 requests per windowMs
     keyGenerator: (req) => (req.user_id ? req.user_id : req.ip),
     handler: (req, res) => {
-        debugLogger.info(`1000 requests/15m rate limit enforced on user ${req.user_id}`);
+        debugLogger.info(`2000 requests/15m rate limit enforced on user ${req.user_id}`);
         res.status(429).send({ message: 'You have exceeded the allowed number of page views per 15 minutes. Wait and try again.' });
     },
     skip: req => req.method === 'OPTIONS' || process.env.NODE_ENV === 'test' || config.ADMINS?.includes(req.user_id),
