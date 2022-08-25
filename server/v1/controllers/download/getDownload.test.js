@@ -22,11 +22,11 @@ describe('GET /v1/download', () => {
     it('should return a 429 on too many downloads', async () => {
         await fs.promises.writeFile(`${config.UPLOAD_DIR}/downloadtest`, 'test');
 
-        const tries = [0, 1, 2, 3, 4, 5];
+        const tries = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         // eslint-disable-next-line no-restricted-syntax
         for (const i of tries) {
             let statusCode = 200;
-            if (i === 5) { statusCode = 429; }
+            if (i === 10) { statusCode = 429; }
             // eslint-disable-next-line no-await-in-loop
             await request(server)
                 .get(`/v1/download?path=downloadtest`)

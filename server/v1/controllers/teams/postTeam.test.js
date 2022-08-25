@@ -58,6 +58,31 @@ describe('POST /v1/caselists/{caselist}/schools/{school}/teams', () => {
         assert.strictEqual(duplicateTeam.length, 1, 'Duplicate team inserted');
     });
 
+    it('should use first and last names for LD', async () => {
+        await query(SQL`
+            UPDATE caselists SET event = 'ld', team_size = 1 WHERE caselist_id = 1
+        `);
+
+        const team = {
+            debater1_first: 'First',
+            debater1_last: 'Last',
+        };
+
+        await request(server)
+            .post(`/v1/caselists/testcaselist/schools/testschool/teams`)
+            .set('Accept', 'application/json')
+            .set('Cookie', ['caselist_token=test'])
+            .send(team)
+            .expect('Content-Type', /json/)
+            .expect(201);
+
+        const newTeam = await query(SQL`
+            SELECT * FROM teams WHERE school_id = 1 AND name = 'FiLa'
+        `);
+        assert.strictEqual(newTeam[0].name, 'FiLa', 'Team name');
+        assert.strictEqual(newTeam[0].display_name, 'Test School FiLa', 'Display name');
+    });
+
     it('should post general and novice teams', async () => {
         let team = {
             debater1_first: 'All',
@@ -142,7 +167,10 @@ describe('POST /v1/caselists/{caselist}/schools/{school}/teams', () => {
 
     afterEach(async () => {
         await query(SQL`
-            DELETE FROM teams WHERE (name LIKE 'TeTeTeTe%' OR name IN('TeTeTeTe', 'All', 'Novices')) AND school_id = 1
+            UPDATE caselists SET event = 'cx', team_size = 2 WHERE caselist_id = 1
+        `);
+        await query(SQL`
+            DELETE FROM teams WHERE (name LIKE 'TeTeTeTe%' OR name IN('TeTeTeTe', 'FiLa', 'All', 'Novices')) AND school_id = 1
         `);
         await query(SQL`
             DELETE FROM teams_history WHERE school_id = 1

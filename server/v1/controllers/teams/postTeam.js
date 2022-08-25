@@ -5,7 +5,7 @@ import log from '../log/insertEventLog';
 const postTeam = {
     POST: async (req, res) => {
         const [school] = await query(SQL`
-            SELECT C.archived, C.team_size, S.*
+            SELECT C.archived, C.team_size, C.event, S.*
             FROM caselists C
             INNER JOIN schools S ON S.caselist_id = C.caselist_id
             WHERE C.name = ${req.params.caselist}
@@ -18,10 +18,17 @@ const postTeam = {
         let name = '';
         let displayName = `${school.display_name} `;
         for (let i = 0; i < 4; i++) {
-            const debater = `debater${i + 1}_last`;
-            if (req.body?.[debater]) {
-                name += `${req.body?.[debater]?.slice(0, 2)}`;
-                displayName += `${req.body?.[debater]?.slice(0, 2)}`;
+            const debaterFirst = `debater${i + 1}_first`;
+            const debaterLast = `debater${i + 1}_last`;
+            if (req.body?.[debaterLast]) {
+                // For LD, use first two letters of first and last instead of just last name
+                if (school.event === 'ld') {
+                    name += `${req.body?.[debaterFirst]?.slice(0, 2)}${req.body?.[debaterLast]?.slice(0, 2)}`;
+                    displayName += `${req.body?.[debaterFirst]?.slice(0, 2)}${req.body?.[debaterLast]?.slice(0, 2)}`;
+                } else {
+                    name += `${req.body?.[debaterLast]?.slice(0, 2)}`;
+                    displayName += `${req.body?.[debaterLast]?.slice(0, 2)}`;
+                }
             }
         }
         if (req.body.debater1_first?.trim() === 'All' && req.body.debater1_last?.trim() === 'Teams') {

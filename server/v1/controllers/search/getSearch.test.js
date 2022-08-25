@@ -24,11 +24,11 @@ describe('GET /v1/search', () => {
     });
 
     it('should return a 429 on too many searches', async () => {
-        const tries = [0, 1, 2];
+        const tries = [0, 1, 2, 3, 4];
         // eslint-disable-next-line no-restricted-syntax
         for (const i of tries) {
             let statusCode = 200;
-            if (i === 2) { statusCode = 429; }
+            if (i === 4) { statusCode = 429; }
             // eslint-disable-next-line no-await-in-loop
             await request(server)
                 .get(`/v1/search?shard=test&q=test`)
