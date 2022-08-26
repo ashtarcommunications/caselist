@@ -4,7 +4,7 @@ import server from '../../../index';
 describe('POST /v1/tabroom/link', () => {
     it('should create a Tabroom link', async () => {
         const body = {
-            slug: '/test',
+            slug: '/testcaselist/test',
         };
 
         await request(server)
@@ -16,9 +16,23 @@ describe('POST /v1/tabroom/link', () => {
             .expect(201);
     });
 
-    it('should return a 401 with no authorization cookie', async () => {
+    it('should return a 400 for an invalid url', async () => {
         const body = {
             slug: '/test',
+        };
+
+        await request(server)
+            .post(`/v1/tabroom/link`)
+            .set('Accept', 'application/json')
+            .set('Cookie', ['caselist_token=test'])
+            .send(body)
+            .expect('Content-Type', /json/)
+            .expect(400);
+    });
+
+    it('should return a 401 with no authorization cookie', async () => {
+        const body = {
+            slug: '/testcaselist/test',
         };
 
         await request(server)

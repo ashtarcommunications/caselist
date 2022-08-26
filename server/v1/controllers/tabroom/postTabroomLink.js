@@ -1,4 +1,6 @@
 import crypto from 'crypto';
+import SQL from 'sql-template-strings';
+import { query } from '../../helpers/mysql';
 import log from '../log/insertEventLog';
 import config from '../../../config';
 import { debugLogger } from '../../helpers/logger';
@@ -8,9 +10,24 @@ const postTabroomLink = {
         const url = `${config.TABROOM_API_URL}/caselist/link`;
         const hash = crypto.createHash('sha256').update(config.TABROOM_CASELIST_KEY).digest('hex');
 
+        const caselist = req.body?.slug?.trim().split('/').filter(x => x !== '')[0];
+        console.log(caselist);
+        const event = await query(SQL`
+            SELECT event FROM caselists WHERE name = ${caselist}
+        `);
+        if (!event || event.length < 1) {
+            return res.status(400).json({ message: 'Invalid caselist URL' });
+        }
+
+        let eventCode = 0;
+        if (event === 'cx') { eventCode = 103; }
+        if (event === 'ld') { eventCode = 102; }
+        if (event === 'pf') { eventCode = 104; }
+
         const body = {
             person_id: req.user_id,
             slug: req.body.slug,
+            eventcode: eventCode,
             caselist_key: hash,
         };
 
