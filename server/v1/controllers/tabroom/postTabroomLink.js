@@ -11,7 +11,6 @@ const postTabroomLink = {
         const hash = crypto.createHash('sha256').update(config.TABROOM_CASELIST_KEY).digest('hex');
 
         const caselist = req.body?.slug?.trim().split('/').filter(x => x !== '')[0];
-        console.log(caselist);
         const event = await query(SQL`
             SELECT event FROM caselists WHERE name = ${caselist}
         `);
