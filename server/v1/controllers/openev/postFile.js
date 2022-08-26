@@ -13,6 +13,7 @@ const postFile = {
             CNDI: 'CNDI',
             BDL: 'BDL',
             CDL: 'CDL',
+            DBQ: 'Debate Boutique',
             DDI: 'DDI',
             DDIx: 'DDIx',
             ENDI: 'Emory',
