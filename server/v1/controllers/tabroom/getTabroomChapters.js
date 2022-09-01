@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import { fetch } from '@speechanddebate/nsda-js-utils';
 import config from '../../../config';
 import { debugLogger } from '../../helpers/logger';
 

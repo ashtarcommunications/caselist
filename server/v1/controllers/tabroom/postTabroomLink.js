@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import { fetch } from '@speechanddebate/nsda-js-utils';
 import SQL from 'sql-template-strings';
 import { query } from '../../helpers/mysql';
 import log from '../log/insertEventLog';
@@ -24,7 +25,7 @@ const postTabroomLink = {
         if (event === 'pf') { eventCode = 104; }
 
         const body = {
-            person_id: req.user_id,
+            person_id: parseInt(req.user_id),
             slug: req.body.slug,
             eventcode: eventCode,
             caselist_key: hash,

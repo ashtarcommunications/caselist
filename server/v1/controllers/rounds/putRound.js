@@ -1,4 +1,5 @@
 import SQL from 'sql-template-strings';
+import { fetch } from '@speechanddebate/nsda-js-utils';
 import fs from 'fs';
 import path from 'path';
 

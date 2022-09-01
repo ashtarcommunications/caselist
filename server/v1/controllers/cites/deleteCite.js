@@ -1,4 +1,5 @@
 import SQL from 'sql-template-strings';
+import { fetch } from '@speechanddebate/nsda-js-utils';
 import { query } from '../../helpers/mysql';
 import log from '../log/insertEventLog';
 import config from '../../../config';
