@@ -70,7 +70,7 @@ describe('POST /v1/openev', () => {
         `);
         try {
             await fs.promises.rm(`${config.UPLOAD_DIR}/openev/${startOfYear}/CNDI/Test - CNDI ${startOfYear} Lab.docx`);
-        } catch {
+        } catch (err) {
             // Do nothing
         }
     });

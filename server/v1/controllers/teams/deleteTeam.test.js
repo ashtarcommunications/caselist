@@ -107,7 +107,7 @@ describe('DELETE /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{
             let files = await fs.promises.readdir(config.UPLOAD_DIR);
             files = files.filter(f => f.startsWith('test'));
             await Promise.all(files.map(f => fs.promises.rm(`${config.UPLOAD_DIR}/${f}`)));
-        } catch {
+        } catch (err) {
             // Do Nothing
         }
         await query(SQL`

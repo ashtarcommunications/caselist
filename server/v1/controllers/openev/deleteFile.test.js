@@ -76,7 +76,7 @@ describe('DELETE /v1/openev/{openev_id}', () => {
     afterEach(async () => {
         try {
             await fs.promises.rm(`${config.UPLOAD_DIR}/openev/test`);
-        } catch {
+        } catch (err) {
             // Do nothing
         }
         await query(SQL`

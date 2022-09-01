@@ -133,7 +133,7 @@ describe('POST /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds', (
         `);
         try {
             await fs.promises.rm(`${config.UPLOAD_DIR}/testcaselist/testschool/testteam/testschool-testteam-Aff-Test-Post-Round-Round-1.docx`);
-        } catch {
+        } catch (err) {
             // Do nothing
         }
     });
