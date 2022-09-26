@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faAngleDown, faAngleUp, faCalendarAlt, faFileDownload, faVideo, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faAngleDown, faAngleUp, faCalendarAlt, faVideo, faEdit } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
 import { displaySide, roundName } from '@speechanddebate/nsda-js-utils';
 
@@ -226,10 +226,7 @@ const RoundsTable = ({
                             row.row?.original?.opensource &&
                             <p>
                                 <span>Open Source:</span>
-                                <FontAwesomeIcon
-                                    icon={faFileDownload}
-                                    className={styles.download}
-                                />
+                                <DownloadFile path={row.row?.original?.opensource} />
                             </p>
                         }
                         {
