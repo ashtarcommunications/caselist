@@ -8,6 +8,3 @@ The auto-cite feature is based on the heading levels in your document. It will a
 
 ## How do I remove myself/opt out from the caselist?
 If you already have a school/team you want deleted, you'll need to [Contact us](https://paperlessdebate.com#contact). Make sure to specify which caselist, year, and team/school. We don't automate deletions to avoid shenanigans.
-
-## What tech stack do you use?
-The front-end is a React app. The back-end is built in NodeJS. The search functions are built with Apache Solr for indexing cites and documents, and Apache Tika for full-text extraction.

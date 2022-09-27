@@ -98,7 +98,7 @@ const Sidebar = () => {
                                             <li key={s.school_id}>
                                                 <Link to={`/${caselist}/${s.name}`}>
                                                     {s.display_name}
-                                                    {caselistData.level === 'hs' && ` (${s.state})`}
+                                                    {caselistData.level === 'hs' && s.state && ` (${s.state})`}
                                                 </Link>
                                             </li>
                                         );

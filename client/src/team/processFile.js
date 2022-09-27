@@ -20,15 +20,13 @@ const processFile = (
         reader.onabort = () => console.log('File reading was aborted');
         reader.onerror = () => console.log('File reading has failed');
         reader.onload = async () => {
-            if (!autodetect) { return false; }
-
             // Show processing indicator
             setProcessing(true);
 
             // Convert the file contents into HTML
             const binaryStr = reader.result;
 
-            // Convert to base64 for upload
+            // Always convert to base64 for upload, even if not using cite detection
             let binary = '';
             const bytes = new Uint8Array(binaryStr);
             const len = bytes.byteLength;
@@ -36,6 +34,11 @@ const processFile = (
                 binary += String.fromCharCode(bytes[i]);
             }
             setFileContent(window.btoa(binary));
+
+            if (!autodetect) {
+                setProcessing(false);
+                return false;
+            }
 
             let html;
             try {
