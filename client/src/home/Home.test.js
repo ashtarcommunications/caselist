@@ -14,7 +14,7 @@ describe('Home', () => {
         assert.isOk(screen.queryByText('NDCA HS Policy'), 'HS Policy Caselist');
         assert.isOk(screen.queryByText('NDCA HS LD'), 'HS LD Caselist');
         assert.isOk(screen.queryByText('NDCA HS PF'), 'HS PF Caselist');
-        assert.isOk(screen.queryByText('NFA-LD'), 'NFA Caselist');
+        assert.isOk(screen.queryByText('NFA College LD'), 'NFA Caselist');
         assert.isOk(screen.queryByText('Open Evidence Project'), 'Open Ev');
         assert.isOk(document.querySelector('.sponsors'), 'Sponsors');
 

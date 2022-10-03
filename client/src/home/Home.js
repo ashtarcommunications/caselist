@@ -30,7 +30,7 @@ const Home = () => {
                     </div>
                     <div className={styles.caselists}>
                         <Link to={`/hspf${shortYear}`}><div className={`${styles.caselist} ${styles.pf}`}>NDCA HS PF</div></Link>
-                        <Link to={`/nfald${shortYear}`}><div className={`${styles.caselist} ${styles.nfa}`}>NFA-LD</div></Link>
+                        <Link to={`/nfald${shortYear}`}><div className={`${styles.caselist} ${styles.nfa}`}>NFA College LD</div></Link>
                         <Link to="/openev"><div className={`${styles.caselist} ${styles.openev}`}>Open Evidence Project</div></Link>
                     </div>
                 </>
