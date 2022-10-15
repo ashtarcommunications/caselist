@@ -1,9 +1,21 @@
 import { authenticate } from 'ldap-authentication';
 import crypto from 'crypto';
 import SQL from 'sql-template-strings';
+import rateLimiter from 'express-rate-limit';
 import { query } from '../../helpers/mysql';
 import config from '../../../config';
 import { debugLogger } from '../../helpers/logger';
+
+export const loginLimiter = rateLimiter({
+    windowMs: 60 * 1000, // 1 minute
+    max: 20, // limit each user to 20 login attempts/minute
+    keyGenerator: (req) => (req.user_id ? req.user_id : req.ip),
+    handler: (req, res) => {
+        debugLogger.info(`20 login attempts/1m rate limit enforced on user ${req.user_id || req.ip}`);
+        res.status(429).send({ message: 'You can only attempt to login 20 times per minute. Wait and try again.' });
+    },
+    skip: req => req.method === 'OPTIONS',
+});
 
 const postLogin = {
     POST: async (req, res) => {
@@ -95,6 +107,7 @@ const postLogin = {
 
         return res.status(201).json({ message: 'Successfully logged in', token: nonce, expires, admin: config.ADMINS?.includes(parseInt(user.uidNumber)) });
     },
+    'x-express-openapi-additional-middleware': [loginLimiter],
 };
 
 postLogin.POST.apiDoc = {

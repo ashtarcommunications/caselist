@@ -54,7 +54,7 @@ describe('POST /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds', (
             SELECT COUNT(*) AS 'count' FROM cites_history WHERE title = 'Test Post Round'
         `);
         assert.strictEqual(citesHistory[0].count, 1, 'Cite History inserted');
-    });
+    }, 10000);
 
     it('should return a 400 for a non-existing team', async () => {
         const round = {
@@ -75,7 +75,7 @@ describe('POST /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds', (
             .send(round)
             .expect('Content-Type', /json/)
             .expect(400);
-    });
+    }, 10000);
 
     it('should return a 403 for an archived team', async () => {
         const round = {
@@ -96,7 +96,7 @@ describe('POST /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds', (
             .send(round)
             .expect('Content-Type', /json/)
             .expect(403);
-    });
+    }, 10000);
 
     it('should return a 401 with no authorization cookie', async () => {
         const round = {
@@ -136,5 +136,5 @@ describe('POST /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds', (
         } catch (err) {
             // Do nothing
         }
-    });
+    }, 30000);
 });

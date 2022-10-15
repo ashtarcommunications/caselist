@@ -108,7 +108,7 @@ const getLimiter = rateLimiter({
     max: config.GET_RATE_MAX || 2000, // limit each user to 2000 requests per windowMs
     keyGenerator: (req) => (req.user_id ? req.user_id : req.ip),
     handler: (req, res) => {
-        debugLogger.info(`2000 requests/15m rate limit enforced on user ${req.user_id}`);
+        debugLogger.info(`2000 requests/15m rate limit enforced on user ${req.user_id || req.ip}`);
         res.status(429).send({ message: 'You have exceeded the allowed number of page views per 15 minutes. Wait and try again.' });
     },
     skip: req => req.method === 'OPTIONS' || process.env.NODE_ENV === 'test' || config.ADMINS?.includes(req.user_id),
@@ -120,23 +120,23 @@ const modificationLimiter = rateLimiter({
     max: config.MODIFICATION_RATE_MAX || 5, // limit each user to 5 modifications/minute
     keyGenerator: (req) => (req.user_id ? req.user_id : req.ip),
     handler: (req, res) => {
-        debugLogger.info(`5 modifications/1m rate limit enforced on user ${req.user_id}`);
+        debugLogger.info(`5 modifications/1m rate limit enforced on user ${req.user_id || req.ip}`);
         res.status(429).send({ message: 'You have exceeded the allowed number of modifications per minute. Wait and try again.' });
     },
-    skip: req => req.method === 'OPTIONS' || req.method === 'GET' || process.env.NODE_ENV === 'test' || config.ADMINS?.includes(req.user_id),
+    skip: req => req.method === 'OPTIONS' || req.method === 'GET' || process.env.NODE_ENV === 'test' || config.ADMINS?.includes(req.user_id) || req.url?.includes('/login'),
 });
 
 // Super rate limit modification requests to stop bot abuse
 const superModificationLimiter = rateLimiter({
     windowMs: config.SUPER_MODIFICATION_RATE_WINDOW || 1440 * 60 * 1000, // 1 day
-    max: config.SUPER_MODIFICATION_RATE_MAX || 100, // limit each user to 100 modifications/day
+    max: config.SUPER_MODIFICATION_RATE_MAX || 250, // limit each user to 250 modifications/day
     keyGenerator: (req) => (req.user_id ? req.user_id : req.ip),
     message: { message: 'You have exceeded the allowed number of modifications per day' },
     handler: (req, res) => {
-        debugLogger.info(`100 modifications/1d rate limit enforced on user ${req.user_id}`);
+        debugLogger.info(`250 modifications/1d rate limit enforced on user ${req.user_id || req.ip}`);
         res.status(429).send({ message: 'You have exceeded the allowed number of modifications per day. Wait and try again.' });
     },
-    skip: req => req.method === 'OPTIONS' || req.method === 'GET' || process.env.NODE_ENV === 'test' || config.ADMINS?.includes(req.user_id),
+    skip: req => req.method === 'OPTIONS' || req.method === 'GET' || process.env.NODE_ENV === 'test' || config.ADMINS?.includes(req.user_id) || req.url?.includes('/login'),
 });
 
 // Parse body and cookies
