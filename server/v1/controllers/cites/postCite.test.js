@@ -81,5 +81,5 @@ describe('POST /v1/caselists/{caselist}/schools/{school}/teams/{team}/cites', ()
         await query(SQL`
             DELETE FROM cites_history WHERE round_id = 1 AND title = 'Post Test Cite'
         `);
-    });
+    }, 30000);
 });
