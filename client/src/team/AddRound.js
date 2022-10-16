@@ -72,9 +72,14 @@ const AddRound = () => {
 
     // Calculate a filename for uploaded files
     useEffect(() => {
+        const tourn = watchFields.tournament?.trim()
+            .replaceAll('/', '')
+            .replaceAll('\\', '')
+            .replaceAll('  ', ' ')
+            .replaceAll(' ', '-');
         let computed = `${school}-${team}-`;
         computed += `${displaySide(watchFields.side, caselistData.event)}-`;
-        computed += `${watchFields.tournament?.trim().replaceAll('/', '-').replaceAll('\\', '-').replaceAll(' ', '-')}-`;
+        computed += `${tourn}-`;
         computed += watchFields.round === 'All' ? 'All-Rounds' : roundName(watchFields.round).replaceAll(' ', '-');
         setFilename(computed);
     }, [watchFields, school, team, caselistData]);

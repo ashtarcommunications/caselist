@@ -39,9 +39,14 @@ const postRound = {
             if (['.docx', '.doc', '.pdf', '.rtf', '.txt'].indexOf(extension) === -1) {
                 extension = '';
             }
+            const tourn = req.body.tournament.trim()
+                .replaceAll('/', '')
+                .replaceAll('\\', '')
+                .replaceAll('  ', ' ')
+                .replaceAll(' ', '-');
             filename = `${req.params.school}-${req.params.team}-`;
             filename += `${displaySide(req.body.side, team.event)}-`;
-            filename += `${req.body.tournament.trim().replaceAll('/', '-').replaceAll('\\', '-').replaceAll(' ', '-')}-`;
+            filename += `${tourn}-`;
             filename += req.body.round === 'All' ? 'All-Rounds' : roundName(req.body.round.trim()).replaceAll(' ', '-');
             filename += `${extension}`;
 
