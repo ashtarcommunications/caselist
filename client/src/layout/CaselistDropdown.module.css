@@ -1,5 +1,4 @@
-.caselist-select select {
-    margin-top: 10px;
-    width: 150px;
-    font-size: 12px;
+.select {
+    width: 100%;
+    font-size: 10px;
 }
