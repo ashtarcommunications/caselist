@@ -206,7 +206,7 @@ const AddRound = () => {
                             }) => (
                                 <Combobox
                                     id="tournament"
-                                    containerClassName={`${(!value || error) && styles.error}`}
+                                    containerClassName={`${styles.tournament} ${(!value || error) && styles.error}`}
                                     busy={fetchingRounds}
                                     ref={tournamentRef}
                                     hideCaret={fetchingRounds || rounds.length < 1}

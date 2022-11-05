@@ -2,6 +2,10 @@
     border: 1px solid var(--red) !important;
 }
 
+.tournament {
+    min-width: 400px;
+}
+
 .info {
     color: var(--brightblue);
     font-size: 14px;
