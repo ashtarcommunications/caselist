@@ -179,7 +179,15 @@ const TeamRounds = () => {
 
     const handleLinkPage = async () => {
         try {
-            const response = await addTabroomLink(window.location.pathname);
+            let slug = window.location.pathname;
+            if (slug.endsWith('/Aff')
+                || slug.endsWith('/Neg')
+                || slug.endsWith('/Pro')
+                || slug.endsWith('/Con')
+            ) {
+                slug = slug.slice(0, -4);
+            }
+            const response = await addTabroomLink(slug);
             toast.success(response.message);
         } catch (err) {
             toast.error(`Failed to link page: ${err.message}`);

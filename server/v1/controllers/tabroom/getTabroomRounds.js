@@ -9,12 +9,16 @@ const getTabroomRounds = {
         let url = `${config.TABROOM_API_URL}`;
 
         // If no slug, default to the current user's rounds, since you're always allowed to look up your own
-        if (req.params.slug) {
-            url += `/caselist/rounds?slug=${req.params.slug}`;
+        if (req.query.slug) {
+            url += `/caselist/rounds?slug=${req.query.slug}`;
         } else {
             url += `/caselist/rounds?person_id=${req.user_id}`;
         }
         url += `&caselist_key=${hash}`;
+
+        if (req.query.current) {
+            url += `&current=true`
+        }
 
         let rounds = [];
         try {
@@ -41,6 +45,15 @@ getTabroomRounds.GET.apiDoc = {
             required: false,
             schema: {
                 type: 'string',
+            },
+        },
+        {
+            in: 'query',
+            name: 'current',
+            description: 'Whether to return current rounds',
+            required: false,
+            schema: {
+                type: 'boolean',
             },
         },
     ],

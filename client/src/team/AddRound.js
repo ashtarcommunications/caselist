@@ -105,7 +105,11 @@ const AddRound = () => {
         if (rounds.length > 0) { return false; }
         try {
             setFetchingRounds(true);
-            let tabroomRounds = await loadTabroomRounds(window.location.pathname) || [];
+            let slug = window.location.pathname;
+            if (slug.endsWith('/add')) {
+                slug = slug.slice(0, -4);
+            }
+            let tabroomRounds = await loadTabroomRounds(slug) || [];
             tabroomRounds = sortBy(tabroomRounds, ['tournament', 'round']);
             tabroomRounds.unshift({
                 id: 0,
