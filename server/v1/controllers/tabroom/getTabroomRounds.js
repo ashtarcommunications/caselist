@@ -17,7 +17,7 @@ const getTabroomRounds = {
         url += `&caselist_key=${hash}`;
 
         if (req.query.current) {
-            url += `&current=true`
+            url += `&current=true`;
         }
 
         let rounds = [];
