@@ -6,6 +6,18 @@
     min-width: 400px;
 }
 
+.opponent {
+    min-width: 400px;
+}
+
+.judge {
+    min-width: 400px;
+}
+
+.video {
+    min-width: 400px;
+}
+
 .info {
     color: var(--brightblue);
     font-size: 14px;

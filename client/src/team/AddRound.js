@@ -294,7 +294,7 @@ const AddRound = () => {
                     <label htmlFor="opponent">Opponent</label>
                     <input
                         name="opponent"
-                        className={errors?.opponent && styles.error}
+                        className={`${styles.opponent} ${errors?.opponent && styles.error}`}
                         type="text"
                         maxLength={255}
                         {...register('opponent')}
@@ -306,6 +306,7 @@ const AddRound = () => {
                     <label htmlFor="judge">Judge</label>
                     <input
                         name="judge"
+                        className={styles.judge}
                         type="text"
                         maxLength={255}
                         {...register('judge')}
@@ -341,6 +342,7 @@ const AddRound = () => {
                     </label>
                     <input
                         name="video"
+                        className={styles.video}
                         type="url"
                         maxLength={2000}
                         {...register('video')}
