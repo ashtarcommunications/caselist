@@ -34,11 +34,22 @@ const postRound = {
                 return res.status(400).json({ message: 'Invalid open source file' });
             }
 
+            // Scrub extra periods in the filename
+            filename = req?.body?.filename || '';
+            const numPeriods = filename.split('.').length - 1;
+            if (numPeriods > 1) {
+                const lastPeriod = filename.lastIndexOf('.');
+                filename = filename.replaceAll('.', '');
+                filename = `${filename.slice(0, lastPeriod - (numPeriods - 1))}.${filename.slice(lastPeriod - (numPeriods - 1))}`;
+            }
+
             // Use the extension from the provided file, but disallow anything weird
-            let extension = path.extname(req.body.filename);
+            let extension = path.extname(filename);
             if (['.docx', '.doc', '.pdf', '.rtf', '.txt'].indexOf(extension) === -1) {
                 extension = '';
             }
+
+            // Construct a new filename
             const tourn = req.body.tournament.trim()
                 .replaceAll('/', '')
                 .replaceAll('\\', '')
