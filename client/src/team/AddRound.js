@@ -129,7 +129,16 @@ const AddRound = () => {
     const addRoundHandler = async (data) => {
         if (fileContent) {
             data.opensource = fileContent;
-            data.filename = files[0].name;
+
+            // Get rid of multiple periods in the filename
+            let name = files[0].name || '';
+            const numPeriods = name.split('.').length - 1;
+            if (numPeriods > 1) {
+                const lastPeriod = name.lastIndexOf('.');
+                name = name.replaceAll('.', '');
+                name = `${name.slice(0, lastPeriod - (numPeriods - 1))}.${name.slice(lastPeriod - (numPeriods - 1))}`;
+            }
+            data.filename = name;
         } else {
             data.opensource = null;
             data.filename = null;
