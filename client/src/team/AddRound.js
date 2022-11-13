@@ -105,7 +105,11 @@ const AddRound = () => {
         if (rounds.length > 0) { return false; }
         try {
             setFetchingRounds(true);
-            let tabroomRounds = await loadTabroomRounds(window.location.pathname) || [];
+            let slug = window.location.pathname;
+            if (slug.endsWith('/add')) {
+                slug = slug.slice(0, -4);
+            }
+            let tabroomRounds = await loadTabroomRounds(slug) || [];
             tabroomRounds = sortBy(tabroomRounds, ['tournament', 'round']);
             tabroomRounds.unshift({
                 id: 0,
@@ -125,7 +129,16 @@ const AddRound = () => {
     const addRoundHandler = async (data) => {
         if (fileContent) {
             data.opensource = fileContent;
-            data.filename = files[0].name;
+
+            // Get rid of multiple periods in the filename
+            let name = files[0].name || '';
+            const numPeriods = name.split('.').length - 1;
+            if (numPeriods > 1) {
+                const lastPeriod = name.lastIndexOf('.');
+                name = name.replaceAll('.', '');
+                name = `${name.slice(0, lastPeriod - (numPeriods - 1))}.${name.slice(lastPeriod - (numPeriods - 1))}`;
+            }
+            data.filename = name;
         } else {
             data.opensource = null;
             data.filename = null;
@@ -202,7 +215,7 @@ const AddRound = () => {
                             }) => (
                                 <Combobox
                                     id="tournament"
-                                    containerClassName={`${(!value || error) && styles.error}`}
+                                    containerClassName={`${styles.tournament} ${(!value || error) && styles.error}`}
                                     busy={fetchingRounds}
                                     ref={tournamentRef}
                                     hideCaret={fetchingRounds || rounds.length < 1}
@@ -290,7 +303,7 @@ const AddRound = () => {
                     <label htmlFor="opponent">Opponent</label>
                     <input
                         name="opponent"
-                        className={errors?.opponent && styles.error}
+                        className={`${styles.opponent} ${errors?.opponent && styles.error}`}
                         type="text"
                         maxLength={255}
                         {...register('opponent')}
@@ -302,6 +315,7 @@ const AddRound = () => {
                     <label htmlFor="judge">Judge</label>
                     <input
                         name="judge"
+                        className={styles.judge}
                         type="text"
                         maxLength={255}
                         {...register('judge')}
@@ -337,6 +351,7 @@ const AddRound = () => {
                     </label>
                     <input
                         name="video"
+                        className={styles.video}
                         type="url"
                         maxLength={2000}
                         {...register('video')}
