@@ -2,7 +2,7 @@ FROM node:18.2.0 AS base
 WORKDIR /api
 COPY ./ ./
 
-RUN apt-get update && apt-get install vim -y
+RUN apt-get update && apt-get install vim zip -y
 
 RUN npm i
 
