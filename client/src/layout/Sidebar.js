@@ -34,6 +34,11 @@ const Sidebar = () => {
     }, [caselist, school, fetchSchool]);
 
     const [stateCode, setStateCode] = useState('');
+    const [filter, setFilter] = useState('');
+
+    const handleFilterChange = (e) => {
+        setFilter(e.target.value);
+    };
 
     const [visible, setVisible] = useState(true);
     const handleToggleVisible = () => {
@@ -42,7 +47,10 @@ const Sidebar = () => {
 
     if (caselistData.message) { return false; }
 
-    const filteredSchools = stateCode ? schools.filter(s => s.state === stateCode) : schools;
+    let filteredSchools = stateCode ? schools.filter(s => s.state === stateCode) : schools;
+    filteredSchools = filter
+        ? filteredSchools.filter(s => s.display_name.toLowerCase().includes(filter.toLowerCase()))
+        : filteredSchools;
 
     return (
         <div className={`${styles.sidebar} ${!visible ? styles['sidebar-collapsed'] : undefined}`}>
@@ -66,11 +74,25 @@ const Sidebar = () => {
                         <Link to={`/${caselist}/add`}>
                             <button type="button" className={`${styles['add-school']} pure-button`}>
                                 <FontAwesomeIcon className={styles.plus} icon={faPlus} />
-                                <span> Add</span>
+                                <span> Create</span>
                             </button>
                         </Link>
                     }
                 </h2>
+                <ul>
+                    {
+                        !caselistData.archived &&
+                        <li>
+                            <Link to={`/${caselist}/recent`}>Recently Modified</Link>
+                        </li>
+                    }
+                    {
+                        !caselistData.archived &&
+                        <li>
+                            <Link to={`/${caselist}/downloads`}>Bulk Downloads</Link>
+                        </li>
+                    }
+                </ul>
                 {
                     caselistData.level === 'hs' &&
                     <form className="pure-form">
@@ -83,10 +105,18 @@ const Sidebar = () => {
                     </form>
                 }
                 {
-                    !caselistData.archived &&
-                    <p>
-                        <Link to={`/${caselist}/recent`}>Recently Modified</Link>
-                    </p>
+                    <form className="pure-form">
+                        <label htmlFor="filter">Search</label>
+                        <input
+                            type="text"
+                            className={styles.filter}
+                            id="filter"
+                            name="filter"
+                            onChange={handleFilterChange}
+                            value={filter}
+                        />
+                    </form>
+
                 }
                 {
                     filteredSchools && filteredSchools.length > 0 &&

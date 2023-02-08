@@ -12,7 +12,7 @@ describe('AddSchool', () => {
     it('Renders and submits an add school form', async () => {
         // Check form renders
         render(<AddSchool />);
-        await waitFor(() => assert.isOk(screen.queryByText('Add a school to Test Caselist'), 'Heading exists'));
+        await waitFor(() => assert.isOk(screen.queryByText('Create a school on Test Caselist'), 'Heading exists'));
         await waitFor(() => assert.isOk(screen.queryByText('School Name'), 'State input exists'));
         await waitFor(() => assert.isOk(screen.queryByText('State'), 'State input exists'));
         assert.strictEqual(loadTabroomChapters.mock.calls.length, 1, 'Fetched Tabroom chapters');
@@ -29,7 +29,7 @@ describe('AddSchool', () => {
         assert.strictEqual(state.value, 'CO', 'Correct State select value');
 
         // Submit form - have to manually disable button because of react-hook-form
-        const button = screen.getByRole('button', { name: 'Add' });
+        const button = screen.getByRole('button', { name: 'Create New School' });
         button.disabled = false;
         fireEvent.click(button);
         await waitFor(() => assert.strictEqual(addSchool.mock.calls.length, 1, 'Submitted the form'));
@@ -45,12 +45,12 @@ describe('AddSchool', () => {
         addSchool.mockRejectedValue({ message: 'Failed to create school' });
 
         render(<AddSchool />);
-        await waitFor(() => assert.isOk(screen.queryByText('Add a school to Test Caselist'), 'Heading exists'));
+        await waitFor(() => assert.isOk(screen.queryByText('Create a school on Test Caselist'), 'Heading exists'));
 
         fireEvent.change(document.querySelector('input'), { target: { value: 'Test School' } });
         fireEvent.change(document.querySelector('select'), { target: { value: 'CO' } });
 
-        const button = screen.getByRole('button', { name: 'Add' });
+        const button = screen.getByRole('button', { name: 'Create New School' });
         button.disabled = false;
         fireEvent.click(button);
         await waitFor(() => assert.isOk(screen.queryByText(/Failed to add school/), 'Failure notification exists'));
@@ -68,7 +68,7 @@ describe('AddSchool', () => {
         loadTabroomChapters.mockRejectedValue(() => { throw new Error('Failed to fetch Tabroom chapters'); });
         render(<AddSchool />);
         assert.strictEqual(loadTabroomChapters.mock.calls.length, 1, 'Attempted to fetch Tabroom chapters');
-        await waitFor(() => assert.isOk(screen.queryByText('Add a school to Test Caselist'), 'Heading exists'));
+        await waitFor(() => assert.isOk(screen.queryByText('Create a school on Test Caselist'), 'Heading exists'));
     });
 
     afterEach(() => {

@@ -5,6 +5,7 @@ import getSearch from '../controllers/search/getSearch';
 import getCaselists from '../controllers/caselists/getCaselists';
 import getCaselist from '../controllers/caselists/getCaselist';
 import getRecent from '../controllers/caselists/getRecent';
+import getBulkDownloads from '../controllers/caselists/getBulkDownloads';
 import getSchool from '../controllers/schools/getSchool';
 import getSchools from '../controllers/schools/getSchools';
 import postSchool from '../controllers/schools/postSchool';
@@ -48,6 +49,7 @@ export default [
     { path: '/caselists', module: getCaselists },
     { path: '/caselists/{caselist}', module: getCaselist },
     { path: '/caselists/{caselist}/recent', module: getRecent },
+    { path: '/caselists/{caselist}/downloads', module: getBulkDownloads },
 
     { path: '/caselists/{caselist}/schools', module: { ...getSchools, ...postSchool } },
 

@@ -14,6 +14,17 @@ export const downloadLimiter = rateLimiter({
     skip: req => req.method === 'OPTIONS',
 });
 
+export const weeklyLimiter = rateLimiter({
+    windowMs: 60 * 1000 * 60 * 24, // 1 day
+    max: 5, // limit each user to 5 weekly downloads/day
+    keyGenerator: (req) => (req.user_id ? req.user_id : req.ip),
+    handler: (req, res) => {
+        debugLogger.info(`5 downloads/1d rate limit enforced on user ${req.user_id}`);
+        res.status(429).send({ message: 'You can only download 5 bulk files per day. Wait and try again.' });
+    },
+    skip: req => req.method === 'OPTIONS' || !req.query.path.includes('weekly'),
+});
+
 const getDownload = {
     GET: async (req, res) => {
         if (req.query.path.includes('..') || req.query.path.startsWith('/')) {
@@ -28,7 +39,7 @@ const getDownload = {
 
         res.status(200).download(`${config.UPLOAD_DIR}/${req.query.path}`);
     },
-    'x-express-openapi-additional-middleware': [downloadLimiter],
+    'x-express-openapi-additional-middleware': [downloadLimiter, weeklyLimiter],
 };
 
 getDownload.GET.apiDoc = {

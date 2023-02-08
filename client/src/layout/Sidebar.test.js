@@ -21,10 +21,12 @@ describe('Sidebar', () => {
         await waitFor(() => screen.queryByText(/Test Caselist/));
         await waitFor(() => screen.queryByText(/Colorado/));
         assert.isOk(document.querySelector('select'), 'Dropdown exists');
+        assert.isOk(document.querySelector('input'), 'Filter exists');
         assert.isOk(screen.queryByText(/Schools/), 'Schools heading exists');
         assert.isOk(screen.queryByText(/Test School/), 'School Links exist');
-        assert.isOk(screen.queryByText(/Add/), 'Add button exists');
+        assert.isOk(screen.queryByText(/Create/), 'Add button exists');
         assert.isOk(screen.queryByText(/Recently Modified/), 'Recent link exists');
+        assert.isOk(screen.queryByText(/Bulk Downloads/), 'Downloads link exists');
     });
 
     it('Returns false without caselist data', async () => {
