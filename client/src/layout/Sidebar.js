@@ -87,7 +87,7 @@ const Sidebar = () => {
                         </li>
                     }
                     {
-                        !caselistData.archived &&
+                        1 === 2 && !caselistData.archived &&
                         <li>
                             <Link to={`/${caselist}/downloads`}>Bulk Downloads</Link>
                         </li>
