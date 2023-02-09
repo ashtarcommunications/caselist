@@ -52,7 +52,7 @@ export const weeklyArchives = async (killPool = false) => {
             try {
                 cp.execSync(
                     `zip ${config.UPLOAD_DIR}/weekly/${caselist.name}/${caselist.name}-all-${date}.zip -@ < ${config.UPLOAD_DIR}/weekly/${caselist.name}/${caselist.name}-all-${date}.txt`,
-                    { cwd: `${config.UPLOAD_DIR}` },
+                    { cwd: `${config.UPLOAD_DIR}`, stdio: 'ignore' },
                 );
                 debugLogger.info(`Created archive for ${caselist.name}`);
             } catch (err) {
@@ -94,7 +94,7 @@ export const weeklyArchives = async (killPool = false) => {
             try {
                 cp.execSync(
                     `zip ${config.UPLOAD_DIR}/weekly/${caselist.name}/${caselist.name}-weekly-${date}.zip -@ < ${config.UPLOAD_DIR}/weekly/${caselist.name}/${caselist.name}-weekly-${date}.txt`,
-                    { cwd: `${config.UPLOAD_DIR}` },
+                    { cwd: `${config.UPLOAD_DIR}`, stdio: 'ignore' },
                 );
                 debugLogger.info(`Created weekly archive for ${caselist.name}`);
             } catch (err) {
