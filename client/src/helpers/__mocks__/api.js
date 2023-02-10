@@ -11,8 +11,8 @@ export const loadCaselists = jest.fn().mockResolvedValue([{ caselist_id: 1, name
 export const loadCaselist = jest.fn().mockResolvedValue({ caselist_id: 1, name: 'Test Caselist' });
 export const loadRecent = jest.fn().mockResolvedValue([{ round_id: 1, team_id: 1, team_display_name: 'Test Team', opensource: '/test' }]);
 export const loadDownloads = jest.fn().mockResolvedValue([
-    { name: 'testcaselist-all.zip', path: '/weekly/test/testcaselist-all.zip' },
-    { name: 'testcaselist-weekly.zip', path: '/weekly/test/testcaselist-weekly.zip' },
+    { name: 'testcaselist-all.zip', url: 'https://caselist-files.s3.amazon.com/weekly/test/testcaselist-all.zip' },
+    { name: 'testcaselist-weekly.zip', url: 'https://caselist-files.s3.amazon.com/weekly/test/testcaselist-weekly.zip' },
 ]);
 export const loadSchools = jest.fn().mockResolvedValue([]);
 export const addSchool = jest.fn().mockResolvedValue({ school_id: 1, name: 'Test School' });

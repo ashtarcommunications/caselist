@@ -5,7 +5,6 @@ import { orderBy } from 'lodash';
 import { loadDownloads } from '../helpers/api';
 import { useStore } from '../helpers/store';
 
-import DownloadFile from '../helpers/DownloadFile';
 import Breadcrumbs from '../layout/Breadcrumbs';
 import Loader from '../loader/Loader';
 import Error from '../layout/Error';
@@ -51,7 +50,6 @@ const Downloads = () => {
             <h1>Bulk downloads for {caselistData.display_name}</h1>
             <p>
                 <span>Downloads are updated at midnight every Tuesday morning. </span>
-                <span>Due to file sizes, you are limited to 5 bulk downloads per day.</span>
             </p>
             {
                 !fetching && downloads.length === 0
@@ -61,13 +59,12 @@ const Downloads = () => {
                     <h2>All open source files</h2>
                     {
                         fulldownload.map(d => (
-                            <p key={d.path}>
+                            <p key={d.url}>
                                 {
-                                    d.path &&
-                                    <>
-                                        <span>{d.name} </span>
-                                        <DownloadFile path={d.path} />
-                                    </>
+                                    d.url &&
+                                    <a href={d.url}>
+                                        {d.name}
+                                    </a>
                                 }
                             </p>
                         ))
@@ -76,20 +73,18 @@ const Downloads = () => {
                     <h2>Open source files by week</h2>
                     {
                         weeklies.map(d => (
-                            <p key={d.path}>
+                            <p key={d.url}>
                                 {
-                                    d.path &&
-                                    <>
-                                        <span>{d.name} </span>
-                                        <DownloadFile path={d.path} />
-                                    </>
+                                    d.url &&
+                                    <a href={d.url}>
+                                        {d.name}
+                                    </a>
                                 }
                             </p>
                         ))
                     }
                 </>
             }
-
         </div>
     );
 };

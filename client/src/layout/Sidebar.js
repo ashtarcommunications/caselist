@@ -87,7 +87,6 @@ const Sidebar = () => {
                         </li>
                     }
                     {
-                        1 === 2 && !caselistData.archived &&
                         <li>
                             <Link to={`/${caselist}/downloads`}>Bulk Downloads</Link>
                         </li>
@@ -105,8 +104,8 @@ const Sidebar = () => {
                     </form>
                 }
                 {
-                    <form className="pure-form">
-                        <label htmlFor="filter">Search</label>
+                    <form className="pure-form" onSubmit={e => e.preventDefault()}>
+                        <label htmlFor="filter">Filter</label>
                         <input
                             type="text"
                             className={styles.filter}
@@ -116,7 +115,6 @@ const Sidebar = () => {
                             value={filter}
                         />
                     </form>
-
                 }
                 {
                     filteredSchools && filteredSchools.length > 0 &&

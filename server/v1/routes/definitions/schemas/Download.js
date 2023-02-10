@@ -2,7 +2,7 @@ const Download = {
     type: 'object',
     properties: {
         name: { type: 'string' },
-        path: { type: 'string' },
+        url: { type: 'string' },
     },
 };
 

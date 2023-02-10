@@ -1,18 +1,26 @@
-import fs from 'fs';
+import AWS from 'aws-sdk';
 import config from '../../../config';
 
 const getBulkDownloads = {
     GET: async (req, res) => {
         const files = [];
-        try {
-            const filelist = await fs.promises.readdir(`${config.UPLOAD_DIR}/weekly/${req.params.caselist}`, { withFileTypes: true });
+        const s3 = new AWS.S3();
 
-            filelist.filter(f => !f.isDirectory())
-            .filter(f => f.name.slice(-4) === '.zip')
-            .forEach(f => {
+        try {
+            const data = await s3.listObjectsV2({
+                Bucket: config.S3_BUCKET,
+                Prefix: `weekly/${req.params.caselist}`,
+            }).promise();
+
+            const filelist = data.Contents
+            .filter(f => f.Key !== `weekly/${req.params.caselist}`)
+            .filter(f => f.Key.slice(-4) === '.zip')
+            .map(f => f.Key?.split('/')?.pop());
+
+            filelist.forEach(f => {
                 files.push({
-                    name: f.name,
-                    path: `weekly/${req.params.caselist}/${f.name}`,
+                    name: f,
+                    url: `https://${config.S3_BUCKET}.s3.amazonaws.com/weekly/${req.params.caselist}/${f}`,
                 });
             });
         } catch (err) {

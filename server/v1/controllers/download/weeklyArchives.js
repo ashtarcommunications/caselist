@@ -6,6 +6,7 @@
 import fs from 'fs';
 import cp from 'child_process';
 import SQL from 'sql-template-strings';
+import AWS from 'aws-sdk';
 import { pool, query } from '../../helpers/mysql';
 import config from '../../../config';
 import { debugLogger } from '../../helpers/logger';
@@ -13,6 +14,7 @@ import { debugLogger } from '../../helpers/logger';
 export const weeklyArchives = async (killPool = false) => {
     debugLogger.info('Starting weekly open source archive...');
 
+    const s3 = new AWS.S3();
     const date = new Date().toISOString().slice(0, 19).split('T')[0];
 
     const caselists = await query(SQL`
@@ -64,6 +66,16 @@ export const weeklyArchives = async (killPool = false) => {
             } catch (err) {
                 debugLogger.info(`Failed to delete file list for ${caselist.name}: ${err}`);
             }
+
+            try {
+                await s3.putObject({
+                    Bucket: config.S3_BUCKET,
+                    Key: `weekly/${caselist.name}/${caselist.name}-all-${date}.zip`,
+                    Body: await fs.promises.readFile(`${config.UPLOAD_DIR}/weekly/${caselist.name}/${caselist.name}-all-${date}.zip`),
+                }).promise();
+            } catch (err) {
+                debugLogger.info(`Failed to upload to S3 for ${caselist.name}: ${err}`);
+            }
         }
 
         // Create weekly archive with just new files
@@ -105,6 +117,16 @@ export const weeklyArchives = async (killPool = false) => {
                 fs.unlinkSync(`${config.UPLOAD_DIR}/weekly/${caselist.name}/${caselist.name}-weekly-${date}.txt`);
             } catch (err) {
                 debugLogger.info(`Failed to delete weekly file list for ${caselist.name}: ${err}`);
+            }
+
+            try {
+                await s3.putObject({
+                    Bucket: config.S3_BUCKET,
+                    Key: `weekly/${caselist.name}/${caselist.name}-weekly-${date}.zip`,
+                    Body: await fs.promises.readFile(`${config.UPLOAD_DIR}/weekly/${caselist.name}/${caselist.name}-weekly-${date}.zip`),
+                }).promise();
+            } catch (err) {
+                debugLogger.info(`Failed to upload weekly to S3 for ${caselist.name}: ${err}`);
             }
         }
     }
