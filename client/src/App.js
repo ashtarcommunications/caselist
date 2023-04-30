@@ -25,6 +25,7 @@ import Terms from './layout/Terms.md';
 import Home from './home/Home';
 import CaselistHome from './caselist/CaselistHome';
 import Recent from './caselist/Recent';
+import Downloads from './caselist/Downloads';
 import Login from './login/Login';
 import Logout from './login/Logout';
 import AddSchool from './caselist/AddSchool';
@@ -107,6 +108,14 @@ const App = () => {
                                 element={
                                     <Layout privateRoute>
                                         <Recent />
+                                    </Layout>
+                                }
+                            />
+                            <Route
+                                path="/:caselist/downloads"
+                                element={
+                                    <Layout privateRoute>
+                                        <Downloads />
                                     </Layout>
                                 }
                             />

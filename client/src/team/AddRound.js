@@ -234,7 +234,7 @@ const AddRound = () => {
                                     onChange={
                                         e => {
                                             if (typeof e === 'string') { return onChange(e); }
-                                            setValue('round', e.round, { shouldValidate: true });
+                                            setValue('round', e.round.toString(), { shouldValidate: true });
                                             setValue('side', e.side, { shouldValidate: true });
                                             setValue('opponent', e.opponent ?? '', { shouldValidate: true });
                                             setValue('judge', e.judge ?? '', { shouldValidate: true });

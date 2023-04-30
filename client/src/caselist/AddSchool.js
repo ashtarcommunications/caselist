@@ -80,10 +80,14 @@ const AddSchool = () => {
 
     return (
         <div className={styles.instructions}>
-            <h1>Add a school to {caselistData.display_name}</h1>
+            <h1>Create a school on {caselistData.display_name}</h1>
             <p>
-                Use the form below to add a school to the caselist. School names should conform
-                to the following rules:
+                Use the form below to create a new school on the caselist. This is
+                NOT a search form, use this only if the school does not yet exist
+                on the caselist.
+            </p>
+            <p>
+                School names should conform to the following rules:
             </p>
             <ul>
                 <li>
@@ -211,7 +215,7 @@ const AddSchool = () => {
                     {errors.state?.type === 'required' && <p>This field is required</p>}
                 </div>
 
-                <button type="submit" className={`${styles.add} pure-button`} disabled={!isValid}>Add</button>
+                <button type="submit" className={`${styles.add} pure-button`} disabled={!isValid}>Create New School</button>
             </form>
         </div>
     );

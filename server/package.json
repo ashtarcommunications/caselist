@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@speechanddebate/nsda-js-utils": "^1.0.9",
+    "aws-sdk": "^2.1311.0",
     "body-parser": "^1.18.3",
     "bottleneck": "^2.19.0",
     "cookie-parser": "^1.4.4",
@@ -44,6 +45,7 @@
   },
   "devDependencies": {
     "@speechanddebate/eslint-config-nsda": "^1.0.18",
+    "aws-sdk-mock": "^5.8.0",
     "chai": "^4.2.0",
     "eslint": "^8.15.0",
     "eslint-plugin-import": "^2.25.2",
@@ -56,14 +58,20 @@
     "transform": {},
     "globalSetup": "./tests/globalTestSetup.js",
     "globalTeardown": "./tests/globalTestTeardown.js",
-    "setupFilesAfterEnv": ["./tests/testSetup.js"]
+    "setupFilesAfterEnv": [
+      "./tests/testSetup.js"
+    ]
   },
   "eslintConfig": {
     "extends": "@speechanddebate/eslint-config-nsda",
     "overrides": [
       {
-        "files": ["**/*.test.js"],
-        "extends": ["@speechanddebate/eslint-config-nsda/jest"]
+        "files": [
+          "**/*.test.js"
+        ],
+        "extends": [
+          "@speechanddebate/eslint-config-nsda/jest"
+        ]
       }
     ],
     "parserOptions": {

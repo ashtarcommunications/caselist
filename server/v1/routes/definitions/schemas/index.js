@@ -14,6 +14,7 @@ import Updates from './Updates';
 import Cite from './Cite';
 import Recent from './Recent';
 import SearchResult from './SearchResult';
+import Download from './Download';
 
 export default {
     Err,
@@ -32,4 +33,5 @@ export default {
     Update,
     Updates,
     SearchResult,
+    Download,
 };

@@ -30,6 +30,8 @@ const config = {
     TABROOM_API_URL: 'http://localhost:10011/v1', // No trailing slash
     TABROOM_CASELIST_KEY: 'caselist-key',
     S3_BUCKET: 'caselist-files',
+    AWS_ACCESS_KEY_ID: 'aws-access-key',
+    AWS_SECRET_ACCESS_KEY: 'aws-secret-key',
     UPLOAD_DIR: `${cwd()}/uploads`, // No trailing slash
     SOLR_QUERY_URL: `http://solr:8983/solr/caselist/select?`, // Trailing ?
     SOLR_UPDATE_URL: 'http://solr:8983/solr/caselist/update?commit=true',

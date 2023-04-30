@@ -20,6 +20,7 @@ import { debugLogger, requestLogger, errorLogger } from './v1/helpers/logger';
 import { setupMocks } from './tests/mocks';
 import { deleteIndex } from './v1/controllers/search/deleteIndex';
 import { buildIndex } from './v1/controllers/search/buildIndex';
+import { weeklyArchives } from './v1/controllers/download/weeklyArchives';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -50,6 +51,16 @@ if (process.env.NODE_ENV !== 'test') {
         debugLogger.info('Ingesting recent files and cites into Solr...');
         try {
             await buildIndex(false, true);
+        } catch (err) {
+            debugLogger.error(err.message);
+        }
+    });
+
+    // Create weekly archive at midnight on Tuesdays
+    cron.schedule('0 0 * * 2', async () => {
+        debugLogger.info('Creating weekly open source archives...');
+        try {
+            await weeklyArchives(false);
         } catch (err) {
             debugLogger.error(err.message);
         }

@@ -78,6 +78,8 @@ You can optionally rebuild the Solr index from scratch by setting the `REBUILD_S
 
 The `TABROOM_CASELIST_KEY` environment variable has to match the `CASELIST_KEY` on Tabroom servers for the Tabroom integrations to work.
 
+The `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` variables must be set for weekly archive uploads to work. These are kicked off by node-cron at midnight on Tuesdays.
+
 ### Migration
 
 The `v1/migration` folder contains scripts designed to migrate data from the old XWiki site into the new database schema. It has to be manually edited to run one caselist at a time.

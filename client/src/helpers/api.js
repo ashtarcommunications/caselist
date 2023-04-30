@@ -52,6 +52,10 @@ export const loadRecent = async (caselist) => {
     return fetchBase(`caselists/${caselist}/recent`);
 };
 
+export const loadDownloads = async (caselist) => {
+    return fetchBase(`caselists/${caselist}/downloads`);
+};
+
 export const loadSchools = async (caselist) => {
     return fetchBase(`caselists/${caselist}/schools`);
 };
