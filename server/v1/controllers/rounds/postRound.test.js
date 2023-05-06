@@ -9,7 +9,7 @@ import server from '../../../index';
 describe('POST /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds', () => {
     beforeEach(async () => {
         await query(SQL`
-            DELETE FROM rounds_history WHERE team_id = 1
+            DELETE FROM rounds_history WHERE tournament = 'Test Post Round'
         `);
     });
 
