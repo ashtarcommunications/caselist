@@ -1,5 +1,5 @@
 import SQL from 'sql-template-strings';
-import { fetch } from '@speechanddebate/nsda-js-utils';
+import { fetch, displaySide, roundName } from '@speechanddebate/nsda-js-utils';
 import fs from 'fs';
 import path from 'path';
 
@@ -14,6 +14,7 @@ const putRound = {
             SELECT
                 C.archived,
                 R.opensource,
+                C.event,
                 (SELECT COALESCE(MAX(version), 0) + 1 FROM rounds_history RH WHERE RH.round_id = R.round_id) AS 'version'
             FROM rounds R
             INNER JOIN teams T ON T.team_id = R.team_id
@@ -28,30 +29,61 @@ const putRound = {
         if (!round) { return res.status(404).json({ message: 'Round not found' }); }
         if (round.archived) { return res.status(403).json({ message: 'Caselist archived, no modifications allowed' }); }
 
-        if (round.opensource && !req.body.opensource) {
+        let filePath;
+
+        if (round.opensource) {
             const extension = path.extname(round.opensource);
-            const deletedExtension = `-DELETED-v${round.version}${extension}`;
-            const deletedPath = `${config.UPLOAD_DIR}/${round.opensource.replace(extension, deletedExtension)}`;
-            try {
-                await fs.promises.rename(`${config.UPLOAD_DIR}/${round.opensource}`, deletedPath);
-            } catch (err) {
-                debugLogger.info(`Failed to rename ${round.opensource}`);
-            }
-        }
-        const body = JSON.stringify({ delete: { id: round.opensource } });
-        try {
-            await fetch(
-                'http://localhost:8983/solr/caselist/update?commit=true',
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body,
+
+            // Open source file has been removed
+            if (!req.body.opensource) {
+                const deletedExtension = `-DELETED-v${round.version}${extension}`;
+                const deletedPath = `${config.UPLOAD_DIR}/${round.opensource.replace(extension, deletedExtension)}`;
+                try {
+                    await fs.promises.rename(`${config.UPLOAD_DIR}/${round.opensource}`, deletedPath);
+                } catch (err) {
+                    debugLogger.info(`Failed to rename ${round.opensource}`);
                 }
-            );
-        } catch (err) {
-            debugLogger.info(`Failed to remove ${round.opensource} from Solr`);
+
+                const body = JSON.stringify({ delete: { id: round.opensource } });
+                try {
+                    await fetch(
+                        'http://localhost:8983/solr/caselist/update?commit=true',
+                        {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body,
+                        }
+                    );
+                } catch (err) {
+                    debugLogger.info(`Failed to remove ${round.opensource} from Solr`);
+                }
+            } else {
+                let filename;
+
+                // Construct a new filename
+                const tourn = req.body.tournament.trim()
+                    .replaceAll('/', '')
+                    .replaceAll('\\', '')
+                    .replaceAll('  ', ' ')
+                    .replaceAll(' ', '-');
+                filename = `${req.params.school}-${req.params.team}-`;
+                filename += `${displaySide(req.body.side, round.event)}-`;
+                filename += `${tourn}-`;
+                filename += req.body.round === 'All' ? 'All-Rounds' : roundName(req.body.round.trim()).replaceAll(' ', '-');
+                filename += `${extension}`;
+
+                const uploadDir = `${req.params.caselist}/${req.params.school}/${req.params.team}`;
+                filePath = `${uploadDir}/${filename}`;
+
+                try {
+                    await fs.promises.mkdir(`${config.UPLOAD_DIR}/${uploadDir}`, { recursive: true });
+                    await fs.promises.rename(`${config.UPLOAD_DIR}/${round.opensource}`, `${config.UPLOAD_DIR}/${filePath}`);
+                } catch (err) {
+                    debugLogger.info(`Failed to rename ${round.opensource}`);
+                }
+            }
         }
 
         await query(SQL`
@@ -63,7 +95,7 @@ const putRound = {
                 R.opponent = ${req.body.opponent?.trim() || null},
                 R.judge = ${req.body.judge?.trim() || null},
                 R.report = ${req.body.report?.trim() || null},
-                R.opensource = ${req.body.opensource?.trim() || null},
+                R.opensource = ${filePath || null},
                 R.video = ${req.body.video?.trim() || null},
                 R.updated_at = CURRENT_TIMESTAMP,
                 R.updated_by_id = ${req.user_id}

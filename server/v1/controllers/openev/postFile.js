@@ -60,10 +60,22 @@ const postFile = {
         if (['.docx', '.doc', '.pdf', '.rtf', '.txt'].indexOf(extension) === -1) {
             extension = '';
         }
-        let filename = `${req.body.title.trim()} - ${campDisplayName[req.body.camp.trim()]} ${req.body.year}`;
-        if (req.body.lab) { filename += ` ${req.body.lab.trim()}`; }
 
-        const uploadDir = `openev/${req.body.year}/${req.body.camp.trim()}`;
+        const sanitize = (s) => {
+            return s?.replaceAll('/', '')
+            .replaceAll('\\', '')
+            .replaceAll('..', '')
+            .trim();
+        };
+
+        const title = sanitize(req.body.title);
+        const camp = campDisplayName[sanitize(req.body.camp)];
+        const lab = req.body.lab ? sanitize(req.body.lab) : '';
+
+        let filename = `${title} - ${camp} ${req.body.year}`;
+        if (req.body.lab) { filename += ` ${lab}`; }
+
+        const uploadDir = `openev/${req.body.year}/${sanitize(req.body.camp)}`;
         const filePath = `${uploadDir}/${filename}${extension}`;
 
         const file = await query(SQL`
@@ -87,7 +99,7 @@ const postFile = {
                 ${filename},
                 ${filePath},
                 ${req.body.year},
-                ${req.body.camp?.trim()},
+                ${camp},
                 ${req.body.lab?.trim()},
                 ${JSON.stringify(req.body.tags)},
                 ${req.user_id}
