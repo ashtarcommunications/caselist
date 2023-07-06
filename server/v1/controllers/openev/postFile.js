@@ -99,7 +99,7 @@ const postFile = {
                 ${filename},
                 ${filePath},
                 ${req.body.year},
-                ${camp},
+                ${req.body.camp?.trim()},
                 ${req.body.lab?.trim()},
                 ${JSON.stringify(req.body.tags)},
                 ${req.user_id}
