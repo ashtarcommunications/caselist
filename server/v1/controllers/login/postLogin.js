@@ -1,4 +1,3 @@
-import { authenticate } from 'ldap-authentication';
 import crypto from 'crypto';
 import SQL from 'sql-template-strings';
 import rateLimiter from 'express-rate-limit';
@@ -23,42 +22,21 @@ const postLogin = {
         const password = req.body.password;
         const remember = req.body.remember;
 
-        const ldapErrors = {
-            ECONNREFUSED: 'Failed to connect to Tabroom',
-            ERR_ASSERTION: 'Failed to provide username and password',
-            ENOTFOUND: 'Failed to connect to Tabroom',
-            49: 'Invalid username or password - if sure they\'re correct, try resetting password on Tabroom',
-            80: 'Failed to connect to Tabroom',
-        };
-
-        let auth = authenticate;
-
-        if (process.env.NODE_ENV !== 'production') {
-            auth = () => {
-                return {
-                    dn: 'uid=test@test.com,ou=users,dc=tabroom,dc=com',
-                    uidNumber: 1,
-                    displayName: 'Test User',
-                };
-            };
-        }
-
         let user;
-        try {
-            user = await auth({
-                ldapOpts: { url: config.LDAP_URL },
-                userDn: `uid=${username},ou=users,dc=tabroom,dc=com`,
-                userPassword: password,
-                userSearchBase: 'ou=users,dc=tabroom,dc=com',
-                usernameAttribute: 'uid',
-                username,
-            });
-        } catch (err) {
-            debugLogger.info(`LDAP error ${err.code}: ${err}`);
-            return res.status(401).json({ message: ldapErrors[err.code] || 'Error connecting to Tabroom' });
+        if (process.env.NODE_ENV !== 'production') {
+            user = { person_id: 1, name: 'Test User' };
+        } else {
+            try {
+                const url = `${config.TABROOM_API_URL}/login`;
+                const response = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, password }) });
+                user = await response.json();
+            } catch (err) {
+                debugLogger.error(`Error connecting to Tabroom: ${err}`);
+                return res.status(500).json({ message: 'Error logging in via Tabroom, the authentication service may not be responding' });
+            }
         }
 
-        if (!user || !user.uidNumber) {
+        if (!user || !user.person_id || user.error) {
             return res.status(401).json({ message: 'Invalid username or password - if sure they\'re correct, try resetting password on Tabroom' });
         }
 
@@ -67,13 +45,13 @@ const postLogin = {
 
         await query(SQL`
             INSERT INTO users (user_id, email, display_name)
-            VALUES (${user.uidNumber}, ${username}, ${user.displayName})
-            ON DUPLICATE KEY UPDATE email=${username}, display_name=${user.displayName}
+            VALUES (${user.person_id}, ${username}, ${user.name})
+            ON DUPLICATE KEY UPDATE email=${username}, display_name=${user.name}
         `);
 
         await query(SQL`
             INSERT INTO sessions (token, user_id, ip, expires_at)
-            VALUES (${hash}, ${user.uidNumber}, ${req.ip}, DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 2 WEEK))
+            VALUES (${hash}, ${user.person_id}, ${req.ip}, DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 2 WEEK))
         `);
 
         // Expire cookies in 2 weeks if "remember me" is checked, otherwise default to session cookie
@@ -105,7 +83,7 @@ const postLogin = {
         let expires = new Date(Date.now() + (1000 * 60 * 60 * 24 * 14));
         expires = expires.toISOString();
 
-        return res.status(201).json({ message: 'Successfully logged in', token: nonce, expires, admin: config.ADMINS?.includes(parseInt(user.uidNumber)) });
+        return res.status(201).json({ message: 'Successfully logged in', token: nonce, expires, admin: config.ADMINS?.includes(parseInt(user.person_id)) });
     },
     'x-express-openapi-additional-middleware': [loginLimiter],
 };
