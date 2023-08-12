@@ -107,6 +107,9 @@ export const buildIndex = async (killPool = false, recent = false) => {
             meta.path = file.path;
             meta.download_path = file.download_path;
             meta.title = file.download_path.split('/').pop();
+
+            // Try to fix solr coercing subject field to an int
+            meta.dc_subject = meta.dc_subject ? `${meta.dc_subject}`.replaceAll('.', '') : null;
         } catch (err) {
             solrLogger.error(`Failed to extract metadata for ${file.download_path}: ${err.message}`);
             continue;
