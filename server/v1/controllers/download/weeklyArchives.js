@@ -76,6 +76,12 @@ export const weeklyArchives = async (killPool = false) => {
             } catch (err) {
                 debugLogger.info(`Failed to upload to S3 for ${caselist.name}: ${err}`);
             }
+
+            try {
+                fs.unlinkSync(`${config.UPLOAD_DIR}/weekly/${caselist.name}/${caselist.name}-all-${date}.zip`);
+            } catch (err) {
+                debugLogger.info(`Failed to delete local archive for ${caselist.name}: ${err}`);
+            }
         }
 
         // Create weekly archive with just new files
@@ -127,6 +133,12 @@ export const weeklyArchives = async (killPool = false) => {
                 }).promise();
             } catch (err) {
                 debugLogger.info(`Failed to upload weekly to S3 for ${caselist.name}: ${err}`);
+            }
+
+            try {
+                fs.unlinkSync(`${config.UPLOAD_DIR}/weekly/${caselist.name}/${caselist.name}-weekly-${date}.zip`);
+            } catch (err) {
+                debugLogger.info(`Failed to local weekly archive for ${caselist.name}: ${err}`);
             }
         }
     }
