@@ -88,15 +88,15 @@ The `v1/migration` folder contains scripts designed to migrate data from the old
 
 ### Toolchain
 
-This is a standard React front-end built with Create React App. It uses CRA's built-in support for CSS modules for locally scoping CSS, and uses PureCSS for some baseline styles.
+This is a standard React front-end bundled with Vite. It uses Vite's built-in support for CSS modules for locally scoping CSS, and uses PureCSS for some baseline styles.
 
 ### Development
 
-`npm run start` will start the CRA dev server with hot reloading. Make sure the server is started on localhost as well.
+`npm run start` will start the Vite dev server with hot reloading. Make sure the server is started on localhost as well.
 
 ### Testing
 
-Run the test suite with `npm run test` or `npm run test-cover` if you want code coverage metrics.
+Run the test suite with vitest using `npm run test` or `npm run test-cover` if you want code coverage metrics.
 
 ### Production
 
