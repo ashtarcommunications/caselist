@@ -108,8 +108,9 @@ export const buildIndex = async (killPool = false, recent = false) => {
             meta.download_path = file.download_path;
             meta.title = file.download_path.split('/').pop();
 
-            // Try to fix solr coercing subject field to an int
-            meta.dc_subject = meta.dc_subject ? `${meta.dc_subject}`.replaceAll('.', '') : null;
+            // Fix errors from solr coercing subject and keyword fields from Tika to an int
+            meta['dc:subject'] = meta['dc:subject'] ? `${meta['dc:subject']}`.replaceAll('.', '') : null;
+            meta['meta:keyword'] = meta['meta:keyword'] ? `${meta['meta:keyword']}`.replaceAll('.', '') : null;
         } catch (err) {
             solrLogger.error(`Failed to extract metadata for ${file.download_path}: ${err.message}`);
             continue;
