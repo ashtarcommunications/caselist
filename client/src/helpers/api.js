@@ -7,12 +7,12 @@ import { fetch } from '@speechanddebate/nsda-js-utils';
 export const history = createBrowserHistory();
 
 export const fetchBase = async (path, options = {}, body = {}) => {
-    const base = process.env.REACT_APP_API_BASE;
+    const base = import.meta.env.VITE_API_BASE;
     const fetchOptions = {
         method: options.method ? options.method : 'GET',
         body: body instanceof FormData ? body : JSON.stringify(body),
         maxRetries: (options.method && options.method !== 'GET') ? 0 : 3,
-        retryDelay: process.env.NODE_ENV === 'test' ? 10 : 100,
+        retryDelay: import.meta.env.NODE_ENV === 'test' ? 10 : 100,
         credentials: 'include',
         headers: body instanceof FormData ? {} : {
             'Content-Type': 'application/json',

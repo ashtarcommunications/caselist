@@ -1,6 +1,5 @@
-@import-normalize;
-@import 'normalize/opinionated';
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+@import-normalize "normalize/opinionated.css";
 
 /* Color theme */
 :root {

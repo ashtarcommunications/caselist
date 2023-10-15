@@ -16,6 +16,7 @@ const processFile = (
     acceptedFiles.forEach((file) => {
         const reader = new FileReader();
         const turndown = new Turndown({ headingStyle: 'atx' });
+        turndown.remove(['style', 'script', 'img', 'figure', 'area', 'audio', 'map', 'track', 'video', 'embed', 'iframe', 'object', 'picture', 'portal', 'source', 'svg', 'math', 'canvas', 'noscript', 'form', 'button', 'details', 'dialog', 'summary', 'slot', 'template']);
 
         reader.onabort = () => console.log('File reading was aborted');
         reader.onerror = () => console.log('File reading has failed');
@@ -42,10 +43,19 @@ const processFile = (
 
             let html;
             try {
-                const result = await mammoth.convertToHtml({
-                    arrayBuffer: binaryStr,
-                    ignoreEmptyParagraphs: true,
-                });
+                const result = await mammoth.convertToHtml(
+                    { arrayBuffer: binaryStr },
+                    {
+                        ignoreEmptyParagraphs: true,
+                        convertImage: mammoth.images.imgElement(() => {
+                            return {
+                                // Transparent 1x1 gif
+                                src: `data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==`,
+                                alt: 'Image removed',
+                            };
+                        }),
+                    },
+                );
                 html = result.value;
             } catch (err) {
                 setProcessing(false);
