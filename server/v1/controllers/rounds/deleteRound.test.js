@@ -9,7 +9,7 @@ import server from '../../../index';
 describe('DELETE /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{round}', () => {
     beforeEach(async () => {
         await query(SQL`
-            DELETE FROM rounds_history WHERE tournament = 'Delete Tourn'
+            DELETE FROM rounds_history WHERE tournament = 'Delete Round Tourn'
         `);
         await fs.promises.mkdir(`${config.UPLOAD_DIR}`, { recursive: true });
         await fs.promises.writeFile(`${config.UPLOAD_DIR}/test.docx`, 'test');
@@ -22,7 +22,7 @@ describe('DELETE /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{
         `);
         await query(SQL`
             INSERT INTO cites (round_id, title, cites) VALUES
-                (${newRound.insertId}, 'TestDelete', 'TestDelete');
+                (${newRound.insertId}, 'TestDeleteRound', 'TestDeleteRound');
         `);
 
         await request(server)
@@ -99,11 +99,12 @@ describe('DELETE /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{
         } catch (err) {
             // Do Nothing
         }
+
         await query(SQL`
-            DELETE FROM rounds_history WHERE tournament = 'Delete Tourn'
+            DELETE FROM rounds_history WHERE tournament = 'Delete Round Tourn'
         `);
         await query(SQL`
-            DELETE FROM cites_history WHERE title = 'TestDelete' and cites = 'TestDelete'
+            DELETE FROM cites_history WHERE title = 'TestDeleteRound' and cites = 'TestDeleteRound'
         `);
     });
 });

@@ -2,9 +2,9 @@
   "scripts": {
     "start": "NODE_ENV='production' NODE_OPTIONS='--max_old_space_size=8000' node --experimental-specifier-resolution=node --use_strict index.js",
     "dev": "NODE_ENV='development' nodemon --experimental-specifier-resolution=node --use-strict index.js",
-    "test": "NODE_ENV='test' NODE_OPTIONS='--experimental-vm-modules --experimental-specifier-resolution=node' jest --forceExit --watch",
-    "test-ci": "NODE_ENV='test' NODE_OPTIONS='--experimental-vm-modules --experimental-specifier-resolution=node' jest --forceExit --watchAll=false",
-    "cover": "NODE_ENV='test' NODE_OPTIONS='--experimental-vm-modules --experimental-specifier-resolution=node' jest --forceExit --watchAll --coverage",
+    "test": "NODE_ENV='test' NODE_OPTIONS='--experimental-vm-modules --experimental-specifier-resolution=node' VITEST_SEGFAULT_RETRY=3 vitest watch",
+    "test-ci": "NODE_ENV='test' NODE_OPTIONS='--experimental-vm-modules --experimental-specifier-resolution=node' VITEST_SEGFAULT_RETRY=3 vitest --run",
+    "cover": "NODE_ENV='test' NODE_OPTIONS='--experimental-vm-modules --experimental-specifier-resolution=node' VITEST_SEGFAULT_RETRY=3 vitest --coverage",
     "lint": "eslint --ignore-path ../.gitignore ."
   },
   "name": "caselist-api",
@@ -44,35 +44,17 @@
   },
   "devDependencies": {
     "@speechanddebate/eslint-config-nsda": "^1.0.20",
+    "@vitest/coverage-v8": "^0.34.6",
     "aws-sdk-mock": "^5.8.0",
     "chai": "^4.2.0",
     "eslint": "^8.15.0",
     "eslint-plugin-import": "^2.25.2",
-    "eslint-plugin-jest": "^26.5.3",
-    "jest": "^28.1.0",
     "nodemon": "^2.0.15",
-    "supertest": "^4.0.2"
-  },
-  "jest": {
-    "transform": {},
-    "globalSetup": "./tests/globalTestSetup.js",
-    "globalTeardown": "./tests/globalTestTeardown.js",
-    "setupFilesAfterEnv": [
-      "./tests/testSetup.js"
-    ]
+    "supertest": "^4.0.2",
+    "vitest": "^0.34.6"
   },
   "eslintConfig": {
     "extends": "@speechanddebate/eslint-config-nsda",
-    "overrides": [
-      {
-        "files": [
-          "**/*.test.js"
-        ],
-        "extends": [
-          "@speechanddebate/eslint-config-nsda/jest"
-        ]
-      }
-    ],
     "parserOptions": {
       "ecmaVersion": "latest",
       "sourceType": "module"

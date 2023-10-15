@@ -173,7 +173,7 @@ describe('POST /v1/caselists/{caselist}/schools/{school}/teams', () => {
             DELETE FROM teams WHERE (name LIKE 'TeTeTeTe%' OR name IN('TeTeTeTe', 'FiLa', 'All', 'Novices')) AND school_id = 1
         `);
         await query(SQL`
-            DELETE FROM teams_history WHERE school_id = 1
+            DELETE FROM teams_history WHERE (name LIKE 'TeTeTeTe%' OR name IN('TeTeTeTe', 'FiLa', 'All', 'Novices')) AND school_id = 1
         `);
     });
 });

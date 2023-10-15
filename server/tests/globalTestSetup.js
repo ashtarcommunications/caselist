@@ -1,7 +1,12 @@
 import testFixtures from './testFixtures';
+import testTeardown from './testTeardown';
+import { pool } from '../v1/helpers/mysql';
 
-const globalTestSetup = async () => {
+export const setup = async () => {
     await testFixtures();
 };
 
-export default globalTestSetup;
+export const teardown = async () => {
+    await testTeardown();
+    await pool.end();
+};
