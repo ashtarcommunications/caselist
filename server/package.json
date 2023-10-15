@@ -40,7 +40,7 @@
     "sql-template-strings": "^2.2.2",
     "uuid": "^3.3.2",
     "winston": "^3.2.1",
-    "xml2js": "^0.4.23"
+    "xml2js": "^0.6.2"
   },
   "devDependencies": {
     "@speechanddebate/eslint-config-nsda": "^1.0.20",
