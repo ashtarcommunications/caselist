@@ -4,6 +4,7 @@ import { Controller, useWatch } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import MDEditor, { commands } from '@uiw/react-md-editor';
+import rehypeSanitize from 'rehype-sanitize';
 
 import { useDeviceDetect } from '../helpers/mobile';
 
@@ -85,6 +86,9 @@ const CiteEditor = ({ item, index, register, control, remove }) => {
                                 key={item.id}
                                 onChange={onChange}
                                 value={value}
+                                previewOptions={
+                                    { rehypePlugins: [[rehypeSanitize]] }
+                                }
                                 commands={
                                     [
                                         {
