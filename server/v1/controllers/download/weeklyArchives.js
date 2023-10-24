@@ -171,7 +171,7 @@ export const weeklyArchives = async (killPool = false) => {
             try {
                 fs.unlinkSync(`${config.UPLOAD_DIR}/weekly/${caselist.name}/${caselist.name}-weekly-${date}.zip`);
             } catch (err) {
-                debugLogger.info(`Failed to local weekly archive for ${caselist.name}: ${err}`);
+                debugLogger.info(`Failed to delete local weekly archive for ${caselist.name}: ${err}`);
             }
         }
     }
