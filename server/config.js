@@ -30,6 +30,8 @@ const config = {
     TABROOM_API_URL: 'http://localhost:10011/v1', // No trailing slash
     TABROOM_CASELIST_KEY: 'caselist-key',
     S3_BUCKET: 'caselist-files',
+    S3_ENDPOINT: 's3.us-east-005.backblazeb2.com',
+    S3_REGION: 'us-east-005',
     AWS_ACCESS_KEY_ID: 'aws-access-key',
     AWS_SECRET_ACCESS_KEY: 'aws-secret-key',
     UPLOAD_DIR: `${cwd()}/uploads`, // No trailing slash

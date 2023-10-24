@@ -6,7 +6,7 @@
 import fs from 'fs';
 import cp from 'child_process';
 import SQL from 'sql-template-strings';
-import AWS from 'aws-sdk';
+import { S3Client, PutObjectCommand, ListObjectsV2Command, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import { pool, query } from '../../helpers/mysql';
 import config from '../../../config';
 import { debugLogger } from '../../helpers/logger';
@@ -14,7 +14,11 @@ import { debugLogger } from '../../helpers/logger';
 export const weeklyArchives = async (killPool = false) => {
     debugLogger.info('Starting weekly open source archive...');
 
-    const s3 = new AWS.S3();
+    const client = new S3Client({
+        endpoint: `https://${config.S3_ENDPOINT}`,
+        region: config.S3_REGION,
+    });
+
     const date = new Date().toISOString().slice(0, 19).split('T')[0];
 
     const caselists = await query(SQL`
@@ -42,6 +46,8 @@ export const weeklyArchives = async (killPool = false) => {
         let files = await query(sql);
         debugLogger.info(`Found ${files.length} open source files for ${caselist.name}...`);
 
+        let command;
+
         if (files.length > 0) {
             files = files.map(f => `./${f.opensource}`);
 
@@ -68,11 +74,12 @@ export const weeklyArchives = async (killPool = false) => {
             }
 
             try {
-                await s3.putObject({
+                command = new PutObjectCommand({
                     Bucket: config.S3_BUCKET,
                     Key: `weekly/${caselist.name}/${caselist.name}-all-${date}.zip`,
                     Body: await fs.promises.readFile(`${config.UPLOAD_DIR}/weekly/${caselist.name}/${caselist.name}-all-${date}.zip`),
-                }).promise();
+                });
+                await client.send(command);
             } catch (err) {
                 debugLogger.info(`Failed to upload to S3 for ${caselist.name}: ${err}`);
             }
@@ -81,6 +88,31 @@ export const weeklyArchives = async (killPool = false) => {
                 fs.unlinkSync(`${config.UPLOAD_DIR}/weekly/${caselist.name}/${caselist.name}-all-${date}.zip`);
             } catch (err) {
                 debugLogger.info(`Failed to delete local archive for ${caselist.name}: ${err}`);
+            }
+
+            try {
+                // Delete prior full archives for this caselist
+                command = new ListObjectsV2Command({
+                    Bucket: config.S3_BUCKET,
+                    Prefix: `weekly/${caselist.name}`,
+                });
+                const data = await client.send(command);
+
+                const filelist = data.Contents
+                .filter(f => f.Key !== `weekly/${caselist.name}/${caselist.name}-all-${date}.zip`)
+                .filter(f => f.Key !== `weekly/${caselist.name}`)
+                .filter(f => f.Key.includes('-all-'))
+                .filter(f => f.Key.slice(-4) === '.zip');
+
+                filelist.forEach(async (f) => {
+                    command = new DeleteObjectCommand({
+                        Bucket: config.S3_BUCKET,
+                        Key: f.Key,
+                    });
+                    await client.send(command);
+                });
+            } catch (err) {
+                debugLogger.info(`Failed to delete prior S3 archives for ${caselist.name}: ${err}`);
             }
         }
 
@@ -126,11 +158,12 @@ export const weeklyArchives = async (killPool = false) => {
             }
 
             try {
-                await s3.putObject({
+                command = new PutObjectCommand({
                     Bucket: config.S3_BUCKET,
-                    Key: `weekly/${caselist.name}/${caselist.name}-weekly-${date}.zip`,
+                    Key: `weekly/${caselist.name}/${caselist.name}-all-${date}.zip`,
                     Body: await fs.promises.readFile(`${config.UPLOAD_DIR}/weekly/${caselist.name}/${caselist.name}-weekly-${date}.zip`),
-                }).promise();
+                });
+                await client.send(command);
             } catch (err) {
                 debugLogger.info(`Failed to upload weekly to S3 for ${caselist.name}: ${err}`);
             }

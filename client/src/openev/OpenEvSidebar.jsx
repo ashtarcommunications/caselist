@@ -49,7 +49,7 @@ const Sidebar = () => {
     tags = [...new Set(tags)].sort();
 
     const years = [];
-    for (let i = startOfYear; i >= 2010; i--) {
+    for (let i = startOfYear; i >= 2013; i--) {
         years.push(i);
     }
 
@@ -111,7 +111,7 @@ const Sidebar = () => {
                             <li>
                                 <Link to={`/openev/${y}`}>{y} Open Ev</Link>
                                 <span> | </span>
-                                <a href={`https://s3.amazonaws.com/openev/${y}OpenEv.zip`} target="_blank" rel="noopener noreferrer">
+                                <a href={`https://caselist-files.s3.us-east-005.backblazeb2.com/openev/${y}OpenEv.zip`} target="_blank" rel="noopener noreferrer">
                                     <FontAwesomeIcon
                                         className={styles.download}
                                         icon={faFileDownload}

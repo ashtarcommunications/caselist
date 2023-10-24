@@ -1,11 +1,17 @@
 import { assert } from 'chai';
 import request from 'supertest';
-import AWS from 'aws-sdk-mock';
+import { S3Client, ListObjectsV2Command } from '@aws-sdk/client-s3';
+import { mockClient } from 'aws-sdk-client-mock';
 import server from '../../../index';
 
 describe('GET /v1/caselists/{caselist}/downloads', () => {
-    beforeEach(async () => {
-        AWS.mock('S3', 'listObjectsV2', { Contents: [{ Key: 'weekly/testcaselist/all.zip' }, { Key: 'weekly/testcaselist/weekly.zip' }] });
+    let s3Mock;
+
+    beforeAll(async () => {
+        s3Mock = mockClient(S3Client);
+        s3Mock.on(ListObjectsV2Command).resolves({
+            Contents: [{ Key: 'weekly/testcaselist/all.zip' }, { Key: 'weekly/testcaselist/weekly.zip' }],
+        });
     });
 
     it('should return a list of bulk downloads for a caselist', async () => {
@@ -29,7 +35,8 @@ describe('GET /v1/caselists/{caselist}/downloads', () => {
             .expect(401);
     });
 
-    afterEach(async () => {
-        AWS.restore('S3');
+    afterAll(async () => {
+        s3Mock.reset();
+        s3Mock.restore();
     });
 });
