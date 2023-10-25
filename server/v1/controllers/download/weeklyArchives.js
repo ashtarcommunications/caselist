@@ -80,6 +80,7 @@ export const weeklyArchives = async (killPool = false) => {
                     Body: await fs.promises.readFile(`${config.UPLOAD_DIR}/weekly/${caselist.name}/${caselist.name}-all-${date}.zip`),
                 });
                 await client.send(command);
+                debugLogger.info(`Uploaded full archive to S3 for ${caselist.name}`);
             } catch (err) {
                 debugLogger.info(`Failed to upload to S3 for ${caselist.name}: ${err}`);
             }
@@ -111,6 +112,7 @@ export const weeklyArchives = async (killPool = false) => {
                     });
                     await client.send(command);
                 });
+                debugLogger.info(`Deleted prior full archives on S3 for ${caselist.name}`);
             } catch (err) {
                 debugLogger.info(`Failed to delete prior S3 archives for ${caselist.name}: ${err}`);
             }
@@ -160,10 +162,11 @@ export const weeklyArchives = async (killPool = false) => {
             try {
                 command = new PutObjectCommand({
                     Bucket: config.S3_BUCKET,
-                    Key: `weekly/${caselist.name}/${caselist.name}-all-${date}.zip`,
+                    Key: `weekly/${caselist.name}/${caselist.name}-weekly-${date}.zip`,
                     Body: await fs.promises.readFile(`${config.UPLOAD_DIR}/weekly/${caselist.name}/${caselist.name}-weekly-${date}.zip`),
                 });
                 await client.send(command);
+                debugLogger.info(`Uploaded weekly archive to S3 for ${caselist.name}`);
             } catch (err) {
                 debugLogger.info(`Failed to upload weekly to S3 for ${caselist.name}: ${err}`);
             }
