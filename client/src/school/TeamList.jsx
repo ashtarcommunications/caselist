@@ -112,14 +112,15 @@ const TeamList = () => {
             accessor: (row) => row,
             className: styles.center,
             Cell: (row) => (
-                auth.user?.trusted && !caselistData.archived &&
-                <FontAwesomeIcon
-                    className={styles.trash}
-                    icon={faTrash}
-                    data-testid="trash"
-                    data-name={row.value?.name}
-                    onClick={e => handleDeleteTeamConfirm(e)}
-                />
+                auth.user?.trusted && !caselistData.archived ?
+                    <FontAwesomeIcon
+                        className={styles.trash}
+                        icon={faTrash}
+                        data-testid="trash"
+                        data-name={row.value?.name}
+                        onClick={e => handleDeleteTeamConfirm(e)}
+                    />
+                : null
             ),
         },
     ], [isMobile, caselist, school, handleDeleteTeamConfirm, caselistData]);

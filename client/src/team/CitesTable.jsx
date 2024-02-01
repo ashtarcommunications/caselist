@@ -137,15 +137,16 @@ const CitesTable = ({
                 accessor: (row) => row,
                 className: styles.center,
                 Cell: (row) => (
-                    auth.user?.trusted && !archived &&
-                    <FontAwesomeIcon
-                        icon={faTrash}
-                        id={row.row?.original?.cite_id}
-                        onClick={e => handleDeleteCiteConfirm(e)}
-                        className={styles.trash}
-                        data-testid="trash-cite"
-                        title="Delete cites"
-                    />
+                    auth.user?.trusted && !archived ?
+                        <FontAwesomeIcon
+                            icon={faTrash}
+                            id={row.row?.original?.cite_id}
+                            onClick={e => handleDeleteCiteConfirm(e)}
+                            className={styles.trash}
+                            data-testid="trash-cite"
+                            title="Delete cites"
+                        />
+                    : null
                 ),
             },
         ];

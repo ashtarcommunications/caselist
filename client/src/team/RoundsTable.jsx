@@ -162,25 +162,26 @@ const RoundsTable = ({
             accessor: (row) => row,
             className: styles.center,
             Cell: (row) => (
-                auth.user?.trusted && !archived &&
-                <>
-                    <Link to={`/${caselist}/${school}/${team}/edit/${row.row?.original?.round_id}`}>
+                auth.user?.trusted && !archived ?
+                    <>
+                        <Link to={`/${caselist}/${school}/${team}/edit/${row.row?.original?.round_id}`}>
+                            <FontAwesomeIcon
+                                className={styles.edit}
+                                data-testid="edit"
+                                title="Edit round"
+                                icon={faEdit}
+                            />
+                        </Link>
                         <FontAwesomeIcon
-                            className={styles.edit}
-                            data-testid="edit"
-                            title="Edit round"
-                            icon={faEdit}
+                            className={styles.trash}
+                            data-testid="trash-round"
+                            title="Delete round"
+                            icon={faTrash}
+                            id={row.row?.original?.round_id}
+                            onClick={e => handleDeleteRoundConfirm(e)}
                         />
-                    </Link>
-                    <FontAwesomeIcon
-                        className={styles.trash}
-                        data-testid="trash-round"
-                        title="Delete round"
-                        icon={faTrash}
-                        id={row.row?.original?.round_id}
-                        onClick={e => handleDeleteRoundConfirm(e)}
-                    />
-                </>
+                    </>
+                : null
             ),
         },
     ], [
