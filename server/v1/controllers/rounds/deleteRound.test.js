@@ -91,6 +91,15 @@ describe('DELETE /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{
             .expect(401);
     });
 
+    it('should return a 401 for an untrusted user', async () => {
+        await request(server)
+            .delete(`/v1/caselists/testcaselist/schools/testschool/teams/testteam/rounds/1`)
+            .set('Accept', 'application/json')
+            .set('Cookie', ['caselist_token=untrusted'])
+            .expect('Content-Type', /json/)
+            .expect(401);
+    });
+
     afterEach(async () => {
         try {
             let files = await fs.promises.readdir(config.UPLOAD_DIR);

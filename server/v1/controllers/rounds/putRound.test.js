@@ -170,6 +170,26 @@ describe('PUT /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{rou
             .expect(401);
     });
 
+    it('should return a 401 for an untrusted user', async () => {
+        const round = {
+            side: 'N',
+            tournament: 'Test Update Round',
+            round: '2',
+            opponent: 'Update',
+            judge: 'Update',
+            report: 'Update',
+            opensource: null,
+            video: 'Update',
+        };
+        await request(server)
+            .put(`/v1/caselists/testcaselist/schools/testschool/teams/testteam/rounds/1`)
+            .set('Accept', 'application/json')
+            .set('Cookie', ['caselist_token=untrusted'])
+            .send(round)
+            .expect('Content-Type', /json/)
+            .expect(401);
+    });
+
     afterEach(async () => {
         try {
             await query(SQL`

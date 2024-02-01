@@ -5,6 +5,7 @@ import { vi } from 'vitest';
 import { wrappedRender as render, screen, fireEvent, waitFor } from '../setupTests';
 // eslint-disable-next-line import/named
 import { store } from '../helpers/store';
+import { auth } from '../helpers/auth';
 import { deleteTeam } from '../helpers/api';
 
 import TeamList from './TeamList';
@@ -49,6 +50,15 @@ describe('TeamList', () => {
         render(<TeamList />);
         await waitFor(() => assert.isOk(screen.queryAllByText('No caselistData'), 'Error message exists'));
         store.caselistData = defaultCaselistData;
+    });
+
+    it('Does not render trash icons without a trusted user', async () => {
+        auth.user.trusted = false;
+        render(<TeamList />);
+        await waitFor(() => assert.strictEqual(store.fetchTeams.mock.calls.length, 1, 'Fetched teams'));
+
+        assert.isNotOk(screen.queryByTestId('trash'), 'No delete icon');
+        auth.user.trusted = true;
     });
 
     afterEach(() => {

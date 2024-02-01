@@ -24,7 +24,7 @@ const postLogin = {
 
         let user;
         if (process.env.NODE_ENV !== 'production') {
-            user = { person_id: 1, name: 'Test User' };
+            user = { person_id: 1, name: 'Test User', trusted: true };
         } else {
             try {
                 const url = `${config.TABROOM_API_URL}/login`;
@@ -44,9 +44,9 @@ const postLogin = {
         const hash = crypto.createHash('sha256').update(nonce).digest('hex');
 
         await query(SQL`
-            INSERT INTO users (user_id, email, display_name)
-            VALUES (${user.person_id}, ${username}, ${user.name})
-            ON DUPLICATE KEY UPDATE email=${username}, display_name=${user.name}
+            INSERT INTO users (user_id, email, display_name, trusted)
+            VALUES (${user.person_id}, ${username}, ${user.name}, ${user.trusted ? 1 : 0})
+            ON DUPLICATE KEY UPDATE email=${username}, display_name=${user.name}, trusted=${user.trusted ? 1 : 0}
         `);
 
         await query(SQL`
@@ -54,25 +54,41 @@ const postLogin = {
             VALUES (${hash}, ${user.person_id}, ${req.ip}, DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 2 WEEK))
         `);
 
-        // Expire cookies in 2 weeks if "remember me" is checked, otherwise default to session cookie
+        // Expire cookies in 2 weeks if "remember me" is checked and account is trusted,
+        // otherwise default to session cookie
         // Express sets maxAge in milliseconds, not seconds
         res.cookie(
             'caselist_token',
             nonce,
             {
-                maxAge: remember ? (1000 * 60 * 60 * 24 * 14) : undefined,
+                maxAge: remember && user.trusted ? (1000 * 60 * 60 * 24 * 14) : undefined,
                 httpOnly: false,
                 path: '/',
                 sameSite: 'Lax',
                 domain: config.COOKIE_DOMAIN,
-            });
+            }
+        );
+
+        if (user.trusted) {
+            res.cookie(
+                'caselist_trusted',
+                true,
+                {
+                    maxAge: remember && user.trusted ? (1000 * 60 * 60 * 24 * 14) : undefined,
+                    httpOnly: false,
+                    path: '/',
+                    sameSite: 'Lax',
+                    domain: config.COOKIE_DOMAIN,
+                }
+            );
+        }
 
         if (config.ADMINS?.includes(parseInt(user.uidNumber))) {
             res.cookie(
                 'caselist_admin',
                 true,
                 {
-                    maxAge: remember ? (1000 * 60 * 60 * 24 * 14) : undefined,
+                    maxAge: remember && user.trusted ? (1000 * 60 * 60 * 24 * 14) : undefined,
                     httpOnly: false,
                     path: '/',
                     sameSite: 'Lax',
@@ -83,7 +99,13 @@ const postLogin = {
         let expires = new Date(Date.now() + (1000 * 60 * 60 * 24 * 14));
         expires = expires.toISOString();
 
-        return res.status(201).json({ message: 'Successfully logged in', token: nonce, expires, admin: config.ADMINS?.includes(parseInt(user.person_id)) });
+        return res.status(201).json({
+            message: 'Successfully logged in',
+            token: nonce,
+            expires,
+            trusted: user.trusted,
+            admin: config.ADMINS?.includes(parseInt(user.person_id)),
+        });
     },
     'x-express-openapi-additional-middleware': [loginLimiter],
 };

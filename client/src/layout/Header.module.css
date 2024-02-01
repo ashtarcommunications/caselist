@@ -55,3 +55,14 @@
 .mobile .menu ul li {
     text-decoration: underline;
 }
+
+.untrusted {
+    color: var(--orange);
+    cursor: pointer;
+    margin: 0px 5px;
+}
+
+.untrusted a {
+    color: var(--orange);
+    font-weight: bold;
+}

@@ -42,17 +42,19 @@ const testFixtures = async () => {
     `);
 
     await query(SQL`
-        INSERT INTO users (user_id, email, display_name) VALUES
-            (1, 'test@test.com', 'Test User'),
-            (2, 'user@test.com', 'Non-Admin');
+        INSERT INTO users (user_id, email, display_name, trusted) VALUES
+            (1, 'test@test.com', 'Test User', 1),
+            (2, 'user@test.com', 'Non-Admin', 1),
+            (3, 'untrusted@test.com', 'Untrusted', 0);
 
     `);
 
-    // token = SHA256 hash of 'test' (1) and 'user' (2)
+    // token = SHA256 hash of 'test' (1), 'user' (2), and 'untrusted' (3)
     await query(SQL`
         INSERT INTO sessions (session_id, token, user_id, expires_at) VALUES
             (1, '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 1, DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 1 DAY)),
-            (2, '04f8996da763b7a969b1028ee3007569eaf3a635486ddab211d512c85b9df8fb', 2, DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 1 DAY));
+            (2, '04f8996da763b7a969b1028ee3007569eaf3a635486ddab211d512c85b9df8fb', 2, DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 1 DAY)),
+            (3, '6353de988bb15f611bd2eb9ca3a62eb2aeda604e2fdd570802f5c15404c073e3', 3, DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 1 DAY));
     `);
 };
 

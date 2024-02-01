@@ -42,4 +42,18 @@ describe('POST /v1/tabroom/link', () => {
             .expect('Content-Type', /json/)
             .expect(401);
     });
+
+    it('should return a 401 for an untrusted user', async () => {
+        const body = {
+            slug: '/testcaselist/test',
+        };
+
+        await request(server)
+            .post(`/v1/tabroom/link`)
+            .set('Accept', 'application/json')
+            .set('Cookie', ['caselist_token=untrusted'])
+            .send(body)
+            .expect('Content-Type', /json/)
+            .expect(401);
+    });
 });

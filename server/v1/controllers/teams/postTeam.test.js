@@ -165,6 +165,21 @@ describe('POST /v1/caselists/{caselist}/schools/{school}/teams', () => {
             .expect(401);
     });
 
+    it('should return a 401 for an untrusted user', async () => {
+        const team = {
+            debater1_first: 'Test',
+            debater1_last: 'Test',
+        };
+
+        await request(server)
+            .post(`/v1/caselists/testcaselist/schools/testschool/teams`)
+            .set('Accept', 'application/json')
+            .set('Cookie', ['caselist_token=untrusted'])
+            .send(team)
+            .expect('Content-Type', /json/)
+            .expect(401);
+    });
+
     afterEach(async () => {
         await query(SQL`
             UPDATE caselists SET event = 'cx', team_size = 2 WHERE caselist_id = 1

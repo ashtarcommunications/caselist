@@ -65,6 +65,15 @@ describe('DELETE /v1/openev/{openev_id}', () => {
             .expect(401);
     });
 
+    it('should return a 401 for an untrusted users', async () => {
+        await request(server)
+            .delete(`/v1/openev/1`)
+            .set('Accept', 'application/json')
+            .set('Cookie', ['caselist_token=untrusted'])
+            .expect('Content-Type', /json/)
+            .expect(401);
+    });
+
     it('should return a 401 without a cookie', async () => {
         await request(server)
             .delete(`/v1/openev/1`)

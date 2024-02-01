@@ -124,6 +124,27 @@ describe('POST /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds', (
             .expect(401);
     });
 
+    it('should return a 401 for an untrusted user', async () => {
+        const round = {
+            side: 'A',
+            tournament: 'Test Post Round',
+            round: '1',
+            opponent: 'Test',
+            judge: 'Test',
+            report: 'Test',
+            opensource: 'AAAA',
+            filename: 'Test.docx',
+            video: 'Test',
+        };
+        await request(server)
+            .post(`/v1/caselists/testcaselist/schools/testschool/teams/testteam/rounds`)
+            .set('Accept', 'application/json')
+            .set('Cookie', ['caselist_token=untrusted'])
+            .send(round)
+            .expect('Content-Type', /json/)
+            .expect(401);
+    });
+
     afterEach(async () => {
         await query(SQL`
             DELETE FROM cites WHERE title = 'Test Post Round'

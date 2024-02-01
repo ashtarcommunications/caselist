@@ -4,6 +4,8 @@ import { vi } from 'vitest';
 
 import { wrappedRender as render, screen, fireEvent } from '../setupTests';
 
+import { auth } from '../helpers/auth';
+
 import RoundsTable from './RoundsTable';
 
 vi.mock('react-router-dom', async () => {
@@ -51,7 +53,26 @@ describe('RoundsTable', () => {
         assert.strictEqual(mockHandleDeleteRoundConfirm.mock.calls.length, 1, 'handleDeleteRoundConfirm called');
     });
 
-    it('should not render edit or delete icon for archived caselists', async () => {
+    it('Should not render edit or delete icons for untrusted users', async () => {
+        auth.user.trusted = false;
+        const mockHandleDeleteRoundConfirm = vi.fn();
+        const mockHandleToggleAll = vi.fn();
+        const mockHandleToggleReport = vi.fn();
+        render(
+            <RoundsTable
+                event="cx"
+                rounds={[{ round_id: 1, tournament: 'Test Tournament', side: 'A', round: '1', opponent: 'Test Opponent', judge: 'Test Judge', report: 'Test Report', opensource: '/test/', video: 'https://video.com' }]}
+                handleDeleteRoundConfirm={mockHandleDeleteRoundConfirm}
+                handleToggleAll={mockHandleToggleAll}
+                handleToggleReport={mockHandleToggleReport}
+            />
+        );
+        assert.isNotOk(screen.queryByTestId('edit'), 'No edit icon');
+        assert.isNotOk(screen.queryByTestId('trash-round'), 'No delete icon');
+        auth.user.trusted = true;
+    });
+
+    it('should not render edit or delete icons for archived caselists', async () => {
         const mockHandleDeleteRoundConfirm = vi.fn();
         const mockHandleToggleAll = vi.fn();
         const mockHandleToggleReport = vi.fn();

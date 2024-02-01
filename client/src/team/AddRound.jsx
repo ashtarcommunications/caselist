@@ -10,11 +10,14 @@ import { displaySide, roundName } from '@speechanddebate/nsda-js-utils';
 import { sortBy } from 'lodash';
 
 import { useStore } from '../helpers/store';
+import { useAuth } from '../helpers/auth';
+
 import { addRound, loadTabroomRounds } from '../helpers/api';
 import { useDeviceDetect } from '../helpers/mobile';
 import processFile from './processFile';
 
 import Error from '../layout/Error';
+import Untrusted from '../layout/Untrusted';
 
 import Breadcrumbs from '../layout/Breadcrumbs';
 import SideDropdown from './SideDropdown';
@@ -26,6 +29,7 @@ import CiteEditor from './CiteEditor';
 import styles from './AddRound.module.css';
 
 const AddRound = () => {
+    const auth = useAuth();
     const { caselist, school, team } = useParams();
     const navigate = useNavigate();
     const { isMobile } = useDeviceDetect();
@@ -192,6 +196,10 @@ const AddRound = () => {
 
     if (caselistData.message) {
         return <Error statusCode={caselistData.statusCode} message={caselistData.message} />;
+    }
+
+    if (!auth.user?.trusted) {
+        return <Untrusted />;
     }
 
     return (

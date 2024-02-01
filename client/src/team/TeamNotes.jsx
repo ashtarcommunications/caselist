@@ -8,10 +8,12 @@ import { toast } from 'react-toastify';
 
 import { updateTeam } from '../helpers/api';
 import { useDeviceDetect } from '../helpers/mobile';
+import { useAuth } from '../helpers/auth';
 
 import styles from './TeamNotes.module.css';
 
 const TeamNotes = ({ teamData }) => {
+    const auth = useAuth();
     const { caselist, school, team } = useParams();
     const { isMobile } = useDeviceDetect();
 
@@ -94,7 +96,7 @@ const TeamNotes = ({ teamData }) => {
                 }
 
                 {
-                    !fetching && isDirty &&
+                    auth.user?.trusted && !fetching && isDirty &&
                     <div className={styles['notes-buttons']}>
                         <button type="submit" className={`pure-button ${styles.save}`}>
                             Save

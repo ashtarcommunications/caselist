@@ -8,6 +8,8 @@ import moment from 'moment';
 import { roundName, displaySide } from '@speechanddebate/nsda-js-utils';
 
 import { useDeviceDetect } from '../helpers/mobile';
+import { useAuth } from '../helpers/auth';
+
 import Table from '../tables/Table';
 
 import styles from './CitesTable.module.css';
@@ -67,6 +69,7 @@ const CitesTable = ({
     handleDeleteCiteConfirm,
     handleToggleCites,
 }) => {
+    const auth = useAuth();
     const { isMobile } = useDeviceDetect();
 
     const handleCopyCites = useCallback(async (id) => {
@@ -134,7 +137,7 @@ const CitesTable = ({
                 accessor: (row) => row,
                 className: styles.center,
                 Cell: (row) => (
-                    !archived &&
+                    auth.user?.trusted && !archived &&
                     <FontAwesomeIcon
                         icon={faTrash}
                         id={row.row?.original?.cite_id}

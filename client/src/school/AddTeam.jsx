@@ -8,16 +8,19 @@ import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { sortBy } from 'lodash';
 
 import { useStore } from '../helpers/store';
+import { useAuth } from '../helpers/auth';
 import { addTeam, loadTabroomStudents } from '../helpers/api';
 import { useDeviceDetect } from '../helpers/mobile';
 import { alphanumericDash } from '../helpers/common';
 import ConfirmButton from '../helpers/ConfirmButton';
 import Error from '../layout/Error';
+import Untrusted from '../layout/Untrusted';
 
 import 'react-widgets/styles.css';
 import styles from './AddTeam.module.css';
 
 const AddTeam = () => {
+    const auth = useAuth();
     const { caselist, school } = useParams();
     const { caselistData, teams, fetchTeams } = useStore();
     const { isMobile } = useDeviceDetect();
@@ -143,6 +146,10 @@ const AddTeam = () => {
                 message={caselistData.message || teams.message}
             />
         );
+    }
+
+    if (!auth.user?.trusted) {
+        return <Untrusted />;
     }
 
     return (

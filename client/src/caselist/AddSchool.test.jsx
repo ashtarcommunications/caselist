@@ -5,6 +5,7 @@ import { wrappedRender as render, screen, fireEvent, waitFor } from '../setupTes
 import { loadTabroomChapters, addSchool } from '../helpers/api';
 // eslint-disable-next-line import/named
 import { store } from '../helpers/store';
+import { auth } from '../helpers/auth';
 
 import AddSchool from './AddSchool';
 
@@ -62,6 +63,13 @@ describe('AddSchool', () => {
         render(<AddSchool />);
         await waitFor(() => assert.isOk(screen.queryAllByText('No caselistData'), 'Error message exists'));
         store.caselistData = defaultCaselistData;
+    });
+
+    it('Renders an untrusted message without a trusted user', async () => {
+        auth.user.trusted = false;
+        render(<AddSchool />);
+        await waitFor(() => assert.isOk(screen.queryAllByText('Account Untrusted'), 'Untrusted message exists'));
+        auth.user.trusted = true;
     });
 
     it('Handles failure to fetch Tabroom chapters', async () => {

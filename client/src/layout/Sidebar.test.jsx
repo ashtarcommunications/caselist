@@ -5,6 +5,7 @@ import { vi } from 'vitest';
 import { wrappedRender as render, screen, fireEvent } from '../setupTests';
 // eslint-disable-next-line import/named
 import { store } from '../helpers/store';
+import { auth } from '../helpers/auth';
 import Sidebar from './Sidebar';
 
 vi.mock('react-router-dom', async () => {
@@ -29,6 +30,14 @@ describe('Sidebar', () => {
         assert.isOk(screen.queryByText(/Create/), 'Add button exists');
         assert.isOk(screen.queryByText(/Recently Modified/), 'Recent link exists');
         assert.isOk(screen.queryByText(/Bulk Downloads/), 'Downloads link exists');
+    });
+
+    it('Should not render a create button for an untrusted user', async () => {
+        auth.user.trusted = false;
+        render(<Sidebar />);
+
+        assert.isNotOk(screen.queryByText(/Create/), 'Add button does not exist');
+        auth.user.trusted = true;
     });
 
     it('Returns false without caselist data', async () => {

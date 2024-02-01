@@ -7,12 +7,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import { useDeviceDetect } from '../helpers/mobile';
+import { useAuth } from '../helpers/auth';
+
+import Untrusted from '../layout/Untrusted';
 
 import CiteEditor from './CiteEditor';
 
 import styles from './AddCite.module.css';
 
 const AddCite = ({ rounds, event, handleAddCite }) => {
+    const auth = useAuth();
     const { school, team } = useParams();
     const [showForm, setShowForm] = useState();
     const { isMobile } = useDeviceDetect();
@@ -51,6 +55,10 @@ const AddCite = ({ rounds, event, handleAddCite }) => {
             console.log(err);
         }
     };
+
+    if (!auth.user?.trusted) {
+        return <Untrusted />;
+    }
 
     return (
         <div>

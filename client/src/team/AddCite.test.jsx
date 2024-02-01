@@ -4,6 +4,8 @@ import { vi } from 'vitest';
 
 import { wrappedRender as render, screen, fireEvent, waitFor } from '../setupTests';
 
+import { auth } from '../helpers/auth';
+
 import AddCite from './AddCite';
 
 vi.mock('react-router-dom', async () => {
@@ -44,5 +46,13 @@ describe('AddCite', () => {
 
         await waitFor(() => assert.strictEqual(mockHandleAddCite.mock.calls.length, 1, 'handleAddCite was called'));
         await waitFor(() => assert.isOk(screen.queryByText(/Add Cite/), 'Button exists'));
+    });
+
+    it('Renders an untrusted message without a trusted user', async () => {
+        auth.user.trusted = false;
+        const mockHandleAddCite = vi.fn();
+        render(<AddCite event="cx" handleAddCite={mockHandleAddCite} rounds={[{ round_id: 1, tournament: 'All Tournaments', round: 'All', side: 'A' }]} />);
+        await waitFor(() => assert.isOk(screen.queryAllByText('Account Untrusted'), 'Untrusted message exists'));
+        auth.user.trusted = true;
     });
 });

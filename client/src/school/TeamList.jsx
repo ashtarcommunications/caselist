@@ -8,6 +8,7 @@ import { affName, negName } from '@speechanddebate/nsda-js-utils';
 
 import { deleteTeam } from '../helpers/api';
 import { useStore } from '../helpers/store';
+import { useAuth } from '../helpers/auth';
 import { useDeviceDetect } from '../helpers/mobile';
 
 import Breadcrumbs from '../layout/Breadcrumbs';
@@ -20,6 +21,7 @@ import ConfirmButton from '../helpers/ConfirmButton';
 import styles from './TeamList.module.css';
 
 const TeamList = () => {
+    const auth = useAuth();
     const { caselist, school } = useParams();
     const { caselistData, schoolData, teams, fetchTeams } = useStore();
     const [fetching, setFetching] = useState(false);
@@ -110,7 +112,7 @@ const TeamList = () => {
             accessor: (row) => row,
             className: styles.center,
             Cell: (row) => (
-                !caselistData.archived &&
+                auth.user?.trusted && !caselistData.archived &&
                 <FontAwesomeIcon
                     className={styles.trash}
                     icon={faTrash}

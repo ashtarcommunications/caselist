@@ -34,4 +34,12 @@ describe('Header', () => {
         await waitFor(() => assert.isNotOk(screen.queryByText('Logout'), 'No logout link'));
         auth.user.loggedIn = true;
     });
+
+    it('Renders a warning for untrusted users', async () => {
+        auth.user.trusted = false;
+        render(<Header />);
+
+        await waitFor(() => assert.isOk(screen.queryByText('Account Untrusted'), 'Warning exists'));
+        auth.user.trusted = true;
+    });
 });

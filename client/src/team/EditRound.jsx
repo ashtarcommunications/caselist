@@ -7,10 +7,12 @@ import { toast } from 'react-toastify';
 import { displaySide, roundName } from '@speechanddebate/nsda-js-utils';
 
 import { useStore } from '../helpers/store';
+import { useAuth } from '../helpers/auth';
 import { updateRound, loadRound } from '../helpers/api';
 import { useDeviceDetect } from '../helpers/mobile';
 
 import Error from '../layout/Error';
+import Untrusted from '../layout/Untrusted';
 import Loader from '../loader/Loader';
 
 import Breadcrumbs from '../layout/Breadcrumbs';
@@ -20,6 +22,7 @@ import RoundNumberDropdown from './RoundNumberDropdown';
 import styles from './EditRound.module.css';
 
 const EditRound = () => {
+    const auth = useAuth();
     const { caselist, school, team, round } = useParams();
     const navigate = useNavigate();
     const { isMobile } = useDeviceDetect();
@@ -103,6 +106,9 @@ const EditRound = () => {
     if (caselistData.archived) { return <Error message="This caselist is archived, no modifications allowed." />; }
     if (caselistData.message) {
         return <Error statusCode={caselistData.statusCode} message={caselistData.message} />;
+    }
+    if (!auth.user?.trusted) {
+        return <Untrusted />;
     }
 
     return (

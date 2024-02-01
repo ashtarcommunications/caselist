@@ -47,6 +47,24 @@ describe('POST /v1/openev', () => {
             .expect(400);
     });
 
+    it('should return a 401 for an untrusted user', async () => {
+        const body = {
+            file: 'AAAA',
+            filename: 'test.docx',
+            title: 'Test',
+            year: startOfYear,
+            camp: 'CNDI',
+            lab: 'Lab',
+        };
+        await request(server)
+            .post(`/v1/openev`)
+            .set('Accept', 'application/json')
+            .set('Cookie', ['caselist_token=untrusted'])
+            .send(body)
+            .expect('Content-Type', /json/)
+            .expect(401);
+    });
+
     it('should return a 401 with no authorization cookie', async () => {
         const body = {
             file: 'AAAA',

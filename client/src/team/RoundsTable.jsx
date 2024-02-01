@@ -7,6 +7,8 @@ import moment from 'moment';
 import { displaySide, roundName } from '@speechanddebate/nsda-js-utils';
 
 import { useDeviceDetect } from '../helpers/mobile';
+import { useAuth } from '../helpers/auth';
+
 import Table from '../tables/Table';
 import DownloadFile from '../helpers/DownloadFile';
 
@@ -22,6 +24,7 @@ const RoundsTable = ({
     handleToggleReport,
     allRoundsOpen = false,
 }) => {
+    const auth = useAuth();
     const { caselist, school, team } = useParams();
     const { isMobile } = useDeviceDetect();
 
@@ -159,7 +162,7 @@ const RoundsTable = ({
             accessor: (row) => row,
             className: styles.center,
             Cell: (row) => (
-                !archived &&
+                auth.user?.trusted && !archived &&
                 <>
                     <Link to={`/${caselist}/${school}/${team}/edit/${row.row?.original?.round_id}`}>
                         <FontAwesomeIcon

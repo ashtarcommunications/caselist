@@ -4,6 +4,8 @@ import { vi } from 'vitest';
 
 import { wrappedRender as render, screen, fireEvent } from '../setupTests';
 
+import { auth } from '../helpers/auth';
+
 import CitesTable from './CitesTable';
 
 describe('CitesTable', () => {
@@ -45,6 +47,21 @@ describe('CitesTable', () => {
             />
         );
         assert.isNotOk(view.firstChild, 'Renders nothing');
+    });
+
+    it('Should not render a delete icon for untrusted users', async () => {
+        auth.user.trusted = false;
+        const mockHandleDeleteCiteConfirm = vi.fn();
+        const mockHandleToggleCites = vi.fn();
+        render(
+            <CitesTable
+                cites={[{ cite_id: 1, title: 'Title', cites: 'Cites', tournament: 'Tournament', side: 'A', round: '1', opponent: 'Opponent', judge: 'Judge', citesopen: true }]}
+                handleDeleteCiteConfirm={mockHandleDeleteCiteConfirm}
+                handleToggleCites={mockHandleToggleCites}
+            />
+        );
+        assert.isNotOk(screen.queryByTestId('trash-cite'), 'No delete icon');
+        auth.user.trusted = true;
     });
 
     it('should not render a delete icon for archived caselists', async () => {

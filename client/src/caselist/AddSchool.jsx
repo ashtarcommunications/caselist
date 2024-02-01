@@ -5,15 +5,19 @@ import { Combobox } from 'react-widgets';
 import { toast } from 'react-toastify';
 import { sortBy } from 'lodash';
 
-import { useStore } from '../helpers/store.jsx';
+import { useStore } from '../helpers/store';
+import { useAuth } from '../helpers/auth';
 import { loadTabroomChapters, addSchool } from '../helpers/api';
 import { notTitleCase, alphanumericDash } from '../helpers/common';
+
 import Error from '../layout/Error';
+import Untrusted from '../layout/Untrusted';
 import StatesDropdown from './StatesDropdown';
 
 import styles from './AddSchool.module.css';
 
 const AddSchool = () => {
+    const auth = useAuth();
     const navigate = useNavigate();
     const { caselist } = useParams();
     const { caselistData, fetchSchools } = useStore();
@@ -76,6 +80,10 @@ const AddSchool = () => {
 
     if (caselistData.message) {
         return <Error statusCode={caselistData.statusCode} message={caselistData.message} />;
+    }
+
+    if (!auth.user?.trusted) {
+        return <Untrusted />;
     }
 
     return (

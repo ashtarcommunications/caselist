@@ -74,6 +74,18 @@ describe('PATCH /v1/caselists/{caselist}/schools/{school}/teams/{team}', () => {
             .expect(401);
     });
 
+    it('should return a 401 for an untrusted user', async () => {
+        const update = [{ notes: 'update' }];
+
+        await request(server)
+            .patch(`/v1/caselists/testcaselist/schools/testschool/teams/testteam`)
+            .set('Accept', 'application/json')
+            .set('Cookie', ['caselist_token=untrusted'])
+            .send(update)
+            .expect('Content-Type', /json/)
+            .expect(401);
+    });
+
     afterEach(async () => {
         await query(SQL`
             DELETE FROM teams_history WHERE team_id = 1

@@ -7,6 +7,7 @@ import { wrappedRender as render, screen, fireEvent, waitFor } from '../setupTes
 import { loadRound, updateRound } from '../helpers/api';
 // eslint-disable-next-line import/named
 import { store } from '../helpers/store';
+import { auth } from '../helpers/auth';
 
 import EditRound from './EditRound';
 
@@ -57,6 +58,13 @@ describe('EditRound', () => {
         const form = document.querySelector('form');
         fireEvent.submit(form);
         await waitFor(() => assert.isOk(screen.queryByText(/Failed to update round/), 'Failure notification exists'));
+    });
+
+    it('Renders an untrusted message without a trusted user', async () => {
+        auth.user.trusted = false;
+        render(<EditRound />);
+        await waitFor(() => assert.isOk(screen.queryAllByText('Account Untrusted'), 'Untrusted message exists'));
+        auth.user.trusted = true;
     });
 
     it('Renders an error message for an archived caselist', async () => {

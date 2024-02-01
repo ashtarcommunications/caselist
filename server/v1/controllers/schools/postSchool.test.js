@@ -87,6 +87,21 @@ describe('POST /v1/caselists/{caselist}/schools', () => {
             .expect(401);
     });
 
+    it('should return a 401 for an untrusted user', async () => {
+        const school = {
+            displayName: 'Test Post School',
+            state: 'CO',
+            chapter_id: 1,
+        };
+        await request(server)
+            .post(`/v1/caselists/testcaselist/schools`)
+            .set('Accept', 'application/json')
+            .set('Cookie', ['caselist_token=untrusted'])
+            .send(school)
+            .expect('Content-Type', /json/)
+            .expect(401);
+    });
+
     afterEach(async () => {
         await query(SQL`
             DELETE FROM schools WHERE display_name = 'Test Post School'

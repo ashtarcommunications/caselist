@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams, useLocation } from 'react-router-dom';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+
 import { useAuth } from '../helpers/auth';
 import { useStore } from '../helpers/store';
 import { useDeviceDetect } from '../helpers/mobile';
@@ -27,6 +30,10 @@ const Header = () => {
         }
     }, [caselistData.level, caselistData.event]);
 
+    let message = 'You must be a real student, judge, or coach on Tabroom to post on the caselist. ';
+    message += 'If you think this determination is in error, try waiting a few days and then log in again. ';
+    message += 'Until then, your account is in read-only mode, so you can browse, but not post.';
+
     return (
         <header className={`${styles.header} ${styles[className]} ${isMobile ? styles.mobile : ''}`}>
             <h1><Link to="/">openCaselist</Link></h1>
@@ -34,6 +41,18 @@ const Header = () => {
                 auth.user?.loggedIn &&
                 (caselist || location.pathname.includes('openev')) &&
                 <SearchForm />
+            }
+            {
+                auth.user?.loggedIn && !auth.user?.trusted &&
+                <div className={`pure-menu-item ${styles.untrusted}`} title={message}>
+                    <FontAwesomeIcon
+                        icon={faExclamationTriangle}
+                        title={message}
+                        className={styles.untrusted}
+                        data-testid="untrusted"
+                    />
+                    <Link to="/faq">Account Untrusted</Link>
+                </div>
             }
             <div className={`${styles.menu} pure-menu`}>
                 <ul>

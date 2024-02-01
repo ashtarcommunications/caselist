@@ -6,6 +6,7 @@ import { wrappedRender as render, screen, fireEvent, waitFor } from '../setupTes
 import { loadTabroomStudents, addTeam } from '../helpers/api';
 // eslint-disable-next-line import/named
 import { store } from '../helpers/store';
+import { auth } from '../helpers/auth';
 
 import AddTeam from './AddTeam';
 
@@ -72,6 +73,13 @@ describe('AddTeam', () => {
         button.disabled = false;
         fireEvent.click(button);
         await waitFor(() => assert.isOk(screen.queryByText(/Failed to add team/), 'Failure notification exists'));
+    });
+
+    it('Renders an untrusted message without a trusted user', async () => {
+        auth.user.trusted = false;
+        render(<AddTeam />);
+        await waitFor(() => assert.isOk(screen.queryAllByText('Account Untrusted'), 'Untrusted message exists'));
+        auth.user.trusted = true;
     });
 
     it('Adds an All Teams team', async () => {

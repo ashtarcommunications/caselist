@@ -55,6 +55,15 @@ describe('DELETE /v1/caselists/{caselist}/schools/{school}/teams/{team}/cites/{c
             .expect(401);
     });
 
+    it('should return a 401 for untrusted users', async () => {
+        await request(server)
+            .delete(`/v1/caselists/testcaselist/schools/testschool/teams/testteam/cites/1`)
+            .set('Accept', 'application/json')
+            .set('Cookie', ['caselist_token=untrusted'])
+            .expect('Content-Type', /json/)
+            .expect(401);
+    });
+
     afterEach(async () => {
         await query(SQL`
             DELETE FROM cites_history WHERE round_id = 1 AND title = 'Delete Test Cite'
