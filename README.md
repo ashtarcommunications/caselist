@@ -76,7 +76,7 @@ The Express app also runs a cron job using node-cron to add newly uploaded cites
 
 You can optionally rebuild the Solr index from scratch by setting the `REBUILD_SOLR` environment variable to true before starting the server. That option should be used sparingly and left off in normal production. There are also several other variables for Solr and Tika setup that need to point to the URL's where the search component is deployed.
 
-The `TABROOM_CASELIST_KEY` environment variable has to match the `CASELIST_KEY` on Tabroom servers for the Tabroom integrations to work.
+The `TABROOM_API_USER_ID`and `TABROOM_API_KEY` environment variables need valid credentials in the Tabroom DB, with person_setting values for api_key and with api_auth_caselist = 1
 
 The `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` variables must be set for weekly archive uploads to work. These are kicked off by node-cron at midnight on Tuesdays.
 

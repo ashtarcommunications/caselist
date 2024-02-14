@@ -1,4 +1,3 @@
-import crypto from 'crypto';
 import { fetch } from '@speechanddebate/nsda-js-utils';
 import SQL from 'sql-template-strings';
 import { query } from '../../helpers/mysql';
@@ -9,7 +8,7 @@ import { debugLogger } from '../../helpers/logger';
 const postTabroomLink = {
     POST: async (req, res) => {
         const url = `${config.TABROOM_API_URL}/caselist/link`;
-        const hash = crypto.createHash('sha256').update(config.TABROOM_CASELIST_KEY).digest('hex');
+        const base64 = Buffer.from(`${config.TABROOM_API_USER_ID}:${config.TABROOM_API_KEY}`).toString('base64');
 
         const caselist = req.body?.slug?.trim().split('/').filter(x => x !== '')[0];
         const event = await query(SQL`
@@ -28,11 +27,16 @@ const postTabroomLink = {
             person_id: parseInt(req.user_id),
             slug: req.body.slug,
             eventcode: eventCode,
-            caselist_key: hash,
         };
 
         try {
-            await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+            await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Basic ${base64}`,
+                },
+                body: JSON.stringify(body) });
         } catch (err) {
             debugLogger.error(`Failed to create Tabroom link to ${req.body.slug}: ${err}`);
             return res.status(500).json({ message: 'Failed to link to tabroom' });
