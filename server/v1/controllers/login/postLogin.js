@@ -22,13 +22,22 @@ const postLogin = {
         const password = req.body.password;
         const remember = req.body.remember;
 
+        const base64 = Buffer.from(`${config.TABROOM_API_USER_ID}:${config.TABROOM_API_KEY}`).toString('base64');
+
         let user;
         if (process.env.NODE_ENV !== 'production') {
             user = { person_id: 1, name: 'Test User', trusted: true };
         } else {
             try {
                 const url = `${config.TABROOM_API_URL}/login`;
-                const response = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, password }) });
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Basic ${base64}`,
+                    },
+                    body: JSON.stringify({ username, password }),
+                });
                 user = await response.json();
             } catch (err) {
                 debugLogger.error(`Error connecting to Tabroom: ${err}`);
