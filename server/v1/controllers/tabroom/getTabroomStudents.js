@@ -19,7 +19,7 @@ const getTabroomStudents = {
             students = await response.json();
             if (!Array.isArray(students)) { students = []; }
         } catch (err) {
-            debugLogger.error('Failed to retrieve Tabroom students');
+            debugLogger.error(`Failed to retrieve Tabroom students: ${err}`);
             students = [];
         }
 

@@ -29,7 +29,7 @@ const getTabroomRounds = {
             rounds = await response.json();
             if (!Array.isArray(rounds)) { rounds = []; }
         } catch (err) {
-            debugLogger.error('Failed to retrieve Tabroom rounds');
+            debugLogger.error(`Failed to retrieve Tabroom rounds: ${err}`);
             rounds = [];
         }
 
