@@ -27,7 +27,7 @@ const config = {
     DB_RETRY_DELAY: 100,
     COOKIE_DOMAIN: 'localhost',
     LDAP_URL: 'ldaps://localhost:6363',
-    TABROOM_API_URL: 'http://localhost:10011/v1/ext', // No trailing slash
+    TABROOM_API_URL: 'http://localhost:10011/v1', // No trailing slash
     TABROOM_API_USER_ID: 1,
     TABROOM_API_KEY: 'tabroom-api-key',
     S3_BUCKET: 'caselist-files',
@@ -47,7 +47,7 @@ const config = {
 if (process.env.NODE_ENV === 'production') {
     config.COOKIE_DOMAIN = 'opencaselist.com';
     config.LDAP_URL = 'ldaps://ldap.tabroom.com:636';
-    config.TABROOM_API_URL = 'https://www.tabroom.com/v1/ext';
+    config.TABROOM_API_URL = 'https://www.tabroom.com/v1';
 }
 
 // Override any config value if corresponding env var is set

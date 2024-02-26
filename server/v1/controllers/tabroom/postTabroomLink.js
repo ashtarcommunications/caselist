@@ -7,7 +7,7 @@ import { debugLogger } from '../../helpers/logger';
 
 const postTabroomLink = {
     POST: async (req, res) => {
-        const url = `${config.TABROOM_API_URL}/caselist/link`;
+        const url = `${config.TABROOM_API_URL}/ext/caselist/link`;
         const base64 = Buffer.from(`${config.TABROOM_API_USER_ID}:${config.TABROOM_API_KEY}`).toString('base64');
 
         const caselist = req.body?.slug?.trim().split('/').filter(x => x !== '')[0];

@@ -10,9 +10,9 @@ const getTabroomRounds = {
 
         // If no slug, default to the current user's rounds, since you're always allowed to look up your own
         if (req.query.slug) {
-            url += `/caselist/rounds?slug=${req.query.slug}`;
+            url += `/ext/caselist/rounds?slug=${req.query.slug}`;
         } else {
-            url += `/caselist/rounds?person_id=${req.user_id}`;
+            url += `/ext/caselist/rounds?person_id=${req.user_id}`;
         }
 
         if (req.query.current) {

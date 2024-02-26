@@ -5,7 +5,7 @@ import { debugLogger } from '../../helpers/logger';
 const getTabroomStudents = {
     GET: async (req, res) => {
         let url = `${config.TABROOM_API_URL}`;
-        url += `/caselist/students?person_id=${req.user_id}`;
+        url += `/ext/caselist/students?person_id=${req.user_id}`;
 
         const base64 = Buffer.from(`${config.TABROOM_API_USER_ID}:${config.TABROOM_API_KEY}`).toString('base64');
 
