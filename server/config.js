@@ -47,7 +47,7 @@ const config = {
 if (process.env.NODE_ENV === 'production') {
     config.COOKIE_DOMAIN = 'opencaselist.com';
     config.LDAP_URL = 'ldaps://ldap.tabroom.com:636';
-    config.TABROOM_API_URL = 'https://www.tabroom.com/v1';
+    config.TABROOM_API_URL = 'https://api.tabroom.com/v1';
 }
 
 // Override any config value if corresponding env var is set
