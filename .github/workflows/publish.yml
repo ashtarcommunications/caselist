@@ -11,6 +11,7 @@ on:
 env:
     CI: true
     SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+    HUSKY: 0
 
 jobs:
   build:
