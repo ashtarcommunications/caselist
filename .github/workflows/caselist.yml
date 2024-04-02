@@ -12,7 +12,6 @@ env:
     CI: true
     TZ: "America/Chicago"
     SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-    HUSKY: 0
 
 jobs:
   build-client:
