@@ -22,6 +22,7 @@ const postFile = {
             GMDI: 'George Mason',
             GDI: 'GDI',
             HDC: 'Harvard',
+            HOU: 'Houston',
             HSS: 'HSS',
             JDI: 'JDI',
             MGC: 'Mean Green',
