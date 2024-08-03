@@ -26,7 +26,7 @@ const postFile = {
             HSS: 'HSS',
             JDI: 'JDI',
             MGC: 'Mean Green',
-            UM7: 'Michigan 7',
+            UM7: 'Michigan',
             UMC: 'Michigan Classic',
             MNDI: 'MNDI',
             SDI: 'SDI',
