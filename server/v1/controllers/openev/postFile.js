@@ -9,9 +9,10 @@ import { debugLogger } from '../../helpers/logger';
 const postFile = {
     POST: async (req, res) => {
         const campDisplayName = {
-            BDPW: 'Baylor',
-            CNDI: 'CNDI',
             BDL: 'BDL',
+            BDPW: 'Baylor',
+            CDC: 'Classic Debate Camp',
+            CNDI: 'CNDI',
             CDL: 'CDL',
             DBQ: 'Debate Boutique',
             DDI: 'DDI',
