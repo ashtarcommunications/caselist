@@ -1,9 +1,9 @@
 INSERT INTO caselists (caselist_id, name, display_name, year, event, level, team_size, archived) VALUES
-    (1001, 'ndtceda22', 'NDT/CEDA 2022-23', 2022, 'cx', 'college', 2, 0),
-    (1002, 'hspolicy22', 'HS Policy 2022-23', 2022, 'cx', 'hs', 2, 0),
-    (1003, 'hsld22', 'HS LD 2022-23', 2022, 'ld', 'hs', 1, 0),
-    (1004, 'hspf22', 'HS PF 2022-23', 2022, 'pf', 'hs', 2, 0),
-    (1005, 'nfald22', 'NFA LD 2022-23', 2022, 'ld', 'college', 1, 0);
+    (1001, 'ndtceda24', 'NDT/CEDA 2024-25', 2022, 'cx', 'college', 2, 0),
+    (1002, 'hspolicy24', 'HS Policy 2024-25', 2022, 'cx', 'hs', 2, 0),
+    (1003, 'hsld24', 'HS LD 2024-25', 2022, 'ld', 'hs', 1, 0),
+    (1004, 'hspf24', 'HS PF 2024-25', 2022, 'pf', 'hs', 2, 0),
+    (1005, 'nfald24', 'NFA LD 2024-25', 2022, 'ld', 'college', 1, 0);
 
 INSERT INTO schools (school_id, caselist_id, name, display_name, state, chapter_id) VALUES
     (1001, 1001, 'Northwestern', 'Northwestern', NULL, 1),

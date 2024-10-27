@@ -3,6 +3,7 @@ import { query } from '../../helpers/mysql';
 
 const getCaselists = {
     GET: async (req, res) => {
+        console.trace()
         let sql;
         if (req.query.archived) {
             sql = (SQL`SELECT * FROM caselists`);

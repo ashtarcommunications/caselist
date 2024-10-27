@@ -22,6 +22,8 @@ import postRound from '../controllers/rounds/postRound';
 import putRound from '../controllers/rounds/putRound';
 import deleteRound from '../controllers/rounds/deleteRound';
 
+import getDeletedRounds from '../controllers/rounds/getDeletedRounds';
+
 import getCites from '../controllers/cites/getCites';
 import postCite from '../controllers/cites/postCite';
 import deleteCite from '../controllers/cites/deleteCite';
@@ -58,6 +60,8 @@ export default [
     { path: '/caselists/{caselist}/schools/{school}/teams', module: { ...getTeams, ...postTeam } },
     { path: '/caselists/{caselist}/schools/{school}/teams/{team}', module: { ...getTeam, ...patchTeam, ...deleteTeam } },
     { path: '/caselists/{caselist}/schools/{school}/teams/{team}/rounds', module: { ...getRounds, ...postRound } },
+
+    { path: '/caselists/{caselist}/schools/{school}/teams/{team}/deletedRounds', module: { ...getDeletedRounds, } },
 
     { path: '/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{round}', module: { ...getRound, ...putRound, ...deleteRound } },
     { path: '/caselists/{caselist}/schools/{school}/teams/{team}/cites', module: { ...getCites, ...postCite } },

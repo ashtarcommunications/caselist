@@ -92,6 +92,10 @@ export const loadRounds = async (caselist, school, team, side) => {
     return fetchBase(`caselists/${caselist}/schools/${school}/teams/${team}/rounds?side=${side || ''}`);
 };
 
+export const loadDeletedRounds = async (caselist, school, team) => {
+    return fetchBase(`caselists/${caselist}/schools/${school}/teams/${team}/deletedRounds`);
+};
+
 export const addRound = async (caselist, school, team, round) => {
     return fetchBase(`caselists/${caselist}/schools/${school}/teams/${team}/rounds`, { method: 'POST' }, round);
 };

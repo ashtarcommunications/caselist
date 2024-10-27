@@ -7,7 +7,7 @@ import { Link, useParams } from 'react-router-dom';
 import { normalizeSide, roundName } from '@speechanddebate/nsda-js-utils';
 
 import { useStore } from '../helpers/store';
-import { loadTeam, loadRounds, deleteRound, loadCites, deleteCite, addCite, addTabroomLink } from '../helpers/api';
+import { loadTeam, loadRounds, loadDeletedRounds, deleteRound, loadCites, deleteCite, addCite, addTabroomLink } from '../helpers/api';
 import { useDeviceDetect } from '../helpers/mobile';
 
 import ConfirmButton from '../helpers/ConfirmButton';
@@ -29,6 +29,7 @@ const TeamRounds = () => {
     const [fetching, setFetching] = useState(false);
     const [teamData, setTeamData] = useState({});
     const [rounds, setRounds] = useState([]);
+    const [deletedRounds, setDeletedRounds] = useState([]);
     const [cites, setCites] = useState([]);
 
     const { isMobile } = useDeviceDetect();
@@ -57,6 +58,10 @@ const TeamRounds = () => {
                     : response;
                 setRounds(newRounds);
 
+                response = await loadDeletedRounds(caselist, school, team);
+                const newDeletedRounds = response;
+                setDeletedRounds(newDeletedRounds);
+                console.log('Updated deleted rounds ', newDeletedRounds);
                 response = await loadCites(caselist, school, team);
                 const newCites = side
                     ? response.filter(cite => newRounds.map(
@@ -247,6 +252,7 @@ const TeamRounds = () => {
         lastNames = null;
     }
 
+    console.log(deletedRounds);
     return (
         <div className={isMobile ? styles.mobile : undefined}>
             <Breadcrumbs />
@@ -294,6 +300,14 @@ const TeamRounds = () => {
                         Neg
                     </button>
                 </Link>
+                <Link to={`/${caselist}/${school}/${team}/EditLog`}>
+                    <button
+                        type="button"
+                        className={`pure-button ${styles.side} ${side === 'EditLog' ? styles['selected-side'] : undefined}`}
+                    >
+                        Edit Log (beta)
+                    </button>
+                </Link>
                 {
                     !caselistData.archived &&
                     <Link to={`/${caselist}/${school}/${team}/add`} className={styles['add-round']}>
@@ -304,15 +318,27 @@ const TeamRounds = () => {
                     </Link>
                 }
             </div>
-            <RoundsTable
-                event={caselistData.event}
-                archived={caselistData.archived}
-                rounds={rounds}
-                handleDeleteRoundConfirm={handleDeleteRoundConfirm}
-                handleToggleAll={handleToggleAll}
-                handleToggleReport={handleToggleReport}
-                allRoundsOpen={allRoundsOpen}
-            />
+            {
+                side === 'EditLog'
+                ?
+                    <div>
+                        {
+                            deletedRounds.length > 0 ?
+                                <p> temp: {JSON.stringify(deletedRounds)} </p> :
+                                <p>This partnership/debater does not have any deleted rounds.</p>
+                        }
+                    </div>
+                :
+                    <RoundsTable
+                        event={caselistData.event}
+                        archived={caselistData.archived}
+                        rounds={rounds}
+                        handleDeleteRoundConfirm={handleDeleteRoundConfirm}
+                        handleToggleAll={handleToggleAll}
+                        handleToggleReport={handleToggleReport}
+                        allRoundsOpen={allRoundsOpen}
+                    />
+            }
             {
                 !caselistData.archived && rounds.length > 0 &&
                 <AddCite rounds={rounds} event={caselistData.event} handleAddCite={handleAddCite} />

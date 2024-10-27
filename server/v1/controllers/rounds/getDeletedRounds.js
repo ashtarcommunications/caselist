@@ -1,17 +1,18 @@
 import SQL from 'sql-template-strings';
 import { query } from '../../helpers/mysql';
 
-const getRounds = {
+const getDeletedRounds = {
     GET: async (req, res) => {
         const sql = (SQL`
             SELECT R.*
-            FROM rounds R 
+            FROM rounds_history R 
             INNER JOIN teams T ON T.team_id = R.team_id
             INNER JOIN schools S ON S.school_id = T.school_id
             INNER JOIN caselists C ON S.caselist_id = C.caselist_id
             WHERE C.name = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${req.params.school})
             AND LOWER(T.name = ${req.params.team})
+            AND LOWER(R.event = 'delete')
         `);
         if (req.query.side) {
             sql.append(SQL`AND LOWER(R.side) = LOWER(${req.query.side})`);
@@ -20,12 +21,25 @@ const getRounds = {
 
         const rounds = await query(sql);
 
-        return res.status(200).json(rounds);
+        return res.status(200).json(rounds.map(round => { // only return some fields 
+                return {
+                    round_id: round.round_id,
+                    version: round.version,
+                    team_id: round.version,
+                    side: round.side,
+                    tournament: round.tournament,
+                    round: round.round,
+                    opponent: round.opponent,
+                    updated_at: round.updated_at,
+                    updated_by_id: round.updated_by_id
+                }
+            }
+        ));
     },
 };
 
-getRounds.GET.apiDoc = {
-    summary: 'Returns list of rounds for a team',
+getDeletedRounds.GET.apiDoc = {
+    summary: 'Returns list of deleted rounds for a team. Some fields are intentionally blanked to allow deletion of sensitive information.',
     operationId: 'getRounds',
     parameters: [
         {
@@ -74,4 +88,4 @@ getRounds.GET.apiDoc = {
     security: [{ cookie: [] }],
 };
 
-export default getRounds;
+export default getDeletedRounds;
