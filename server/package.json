@@ -1,10 +1,10 @@
 {
   "scripts": {
-    "start": "NODE_ENV='production' NODE_OPTIONS='--max_old_space_size=8000' node --experimental-specifier-resolution=node --use_strict index.js",
-    "dev": "NODE_ENV='development' nodemon --experimental-specifier-resolution=node --use-strict index.js",
-    "test": "NODE_ENV='test' NODE_OPTIONS='--experimental-vm-modules --experimental-specifier-resolution=node' VITEST_SEGFAULT_RETRY=3 vitest watch",
-    "test-ci": "NODE_ENV='test' NODE_OPTIONS='--experimental-vm-modules --experimental-specifier-resolution=node' VITEST_SEGFAULT_RETRY=3 vitest --run",
-    "cover": "NODE_ENV='test' NODE_OPTIONS='--experimental-vm-modules --experimental-specifier-resolution=node' VITEST_SEGFAULT_RETRY=3 vitest --coverage",
+    "start": "NODE_ENV='production' NODE_OPTIONS='--max_old_space_size=8000' node --import=specifier-resolution-node/register --use_strict index.js",
+    "dev": "NODE_ENV='development' nodemon --import=specifier-resolution-node/register --use-strict index.js",
+    "test": "NODE_ENV='test' NODE_OPTIONS='--experimental-vm-modules --import=specifier-resolution-node/register' VITEST_SEGFAULT_RETRY=3 vitest watch",
+    "test-ci": "NODE_ENV='test' NODE_OPTIONS='--experimental-vm-modules --import=specifier-resolution-node/register' VITEST_SEGFAULT_RETRY=3 vitest --run",
+    "cover": "NODE_ENV='test' NODE_OPTIONS='--experimental-vm-modules --import=specifier-resolution-node/register' VITEST_SEGFAULT_RETRY=3 vitest --coverage",
     "lint": "eslint --ignore-path ../.gitignore ."
   },
   "name": "caselist-api",
@@ -37,8 +37,9 @@
     "moment-timezone": "^0.5.25",
     "mysql2": "^1.6.5",
     "node-cron": "^3.0.0",
+    "specifier-resolution-node": "^1.1.4",
     "sql-template-strings": "^2.2.2",
-    "uuid": "^3.3.2",
+    "uuid": "3.3.2",
     "winston": "^3.2.1",
     "xml2js": "^0.6.2"
   },
