@@ -334,6 +334,10 @@ const TeamRounds = () => {
                                 /> :
                                 <p>This partnership/debater does not have any deleted rounds.</p>
                         }
+                        <em>
+                            Edit logs are a beta feature. Leave a bug report
+                            instead of contacting support if something goes wrong.
+                        </em>
                     </div>
                 :
                     <RoundsTable

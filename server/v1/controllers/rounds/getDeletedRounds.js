@@ -4,11 +4,12 @@ import { query } from '../../helpers/mysql';
 const getDeletedRounds = {
     GET: async (req, res) => {
         const sql = (SQL`
-            SELECT R.*
-            FROM rounds_history R 
+            SELECT R.*, U.display_name
+            FROM rounds_history R
             INNER JOIN teams T ON T.team_id = R.team_id
             INNER JOIN schools S ON S.school_id = T.school_id
             INNER JOIN caselists C ON S.caselist_id = C.caselist_id
+            INNER JOIN users U ON U.user_id = R.updated_by_id
             WHERE C.name = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${req.params.school})
             AND LOWER(T.name = ${req.params.team})
@@ -21,10 +22,11 @@ const getDeletedRounds = {
 
         const rounds = await query(sql);
 
+        console.log(rounds)
+
         return res.status(200).json(rounds.filter(round => {
             return !round.tournament.includes("All Tournaments") // Don't show updates to general disclosures
-        }
-        ).map(round => { // only return some fields 
+        }).map(round => { // only return some fields 
                 return {
                     round_id: round.round_id,
                     version: round.version,
@@ -35,7 +37,7 @@ const getDeletedRounds = {
                     opponent: round.opponent,
                     judge: round.judge,
                     updated_at: round.updated_at,
-                    updated_by_id: round.updated_by_id
+                    updated_by_name: round.display_name
                 }
             }
         ));

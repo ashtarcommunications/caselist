@@ -71,6 +71,7 @@ const DeletedRoundsTable = ({
         },
         { Header: 'Opponent', accessor: 'opponent', width: '150px' },
         { Header: 'Judge', accessor: 'judge' },
+        { Header: 'Deleted By', accessor: 'updated_by_name' },
         {
             Header: 'Deleted At',
             accessor: 'updated_at',
