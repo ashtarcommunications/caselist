@@ -30,6 +30,7 @@ const getDeletedRounds = {
                     tournament: round.tournament,
                     round: round.round,
                     opponent: round.opponent,
+                    judge: round.judge,
                     updated_at: round.updated_at,
                     updated_by_id: round.updated_by_id
                 }

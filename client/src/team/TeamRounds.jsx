@@ -18,6 +18,7 @@ import TeamNotes from './TeamNotes';
 import AddCite from './AddCite';
 import RoundsTable from './RoundsTable';
 import CitesTable from './CitesTable';
+import DeletedRoundsTable from './DeletedRoundsTable';
 
 import styles from './TeamRounds.module.css';
 
@@ -324,7 +325,13 @@ const TeamRounds = () => {
                     <div>
                         {
                             deletedRounds.length > 0 ?
-                                <p> temp: {JSON.stringify(deletedRounds)} </p> :
+                                <DeletedRoundsTable
+                                    event={caselistData.event}
+                                    archived={caselistData.archived}
+                                    rounds={deletedRounds}
+                                    handleToggleAll={handleToggleAll}
+                                    allRoundsOpen={allRoundsOpen}
+                                /> :
                                 <p>This partnership/debater does not have any deleted rounds.</p>
                         }
                     </div>
