@@ -21,7 +21,10 @@ const getDeletedRounds = {
 
         const rounds = await query(sql);
 
-        return res.status(200).json(rounds.map(round => { // only return some fields 
+        return res.status(200).json(rounds.filter(round => {
+            return !round.tournament.includes("All Tournaments") // Don't show updates to general disclosures
+        }
+        ).map(round => { // only return some fields 
                 return {
                     round_id: round.round_id,
                     version: round.version,
