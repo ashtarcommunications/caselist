@@ -1,5 +1,7 @@
 Upgrade to Node LTS
+Set up npm workspaces
 Add prettier
 Add husky
 Update eslint config and nsda-js-utils
 Set up CI to run server tests with mysql sidecar
+Clean up old sessions

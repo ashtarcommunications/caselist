@@ -1,9 +1,9 @@
 import SQL from 'sql-template-strings';
 import { fetch } from '@speechanddebate/nsda-js-utils';
-import { query } from '../../helpers/mysql';
-import log from '../log/insertEventLog';
-import config from '../../../config';
-import { solrLogger } from '../../helpers/logger';
+import { query } from '../../helpers/mysql.js';
+import log from '../log/insertEventLog.js';
+import config from '../../../config.js';
+import { solrLogger } from '../../helpers/logger.js';
 
 const deleteCite = {
     DELETE: async (req, res) => {

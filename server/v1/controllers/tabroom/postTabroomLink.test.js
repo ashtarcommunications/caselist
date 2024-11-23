@@ -1,5 +1,5 @@
 import request from 'supertest';
-import server from '../../../index';
+import server from '../../../index.js';
 
 describe('POST /v1/tabroom/link', () => {
     it('should create a Tabroom link', async () => {

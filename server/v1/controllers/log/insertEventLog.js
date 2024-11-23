@@ -1,6 +1,6 @@
 import SQL from 'sql-template-strings';
-import { query } from '../../helpers/mysql';
-import { debugLogger } from '../../helpers/logger';
+import { query } from '../../helpers/mysql.js';
+import { debugLogger } from '../../helpers/logger.js';
 
 const insertEventLog = async (event, test) => {
     if (!event

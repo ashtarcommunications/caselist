@@ -1,6 +1,6 @@
 import { fetch } from '@speechanddebate/nsda-js-utils';
-import config from '../../../config';
-import { debugLogger } from '../../helpers/logger';
+import config from '../../../config.js';
+import { debugLogger } from '../../helpers/logger.js';
 
 const getTabroomStudents = {
     GET: async (req, res) => {

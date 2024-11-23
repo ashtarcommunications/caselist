@@ -1,8 +1,8 @@
 import request from 'supertest';
 import fs from 'fs';
-import config from '../../../config';
-import server from '../../../index';
-import { downloadLimiter } from './getDownload';
+import config from '../../../config.js';
+import server from '../../../index.js';
+import { downloadLimiter } from './getDownload.js';
 
 describe('GET /v1/download', () => {
     beforeEach(async () => {

@@ -2,9 +2,9 @@ import { assert } from 'chai';
 import SQL from 'sql-template-strings';
 import request from 'supertest';
 import fs from 'fs';
-import { query } from '../../helpers/mysql';
-import config from '../../../config';
-import server from '../../../index';
+import { query } from '../../helpers/mysql.js';
+import config from '../../../config.js';
+import server from '../../../index.js';
 
 describe('PUT /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{round}', () => {
     beforeEach(async () => {

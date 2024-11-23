@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 import mysql from 'mysql2';
-import config from '../../config';
-import { debugLogger, queryLogger } from './logger';
+import config from '../../config.js';
+import { debugLogger, queryLogger } from './logger.js';
 
 export const pool = mysql.createPool({
     host: config.DB_HOST,

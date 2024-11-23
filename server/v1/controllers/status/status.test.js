@@ -1,5 +1,5 @@
 import request from 'supertest';
-import server from '../../../index';
+import server from '../../../index.js';
 
 describe('status', () => {
     describe('ALL /v1/status', () => {

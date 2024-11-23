@@ -8,7 +8,7 @@ import Bottleneck from 'bottleneck';
 import fs from 'fs';
 import { cwd } from 'process';
 import SQL from 'sql-template-strings';
-import { query, pool } from '../helpers/mysql';
+import { query, pool } from '../helpers/mysql.js';
 
 const fixNegOpenSource = async () => {
     const negRounds = await query(SQL`

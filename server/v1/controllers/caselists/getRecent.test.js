@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import request from 'supertest';
-import server from '../../../index';
+import server from '../../../index.js';
 
 describe('GET /v1/caselists/{caselist}/recent', () => {
     it('should return a list of recent modifications for a caselist', async () => {

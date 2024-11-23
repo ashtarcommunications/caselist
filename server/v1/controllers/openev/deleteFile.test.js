@@ -3,9 +3,9 @@ import fs from 'fs';
 import SQL from 'sql-template-strings';
 import request from 'supertest';
 import { startOfYear } from '@speechanddebate/nsda-js-utils';
-import { query } from '../../helpers/mysql';
-import config from '../../../config';
-import server from '../../../index';
+import { query } from '../../helpers/mysql.js';
+import config from '../../../config.js';
+import server from '../../../index.js';
 
 describe('DELETE /v1/openev/{openev_id}', () => {
     beforeEach(async () => {

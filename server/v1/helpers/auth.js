@@ -1,8 +1,8 @@
 /* istanbul ignore file */
 import crypto from 'crypto';
 import SQL from 'sql-template-strings';
-import { query } from './mysql';
-import { debugLogger } from './logger';
+import { query } from './mysql.js';
+import { debugLogger } from './logger.js';
 
 const auth = async (req) => {
     if (!req.cookies.caselist_token) {

@@ -1,45 +1,45 @@
-import status from '../controllers/status/status';
+import status from '../controllers/status/status.js';
 
-import getSearch from '../controllers/search/getSearch';
+import getSearch from '../controllers/search/getSearch.js';
 
-import getCaselists from '../controllers/caselists/getCaselists';
-import getCaselist from '../controllers/caselists/getCaselist';
-import getRecent from '../controllers/caselists/getRecent';
-import getBulkDownloads from '../controllers/caselists/getBulkDownloads';
-import getSchool from '../controllers/schools/getSchool';
-import getSchools from '../controllers/schools/getSchools';
-import postSchool from '../controllers/schools/postSchool';
-import getSchoolHistory from '../controllers/schools/getSchoolHistory';
+import getCaselists from '../controllers/caselists/getCaselists.js';
+import getCaselist from '../controllers/caselists/getCaselist.js';
+import getRecent from '../controllers/caselists/getRecent.js';
+import getBulkDownloads from '../controllers/caselists/getBulkDownloads.js';
+import getSchool from '../controllers/schools/getSchool.js';
+import getSchools from '../controllers/schools/getSchools.js';
+import postSchool from '../controllers/schools/postSchool.js';
+import getSchoolHistory from '../controllers/schools/getSchoolHistory.js';
 
-import getTeam from '../controllers/teams/getTeam';
-import getTeams from '../controllers/teams/getTeams';
-import postTeam from '../controllers/teams/postTeam';
-import patchTeam from '../controllers/teams/patchTeam';
-import deleteTeam from '../controllers/teams/deleteTeam';
-import getTeamHistory from '../controllers/teams/getTeamHistory';
+import getTeam from '../controllers/teams/getTeam.js';
+import getTeams from '../controllers/teams/getTeams.js';
+import postTeam from '../controllers/teams/postTeam.js';
+import patchTeam from '../controllers/teams/patchTeam.js';
+import deleteTeam from '../controllers/teams/deleteTeam.js';
+import getTeamHistory from '../controllers/teams/getTeamHistory.js';
 
-import getRound from '../controllers/rounds/getRound';
-import getRounds from '../controllers/rounds/getRounds';
-import postRound from '../controllers/rounds/postRound';
-import putRound from '../controllers/rounds/putRound';
-import deleteRound from '../controllers/rounds/deleteRound';
+import getRound from '../controllers/rounds/getRound.js';
+import getRounds from '../controllers/rounds/getRounds.js';
+import postRound from '../controllers/rounds/postRound.js';
+import putRound from '../controllers/rounds/putRound.js';
+import deleteRound from '../controllers/rounds/deleteRound.js';
 
-import getCites from '../controllers/cites/getCites';
-import postCite from '../controllers/cites/postCite';
-import deleteCite from '../controllers/cites/deleteCite';
+import getCites from '../controllers/cites/getCites.js';
+import postCite from '../controllers/cites/postCite.js';
+import deleteCite from '../controllers/cites/deleteCite.js';
 
-import postLogin from '../controllers/login/postLogin';
+import postLogin from '../controllers/login/postLogin.js';
 
-import getTabroomChapters from '../controllers/tabroom/getTabroomChapters';
-import getTabroomStudents from '../controllers/tabroom/getTabroomStudents';
-import getTabroomRounds from '../controllers/tabroom/getTabroomRounds';
-import postTabroomLink from '../controllers/tabroom/postTabroomLink';
+import getTabroomChapters from '../controllers/tabroom/getTabroomChapters.js';
+import getTabroomStudents from '../controllers/tabroom/getTabroomStudents.js';
+import getTabroomRounds from '../controllers/tabroom/getTabroomRounds.js';
+import postTabroomLink from '../controllers/tabroom/postTabroomLink.js';
 
-import getFiles from '../controllers/openev/getFiles';
-import postFile from '../controllers/openev/postFile';
-import deleteFile from '../controllers/openev/deleteFile';
+import getFiles from '../controllers/openev/getFiles.js';
+import postFile from '../controllers/openev/postFile.js';
+import deleteFile from '../controllers/openev/deleteFile.js';
 
-import getDownload from '../controllers/download/getDownload';
+import getDownload from '../controllers/download/getDownload.js';
 
 export default [
     { path: '/status', module: status },

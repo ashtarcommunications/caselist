@@ -9,7 +9,7 @@ import { parseString } from 'xml2js';
 import fs from 'fs';
 import { cwd } from 'process';
 import SQL from 'sql-template-strings';
-import { query, pool } from '../helpers/mysql';
+import { query, pool } from '../helpers/mysql.js';
 
 // Promisify xml2js
 const parseXML = (xml) => {

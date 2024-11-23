@@ -8,9 +8,9 @@ import fs from 'fs';
 import { fetch } from '@speechanddebate/nsda-js-utils';
 
 import SQL from 'sql-template-strings';
-import { pool, query } from '../../helpers/mysql';
-import config from '../../../config';
-import { solrLogger } from '../../helpers/logger';
+import { pool, query } from '../../helpers/mysql.js';
+import config from '../../../config.js';
+import { solrLogger } from '../../helpers/logger.js';
 
 export const buildIndex = async (killPool = false, recent = false) => {
     solrLogger.info('Starting reindex of Solr...');

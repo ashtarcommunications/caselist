@@ -1,5 +1,5 @@
 import SQL from 'sql-template-strings';
-import { query } from '../../helpers/mysql';
+import { query } from '../../helpers/mysql.js';
 
 const getSchoolHistory = {
     GET: async (req, res) => {

@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import request from 'supertest';
-import server from '../../../index';
+import server from '../../../index.js';
 
 describe('POST /v1/login', () => {
     it('should login', async () => {

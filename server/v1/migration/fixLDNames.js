@@ -5,7 +5,7 @@
 
 import Bottleneck from 'bottleneck';
 import SQL from 'sql-template-strings';
-import { query, pool } from '../helpers/mysql';
+import { query, pool } from '../helpers/mysql.js';
 
 const fixLDNames = async () => {
     const teams = await query(SQL`

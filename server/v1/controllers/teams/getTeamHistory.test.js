@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import request from 'supertest';
-import server from '../../../index';
+import server from '../../../index.js';
 
 describe('GET /v1/caselists/{caselist}/schools/{school}/teams/{team}/history', () => {
     it('should return a list of history for a team', async () => {

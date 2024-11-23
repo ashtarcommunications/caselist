@@ -1,4 +1,4 @@
-import { alphanumericDash } from '../formats';
+import { alphanumericDash } from '../formats.js';
 
 const School = {
     type: 'object',

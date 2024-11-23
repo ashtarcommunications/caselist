@@ -1,6 +1,6 @@
 import SQL from 'sql-template-strings';
-import { query } from '../../helpers/mysql';
-import log from '../log/insertEventLog';
+import { query } from '../../helpers/mysql.js';
+import log from '../log/insertEventLog.js';
 
 const patchTeam = {
     PATCH: async (req, res) => {

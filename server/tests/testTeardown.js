@@ -1,5 +1,5 @@
 import SQL from 'sql-template-strings';
-import { query } from '../v1/helpers/mysql';
+import { query } from '../v1/helpers/mysql.js';
 
 const testTeardown = async () => {
     await query(SQL`DELETE FROM openev WHERE openev_id < 10`);

@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import request from 'supertest';
-import server from '../../../index';
+import server from '../../../index.js';
 
 describe('GET /v1/tabroom/students', () => {
     it('should return a list of students', async () => {

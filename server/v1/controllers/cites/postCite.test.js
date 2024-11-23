@@ -1,8 +1,8 @@
 import { assert } from 'chai';
 import SQL from 'sql-template-strings';
 import request from 'supertest';
-import { query } from '../../helpers/mysql';
-import server from '../../../index';
+import { query } from '../../helpers/mysql.js';
+import server from '../../../index.js';
 
 describe('POST /v1/caselists/{caselist}/schools/{school}/teams/{team}/cites', () => {
     it('should post a cite', async () => {

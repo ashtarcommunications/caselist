@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import request from 'supertest';
-import server from '../../../index';
+import server from '../../../index.js';
 
 describe('GET /v1/tabroom/rounds', () => {
     it('should return a list of rounds for a slug', async () => {

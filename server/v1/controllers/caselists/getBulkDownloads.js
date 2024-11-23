@@ -1,5 +1,5 @@
 import { S3Client, ListObjectsV2Command } from '@aws-sdk/client-s3';
-import config from '../../../config';
+import config from '../../../config.js';
 
 const getBulkDownloads = {
     GET: async (req, res) => {

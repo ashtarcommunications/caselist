@@ -3,9 +3,9 @@ import SQL from 'sql-template-strings';
 import request from 'supertest';
 import fs from 'fs';
 import { startOfYear } from '@speechanddebate/nsda-js-utils';
-import { query } from '../../helpers/mysql';
-import config from '../../../config';
-import server from '../../../index';
+import { query } from '../../helpers/mysql.js';
+import config from '../../../config.js';
+import server from '../../../index.js';
 
 describe('POST /v1/openev', () => {
     it('should post an openev file', async () => {

@@ -4,7 +4,7 @@
 /* istanbul ignore file */
 
 import SQL from 'sql-template-strings';
-import { query, pool } from '../helpers/mysql';
+import { query, pool } from '../helpers/mysql.js';
 
 const deleteCaselist = async () => {
     // Change this to the caselist - not automated because this is so destructive

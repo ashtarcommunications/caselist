@@ -1,7 +1,7 @@
 import fs from 'fs';
 import rateLimiter from 'express-rate-limit';
-import { debugLogger } from '../../helpers/logger';
-import config from '../../../config';
+import { debugLogger } from '../../helpers/logger.js';
+import config from '../../../config.js';
 
 export const downloadLimiter = rateLimiter({
     windowMs: 60 * 1000, // 1 minute

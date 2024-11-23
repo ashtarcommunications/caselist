@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import request from 'supertest';
-import server from '../../../index';
-import { searchLimiter } from './getSearch';
+import server from '../../../index.js';
+import { searchLimiter } from './getSearch.js';
 
 describe('GET /v1/search', () => {
     it('should return a search', async () => {

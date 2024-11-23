@@ -3,10 +3,10 @@ import fs from 'fs';
 import path from 'path';
 import { fetch } from '@speechanddebate/nsda-js-utils';
 
-import config from '../../../config';
-import { query } from '../../helpers/mysql';
-import log from '../log/insertEventLog';
-import { solrLogger, debugLogger } from '../../helpers/logger';
+import config from '../../../config.js';
+import { query } from '../../helpers/mysql.js';
+import log from '../log/insertEventLog.js';
+import { solrLogger, debugLogger } from '../../helpers/logger.js';
 
 const deleteRound = {
     DELETE: async (req, res) => {

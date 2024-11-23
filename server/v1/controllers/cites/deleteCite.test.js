@@ -1,8 +1,8 @@
 import { assert } from 'chai';
 import SQL from 'sql-template-strings';
 import request from 'supertest';
-import { query } from '../../helpers/mysql';
-import server from '../../../index';
+import { query } from '../../helpers/mysql.js';
+import server from '../../../index.js';
 
 describe('DELETE /v1/caselists/{caselist}/schools/{school}/teams/{team}/cites/{cite}', () => {
     it('should delete a cite', async () => {

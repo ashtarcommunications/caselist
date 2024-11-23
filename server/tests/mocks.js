@@ -1,4 +1,4 @@
-import { debugLogger } from '../v1/helpers/logger';
+import { debugLogger } from '../v1/helpers/logger.js';
 
 export const setupMocks = () => {
     if (process.env.NODE_ENV === 'production') { return false; }

@@ -1,10 +1,10 @@
 {
   "scripts": {
-    "start": "NODE_ENV='production' NODE_OPTIONS='--max_old_space_size=8000' node --experimental-specifier-resolution=node --use_strict index.js",
-    "dev": "NODE_ENV='development' nodemon --experimental-specifier-resolution=node --use-strict index.js",
-    "test": "NODE_ENV='test' NODE_OPTIONS='--experimental-vm-modules --experimental-specifier-resolution=node' VITEST_SEGFAULT_RETRY=3 vitest watch",
-    "test:cover": "NODE_ENV='test' NODE_OPTIONS='--experimental-vm-modules --experimental-specifier-resolution=node' VITEST_SEGFAULT_RETRY=3 vitest --coverage",
-    "test:ci": "NODE_ENV='test' NODE_OPTIONS='--experimental-vm-modules --experimental-specifier-resolution=node' VITEST_SEGFAULT_RETRY=3 vitest --run",
+    "start": "NODE_ENV='production' NODE_OPTIONS='--max_old_space_size=8000' node --use_strict index.js",
+    "dev": "NODE_ENV='development' nodemon --use-strict index.js",
+    "test": "NODE_ENV='test' VITEST_SEGFAULT_RETRY=3 vitest watch",
+    "test:cover": "NODE_ENV='test' VITEST_SEGFAULT_RETRY=3 vitest --coverage",
+    "test:ci": "NODE_ENV='test' VITEST_SEGFAULT_RETRY=3 vitest --run",
     "lint": "eslint --ignore-path ../.gitignore ."
   },
   "name": "caselist-api",
@@ -18,7 +18,7 @@
   "license": "GPL3",
   "main": "index.js",
   "engines": {
-    "node": ">= 18.2.0"
+    "node": ">= 22.11.0"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.433.0",

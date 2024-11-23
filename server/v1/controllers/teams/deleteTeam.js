@@ -2,10 +2,10 @@ import SQL from 'sql-template-strings';
 import { fetch } from '@speechanddebate/nsda-js-utils';
 import fs from 'fs';
 import path from 'path';
-import { solrLogger, debugLogger } from '../../helpers/logger';
-import config from '../../../config';
-import { query } from '../../helpers/mysql';
-import log from '../log/insertEventLog';
+import { solrLogger, debugLogger } from '../../helpers/logger.js';
+import config from '../../../config.js';
+import { query } from '../../helpers/mysql.js';
+import log from '../log/insertEventLog.js';
 
 const deleteTeam = {
     DELETE: async (req, res) => {

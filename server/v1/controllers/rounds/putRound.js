@@ -3,10 +3,10 @@ import { fetch, displaySide, roundName } from '@speechanddebate/nsda-js-utils';
 import fs from 'fs';
 import path from 'path';
 
-import { query } from '../../helpers/mysql';
-import log from '../log/insertEventLog';
-import { debugLogger } from '../../helpers/logger';
-import config from '../../../config';
+import { query } from '../../helpers/mysql.js';
+import log from '../log/insertEventLog.js';
+import { debugLogger } from '../../helpers/logger.js';
+import config from '../../../config.js';
 
 const putRound = {
     PUT: async (req, res) => {

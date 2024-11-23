@@ -1,6 +1,6 @@
 import SQL from 'sql-template-strings';
 import { startOfYear } from '@speechanddebate/nsda-js-utils';
-import { query } from '../v1/helpers/mysql';
+import { query } from '../v1/helpers/mysql.js';
 
 const testFixtures = async () => {
     await query(SQL`

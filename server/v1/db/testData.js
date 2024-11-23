@@ -1,6 +1,6 @@
 /* istanbul ignore file */
 import SQL from 'sql-template-strings';
-import { pool, query } from '../helpers/mysql';
+import { pool, query } from '../helpers/mysql.js';
 
 const years = [2017, 2018, 2019, 2020, 2021];
 years.forEach(async (y) => {

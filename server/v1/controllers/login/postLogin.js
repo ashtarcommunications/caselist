@@ -1,9 +1,9 @@
 import crypto from 'crypto';
 import SQL from 'sql-template-strings';
 import rateLimiter from 'express-rate-limit';
-import { query } from '../../helpers/mysql';
-import config from '../../../config';
-import { debugLogger } from '../../helpers/logger';
+import { query } from '../../helpers/mysql.js';
+import config from '../../../config.js';
+import { debugLogger } from '../../helpers/logger.js';
 
 export const loginLimiter = rateLimiter({
     windowMs: 60 * 1000, // 1 minute

@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import SQL from 'sql-template-strings';
-import { query } from '../../helpers/mysql';
-import insertEventLog from './insertEventLog';
+import { query } from '../../helpers/mysql.js';
+import insertEventLog from './insertEventLog.js';
 
 describe('Insert Event Log', () => {
     it('Should insert an event into the log', async () => {

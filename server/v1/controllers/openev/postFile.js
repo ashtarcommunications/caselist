@@ -1,10 +1,10 @@
 import SQL from 'sql-template-strings';
 import fs from 'fs';
 import path from 'path';
-import { query } from '../../helpers/mysql';
-import log from '../log/insertEventLog';
-import config from '../../../config';
-import { debugLogger } from '../../helpers/logger';
+import { query } from '../../helpers/mysql.js';
+import log from '../log/insertEventLog.js';
+import config from '../../../config.js';
+import { debugLogger } from '../../helpers/logger.js';
 
 const postFile = {
     POST: async (req, res) => {

@@ -7,9 +7,9 @@ import fs from 'fs';
 import cp from 'child_process';
 import SQL from 'sql-template-strings';
 import { S3Client, PutObjectCommand, ListObjectsV2Command, DeleteObjectCommand } from '@aws-sdk/client-s3';
-import { pool, query } from '../../helpers/mysql';
-import config from '../../../config';
-import { debugLogger } from '../../helpers/logger';
+import { pool, query } from '../../helpers/mysql.js';
+import config from '../../../config.js';
+import { debugLogger } from '../../helpers/logger.js';
 
 export const weeklyArchives = async (killPool = false) => {
     debugLogger.info('Starting weekly open source archive...');

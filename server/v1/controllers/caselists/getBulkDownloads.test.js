@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import request from 'supertest';
 import { S3Client, ListObjectsV2Command } from '@aws-sdk/client-s3';
 import { mockClient } from 'aws-sdk-client-mock';
-import server from '../../../index';
+import server from '../../../index.js';
 
 describe('GET /v1/caselists/{caselist}/downloads', () => {
     let s3Mock;

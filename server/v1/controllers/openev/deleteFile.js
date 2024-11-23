@@ -2,10 +2,10 @@ import SQL from 'sql-template-strings';
 import fs from 'fs';
 import { fetch, startOfYear } from '@speechanddebate/nsda-js-utils';
 
-import config from '../../../config';
-import { query } from '../../helpers/mysql';
-import log from '../log/insertEventLog';
-import { solrLogger, debugLogger } from '../../helpers/logger';
+import config from '../../../config.js';
+import { query } from '../../helpers/mysql.js';
+import log from '../log/insertEventLog.js';
+import { solrLogger, debugLogger } from '../../helpers/logger.js';
 
 const deleteFile = {
     DELETE: async (req, res) => {
