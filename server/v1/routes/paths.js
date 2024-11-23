@@ -9,12 +9,14 @@ import getBulkDownloads from '../controllers/caselists/getBulkDownloads';
 import getSchool from '../controllers/schools/getSchool';
 import getSchools from '../controllers/schools/getSchools';
 import postSchool from '../controllers/schools/postSchool';
+import getSchoolHistory from '../controllers/schools/getSchoolHistory';
 
 import getTeam from '../controllers/teams/getTeam';
 import getTeams from '../controllers/teams/getTeams';
 import postTeam from '../controllers/teams/postTeam';
 import patchTeam from '../controllers/teams/patchTeam';
 import deleteTeam from '../controllers/teams/deleteTeam';
+import getTeamHistory from '../controllers/teams/getTeamHistory';
 
 import getRound from '../controllers/rounds/getRound';
 import getRounds from '../controllers/rounds/getRounds';
@@ -55,8 +57,10 @@ export default [
 
     { path: '/caselists/{caselist}/schools/{school}', module: getSchool },
 
+    { path: '/caselists/{caselist}/schools/{school}/history', module: { ...getSchoolHistory } },
     { path: '/caselists/{caselist}/schools/{school}/teams', module: { ...getTeams, ...postTeam } },
     { path: '/caselists/{caselist}/schools/{school}/teams/{team}', module: { ...getTeam, ...patchTeam, ...deleteTeam } },
+    { path: '/caselists/{caselist}/schools/{school}/teams/{team}/history', module: { ...getTeamHistory } },
     { path: '/caselists/{caselist}/schools/{school}/teams/{team}/rounds', module: { ...getRounds, ...postRound } },
 
     { path: '/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{round}', module: { ...getRound, ...putRound, ...deleteRound } },

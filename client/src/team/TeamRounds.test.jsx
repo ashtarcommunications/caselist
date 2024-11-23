@@ -245,6 +245,25 @@ describe('TeamList', () => {
         store.caselistData.archived = false;
     });
 
+    it('Optionally renders a team history', async () => {
+        render(<TeamRounds />);
+
+        const toggle = await screen.findByTestId('showhistory');
+        assert.isOk(toggle, 'Heading exists');
+        fireEvent.click(toggle);
+
+        await waitFor(() => assert.isOk(screen.queryByText(/Test team history/), 'Shows history table'));
+        fireEvent.click(toggle);
+        await waitFor(() => assert.isNotOk(screen.queryByText(/Test team history/), 'Hides history table'));
+    });
+
+    it('should not render a team history on an archived caselist', async () => {
+        store.caselistData.archived = true;
+        render(<TeamRounds />);
+        await waitFor(() => assert.isNotOk(screen.queryByText(/Team History/), 'No team history'));
+        store.caselistData.archived = false;
+    });
+
     afterEach(() => {
         loadTeam.mockClear();
         loadRounds.mockClear();

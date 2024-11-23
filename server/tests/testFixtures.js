@@ -22,6 +22,11 @@ const testFixtures = async () => {
     `);
 
     await query(SQL`
+        INSERT INTO teams_history (event, version, team_id, school_id, display_name, name, notes, debater1_first, debater1_last, debater2_first, debater2_last, updated_by_id) VALUES
+            ('test', 1, 1, 1, 'Test Team', 'testteam', 'Sample Notes', 'Aaron', 'Hardy', 'Chris', 'Palmer', 1);
+    `);
+
+    await query(SQL`
         INSERT INTO rounds (round_id, team_id, side, tournament, round, opponent, judge, report, opensource, tourn_id, external_id) VALUES
             (1, 1, 'A', 'Test Tournament', '1', 'Evil Empire XX', 'Hardy', 'Report', 'test.docx', 1234, 1234),
             (2, 1, 'N', 'Test Tournament', '2', 'Evil Empire YY', 'Hardy', 'Report', 'test.docx', 1234, 1234),
@@ -29,10 +34,20 @@ const testFixtures = async () => {
     `);
 
     await query(SQL`
+        INSERT INTO rounds_history (event, version, round_id, team_id, side, tournament, round, opponent, judge, report, opensource, tourn_id, external_id, updated_by_id) VALUES
+            ('test', 1, 1, 1, 'A', 'Test Tournament', '1', 'Evil Empire XX', 'Hardy', 'Report', 'test.docx', 1234, 1234, 1);
+    `);
+
+    await query(SQL`
         INSERT INTO cites (cite_id, round_id, title, cites) VALUES
             (1, 1, 'Test Aff Title', '# Aff Cites'),
             (2, 2, 'Test Neg Title', '# Neg Cites'),
             (3, 3, 'Archived Cite', '# Archived Cite');
+    `);
+
+    await query(SQL`
+        INSERT INTO cites_history (event, version, cite_id, round_id, title, cites, updated_by_id) VALUES
+            ('test', 1, 1, 1, 'Test Aff Title', '# Aff Cites', 1);
     `);
 
     await query(SQL`

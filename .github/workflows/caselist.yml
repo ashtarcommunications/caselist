@@ -34,7 +34,7 @@ jobs:
 
     - name: Test
       run: |
-        cd client && npm run test-ci
+        cd client && npm run test:ci
 
     - name: If tests passed change icon
       if: success()

@@ -68,6 +68,10 @@ export const loadSchool = async (caselist, school) => {
     return fetchBase(`caselists/${caselist}/schools/${school}`);
 };
 
+export const loadSchoolHistory = async (caselist, school) => {
+    return fetchBase(`caselists/${caselist}/schools/${school}/history`);
+};
+
 export const loadTeams = async (caselist, school) => {
     return fetchBase(`caselists/${caselist}/schools/${school}/teams`);
 };
@@ -86,6 +90,10 @@ export const loadTeam = async (caselist, school, team) => {
 
 export const deleteTeam = async (caselist, school, team) => {
     return fetchBase(`caselists/${caselist}/schools/${school}/teams/${team}`, { method: 'DELETE' });
+};
+
+export const loadTeamHistory = async (caselist, school, team) => {
+    return fetchBase(`caselists/${caselist}/schools/${school}/teams/${team}/history`);
 };
 
 export const loadRounds = async (caselist, school, team, side) => {

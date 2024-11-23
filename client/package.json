@@ -42,9 +42,9 @@
     "server": "vite preview",
     "lint": "eslint src",
     "test": "vitest watch",
-    "test-silent": "vitest --silent",
-    "test-cover": "vitest --coverage",
-    "test-ci": "vitest --run"
+    "test:silent": "vitest --silent",
+    "test:cover": "vitest --coverage",
+    "test:ci": "vitest --run"
   },
   "eslintConfig": {
     "extends": [

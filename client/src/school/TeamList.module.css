@@ -58,3 +58,9 @@
     opacity: 1;
     visibility: visible;
 }
+
+.showhistory {
+    font-size: 18px;
+    margin-left: 10px;
+    cursor: pointer;
+}

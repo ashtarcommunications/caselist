@@ -120,7 +120,7 @@ describe('DELETE /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{
             // Do Nothing
         }
         await query(SQL`
-            DELETE FROM teams_history WHERE school_id = 1
+            DELETE FROM teams_history WHERE school_id = 1 AND event <> 'test'
         `);
         await query(SQL`
             DELETE FROM rounds_history WHERE tournament = 'TestDelete'

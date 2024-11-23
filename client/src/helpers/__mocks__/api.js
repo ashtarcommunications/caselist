@@ -14,11 +14,13 @@ export const loadDownloads = vi.fn().mockResolvedValue([
 export const loadSchools = vi.fn().mockResolvedValue([]);
 export const addSchool = vi.fn().mockResolvedValue({ school_id: 1, name: 'Test School' });
 export const loadSchool = vi.fn().mockResolvedValue({});
+export const loadSchoolHistory = vi.fn().mockResolvedValue([{ description: 'Test school history', updated_at: '2023', updated_by: 'Test User' }]);
 export const loadTeams = vi.fn().mockResolvedValue([{ team_id: 1, name: 'testteam', display_name: 'Test Team', debater1_first: 'Aaron', debater1_last: 'Hardy', updated_by: 'Test User' }]);
 export const addTeam = vi.fn().mockResolvedValue({ message: 'Successfully added team' });
 export const updateTeam = vi.fn().mockResolvedValue({ message: 'Successfully updated team' });
 export const loadTeam = vi.fn().mockResolvedValue({ team_id: 1, name: 'testteam', display_name: 'Test Team', debater1_first: 'Aaron', debater1_last: 'Hardy', updated_by: 'Test User' });
 export const deleteTeam = vi.fn().mockResolvedValue({ message: 'Successfully deleted team' });
+export const loadTeamHistory = vi.fn().mockResolvedValue([{ description: 'Test team history', updated_at: '2023', updated_by: 'Test User' }]);
 export const loadRounds = vi.fn().mockResolvedValue([
     { round_id: 1, tournament: 'Aff Tournament', side: 'A', round: '1', judge: 'Judge', opponent: 'Opponent', report: 'Report', opensource: '/test.docx', video: 'Video' },
     { round_id: 2, tournament: 'Neg Tournament', side: 'N', round: '2', judge: 'Judge', opponent: 'Opponent', report: 'Report', opensource: '/test.docx', video: 'Video' },

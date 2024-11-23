@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useCallback, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
 import { toast } from 'react-toastify';
 import { affName, negName } from '@speechanddebate/nsda-js-utils';
@@ -17,6 +17,7 @@ import Loader from '../loader/Loader';
 import Error from '../layout/Error';
 import AddTeam from './AddTeam';
 import ConfirmButton from '../helpers/ConfirmButton';
+import HistoryTable from '../tables/HistoryTable';
 
 import styles from './TeamList.module.css';
 
@@ -25,6 +26,7 @@ const TeamList = () => {
     const { caselist, school } = useParams();
     const { caselistData, schoolData, teams, fetchTeams } = useStore();
     const [fetching, setFetching] = useState(false);
+    const [showHistory, setShowHistory] = useState(false);
     const { isMobile } = useDeviceDetect();
 
     useEffect(() => {
@@ -63,6 +65,10 @@ const TeamList = () => {
         },
         );
     }, [handleDeleteTeam, teams]);
+
+    const handleToggleHistory = () => {
+        setShowHistory(!showHistory);
+    };
 
     const data = useMemo(() => teams, [teams]);
     const columns = useMemo(() => [
@@ -158,7 +164,25 @@ const TeamList = () => {
                 />
             </div>
             <hr />
-            {!caselistData.archived && <AddTeam />}
+            {
+                !caselistData.archived && <AddTeam />
+            }
+            {
+                !caselistData.archived &&
+                <div>
+                    <hr />
+                    <h3 onClick={handleToggleHistory}>
+                        School History
+                        <FontAwesomeIcon
+                            className={styles.showhistory}
+                            data-testid="showhistory"
+                            icon={showHistory ? faCaretDown : faCaretUp}
+                            title="School History"
+                        />
+                    </h3>
+                    {showHistory && <HistoryTable type="school" />}
+                </div>
+            }
         </>
     );
 };

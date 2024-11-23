@@ -15,6 +15,7 @@ import Cite from './Cite';
 import Recent from './Recent';
 import SearchResult from './SearchResult';
 import Download from './Download';
+import History from './History';
 
 export default {
     Err,
@@ -34,4 +35,5 @@ export default {
     Updates,
     SearchResult,
     Download,
+    History,
 };

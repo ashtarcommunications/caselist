@@ -23,7 +23,7 @@ describe('TeamList', () => {
         render(<TeamList />);
         await waitFor(() => assert.strictEqual(store.fetchTeams.mock.calls.length, 1, 'Fetched teams'));
 
-        assert.isOk(screen.queryByText(/Test Team/), 'Display name   exists');
+        assert.isOk(screen.queryByText(/Test Team/), 'Display name exists');
         assert.isOk(screen.queryByText(/Aff/), 'Aff link exists');
         assert.isOk(screen.queryByText(/Neg/), 'Neg link exists');
         assert.isOk(screen.queryByText(/updated by/), 'Updated By exists');
@@ -42,6 +42,25 @@ describe('TeamList', () => {
 
         await waitFor(() => assert.strictEqual(deleteTeam.mock.calls.length, 1, 'Deleted team'));
         await waitFor(() => assert.strictEqual(store.fetchTeams.mock.calls.length, 2, 'Fetched teams'));
+    });
+
+    it('Optionally renders a school history', async () => {
+        render(<TeamList />);
+
+        const toggle = await screen.findByTestId('showhistory');
+        assert.isOk(toggle, 'Heading exists');
+        fireEvent.click(toggle);
+
+        await waitFor(() => assert.isOk(screen.queryByText(/Test school history/), 'Shows history table'));
+        fireEvent.click(toggle);
+        await waitFor(() => assert.isNotOk(screen.queryByText(/Test school history/), 'Hides history table'));
+    });
+
+    it('should not render a school history on an archived caselist', async () => {
+        store.caselistData.archived = true;
+        render(<TeamList />);
+        await waitFor(() => assert.isNotOk(screen.queryByText(/School History/), 'No school history'));
+        store.caselistData.archived = false;
     });
 
     it('Renders an error message without caselistData', async () => {

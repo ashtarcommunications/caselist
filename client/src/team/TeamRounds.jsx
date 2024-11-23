@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLink, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faLink, faPlus, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import { Link, useParams } from 'react-router-dom';
@@ -18,6 +18,7 @@ import TeamNotes from './TeamNotes';
 import AddCite from './AddCite';
 import RoundsTable from './RoundsTable';
 import CitesTable from './CitesTable';
+import HistoryTable from '../tables/HistoryTable';
 
 import styles from './TeamRounds.module.css';
 
@@ -30,6 +31,7 @@ const TeamRounds = () => {
     const [teamData, setTeamData] = useState({});
     const [rounds, setRounds] = useState([]);
     const [cites, setCites] = useState([]);
+    const [showHistory, setShowHistory] = useState(false);
 
     const { isMobile } = useDeviceDetect();
 
@@ -201,6 +203,10 @@ const TeamRounds = () => {
         />);
     };
 
+    const handleToggleHistory = () => {
+        setShowHistory(!showHistory);
+    };
+
     const timestamp = moment(teamData.updated_at, 'YYYY-MM-DD HH:mm:ss').format('l');
 
     if (fetching) { return <Loader />; }
@@ -324,6 +330,22 @@ const TeamRounds = () => {
                 handleDeleteCiteConfirm={handleDeleteCiteConfirm}
                 handleToggleCites={handleToggleCites}
             />
+            {
+                !caselistData.archived &&
+                <div>
+                    <hr />
+                    <h3 onClick={handleToggleHistory}>
+                        Team History
+                        <FontAwesomeIcon
+                            className={styles.showhistory}
+                            data-testid="showhistory"
+                            icon={showHistory ? faCaretDown : faCaretUp}
+                            title="Team History"
+                        />
+                    </h3>
+                    {showHistory && <HistoryTable type="team" />}
+                </div>
+            }
         </div>
     );
 };

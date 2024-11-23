@@ -50,7 +50,7 @@ That will spin up a development server on localhost.
 
 ### Testing
 
-Run the test suite with `npm run test` or `npm run test-cover` if you want code coverage metrics.
+Run the test suite with `npm run test` or `npm run test:cover` if you want code coverage metrics.
 
 ### Production
 
@@ -96,7 +96,7 @@ This is a standard React front-end bundled with Vite. It uses Vite's built-in su
 
 ### Testing
 
-Run the test suite with vitest using `npm run test` or `npm run test-cover` if you want code coverage metrics.
+Run the test suite with vitest using `npm run test` or `npm run test:cover` if you want code coverage metrics.
 
 ### Production
 

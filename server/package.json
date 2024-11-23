@@ -3,8 +3,8 @@
     "start": "NODE_ENV='production' NODE_OPTIONS='--max_old_space_size=8000' node --experimental-specifier-resolution=node --use_strict index.js",
     "dev": "NODE_ENV='development' nodemon --experimental-specifier-resolution=node --use-strict index.js",
     "test": "NODE_ENV='test' NODE_OPTIONS='--experimental-vm-modules --experimental-specifier-resolution=node' VITEST_SEGFAULT_RETRY=3 vitest watch",
-    "test-ci": "NODE_ENV='test' NODE_OPTIONS='--experimental-vm-modules --experimental-specifier-resolution=node' VITEST_SEGFAULT_RETRY=3 vitest --run",
-    "cover": "NODE_ENV='test' NODE_OPTIONS='--experimental-vm-modules --experimental-specifier-resolution=node' VITEST_SEGFAULT_RETRY=3 vitest --coverage",
+    "test:cover": "NODE_ENV='test' NODE_OPTIONS='--experimental-vm-modules --experimental-specifier-resolution=node' VITEST_SEGFAULT_RETRY=3 vitest --coverage",
+    "test:ci": "NODE_ENV='test' NODE_OPTIONS='--experimental-vm-modules --experimental-specifier-resolution=node' VITEST_SEGFAULT_RETRY=3 vitest --run",
     "lint": "eslint --ignore-path ../.gitignore ."
   },
   "name": "caselist-api",

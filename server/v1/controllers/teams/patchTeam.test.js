@@ -22,7 +22,7 @@ describe('PATCH /v1/caselists/{caselist}/schools/{school}/teams/{team}', () => {
         assert.strictEqual(updatedTeam[0].notes, 'update', 'Notes updated');
 
         const teamsHistory = await query(SQL`
-            SELECT COUNT(*) AS 'count' FROM teams_history WHERE team_id = 1
+            SELECT COUNT(*) AS 'count' FROM teams_history WHERE team_id = 1 AND notes = 'update'
         `);
         assert.strictEqual(teamsHistory[0].count, 1, 'Team History inserted');
     });
@@ -88,7 +88,7 @@ describe('PATCH /v1/caselists/{caselist}/schools/{school}/teams/{team}', () => {
 
     afterEach(async () => {
         await query(SQL`
-            DELETE FROM teams_history WHERE team_id = 1
+            DELETE FROM teams_history WHERE team_id = 1 AND event <> 'test'
         `);
     });
 });
