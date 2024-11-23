@@ -2,10 +2,14 @@
   "name": "caselist-client",
   "description": "Caselist Client",
   "version": "1.0.0",
+  "type": "module",
   "private": true,
   "author": "Aaron Hardy <support@paperlessdebate.com> (https://paperlessdebate.com)",
   "homepage": "https://paperlessdebate.com",
   "license": "GPL3",
+  "engines": {
+    "node": ">= 22.11.0"
+  },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-regular-svg-icons": "^6.1.1",
@@ -38,6 +42,7 @@
   },
   "scripts": {
     "start": "vite --open",
+    "dev": "vite --open",
     "build": "vite build",
     "server": "vite preview",
     "lint": "eslint src",

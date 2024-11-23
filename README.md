@@ -92,7 +92,7 @@ This is a standard React front-end bundled with Vite. It uses Vite's built-in su
 
 ### Development
 
-`npm run start` will start the Vite dev server with hot reloading. Make sure the server is started on localhost as well.
+`npm run dev` will start the Vite dev server with hot reloading. Make sure the server is started on localhost as well.
 
 ### Testing
 
