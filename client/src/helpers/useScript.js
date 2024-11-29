@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 const useScript = (url, data = {}) => {
 	useEffect(() => {
 		if (import.meta.env.NODE_ENV !== 'production' || !url) {
-			return false;
+			return;
 		}
 
 		const script = document.createElement('script');

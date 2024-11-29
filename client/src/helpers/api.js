@@ -31,7 +31,7 @@ export const fetchBase = async (path, options = {}, body = {}) => {
 		return options.raw ? response : response.json();
 	} catch (err) {
 		if (err.statusCode === 401) {
-			history.push('/login');
+			history.push('/');
 		}
 		throw err;
 	}
