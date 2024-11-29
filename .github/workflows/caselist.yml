@@ -30,6 +30,10 @@ jobs:
 
     - name: Install packages
       run: |
+        npm install
+
+    - name: Install packages
+      run: |
         cd client && npm install
 
     - name: Lint
@@ -76,6 +80,10 @@ jobs:
     
     - name: Upgrade npm to fix freezing bug in 10.9.0 shipped with Node 22.11.0
       run: npm install -g npm@latest
+
+    - name: Install packages
+      run: |
+        npm install
 
     - name: Install packages
       run: |
