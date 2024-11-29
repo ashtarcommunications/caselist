@@ -1,5 +1,5 @@
 const Update = {
-    type: 'object',
+	type: 'object',
 };
 
 export default Update;

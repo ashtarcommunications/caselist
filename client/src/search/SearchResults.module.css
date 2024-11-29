@@ -1,27 +1,27 @@
 .results h2 {
-    margin-bottom: 0;
+	margin-bottom: 0;
 }
 
 .results input {
-    min-width: 400px !important;
+	min-width: 400px !important;
 }
 
 .details {
-    display: inline;
-    margin: 0px 25px;
+	display: inline;
+	margin: 0px 25px;
 }
 
 .details svg {
-    display: inline;
-    width: 24px;
-    height: 24px;
-    color: var(--black);
+	display: inline;
+	width: 24px;
+	height: 24px;
+	color: var(--black);
 }
 
 .snippet {
-    font-size: 12px;
+	font-size: 12px;
 }
 
 .mobile.results input {
-    min-width: auto !important;
+	min-width: auto !important;
 }

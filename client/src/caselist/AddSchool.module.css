@@ -1,10 +1,10 @@
 .instructions ul li {
-    line-height: 1.5em;
+	line-height: 1.5em;
 }
 
 .add {
-    background-color: var(--green);
-    color: var(--white);
-    margin-top: 20px;
-    border-radius: 20px;
+	background-color: var(--green);
+	color: var(--white);
+	margin-top: 20px;
+	border-radius: 20px;
 }

@@ -10,6 +10,7 @@ on:
 
 env:
     CI: true
+    HUSKY: 0
     TZ: "America/Chicago"
     SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
 
@@ -17,12 +18,15 @@ jobs:
   build-client:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Get node
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v4
       with:
-        node-version: 18.2.0
+        node-version: 22.11.0
+
+    - name: Upgrade npm to fix freezing bug in 10.9.0 shipped with Node 22.11.0
+      run: npm install -g npm@latest
 
     - name: Install packages
       run: |
@@ -46,13 +50,32 @@ jobs:
 
   build-server:
     runs-on: ubuntu-latest
+
+    services:
+      mariadb-test:
+        image: mariadb:10.11.2
+        ports:
+          - '3306:3306'
+        env:
+          MARIADB_USER: caselist
+          MARIADB_PASSWORD: caselist
+          MARIADB_DATABASE: caselist
+          MARIADB_ROOT_PASSWORD: caselist
+        options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
+
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
+
+    - name: Load local database
+      run: mysql -h 127.0.0.1 -P 3306 -u caselist -pcaselist caselist < ./server/v1/db/caselist.sql
 
     - name: Get node
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v4
       with:
-        node-version: 18.2.0
+        node-version: 22.11.0
+    
+    - name: Upgrade npm to fix freezing bug in 10.9.0 shipped with Node 22.11.0
+      run: npm install -g npm@latest
 
     - name: Install packages
       run: |
@@ -61,6 +84,10 @@ jobs:
     - name: Lint
       run: |
         cd server && npm run lint
+
+    - name: Test
+      run: |
+        cd server && npm run test:ci
 
     - name: If tests passed change icon
       if: success()

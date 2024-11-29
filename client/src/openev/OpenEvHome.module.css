@@ -1,11 +1,11 @@
 .add {
-    float: right;
-    margin-bottom: 5px;
+	float: right;
+	margin-bottom: 5px;
 }
 
 .add button {
-    border-radius: 20px;
-    font-size: 14px !important;
-    background-color: var(--green);
-    color: var(--white);
+	border-radius: 20px;
+	font-size: 14px !important;
+	background-color: var(--green);
+	color: var(--white);
 }

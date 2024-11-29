@@ -8,8 +8,8 @@ import { query } from '../../helpers/mysql.js';
 import log from '../log/insertEventLog.js';
 
 const deleteTeam = {
-    DELETE: async (req, res) => {
-        const [team] = await query(SQL`
+	DELETE: async (req, res) => {
+		const [team] = await query(SQL`
             SELECT C.archived, T.team_id
             FROM teams T
             INNER JOIN schools S ON S.school_id = T.school_id
@@ -19,10 +19,16 @@ const deleteTeam = {
             AND LOWER(T.name) = LOWER(${req.params.team})
         `);
 
-        if (!team) { return res.status(400).json({ message: 'Team not found' }); }
-        if (team.archived) { return res.status(403).json({ message: 'Caselist archived, no modifications allowed' }); }
+		if (!team) {
+			return res.status(400).json({ message: 'Team not found' });
+		}
+		if (team.archived) {
+			return res
+				.status(403)
+				.json({ message: 'Caselist archived, no modifications allowed' });
+		}
 
-        await query(SQL`
+		await query(SQL`
             INSERT INTO cites_history (
                 cite_id,
                 version,
@@ -51,14 +57,14 @@ const deleteTeam = {
             WHERE R.team_id = ${parseInt(team.team_id)}
         `);
 
-        await query(SQL`
+		await query(SQL`
             DELETE CT.*
             FROM cites CT
             INNER JOIN rounds R ON R.round_id = CT.round_id
             WHERE R.team_id = ${parseInt(team.team_id)}
         `);
 
-        const rounds = await query(SQL`
+		const rounds = await query(SQL`
             SELECT
                 R.opensource,
                 (SELECT COALESCE(MAX(version), 0) + 1 FROM rounds_history RH WHERE RH.round_id = R.round_id) AS 'version'
@@ -66,23 +72,26 @@ const deleteTeam = {
             WHERE R.team_id = ${parseInt(team.team_id)}
         `);
 
-        /* eslint-disable no-restricted-syntax */
-        /* eslint-disable no-await-in-loop */
-        /* eslint-disable no-loop-func */
-        for (const r of rounds) {
-            if (r.opensource) {
-                const extension = path.extname(r.opensource);
-                const deletedExtension = `-DELETED-v${r.version}${extension}`;
-                const deletedPath = `${config.UPLOAD_DIR}/${r.opensource.replace(extension, deletedExtension)}`;
-                try {
-                    await fs.promises.rename(`${config.UPLOAD_DIR}/${r.opensource}`, deletedPath);
-                } catch (err) {
-                    debugLogger.info(`Failed to rename ${r.opensource}`);
-                }
-            }
-        }
+		/* eslint-disable no-restricted-syntax */
+		/* eslint-disable no-await-in-loop */
+		/* eslint-disable no-loop-func */
+		for (const r of rounds) {
+			if (r.opensource) {
+				const extension = path.extname(r.opensource);
+				const deletedExtension = `-DELETED-v${r.version}${extension}`;
+				const deletedPath = `${config.UPLOAD_DIR}/${r.opensource.replace(extension, deletedExtension)}`;
+				try {
+					await fs.promises.rename(
+						`${config.UPLOAD_DIR}/${r.opensource}`,
+						deletedPath,
+					);
+				} catch (err) {
+					debugLogger.info(`Failed to rename ${r.opensource}`);
+				}
+			}
+		}
 
-        await query(SQL`
+		await query(SQL`
             INSERT INTO rounds_history (
                 round_id,
                 version,
@@ -126,11 +135,11 @@ const deleteTeam = {
             WHERE R.team_id = ${parseInt(team.team_id)}
         `);
 
-        await query(SQL`
+		await query(SQL`
             DELETE FROM rounds WHERE team_id = ${parseInt(team.team_id)}
         `);
 
-        await query(SQL`
+		await query(SQL`
             INSERT INTO teams_history (
                 team_id,
                 version,
@@ -184,74 +193,75 @@ const deleteTeam = {
             WHERE T.team_id = ${parseInt(team.team_id)}
         `);
 
-        await query(SQL`
+		await query(SQL`
             DELETE FROM teams WHERE team_id = ${parseInt(team.team_id)}
         `);
 
-        await log({
-            user_id: req.user_id,
-            tag: 'team-delete',
-            description: `Deleted team ${req.params.school} ${req.params.team} in ${req.params.caselist}`,
-            team_id: team.team_id,
-        });
+		await log({
+			user_id: req.user_id,
+			tag: 'team-delete',
+			description: `Deleted team ${req.params.school} ${req.params.team} in ${req.params.caselist}`,
+			team_id: team.team_id,
+		});
 
-        res.status(200).json({ message: 'Team successfully deleted' });
+		res.status(200).json({ message: 'Team successfully deleted' });
 
-        // Delete open source documents and cites from Solr - wait till after response to not slow down UI
-        try {
-            await fetch(
-                config.SOLR_UPDATE_URL,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ delete: { query: `team_id:${team.team_id}` } }),
-                }
-            );
-            solrLogger.info(`Removed open source and cites for team ${team.team_id} from Solr`);
-        } catch (err) {
-            solrLogger.info(`Failed to remove open source and cites for team ${team.team_id} from Solr: ${err.message}`);
-        }
+		// Delete open source documents and cites from Solr - wait till after response to not slow down UI
+		try {
+			await fetch(config.SOLR_UPDATE_URL, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ delete: { query: `team_id:${team.team_id}` } }),
+			});
+			solrLogger.info(
+				`Removed open source and cites for team ${team.team_id} from Solr`,
+			);
+		} catch (err) {
+			solrLogger.info(
+				`Failed to remove open source and cites for team ${team.team_id} from Solr: ${err.message}`,
+			);
+		}
 
-        return true;
-    },
+		return true;
+	},
 };
 
 deleteTeam.DELETE.apiDoc = {
-    summary: 'Deletes a team',
-    operationId: 'deleteTeam',
-    parameters: [
-        {
-            in: 'path',
-            name: 'caselist',
-            description: 'Caselist',
-            required: true,
-            schema: { type: 'string' },
-        },
-        {
-            in: 'path',
-            name: 'school',
-            description: 'School',
-            required: true,
-            schema: { type: 'string' },
-        },
-        {
-            in: 'path',
-            name: 'team',
-            description: 'Team',
-            required: true,
-            schema: { type: 'string' },
-        },
-    ],
-    responses: {
-        200: {
-            description: 'Deleted team',
-            content: { '*/*': { schema: { $ref: '#/components/schemas/Team' } } },
-        },
-        default: { $ref: '#/components/responses/ErrorResponse' },
-    },
-    security: [{ cookie: [] }],
+	summary: 'Deletes a team',
+	operationId: 'deleteTeam',
+	parameters: [
+		{
+			in: 'path',
+			name: 'caselist',
+			description: 'Caselist',
+			required: true,
+			schema: { type: 'string' },
+		},
+		{
+			in: 'path',
+			name: 'school',
+			description: 'School',
+			required: true,
+			schema: { type: 'string' },
+		},
+		{
+			in: 'path',
+			name: 'team',
+			description: 'Team',
+			required: true,
+			schema: { type: 'string' },
+		},
+	],
+	responses: {
+		200: {
+			description: 'Deleted team',
+			content: { '*/*': { schema: { $ref: '#/components/schemas/Team' } } },
+		},
+		default: { $ref: '#/components/responses/ErrorResponse' },
+	},
+	security: [{ cookie: [] }],
 };
 
 export default deleteTeam;

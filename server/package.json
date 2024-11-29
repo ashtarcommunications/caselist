@@ -1,64 +1,56 @@
 {
-  "scripts": {
-    "start": "NODE_ENV='production' NODE_OPTIONS='--max_old_space_size=8000' node --use_strict index.js",
-    "dev": "NODE_ENV='development' nodemon --use-strict index.js",
-    "test": "NODE_ENV='test' VITEST_SEGFAULT_RETRY=3 vitest watch",
-    "test:cover": "NODE_ENV='test' VITEST_SEGFAULT_RETRY=3 vitest --coverage",
-    "test:ci": "NODE_ENV='test' VITEST_SEGFAULT_RETRY=3 vitest --run",
-    "lint": "eslint --ignore-path ../.gitignore ."
-  },
-  "name": "caselist-api",
-  "type": "module",
-  "version": "1.0.0",
-  "private": true,
-  "description": "Caselist API",
-  "keywords": [],
-  "homepage": "https://paperlessdebate.com",
-  "author": "Aaron Hardy <support@paperlessdebate.com> (https://paperlessdebate.com)",
-  "license": "GPL3",
-  "main": "index.js",
-  "engines": {
-    "node": ">= 22.11.0"
-  },
-  "dependencies": {
-    "@aws-sdk/client-s3": "^3.433.0",
-    "@speechanddebate/nsda-js-utils": "^1.0.14",
-    "body-parser": "^1.18.3",
-    "bottleneck": "^2.19.0",
-    "cookie-parser": "^1.4.4",
-    "crypto-js": "^4.0.0",
-    "dotenv": "^8.2.0",
-    "express": "^4.19.2",
-    "express-openapi": "^11.0.0",
-    "express-rate-limit": "^3.4.1",
-    "express-slow-down": "^1.4.0",
-    "express-winston": "^3.1.0",
-    "helmet": "^3.16.0",
-    "moment-timezone": "^0.5.25",
-    "mysql2": "^3.11.4",
-    "node-cron": "^3.0.0",
-    "sql-template-strings": "^2.2.2",
-    "uuid": "^3.3.2",
-    "winston": "^3.2.1",
-    "xml2js": "^0.6.2"
-  },
-  "devDependencies": {
-    "@speechanddebate/eslint-config-nsda": "^1.0.20",
-    "@vitest/coverage-v8": "^0.34.6",
-    "aws-sdk-client-mock": "^3.0.0",
-    "chai": "^4.2.0",
-    "eslint": "^8.15.0",
-    "eslint-plugin-import": "^2.25.2",
-    "nodemon": "^3.1.0",
-    "supertest": "^4.0.2",
-    "vitest": "^0.34.6"
-  },
-  "eslintConfig": {
-    "extends": "@speechanddebate/eslint-config-nsda",
-    "parserOptions": {
-      "ecmaVersion": "latest",
-      "sourceType": "module"
-    }
-  },
-  "_id": "caselist-api@1.0.0"
+	"name": "caselist-api",
+	"type": "module",
+	"version": "1.0.0",
+	"private": true,
+	"description": "Caselist API",
+	"keywords": [],
+	"homepage": "https://paperlessdebate.com",
+	"author": "Aaron Hardy <support@paperlessdebate.com> (https://paperlessdebate.com)",
+	"license": "GPL3",
+	"main": "index.js",
+	"engines": {
+		"node": ">= 22.11.0"
+	},
+	"scripts": {
+		"start": "NODE_ENV='production' NODE_OPTIONS='--max_old_space_size=8000' node --use_strict index.js",
+		"dev": "NODE_ENV='development' nodemon --use-strict index.js",
+		"test": "VITEST_SEGFAULT_RETRY=3 vitest watch",
+		"test:cover": "VITEST_SEGFAULT_RETRY=3 vitest --coverage",
+		"test:ci": "VITEST_SEGFAULT_RETRY=3 vitest --run",
+		"test:silent": "VITEST_SEGFAULT_RETRY=3 vitest --silent",
+		"format": "prettier --write --config ../.prettierrc --ignore-path ../.prettierignore .",
+		"format:check": "prettier --check --config ../.prettierrc --ignore-path ../.prettierignore .",
+		"lint": "eslint --max-warnings 0 ."
+	},
+	"dependencies": {
+		"@aws-sdk/client-s3": "^3.433.0",
+		"@speechanddebate/nsda-js-utils": "^2.0.0",
+		"body-parser": "^1.20.3",
+		"bottleneck": "^2.19.5",
+		"cookie-parser": "^1.4.7",
+		"crypto-js": "^4.0.0",
+		"dotenv": "^8.2.0",
+		"express": "^4.21.1",
+		"express-openapi": "^11.0.0",
+		"express-rate-limit": "^3.4.1",
+		"express-slow-down": "^1.4.0",
+		"express-winston": "^3.1.0",
+		"helmet": "^3.16.0",
+		"moment-timezone": "^0.5.25",
+		"mysql2": "^3.11.5",
+		"node-cron": "^3.0.3",
+		"sql-template-strings": "^2.2.2",
+		"uuid": "^3.3.2",
+		"winston": "^3.2.1",
+		"xml2js": "^0.6.2"
+	},
+	"devDependencies": {
+		"@vitest/coverage-v8": "^2.0.5",
+		"aws-sdk-client-mock": "^3.0.0",
+		"nodemon": "^3.1.0",
+		"supertest": "^4.0.2",
+		"vitest": "^2.0.5"
+	},
+	"_id": "caselist-api@1.0.0"
 }

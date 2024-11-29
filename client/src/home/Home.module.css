@@ -1,73 +1,73 @@
 .home {
-    text-align: center;
+	text-align: center;
 }
 
 .caselists {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	align-items: center;
 }
 
 .caselist {
-    background-color: #eee;
-    width: 200px;
-    height: 100px;
-    margin: 20px;
-    padding: 20px;
-    color: var(--white);
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    border-radius: 25px;
+	background-color: #eee;
+	width: 200px;
+	height: 100px;
+	margin: 20px;
+	padding: 20px;
+	color: var(--white);
+	justify-content: center;
+	align-items: center;
+	display: flex;
+	border-radius: 25px;
 }
 
 .caselist:hover {
-    filter: brightness(110%);
-    cursor: pointer;
+	filter: brightness(110%);
+	cursor: pointer;
 }
 
 .caselist a {
-    color: var(--white);
+	color: var(--white);
 }
 
 .ndt {
-    background-color: var(--darkblue);
+	background-color: var(--darkblue);
 }
 .policy {
-    background-color: var(--blue);
+	background-color: var(--blue);
 }
 .ld {
-    background-color: var(--lightblue);
+	background-color: var(--lightblue);
 }
 .pf {
-    background-color: var(--brightblue);
+	background-color: var(--brightblue);
 }
 .nfa {
-    background-color: var(--darkgray);
+	background-color: var(--darkgray);
 }
 .openev {
-    background-color: var(--green);
+	background-color: var(--green);
 }
 
 .sponsors {
-    margin-top: 100px;
+	margin-top: 100px;
 }
 
 .flex {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	align-items: center;
 }
 
 .sponsor {
-    font-size: 12px;
-    cursor: pointer;
-    margin: 20px 20px;
-    padding: 20px;
+	font-size: 12px;
+	cursor: pointer;
+	margin: 20px 20px;
+	padding: 20px;
 }
 
 .sponsor img {
-    height: 50px;
+	height: 50px;
 }

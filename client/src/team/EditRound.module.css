@@ -1,46 +1,46 @@
 .error {
-    border: 1px solid var(--red) !important;
+	border: 1px solid var(--red) !important;
 }
 
 .info {
-    color: var(--brightblue);
-    font-size: 14px;
-    margin: 0px 5px;
-    cursor: pointer;
+	color: var(--brightblue);
+	font-size: 14px;
+	margin: 0px 5px;
+	cursor: pointer;
 }
 
 .report {
-    min-width: 400px;
-    min-height: 150px;
+	min-width: 400px;
+	min-height: 150px;
 }
 
 .trash {
-    color: var(--red);
-    cursor: pointer;
-    margin-left: 20px;
+	color: var(--red);
+	cursor: pointer;
+	margin-left: 20px;
 }
 
 .buttons {
-    margin-top: 20px;
+	margin-top: 20px;
 }
 
 .submit {
-    background-color: var(--green);
-    color: var(--white);
-    border-radius: 20px;
+	background-color: var(--green);
+	color: var(--white);
+	border-radius: 20px;
 }
 
 .cancel {
-    background-color: var(--red);
-    color: var(--white);
-    margin-left: 20px;
-    border-radius: 20px;
+	background-color: var(--red);
+	color: var(--white);
+	margin-left: 20px;
+	border-radius: 20px;
 }
 
 .mobile .report {
-    min-width: auto;
+	min-width: auto;
 }
 
 .mobile .submit {
-    margin: 0 !important;
+	margin: 0 !important;
 }

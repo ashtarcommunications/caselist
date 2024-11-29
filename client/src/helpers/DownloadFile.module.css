@@ -1,11 +1,11 @@
 .download {
-    color: var(--brightblue);
-    cursor: pointer;
-    margin: 0px 10px;
-    font-size: 18px;
+	color: var(--brightblue);
+	cursor: pointer;
+	margin: 0px 10px;
+	font-size: 18px;
 }
 
 .link {
-    color: var(--brightblue);
-    cursor: pointer;
+	color: var(--brightblue);
+	cursor: pointer;
 }

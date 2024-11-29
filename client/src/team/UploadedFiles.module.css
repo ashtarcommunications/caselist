@@ -1,9 +1,9 @@
 .trash {
-    color: var(--red);
-    cursor: pointer;
-    margin-left: 20px
+	color: var(--red);
+	cursor: pointer;
+	margin-left: 20px;
 }
 
 .computed {
-    color: var(--orange);
+	color: var(--orange);
 }

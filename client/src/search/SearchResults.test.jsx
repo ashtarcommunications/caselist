@@ -1,64 +1,111 @@
 import React from 'react';
-import { assert } from 'chai';
-import { useParams } from 'react-router-dom';
-import { vi } from 'vitest';
+import { assert, vi } from 'vitest';
 
 import { wrappedRender as render, screen, waitFor } from '../setupTests';
-// eslint-disable-next-line import/named
-import { loadSearch } from '../helpers/api';
+import { loadSearch } from '../helpers/api.js';
 
 import SearchResults from './SearchResults';
 
-vi.mock('react-router-dom', async () => {
-    const actual = await vi.importActual('react-router-dom');
-    return {
-        ...actual,
-        useParams: vi.fn().mockImplementation(() => ({ caselist: 'testcaselist', school: 'testschool', team: 'testteam' })),
-    };
+// useSearch from wouter doesn't work in testing
+// https://github.com/molefrog/wouter/issues/447
+vi.mock('wouter', async () => {
+	const actual = await vi.importActual('wouter');
+	return {
+		...actual,
+		useSearch: () => 'q=search',
+	};
 });
 
 describe('SearchResults', () => {
-    it('Renders search results', async () => {
-        render(<SearchResults />);
-        await waitFor(() => assert.isOk(screen.queryByText(/Search Results/), 'Renders a heading'));
-        await waitFor(() => assert.isOk(document.querySelector('input'), 'Renders a search form'));
-        await waitFor(() => assert.isOk(screen.queryAllByText(/Test Team/), 'Renders a team result'));
-        await waitFor(() => assert.isOk(screen.queryByText(/Test Snippet/), 'Renders a snippet'));
-        await waitFor(() => assert.strictEqual(loadSearch.mock.calls.length, 1, 'Fetched search results'));
+	it('Renders search results', async () => {
+		render(<SearchResults />, {
+			route: '/:caselist/:school/:team',
+			path: '/testcaselist/testschool/testteam',
+		});
+		await waitFor(() =>
+			assert.isOk(screen.queryAllByText(/Search Results/), 'Renders a heading'),
+		);
+		await waitFor(() =>
+			assert.isOk(document.querySelector('input'), 'Renders a search form'),
+		);
+		await waitFor(() =>
+			assert.isOk(screen.queryAllByText(/Test Team/), 'Renders a team result'),
+		);
+		await waitFor(() =>
+			assert.isOk(screen.queryAllByText(/Test Snippet/), 'Renders a snippet'),
+		);
+		await waitFor(() =>
+			assert.strictEqual(
+				loadSearch.mock.calls.length,
+				1,
+				'Fetched search results',
+			),
+		);
 
-        loadSearch.mockImplementation(() => ([{ type: 'cite', title: 'Test Cite', path: '/' }]));
-        render(<SearchResults />);
-        await waitFor(() => assert.isOk(screen.queryByText(/Test Cite/), 'Renders a cite result'));
+		loadSearch.mockImplementation(() => [
+			{ type: 'cite', title: 'Test Cite', path: '/' },
+		]);
+		render(<SearchResults />, {
+			route: '/:caselist/:school/:team',
+			path: '/testcaselist/testschool/testteam',
+		});
+		await waitFor(() =>
+			assert.isOk(screen.queryByText(/Test Cite/), 'Renders a cite result'),
+		);
 
-        loadSearch.mockImplementation(() => ([{ type: 'file', title: 'Test File', path: '/', download_path: '/' }]));
-        render(<SearchResults />);
-        await waitFor(() => assert.isOk(screen.queryAllByText(/File/), 'Renders a file result'));
-    });
+		loadSearch.mockImplementation(() => [
+			{ type: 'file', title: 'Test File', path: '/', download_path: '/' },
+		]);
+		render(<SearchResults />, {
+			route: '/:caselist/:school/:team',
+			path: '/testcaselist/testschool/testteam',
+		});
+		await waitFor(() =>
+			assert.isOk(screen.queryAllByText(/File/), 'Renders a file result'),
+		);
+	});
 
-    it('Renders nothing without a caselist or year', async () => {
-        useParams.mockImplementation(() => ({ caselist: null, year: null }));
-        const view = render(<SearchResults />);
-        assert.isNotOk(view.firstChild, 'Renders nothing');
-    });
+	it('Renders nothing without a caselist or year', async () => {
+		const view = render(<SearchResults />);
+		render(<SearchResults />, {
+			route: '/:caselist/:school/:team',
+			path: '/?q=search',
+		});
+		assert.isNotOk(view.firstChild, 'Renders nothing');
+	});
 
-    it('Renders a message without results', async () => {
-        useParams.mockImplementation(() => ({ caselist: 'testcaselist' }));
-        loadSearch.mockImplementation(() => ([]));
-        render(<SearchResults />);
-        await waitFor(() => assert.isOk(screen.queryByText(/No results/), 'No results warning'));
-    });
+	it('Renders a message without results', async () => {
+		loadSearch.mockImplementation(() => []);
+		render(<SearchResults />, {
+			route: '/:caselist',
+			path: '/testcaselist',
+		});
+		await waitFor(() =>
+			assert.isOk(screen.queryByText(/No results/), 'No results warning'),
+		);
+	});
 
-    it('Renders an error message on results failure', async () => {
-        useParams.mockImplementation(() => ({ caselist: 'testcaselist' }));
-        loadSearch.mockRejectedValue({ message: 'Failed to load search results' });
-        render(<SearchResults />);
-        await waitFor(() => assert.isOk(screen.queryByTestId('loader'), 'Renders a loader'));
-        await waitFor(() => assert.isOk(screen.queryByText(/Search Results/), 'Renders a heading'));
-        await waitFor(() => assert.isOk(screen.queryByText(/Failed to load search results/), 'Failure warning'));
-    });
+	it('Renders an error message on results failure', async () => {
+		loadSearch.mockRejectedValue({ message: 'Failed to load search results' });
+		render(<SearchResults />, {
+			route: '/:caselist',
+			path: '/testcaselist',
+		});
+		await waitFor(() =>
+			assert.isOk(screen.queryByTestId('loader'), 'Renders a loader'),
+		);
+		await waitFor(() =>
+			assert.isOk(screen.queryAllByText(/Search Results/), 'Renders a heading'),
+		);
+		await waitFor(() =>
+			assert.isOk(
+				screen.queryByText(/Failed to load search results/),
+				'Failure warning',
+			),
+		);
+	});
 
-    afterEach(() => {
-        loadSearch.mockClear();
-        useParams.mockClear();
-    });
+	afterEach(() => {
+		loadSearch.mockClear();
+	});
 });

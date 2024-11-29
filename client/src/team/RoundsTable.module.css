@@ -1,93 +1,99 @@
 .rounds-table {
-    margin-bottom: 40px !important;
+	margin-bottom: 40px !important;
 }
 
 .calendar {
-    color: var(--brightblue);
-    cursor: pointer;
-    margin: 0px 10px;
-    font-size: 18px;
+	color: var(--brightblue);
+	cursor: pointer;
+	margin: 0px 10px;
+	font-size: 18px;
 }
 
 .report-header {
-    vertical-align: bottom;
+	vertical-align: bottom;
 }
 
 .toggleall {
-    margin-left: 20px;
-    font-size: 60%;
-    background-color: var(--lightblue);
-    color: var(--white);
-    border-radius: 20px;
+	margin-left: 20px;
+	font-size: 60%;
+	background-color: var(--lightblue);
+	color: var(--white);
+	border-radius: 20px;
 }
 
 .report {
-    display: flex;
-    align-items: center;
-    line-height: 1.5em;
+	display: flex;
+	align-items: center;
+	line-height: 1.5em;
 }
 
 .report div {
-    display: inline-block;
-    width: 200px;
+	display: inline-block;
+	width: 200px;
 }
 
 .reportopen {
-    white-space: pre-wrap;
+	white-space: pre-wrap;
 }
 
 .reportclosed {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .caret {
-    color: var(--blue);
-    cursor: pointer;
-    margin-left: 5px;
+	color: var(--blue);
+	cursor: pointer;
+	margin-left: 5px;
 }
 
 .center {
-    text-align: center;
+	text-align: center;
 }
 
 .video {
-    color: var(--brightblue);
-    cursor: pointer;
-    margin: 0px 10px;
-    font-size: 18px;
+	color: var(--brightblue);
+	cursor: pointer;
+	margin: 0px 10px;
+	font-size: 18px;
 }
 
 .trash {
-    color: var(--red);
-    cursor: pointer;
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 0s 1s, opacity 1s linear;
-    margin: 0px 10px;
-    font-size: 18px;
+	color: var(--red);
+	cursor: pointer;
+	visibility: hidden;
+	opacity: 0;
+	transition:
+		visibility 0s 1s,
+		opacity 1s linear;
+	margin: 0px 10px;
+	font-size: 18px;
 }
 
 .edit {
-    color: var(--yellow);
-    cursor: pointer;
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 0s 1s, opacity 1s linear;
-    margin: 0px 10px;
-    font-size: 18px;
+	color: var(--yellow);
+	cursor: pointer;
+	visibility: hidden;
+	opacity: 0;
+	transition:
+		visibility 0s 1s,
+		opacity 1s linear;
+	margin: 0px 10px;
+	font-size: 18px;
 }
 
 .rounds-table tr:hover .trash,
 .rounds-table tr:hover .edit {
-    visibility: visible;
-    opacity: 1;
-    transition: visibility 0s, opacity 2s linear;
+	visibility: visible;
+	opacity: 1;
+	transition:
+		visibility 0s,
+		opacity 2s linear;
 }
 
 .mobile .trash,
 .mobile .edit {
-    opacity: 1;
-    visibility: visible;
+	opacity: 1;
+	visibility: visible;
 }

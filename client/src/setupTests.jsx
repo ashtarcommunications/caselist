@@ -2,33 +2,37 @@
 import React from 'react';
 import { vi } from 'vitest';
 import { render } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import { Router, Route } from 'wouter';
+import { memoryLocation } from 'wouter/memory-location';
 
 import { ProvideAuth } from './helpers/auth';
 import { ProvideStore } from './helpers/store';
 
 vi.mock('./helpers/auth');
 vi.mock('./helpers/store');
-vi.mock('./helpers/api');
-vi.mock('./helpers/useScript');
+vi.mock('./helpers/api.js');
+vi.mock('./helpers/useScript.js');
 
 global.window.scrollTo = () => true;
 global.window.URL.createObjectURL = () => '';
 global.navigator.clipboard = {};
 global.navigator.clipboard.writeText = vi.fn();
 
-export const wrappedRender = (component) => {
-    return render(
-        <ProvideAuth>
-            <MemoryRouter initialEntries={['/?q=test']}>
-                <ProvideStore>
-                    {component}
-                </ProvideStore>
-            </MemoryRouter>
-            <ToastContainer />
-        </ProvideAuth>
-    );
+export let router;
+
+export const wrappedRender = (component, options = {}) => {
+	router = memoryLocation({ path: options.path, record: true });
+	return render(
+		<ProvideAuth>
+			<ProvideStore>
+				<Router hook={router.hook}>
+					<Route path={options.route}>{component}</Route>
+				</Router>
+			</ProvideStore>
+			<ToastContainer />
+		</ProvideAuth>,
+	);
 };
 
 export * from '@testing-library/react';

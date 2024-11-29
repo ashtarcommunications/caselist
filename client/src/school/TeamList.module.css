@@ -1,66 +1,74 @@
 .teamlist ul {
-    list-style-type: none;
+	list-style-type: none;
 }
 .center {
-    text-align: center;
+	text-align: center;
 }
 
 .link {
-    font-size: 18px;
-    color: var(--brightblue);
-    cursor: pointer;
+	font-size: 18px;
+	color: var(--brightblue);
+	cursor: pointer;
 }
 
 .timestamp {
-    font-size: 10px;
-    color: var(--darkgray);
+	font-size: 10px;
+	color: var(--darkgray);
 }
 
 .schoolname {
-    margin-bottom: 0;
+	margin-bottom: 0;
 }
 
 .hover-links {
-    display: inline;
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 0s 1s, opacity 1s linear;
+	display: inline;
+	visibility: hidden;
+	opacity: 0;
+	transition:
+		visibility 0s 1s,
+		opacity 1s linear;
 }
 
 .hover-links a {
-    margin-left: 40px;
-    color: var(--darkgray);
+	margin-left: 40px;
+	color: var(--darkgray);
 }
 
 .team-table tr:hover .hover-links {
-    visibility: visible;
-    opacity: 1;
-    transition: visibility 0s, opacity 0s linear;
+	visibility: visible;
+	opacity: 1;
+	transition:
+		visibility 0s,
+		opacity 0s linear;
 }
 
 .trash {
-    color: var(--red);
-    cursor: pointer;
-    visibility: hidden;
-    opacity: 0;
-    font-size: 18px;
-    margin: 0px 10px;
-    transition: visibility 0s 1s, opacity 1s linear;
+	color: var(--red);
+	cursor: pointer;
+	visibility: hidden;
+	opacity: 0;
+	font-size: 18px;
+	margin: 0px 10px;
+	transition:
+		visibility 0s 1s,
+		opacity 1s linear;
 }
 
 .team-table tr:hover .trash {
-    visibility: visible;
-    opacity: 1;
-    transition: visibility 0s, opacity 2s linear;
+	visibility: visible;
+	opacity: 1;
+	transition:
+		visibility 0s,
+		opacity 2s linear;
 }
 
 .mobile .trash {
-    opacity: 1;
-    visibility: visible;
+	opacity: 1;
+	visibility: visible;
 }
 
 .showhistory {
-    font-size: 18px;
-    margin-left: 10px;
-    cursor: pointer;
+	font-size: 18px;
+	margin-left: 10px;
+	cursor: pointer;
 }

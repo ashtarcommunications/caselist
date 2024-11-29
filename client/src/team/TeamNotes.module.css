@@ -1,63 +1,63 @@
 .notes {
-    display: flex;
-    align-items: center;
-    margin-top: 20px;
+	display: flex;
+	align-items: center;
+	margin-top: 20px;
 }
 
 .notes h4 {
-    margin: 0;
+	margin: 0;
 }
 
 .notes textarea {
-    width: 500px;
-    min-height: 200px;
-    height: fit-content;
+	width: 500px;
+	min-height: 200px;
+	height: fit-content;
 }
 
 .info {
-    color: var(--brightblue);
-    font-size: 14px;
-    margin: 0px 5px;
-    cursor: pointer;
+	color: var(--brightblue);
+	font-size: 14px;
+	margin: 0px 5px;
+	cursor: pointer;
 }
 
 .shownotes {
-    font-size: 18px;
-    margin-left: 10px;
-    cursor: pointer;
+	font-size: 18px;
+	margin-left: 10px;
+	cursor: pointer;
 }
 
 .warning {
-    font-size: 12px;
-    color: var(--red);
+	font-size: 12px;
+	color: var(--red);
 }
 
 .notes-buttons {
-    margin: 20px 0px;
+	margin: 20px 0px;
 }
 
 .save {
-    background-color: var(--brightblue);
-    color: var(--white);
-    font-size: 14px;
-    margin: 0px 5px;
-    cursor: pointer;
-    border-radius: 20px;
+	background-color: var(--brightblue);
+	color: var(--white);
+	font-size: 14px;
+	margin: 0px 5px;
+	cursor: pointer;
+	border-radius: 20px;
 }
 
 .cancel {
-    background-color: var(--red);
-    color: var(--white);
-    font-size: 14px;
-    margin: 0px 5px;
-    cursor: pointer;
-    border-radius: 20px;
+	background-color: var(--red);
+	color: var(--white);
+	font-size: 14px;
+	margin: 0px 5px;
+	cursor: pointer;
+	border-radius: 20px;
 }
 
 .mobile.notes textarea {
-    width: 100%;
+	width: 100%;
 }
 
 .mobile .save {
-    margin: 0px 5px !important;
+	margin: 0px 5px !important;
 }

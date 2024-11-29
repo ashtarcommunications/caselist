@@ -7,8 +7,8 @@ import log from '../log/insertEventLog.js';
 import config from '../../../config.js';
 
 const postRound = {
-    POST: async (req, res) => {
-        const [team] = await query(SQL`
+	POST: async (req, res) => {
+		const [team] = await query(SQL`
             SELECT C.archived, C.event
             FROM teams T
             INNER JOIN schools S ON S.school_id = T.school_id
@@ -18,62 +18,79 @@ const postRound = {
             AND LOWER(T.name) = LOWER(${req.params.team})
         `);
 
-        if (!team) { return res.status(400).json({ message: 'Team not found' }); }
-        if (team.archived) { return res.status(403).json({ message: 'Caselist archived, no modifications allowed' }); }
+		if (!team) {
+			return res.status(400).json({ message: 'Team not found' });
+		}
+		if (team.archived) {
+			return res
+				.status(403)
+				.json({ message: 'Caselist archived, no modifications allowed' });
+		}
 
-        let uploadDir;
-        let filename;
-        let filePath;
+		let uploadDir;
+		let filename;
+		let filePath;
 
-        if (req.body.opensource && req.body.filename) {
-            // Convert base64 encoded file back into a buffer for saving
-            let arrayBuffer;
-            try {
-                arrayBuffer = Buffer.from(req.body.opensource, 'base64');
-            } catch (err) {
-                return res.status(400).json({ message: 'Invalid open source file' });
-            }
+		if (req.body.opensource && req.body.filename) {
+			// Convert base64 encoded file back into a buffer for saving
+			let arrayBuffer;
+			try {
+				arrayBuffer = Buffer.from(req.body.opensource, 'base64');
+			} catch (err) {
+				return res.status(400).json({ message: 'Invalid open source file' });
+			}
 
-            // Scrub extra periods in the filename
-            filename = req?.body?.filename || '';
-            const numPeriods = filename.split('.').length - 1;
-            if (numPeriods > 1) {
-                const lastPeriod = filename.lastIndexOf('.');
-                filename = filename.replaceAll('.', '');
-                filename = `${filename.slice(0, lastPeriod - (numPeriods - 1))}.${filename.slice(lastPeriod - (numPeriods - 1))}`;
-            }
+			// Scrub extra periods in the filename
+			filename = req?.body?.filename || '';
+			const numPeriods = filename.split('.').length - 1;
+			if (numPeriods > 1) {
+				const lastPeriod = filename.lastIndexOf('.');
+				filename = filename.replaceAll('.', '');
+				filename = `${filename.slice(0, lastPeriod - (numPeriods - 1))}.${filename.slice(lastPeriod - (numPeriods - 1))}`;
+			}
 
-            // Use the extension from the provided file, but disallow anything weird
-            let extension = path.extname(filename);
-            if (['.docx', '.doc', '.pdf', '.rtf', '.txt'].indexOf(extension) === -1) {
-                extension = '';
-            }
+			// Use the extension from the provided file, but disallow anything weird
+			let extension = path.extname(filename);
+			if (['.docx', '.doc', '.pdf', '.rtf', '.txt'].indexOf(extension) === -1) {
+				extension = '';
+			}
 
-            // Construct a new filename
-            const tourn = req.body.tournament.trim()
-                .replaceAll('/', '')
-                .replaceAll('\\', '')
-                .replaceAll('  ', ' ')
-                .replaceAll(' ', '-');
-            filename = `${req.params.school}-${req.params.team}-`;
-            filename += `${displaySide(req.body.side, team.event)}-`;
-            filename += `${tourn}-`;
-            filename += req.body.round === 'All' ? 'All-Rounds' : roundName(req.body.round.trim()).replaceAll(' ', '-');
-            filename += `${extension}`;
+			// Construct a new filename
+			const tourn = req.body.tournament
+				.trim()
+				.replaceAll('/', '')
+				.replaceAll('\\', '')
+				.replaceAll('  ', ' ')
+				.replaceAll(' ', '-');
+			filename = `${req.params.school}-${req.params.team}-`;
+			filename += `${displaySide(req.body.side, team.event)}-`;
+			filename += `${tourn}-`;
+			filename +=
+				req.body.round === 'All'
+					? 'All-Rounds'
+					: roundName(req.body.round.trim()).replaceAll(' ', '-');
+			filename += `${extension}`;
 
-            uploadDir = `${req.params.caselist}/${req.params.school}/${req.params.team}`;
-            filePath = `${uploadDir}/${filename}`;
-            try {
-                await fs.promises.mkdir(`${config.UPLOAD_DIR}/${uploadDir}`, { recursive: true });
-                await fs.promises.writeFile(`${config.UPLOAD_DIR}/${filePath}`, arrayBuffer);
-            } catch (err) {
-                return res.status(500).json({ message: 'Failed to upload open source file' });
-            }
-        }
+			uploadDir = `${req.params.caselist}/${req.params.school}/${req.params.team}`;
+			filePath = `${uploadDir}/${filename}`;
+			try {
+				await fs.promises.mkdir(`${config.UPLOAD_DIR}/${uploadDir}`, {
+					recursive: true,
+				});
+				await fs.promises.writeFile(
+					`${config.UPLOAD_DIR}/${filePath}`,
+					arrayBuffer,
+				);
+			} catch (err) {
+				return res
+					.status(500)
+					.json({ message: 'Failed to upload open source file' });
+			}
+		}
 
-        let round;
-        try {
-            round = await query(SQL`
+		let round;
+		try {
+			round = await query(SQL`
                 INSERT INTO rounds (team_id, side, tournament, round, opponent, judge, report, opensource, video, tourn_id, external_id, created_by_id, updated_by_id)
                     SELECT
                         T.team_id,
@@ -96,7 +113,7 @@ const postRound = {
                     AND LOWER(S.name) = LOWER(${req.params.school})
                     AND LOWER(T.name) = LOWER(${req.params.team})
             `);
-            await query(SQL`
+			await query(SQL`
                 INSERT INTO rounds_history (
                     round_id,
                     version,
@@ -139,23 +156,24 @@ const postRound = {
                     FROM rounds R
                     WHERE R.round_id = ${round.insertId}
             `);
-        } catch (err) {
-            return res.status(500).json({ message: 'Failed to create round' });
-        }
+		} catch (err) {
+			return res.status(500).json({ message: 'Failed to create round' });
+		}
 
-        let cites = req.body.cites || [];
-        cites = cites.filter(c => (
-            c.title
-            && c.cites
-            && c.title.trim().length > 0
-            && c.cites.trim().length > 0
-        ));
+		let cites = req.body.cites || [];
+		cites = cites.filter(
+			(c) =>
+				c.title &&
+				c.cites &&
+				c.title.trim().length > 0 &&
+				c.cites.trim().length > 0,
+		);
 
-        const promises = [];
-        if (cites.length > 0) {
-            cites.forEach(c => {
-                promises.push(
-                    query(SQL`
+		const promises = [];
+		if (cites.length > 0) {
+			cites.forEach((c) => {
+				promises.push(
+					query(SQL`
                         INSERT INTO cites (round_id, title, cites, created_by_id, updated_by_id)
                         VALUES (
                                 ${round.insertId},
@@ -164,8 +182,8 @@ const postRound = {
                                 ${req.user_id},
                                 ${req.user_id}
                         )
-                    `).then(newCite => {
-                        return query(SQL`
+                    `).then((newCite) => {
+						return query(SQL`
                             INSERT INTO cites_history (cite_id, version, round_id, title, cites, created_at, created_by_id, updated_at, updated_by_id, event)
                             SELECT
                                 CT.cite_id,
@@ -181,66 +199,66 @@ const postRound = {
                             FROM cites CT
                             WHERE CT.cite_id = ${newCite.insertId}
                         `);
-                    }),
-                );
-            });
-        }
-        try {
-            await Promise.all(promises);
-        } catch (err) {
-            return res.status(500).json({ message: 'Failed to create cites' });
-        }
+					}),
+				);
+			});
+		}
+		try {
+			await Promise.all(promises);
+		} catch (err) {
+			return res.status(500).json({ message: 'Failed to create cites' });
+		}
 
-        await log({
-            user_id: req.user_id,
-            tag: 'round-add',
-            description: `Created round #${round.insertId} for ${req.params.school} ${req.params.team} in ${req.params.caselist}`,
-            round_id: parseInt(round.insertId),
-        });
+		await log({
+			user_id: req.user_id,
+			tag: 'round-add',
+			description: `Created round #${round.insertId} for ${req.params.school} ${req.params.team} in ${req.params.caselist}`,
+			round_id: parseInt(round.insertId),
+		});
 
-        return res.status(201).json({ message: 'Round successfully created' });
-    },
+		return res.status(201).json({ message: 'Round successfully created' });
+	},
 };
 
 postRound.POST.apiDoc = {
-    summary: 'Creates a round',
-    operationId: 'postRound',
-    parameters: [
-        {
-            in: 'path',
-            name: 'caselist',
-            description: 'Caselist',
-            required: true,
-            schema: { type: 'string' },
-        },
-        {
-            in: 'path',
-            name: 'school',
-            description: 'School',
-            required: true,
-            schema: { type: 'string' },
-        },
-        {
-            in: 'path',
-            name: 'team',
-            description: 'Team',
-            required: true,
-            schema: { type: 'string' },
-        },
-    ],
-    requestBody: {
-        description: 'The round to create',
-        required: true,
-        content: { '*/*': { schema: { $ref: '#/components/schemas/Round' } } },
-    },
-    responses: {
-        201: {
-            description: 'Created round',
-            content: { '*/*': { schema: { $ref: '#/components/schemas/Round' } } },
-        },
-        default: { $ref: '#/components/responses/ErrorResponse' },
-    },
-    security: [{ cookie: [] }],
+	summary: 'Creates a round',
+	operationId: 'postRound',
+	parameters: [
+		{
+			in: 'path',
+			name: 'caselist',
+			description: 'Caselist',
+			required: true,
+			schema: { type: 'string' },
+		},
+		{
+			in: 'path',
+			name: 'school',
+			description: 'School',
+			required: true,
+			schema: { type: 'string' },
+		},
+		{
+			in: 'path',
+			name: 'team',
+			description: 'Team',
+			required: true,
+			schema: { type: 'string' },
+		},
+	],
+	requestBody: {
+		description: 'The round to create',
+		required: true,
+		content: { '*/*': { schema: { $ref: '#/components/schemas/Round' } } },
+	},
+	responses: {
+		201: {
+			description: 'Created round',
+			content: { '*/*': { schema: { $ref: '#/components/schemas/Round' } } },
+		},
+		default: { $ref: '#/components/responses/ErrorResponse' },
+	},
+	security: [{ cookie: [] }],
 };
 
 export default postRound;

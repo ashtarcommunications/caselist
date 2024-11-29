@@ -1,48 +1,48 @@
 .citetitle {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 }
 
 .citetitle input {
-    min-width: 400px;
+	min-width: 400px;
 }
 
 .citetitle svg {
-    margin-left: auto;
+	margin-left: auto;
 }
 
 .caret {
-    width: 100%;
-    cursor: pointer;
+	width: 100%;
+	cursor: pointer;
 }
 
 .caret label {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .caret label input {
-    display: none;
+	display: none;
 }
 
 .caret svg {
-    font-size: 16px;
-    margin-left: 5px;
+	font-size: 16px;
+	margin-left: 5px;
 }
 
 .trash {
-    color: var(--red);
-    cursor: pointer;
+	color: var(--red);
+	cursor: pointer;
 }
 
 .syntax {
-  color: var(--red);
-  font-size: 12px;
+	color: var(--red);
+	font-size: 12px;
 }
 
 .mobile .citetitle input {
-    min-width: auto;
+	min-width: auto;
 }
 
 .mobile .citetitle {
-    margin-bottom: 20px;
+	margin-bottom: 20px;
 }

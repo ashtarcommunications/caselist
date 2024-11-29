@@ -1,41 +1,42 @@
 .login {
-    margin-left: auto;
-    margin-right: auto;
+	margin-left: auto;
+	margin-right: auto;
 }
 
-.login h1, .login p {
-    text-align: center;
+.login h1,
+.login p {
+	text-align: center;
 }
 
-.login input[type="checkbox"] {
-    margin-top: 20px;
+.login input[type='checkbox'] {
+	margin-top: 20px;
 }
 
 .login label {
-    text-align: left;
+	text-align: left;
 }
 
 .button {
-    margin-top: 20px;
-    background-color: var(--green);
-    color: var(--white);
+	margin-top: 20px;
+	background-color: var(--green);
+	color: var(--white);
 }
 
 .login-form {
-    width: 200px;
-    margin-left: auto;
-    margin-right: auto;
+	width: 200px;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .remember {
-    font-size: 12px;
+	font-size: 12px;
 }
 
 .error {
-    color: var(--red);
-    font-size: 14px;
+	color: var(--red);
+	font-size: 14px;
 }
 
 .invalid {
-    border: 1px solid var(--red) !important;
+	border: 1px solid var(--red) !important;
 }

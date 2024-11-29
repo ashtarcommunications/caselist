@@ -1,56 +1,56 @@
 .sidebar {
-    text-align: left;
-    width: 200px;
-    background: var(--lightgray);
-    padding: 5px 20px 20px 20px;
+	text-align: left;
+	width: 200px;
+	background: var(--lightgray);
+	padding: 5px 20px 20px 20px;
 }
 
 .sidebar ul {
-    list-style-type: none;
-    margin: 0 0 10px 0;
-    padding: 0;
+	list-style-type: none;
+	margin: 0 0 10px 0;
+	padding: 0;
 }
 .sidebar li {
-    margin: 0;
-    padding: 0;
+	margin: 0;
+	padding: 0;
 }
 
 .sidebar a {
-    text-decoration: none;
-    color: var(--brightblue);
-    font-size: 12px;
-    vertical-align: middle;
-} 
+	text-decoration: none;
+	color: var(--brightblue);
+	font-size: 12px;
+	vertical-align: middle;
+}
 
 .add-school {
-    background-color: var(--green);
-    color: var(--white);
-    border-radius: 20px;
+	background-color: var(--green);
+	color: var(--white);
+	border-radius: 20px;
 }
 
 .toggle {
-    display: flex;
-    font-size: 24px;
+	display: flex;
+	font-size: 24px;
 }
 .toggle span {
-    margin-left: auto;
-    cursor: pointer;
+	margin-left: auto;
+	cursor: pointer;
 }
 .sidebar-collapsed {
-    width: 5px;
+	width: 5px;
 }
 .sidebar-contents-collapsed * {
-    display: none;
+	display: none;
 }
 
 .archived {
-    color: var(--red);
+	color: var(--red);
 }
 
 .schools {
-    margin-top: 20px;
+	margin-top: 20px;
 }
 
 .filter {
-    max-width: 100%;
+	max-width: 100%;
 }

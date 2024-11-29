@@ -3,6 +3,7 @@
 // Invoke from CLI like:
 // node --experimental-specifier-resolution=node v1/migration/fixNegOpenSource.js
 /* istanbul ignore file */
+/* eslint-disable */
 
 import Bottleneck from 'bottleneck';
 import fs from 'fs';
@@ -11,7 +12,7 @@ import SQL from 'sql-template-strings';
 import { query, pool } from '../helpers/mysql.js';
 
 const fixNegOpenSource = async () => {
-    const negRounds = await query(SQL`
+	const negRounds = await query(SQL`
         SELECT
             R.round_id AS 'round_id',
             C.name AS 'caselist',
@@ -25,45 +26,47 @@ const fixNegOpenSource = async () => {
         INNER JOIN caselists C ON C.caselist_id = S.caselist_id
         WHERE side = 'N' and opensource IS NULL
     `);
-    console.log(`Found ${negRounds.length} missing Neg rounds`);
+	console.log(`Found ${negRounds.length} missing Neg rounds`);
 
-    const limiter = new Bottleneck({ maxConcurrent: 1, minTime: 10 });
+	const limiter = new Bottleneck({ maxConcurrent: 1, minTime: 10 });
 
-    console.log('Starting fixing neg open source...');
+	console.log('Starting fixing neg open source...');
 
-    /* eslint-disable no-restricted-syntax */
-    for (const r of negRounds) {
-        console.log(`Fixing round ${r.round_id} for ${r.caselist}/${r.school}/${r.team}...`);
+	/* eslint-disable no-restricted-syntax */
+	for (const r of negRounds) {
+		console.log(
+			`Fixing round ${r.round_id} for ${r.caselist}/${r.school}/${r.team}...`,
+		);
 
-        /* eslint-disable no-await-in-loop */
-        /* eslint-disable no-loop-func */
-        await limiter.schedule(async () => {
-            const path = `${cwd()}/uploads/${r.caselist}/${r.school}/${r.team}`;
-            try {
-                const files = await fs.promises.readdir(path);
-                for (const f of files) {
-                    if (
-                        f.includes(`-Neg-`)
-                        && f.includes(`-${r.tournament.replaceAll(' ', '%20')}-`)
-                        && (f.includes(`-Round${r.round}.`) || f.includes(`-${r.round}.`))
-                    ) {
-                        console.log(`Found match for ${r.tournament} ${r.round}: ${f}`);
-                        const opensource = `${r.caselist}/${r.school}/${r.team}/${f}`;
-                        await query(SQL`
+		/* eslint-disable no-await-in-loop */
+		/* eslint-disable no-loop-func */
+		await limiter.schedule(async () => {
+			const path = `${cwd()}/uploads/${r.caselist}/${r.school}/${r.team}`;
+			try {
+				const files = await fs.promises.readdir(path);
+				for (const f of files) {
+					if (
+						f.includes(`-Neg-`) &&
+						f.includes(`-${r.tournament.replaceAll(' ', '%20')}-`) &&
+						(f.includes(`-Round${r.round}.`) || f.includes(`-${r.round}.`))
+					) {
+						console.log(`Found match for ${r.tournament} ${r.round}: ${f}`);
+						const opensource = `${r.caselist}/${r.school}/${r.team}/${f}`;
+						await query(SQL`
                             UPDATE rounds SET opensource = ${opensource} WHERE round_id = ${r.round_id} AND opensource IS NULL LIMIT 1
                         `);
-                    }
-                }
-            } catch (err) {
-                // Do nothing
-            }
-        });
-    }
+					}
+				}
+			} catch (err) {
+				// Do nothing
+			}
+		});
+	}
 
-    console.log('Finished fixing neg open source.');
-    pool.end();
+	console.log('Finished fixing neg open source.');
+	pool.end();
 
-    return true;
+	return true;
 };
 
 fixNegOpenSource();

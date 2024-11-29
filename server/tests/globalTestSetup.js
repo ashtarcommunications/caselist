@@ -3,10 +3,10 @@ import testTeardown from './testTeardown.js';
 import { pool } from '../v1/helpers/mysql.js';
 
 export const setup = async () => {
-    await testFixtures();
+	await testFixtures();
 };
 
 export const teardown = async () => {
-    await testTeardown();
-    await pool.end();
+	await testTeardown();
+	await pool.end();
 };

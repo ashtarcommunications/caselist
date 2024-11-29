@@ -1,78 +1,78 @@
 .error {
-    border: 1px solid var(--red) !important;
+	border: 1px solid var(--red) !important;
 }
 
 .tournament {
-    min-width: 400px;
+	min-width: 400px;
 }
 
 .opponent {
-    min-width: 400px;
+	min-width: 400px;
 }
 
 .judge {
-    min-width: 400px;
+	min-width: 400px;
 }
 
 .video {
-    min-width: 400px;
+	min-width: 400px;
 }
 
 .info {
-    color: var(--brightblue);
-    font-size: 14px;
-    margin: 0px 5px;
-    cursor: pointer;
+	color: var(--brightblue);
+	font-size: 14px;
+	margin: 0px 5px;
+	cursor: pointer;
 }
 
 .report {
-    min-width: 400px;
-    min-height: 150px;
+	min-width: 400px;
+	min-height: 150px;
 }
 
 .switch {
-    vertical-align: middle;
+	vertical-align: middle;
 }
 
 .add-cite {
-    background-color: var(--green);
-    color: var(--white);
-    border-radius: 20px;
-    font-size: 12px;
-    margin-left: 10px;
+	background-color: var(--green);
+	color: var(--white);
+	border-radius: 20px;
+	font-size: 12px;
+	margin-left: 10px;
 }
 
 .prompt {
-    font-size: 12px;
-    margin-right: 50px;
+	font-size: 12px;
+	margin-right: 50px;
 }
 
 .warning {
-    font-size: 12px;
-    color: var(--red);
+	font-size: 12px;
+	color: var(--red);
 }
 
 .buttons {
-    margin-top: 20px;
+	margin-top: 20px;
 }
 
 .add {
-    background-color: var(--green);
-    color: var(--white);
-    border-radius: 20px;
+	background-color: var(--green);
+	color: var(--white);
+	border-radius: 20px;
 }
 
 .cancel {
-    background-color: var(--red);
-    color: var(--white);
-    margin-left: 20px;
-    border-radius: 20px;
+	background-color: var(--red);
+	color: var(--white);
+	margin-left: 20px;
+	border-radius: 20px;
 }
 
 .mobile .report {
-    min-width: auto;
+	min-width: auto;
 }
 
 .mobile .add {
-    margin: 0 !important;
+	margin: 0 !important;
 }

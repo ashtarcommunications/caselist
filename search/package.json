@@ -7,10 +7,5 @@
   "homepage": "https://paperlessdebate.com",
   "license": "GPL3",
   "scripts": {},
-  "eslintConfig": {
-    "extends": [
-      "@speechanddebate/eslint-config-nsda"
-    ]
-  },
   "type": "module"
 }

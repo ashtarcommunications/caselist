@@ -1,18 +1,18 @@
 .error {
-    width: 100%;
-    padding-top: 20px;
-    text-align: center;
+	width: 100%;
+	padding-top: 20px;
+	text-align: center;
 }
 
 .ufo {
-    max-width: 50%;
-    margin: auto;
+	max-width: 50%;
+	margin: auto;
 }
 
 .error h3 {
-    font-size: 26px;
+	font-size: 26px;
 }
 
 .message {
-    color: var(--red);
+	color: var(--red);
 }

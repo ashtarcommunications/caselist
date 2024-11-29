@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Navigate } from 'react-router-dom';
+import { Redirect } from 'wouter';
 import { useAuth } from '../helpers/auth';
 import Header from './Header';
 import Footer from './Footer';
@@ -10,36 +10,37 @@ import OpenEvSidebar from '../openev/OpenEvSidebar';
 import styles from './Layout.module.css';
 
 const Layout = ({ privateRoute, openev = false, children }) => {
-    const auth = useAuth();
+	const auth = useAuth();
 
-    return (
-        <>
-            <Header />
-            <div className={styles.wrapper}>
-                {
-                    privateRoute
-                    && auth.user?.loggedIn
-                    && (openev ? <OpenEvSidebar /> : <Sidebar />)
-                }
-                <div className={styles.main}>
-                    {
-                        // eslint-disable-next-line no-nested-ternary
-                        !privateRoute ? children :
-                            auth.user?.loggedIn
-                            ? children
-                            : <Navigate to="/" />
-                    }
-                </div>
-            </div>
-            <Footer />
-        </>
-    );
+	return (
+		<>
+			<Header />
+			<div className={styles.wrapper}>
+				{privateRoute &&
+					auth.user?.loggedIn &&
+					(openev ? <OpenEvSidebar /> : <Sidebar />)}
+				<div className={styles.main}>
+					{
+						// eslint-disable-next-line no-nested-ternary
+						!privateRoute ? (
+							children
+						) : auth.user?.loggedIn ? (
+							children
+						) : (
+							<Redirect to="/" />
+						)
+					}
+				</div>
+			</div>
+			<Footer />
+		</>
+	);
 };
 
 Layout.propTypes = {
-    privateRoute: PropTypes.bool,
-    openev: PropTypes.bool,
-    children: PropTypes.node,
+	privateRoute: PropTypes.bool,
+	openev: PropTypes.bool,
+	children: PropTypes.node,
 };
 
 export default Layout;

@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Redirect } from 'wouter';
 import { AuthContext } from '../helpers/auth';
 
 const Logout = () => {
-    const auth = useContext(AuthContext);
-    auth.handleLogout();
+	const auth = useContext(AuthContext);
+	auth.handleLogout();
 
-    return <Navigate to="/" />;
+	return <Redirect to="/" />;
 };
 
 export default Logout;

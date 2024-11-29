@@ -9,8 +9,8 @@ import log from '../log/insertEventLog.js';
 import { solrLogger, debugLogger } from '../../helpers/logger.js';
 
 const deleteRound = {
-    DELETE: async (req, res) => {
-        const [round] = await query(SQL`
+	DELETE: async (req, res) => {
+		const [round] = await query(SQL`
             SELECT
                 C.archived,
                 R.opensource,
@@ -25,21 +25,30 @@ const deleteRound = {
             AND R.round_id = ${req.params.round}
         `);
 
-        if (!round) { return res.status(400).json({ message: 'Round not found' }); }
-        if (round.archived) { return res.status(403).json({ message: 'Caselist archived, no modifications allowed' }); }
+		if (!round) {
+			return res.status(400).json({ message: 'Round not found' });
+		}
+		if (round.archived) {
+			return res
+				.status(403)
+				.json({ message: 'Caselist archived, no modifications allowed' });
+		}
 
-        if (round.opensource) {
-            const extension = path.extname(round.opensource);
-            const deletedExtension = `-DELETED-v${round.version}${extension}`;
-            const deletedPath = `${config.UPLOAD_DIR}/${round.opensource.replace(extension, deletedExtension)}`;
-            try {
-                await fs.promises.rename(`${config.UPLOAD_DIR}/${round.opensource}`, deletedPath);
-            } catch (err) {
-                debugLogger.info(`Failed to rename ${round.opensource}`);
-            }
-        }
+		if (round.opensource) {
+			const extension = path.extname(round.opensource);
+			const deletedExtension = `-DELETED-v${round.version}${extension}`;
+			const deletedPath = `${config.UPLOAD_DIR}/${round.opensource.replace(extension, deletedExtension)}`;
+			try {
+				await fs.promises.rename(
+					`${config.UPLOAD_DIR}/${round.opensource}`,
+					deletedPath,
+				);
+			} catch (err) {
+				debugLogger.info(`Failed to rename ${round.opensource}`);
+			}
+		}
 
-        await query(SQL`
+		await query(SQL`
             INSERT INTO cites_history (
                 cite_id,
                 version,
@@ -67,11 +76,11 @@ const deleteRound = {
             WHERE CT.round_id = ${parseInt(req.params.round)}
         `);
 
-        await query(SQL`
+		await query(SQL`
             DELETE FROM cites WHERE round_id = ${parseInt(req.params.round)}
         `);
 
-        await query(SQL`
+		await query(SQL`
             INSERT INTO rounds_history (
                 round_id,
                 version,
@@ -115,81 +124,84 @@ const deleteRound = {
             WHERE R.round_id = ${parseInt(req.params.round)}
         `);
 
-        await query(SQL`
+		await query(SQL`
             DELETE FROM rounds WHERE round_id = ${parseInt(req.params.round)}
         `);
 
-        await log({
-            user_id: req.user_id,
-            tag: 'round-delete',
-            description: `Deleted round #${req.params.round} for ${req.params.school} ${req.params.team} in ${req.params.caselist}`,
-            round_id: parseInt(req.params.round),
-        });
+		await log({
+			user_id: req.user_id,
+			tag: 'round-delete',
+			description: `Deleted round #${req.params.round} for ${req.params.school} ${req.params.team} in ${req.params.caselist}`,
+			round_id: parseInt(req.params.round),
+		});
 
-        res.status(200).json({ message: 'Round successfully deleted' });
+		res.status(200).json({ message: 'Round successfully deleted' });
 
-        // Delete open source and cites from Solr - wait till after response to not slow down UI
-        try {
-            await fetch(
-                config.SOLR_UPDATE_URL,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ delete: { query: `round_id:${req.params.round}` } }),
-                }
-            );
-            solrLogger.info(`Removed open source and cites for round ${req.params.round} from Solr`);
-        } catch (err) {
-            solrLogger.info(`Failed to remove open source and cites for round ${req.params.round} from Solr: ${err.message}`);
-        }
+		// Delete open source and cites from Solr - wait till after response to not slow down UI
+		try {
+			await fetch(config.SOLR_UPDATE_URL, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					delete: { query: `round_id:${req.params.round}` },
+				}),
+			});
+			solrLogger.info(
+				`Removed open source and cites for round ${req.params.round} from Solr`,
+			);
+		} catch (err) {
+			solrLogger.info(
+				`Failed to remove open source and cites for round ${req.params.round} from Solr: ${err.message}`,
+			);
+		}
 
-        return true;
-    },
+		return true;
+	},
 };
 
 deleteRound.DELETE.apiDoc = {
-    summary: 'Deletes a round',
-    operationId: 'deleteRound',
-    parameters: [
-        {
-            in: 'path',
-            name: 'caselist',
-            description: 'Caselist',
-            required: true,
-            schema: { type: 'string' },
-        },
-        {
-            in: 'path',
-            name: 'school',
-            description: 'School',
-            required: true,
-            schema: { type: 'string' },
-        },
-        {
-            in: 'path',
-            name: 'team',
-            description: 'Team',
-            required: true,
-            schema: { type: 'string' },
-        },
-        {
-            in: 'path',
-            name: 'round',
-            description: 'Round',
-            required: true,
-            schema: { type: 'integer' },
-        },
-    ],
-    responses: {
-        200: {
-            description: 'Deleted round',
-            content: { '*/*': { schema: { $ref: '#/components/schemas/Round' } } },
-        },
-        default: { $ref: '#/components/responses/ErrorResponse' },
-    },
-    security: [{ cookie: [] }],
+	summary: 'Deletes a round',
+	operationId: 'deleteRound',
+	parameters: [
+		{
+			in: 'path',
+			name: 'caselist',
+			description: 'Caselist',
+			required: true,
+			schema: { type: 'string' },
+		},
+		{
+			in: 'path',
+			name: 'school',
+			description: 'School',
+			required: true,
+			schema: { type: 'string' },
+		},
+		{
+			in: 'path',
+			name: 'team',
+			description: 'Team',
+			required: true,
+			schema: { type: 'string' },
+		},
+		{
+			in: 'path',
+			name: 'round',
+			description: 'Round',
+			required: true,
+			schema: { type: 'integer' },
+		},
+	],
+	responses: {
+		200: {
+			description: 'Deleted round',
+			content: { '*/*': { schema: { $ref: '#/components/schemas/Round' } } },
+		},
+		default: { $ref: '#/components/responses/ErrorResponse' },
+	},
+	security: [{ cookie: [] }],
 };
 
 export default deleteRound;

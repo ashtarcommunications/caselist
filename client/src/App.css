@@ -3,309 +3,308 @@
 
 /* Color theme */
 :root {
-    /* Harmonic 16 - janniks.github.io/harmonic16 */
-    --black: #0b1c2c;
-    --darkblue: #223b54;
-    --blue: #405c79;
-    --lightblue: #627e99;
-    --darkgray: #aabcce;
-    --gray: #cbd6e2;
-    --lightgray: #e5ebf1;
-    --white: #f7f9fb;
-    --orange: #bf8b56;
-    --yellow: #bfbf56;
-    --green: #8bbf56;
-    --lightgreen: #56bf8b;
-    --brightblue: #568bbf;
-    --purple: #8b56bf;
-    --magenta: #bf568b;
-    --red: #bf5656;
+	/* Harmonic 16 - janniks.github.io/harmonic16 */
+	--black: #0b1c2c;
+	--darkblue: #223b54;
+	--blue: #405c79;
+	--lightblue: #627e99;
+	--darkgray: #aabcce;
+	--gray: #cbd6e2;
+	--lightgray: #e5ebf1;
+	--white: #f7f9fb;
+	--orange: #bf8b56;
+	--yellow: #bfbf56;
+	--green: #8bbf56;
+	--lightgreen: #56bf8b;
+	--brightblue: #568bbf;
+	--purple: #8b56bf;
+	--magenta: #bf568b;
+	--red: #bf5656;
 
-    --toastify-color-light: var(--white);
-    --toastify-color-dark: var(--black);
-    --toastify-color-info: var(--brightblue);
-    --toastify-color-success: var(--green);
-    --toastify-color-warning: var(--yellow);
-    --toastify-color-error: var(--red);
-    --toastify-color-transparent: rgba(255, 255, 255, 0.7);
-  
-    --toastify-text-color-light: var(--black);
-    --toastify-text-color-dark: var(--white);
+	--toastify-color-light: var(--white);
+	--toastify-color-dark: var(--black);
+	--toastify-color-info: var(--brightblue);
+	--toastify-color-success: var(--green);
+	--toastify-color-warning: var(--yellow);
+	--toastify-color-error: var(--red);
+	--toastify-color-transparent: rgba(255, 255, 255, 0.7);
+
+	--toastify-text-color-light: var(--black);
+	--toastify-text-color-dark: var(--white);
 }
 
 /* Globals */
 body {
-    font-family: 'Open Sans', sans-serif;
-    background-color: var(--white);
+	font-family: 'Open Sans', sans-serif;
+	background-color: var(--white);
 }
 
 h1 {
-    font-weight: 400;
-    font-size: 24px;
-    color: var(--darkblue);
+	font-weight: 400;
+	font-size: 24px;
+	color: var(--darkblue);
 }
 
 h2 {
-    font-weight: 400;
-    font-size: 20px;
-    color: var(--darkblue);
+	font-weight: 400;
+	font-size: 20px;
+	color: var(--darkblue);
 }
 
 h3 {
-    font-weight: 400;
-    font-size: 18px;
-    color: var(--darkblue);
+	font-weight: 400;
+	font-size: 18px;
+	color: var(--darkblue);
 }
 
 h4 {
-    font-weight: 400;
-    font-size: 16px;
-    color: var(--darkblue);
+	font-weight: 400;
+	font-size: 16px;
+	color: var(--darkblue);
 }
 
 a {
-    text-decoration: none;
-    color: var(--brightblue);
+	text-decoration: none;
+	color: var(--brightblue);
 }
 
 label {
-    font-size: 12px;
-    padding-left: 5px;
+	font-size: 12px;
+	padding-left: 5px;
 }
 
 /* PureCSS modifications */
 .pure-form select {
-    height: auto !important;
+	height: auto !important;
 }
 
 .pure-form-stacked label {
-    margin-top: 20px;
+	margin-top: 20px;
 }
 
 .pure-form input {
-  line-height: normal;
+	line-height: normal;
 }
 
 /* react-widget modifications */
 .rw-widget,
 .rw-widget div,
-.rw-widget input
-.rw-widget .rw-widget-picker,
+.rw-widget input .rw-widget .rw-widget-picker,
 .rw-widget-input {
-    color: var(--black) !important;
+	color: var(--black) !important;
 }
 
 .rw-combobox {
-    display: inline-block;
+	display: inline-block;
 }
 
 .rw-combobox input {
-    border: none !important;
-    box-shadow: none !important;
-    -webkit-box-shadow: none !important;
-    margin: 0 !important;
+	border: none !important;
+	box-shadow: none !important;
+	-webkit-box-shadow: none !important;
+	margin: 0 !important;
 }
 
 .rw-widget-picker {
-    border: 1px solid #ccc;
-    box-shadow: inset 0 1px 3px #ddd;
-    border-radius: 4px;
+	border: 1px solid #ccc;
+	box-shadow: inset 0 1px 3px #ddd;
+	border-radius: 4px;
 }
 
 .rw-state-focus .rw-widget-picker {
-    border: 1px solid #129fea !important;
-    box-shadow: inset 0 1px 3px #ddd !important;
-    border-radius: 4px;
+	border: 1px solid #129fea !important;
+	box-shadow: inset 0 1px 3px #ddd !important;
+	border-radius: 4px;
 }
 
 .rw-popup-container {
-  min-width: 500px;
+	min-width: 500px;
 }
 
 /* react-markdown modifications */
 .w-md-editor-preview h1 {
-    font-size: 14px;
-    font-weight: bold;
+	font-size: 14px;
+	font-weight: bold;
 }
 .w-md-editor-preview h2 {
-    font-size: 14px;
-    font-weight: bold;
+	font-size: 14px;
+	font-weight: bold;
 }
 .w-md-editor-preview h3 {
-    font-size: 13px;
-    font-weight: bold;
+	font-size: 13px;
+	font-weight: bold;
 }
 .w-md-editor-preview h4 {
-    font-size: 12px;
+	font-size: 12px;
 }
 .w-md-editor-preview p {
-    font-size: 12px;
+	font-size: 12px;
 }
 
 /* react-toggle - from https://github.com/aaronshaf/react-toggle */
 .react-toggle {
-  touch-action: pan-x;
+	touch-action: pan-x;
 
-  display: inline-block;
-  position: relative;
-  cursor: pointer;
-  background-color: transparent;
-  border: 0;
-  padding: 0;
+	display: inline-block;
+	position: relative;
+	cursor: pointer;
+	background-color: transparent;
+	border: 0;
+	padding: 0;
 
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
-  -webkit-tap-highlight-color: transparent;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	-webkit-tap-highlight-color: transparent;
 }
 
 .react-toggle-screenreader-only {
-  border: 0;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  width: 1px;
+	border: 0;
+	clip: rect(0 0 0 0);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
 }
 
 .react-toggle--disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-  -webkit-transition: opacity 0.25s;
-  transition: opacity 0.25s;
+	cursor: not-allowed;
+	opacity: 0.5;
+	-webkit-transition: opacity 0.25s;
+	transition: opacity 0.25s;
 }
 
 .react-toggle-track {
-  width: 50px;
-  height: 24px;
-  padding: 0;
-  border-radius: 30px;
-  background-color: #4D4D4D;
-  -webkit-transition: all 0.2s ease;
-  -moz-transition: all 0.2s ease;
-  transition: all 0.2s ease;
+	width: 50px;
+	height: 24px;
+	padding: 0;
+	border-radius: 30px;
+	background-color: #4d4d4d;
+	-webkit-transition: all 0.2s ease;
+	-moz-transition: all 0.2s ease;
+	transition: all 0.2s ease;
 }
 
 .react-toggle:hover:not(.react-toggle--disabled) .react-toggle-track {
-  background-color: #000000;
+	background-color: #000000;
 }
 
 .react-toggle--checked .react-toggle-track {
-  background-color: var(--green);
+	background-color: var(--green);
 }
 
 .react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
-  background-color: var(--green);
+	background-color: var(--green);
 }
 
 .react-toggle-track-check {
-  position: absolute;
-  width: 14px;
-  height: 10px;
-  top: 0px;
-  bottom: 0px;
-  margin-top: auto;
-  margin-bottom: auto;
-  line-height: 0;
-  left: 8px;
-  opacity: 0;
-  -webkit-transition: opacity 0.25s ease;
-  -moz-transition: opacity 0.25s ease;
-  transition: opacity 0.25s ease;
+	position: absolute;
+	width: 14px;
+	height: 10px;
+	top: 0px;
+	bottom: 0px;
+	margin-top: auto;
+	margin-bottom: auto;
+	line-height: 0;
+	left: 8px;
+	opacity: 0;
+	-webkit-transition: opacity 0.25s ease;
+	-moz-transition: opacity 0.25s ease;
+	transition: opacity 0.25s ease;
 }
 
 .react-toggle--checked .react-toggle-track-check {
-  opacity: 1;
-  -webkit-transition: opacity 0.25s ease;
-  -moz-transition: opacity 0.25s ease;
-  transition: opacity 0.25s ease;
+	opacity: 1;
+	-webkit-transition: opacity 0.25s ease;
+	-moz-transition: opacity 0.25s ease;
+	transition: opacity 0.25s ease;
 }
 
 .react-toggle-track-x {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  top: 0px;
-  bottom: 0px;
-  margin-top: auto;
-  margin-bottom: auto;
-  line-height: 0;
-  right: 10px;
-  opacity: 1;
-  -webkit-transition: opacity 0.25s ease;
-  -moz-transition: opacity 0.25s ease;
-  transition: opacity 0.25s ease;
+	position: absolute;
+	width: 10px;
+	height: 10px;
+	top: 0px;
+	bottom: 0px;
+	margin-top: auto;
+	margin-bottom: auto;
+	line-height: 0;
+	right: 10px;
+	opacity: 1;
+	-webkit-transition: opacity 0.25s ease;
+	-moz-transition: opacity 0.25s ease;
+	transition: opacity 0.25s ease;
 }
 
 .react-toggle--checked .react-toggle-track-x {
-  opacity: 0;
+	opacity: 0;
 }
 
 .react-toggle-thumb {
-  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1) 0ms;
-  position: absolute;
-  top: 1px;
-  left: 1px;
-  width: 22px;
-  height: 22px;
-  border: 1px solid #4D4D4D;
-  border-radius: 50%;
-  background-color: #FAFAFA;
+	transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+	position: absolute;
+	top: 1px;
+	left: 1px;
+	width: 22px;
+	height: 22px;
+	border: 1px solid #4d4d4d;
+	border-radius: 50%;
+	background-color: #fafafa;
 
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 
-  -webkit-transition: all 0.25s ease;
-  -moz-transition: all 0.25s ease;
-  transition: all 0.25s ease;
+	-webkit-transition: all 0.25s ease;
+	-moz-transition: all 0.25s ease;
+	transition: all 0.25s ease;
 }
 
 .react-toggle--checked .react-toggle-thumb {
-  left: 27px;
-  border-color: var(--green);
+	left: 27px;
+	border-color: var(--green);
 }
 
 .react-toggle--focus .react-toggle-thumb {
-  -webkit-box-shadow: 0px 0px 3px 2px #0099E0;
-  -moz-box-shadow: 0px 0px 3px 2px #0099E0;
-  box-shadow: 0px 0px 2px 3px #0099E0;
+	-webkit-box-shadow: 0px 0px 3px 2px #0099e0;
+	-moz-box-shadow: 0px 0px 3px 2px #0099e0;
+	box-shadow: 0px 0px 2px 3px #0099e0;
 }
 
 .react-toggle:active:not(.react-toggle--disabled) .react-toggle-thumb {
-  -webkit-box-shadow: 0px 0px 5px 5px #0099E0;
-  -moz-box-shadow: 0px 0px 5px 5px #0099E0;
-  box-shadow: 0px 0px 5px 5px #0099E0;
+	-webkit-box-shadow: 0px 0px 5px 5px #0099e0;
+	-moz-box-shadow: 0px 0px 5px 5px #0099e0;
+	box-shadow: 0px 0px 5px 5px #0099e0;
 }
 
 /* Common utility classes */
 .error {
-    color: var(--red);
+	color: var(--red);
 }
 
 .error-small {
-    color: var(--red);
-    font-size: 12px;
+	color: var(--red);
+	font-size: 12px;
 }
 
 .green-button {
-    background-color: var(--green);
-    color: var(--white);
+	background-color: var(--green);
+	color: var(--white);
 }
 
 .red-button {
-    background-color: var(--red);
-    color: var(--white);
+	background-color: var(--red);
+	color: var(--white);
 }
 
 .blue-button {
-    background-color: var(--blue);
-    color: var(--white);
+	background-color: var(--blue);
+	color: var(--white);
 }

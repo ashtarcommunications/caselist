@@ -1,68 +1,68 @@
 .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    background-color: var(--darkblue);
-    color: var(--white);
-    min-height: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	background-color: var(--darkblue);
+	color: var(--white);
+	min-height: 50px;
 }
 .header h1 {
-    margin: 0px 20px;
-    font-size: 24px;
-    font-weight: 400;
+	margin: 0px 20px;
+	font-size: 24px;
+	font-weight: 400;
 }
 .header a {
-    color: var(--white);
-    text-decoration: none;
+	color: var(--white);
+	text-decoration: none;
 }
 .menu {
-    font-size: 16px;
-    margin-right: 20px;
+	font-size: 16px;
+	margin-right: 20px;
 }
 .menu ul {
-    list-style-type: none;
+	list-style-type: none;
 }
 .header form {
-    display: flex;
+	display: flex;
 }
 
 .header-default,
 .header-college-cx {
-    background-color: var(--darkblue);
+	background-color: var(--darkblue);
 }
 .header-hs-cx {
-    background-color: var(--blue);
+	background-color: var(--blue);
 }
 .header-hs-ld {
-    background-color: var(--lightblue);
+	background-color: var(--lightblue);
 }
 .header-hs-pf {
-    background-color: var(--brightblue);
+	background-color: var(--brightblue);
 }
 .header-college-ld {
-    background-color: var(--darkgray);
+	background-color: var(--darkgray);
 }
 
 .mobile {
-    padding: 20px;
-    justify-content: left;
+	padding: 20px;
+	justify-content: left;
 }
 
 .mobile .menu ul {
-    padding-left: 20px;
+	padding-left: 20px;
 }
 .mobile .menu ul li {
-    text-decoration: underline;
+	text-decoration: underline;
 }
 
 .untrusted {
-    color: var(--orange);
-    cursor: pointer;
-    margin: 0px 5px;
+	color: var(--orange);
+	cursor: pointer;
+	margin: 0px 5px;
 }
 
 .untrusted a {
-    color: var(--orange);
-    font-weight: bold;
+	color: var(--orange);
+	font-weight: bold;
 }

@@ -1,23 +1,23 @@
 .tags {
-    display: flex;
-    flex-wrap: wrap;
+	display: flex;
+	flex-wrap: wrap;
 }
 
 .tag {
-    display: inline-block;
-    text-align: center;
-    background-color: var(--brightblue);
-    color: white;
-    font-size: 10px;
-    padding: 5px;
-    margin: 5px;
-    min-width: 50px;
+	display: inline-block;
+	text-align: center;
+	background-color: var(--brightblue);
+	color: white;
+	font-size: 10px;
+	padding: 5px;
+	margin: 5px;
+	min-width: 50px;
 }
 
 .trash {
-    color: var(--red);
-    cursor: pointer;
-    float: right;
-    margin-right: 20px;
-    font-size: 18px;
+	color: var(--red);
+	cursor: pointer;
+	float: right;
+	margin-right: 20px;
+	font-size: 18px;
 }

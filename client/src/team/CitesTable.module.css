@@ -1,70 +1,74 @@
 .cites h1 {
-    font-size: 14px;
-    font-weight: bold;
+	font-size: 14px;
+	font-weight: bold;
 }
 .cites h2 {
-    font-size: 14px;
-    font-weight: bold;
+	font-size: 14px;
+	font-weight: bold;
 }
 .cites h3 {
-    font-size: 13px;
-    font-weight: bold;
+	font-size: 13px;
+	font-weight: bold;
 }
 .cites h4 {
-    font-size: 12px;
+	font-size: 12px;
 }
 .cites p {
-    font-size: 12px;
+	font-size: 12px;
 }
 
 .calendar {
-    color: var(--brightblue);
-    cursor: pointer;
-    margin: 0px 10px;
-    font-size: 18px;
+	color: var(--brightblue);
+	cursor: pointer;
+	margin: 0px 10px;
+	font-size: 18px;
 }
 
 .roundinfo {
-    color: var(--darkgray);
+	color: var(--darkgray);
 }
 
 .caret {
-    color: var(--blue);
-    cursor: pointer;
-    margin-left: 5px;
+	color: var(--blue);
+	cursor: pointer;
+	margin-left: 5px;
 }
 
 .citesclosed {
-    display: none;
+	display: none;
 }
 
 .center {
-    text-align: center;
+	text-align: center;
 }
 
 .copy {
-    color: var(--brightblue);
-    cursor: pointer;
-    font-size: 18px;
+	color: var(--brightblue);
+	cursor: pointer;
+	font-size: 18px;
 }
 
 .trash {
-    color: var(--red);
-    cursor: pointer;
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 0s 1s, opacity 1s linear;
-    margin: 0px 10px;
-    font-size: 18px;
+	color: var(--red);
+	cursor: pointer;
+	visibility: hidden;
+	opacity: 0;
+	transition:
+		visibility 0s 1s,
+		opacity 1s linear;
+	margin: 0px 10px;
+	font-size: 18px;
 }
 
 .cites-table tr:hover .trash {
-    visibility: visible;
-    opacity: 1;
-    transition: visibility 0s, opacity 2s linear;
+	visibility: visible;
+	opacity: 1;
+	transition:
+		visibility 0s,
+		opacity 2s linear;
 }
 
 .mobile .trash {
-    opacity: 1;
-    visibility: visible;
+	opacity: 1;
+	visibility: visible;
 }

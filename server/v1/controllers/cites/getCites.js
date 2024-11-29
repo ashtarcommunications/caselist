@@ -2,8 +2,8 @@ import SQL from 'sql-template-strings';
 import { query } from '../../helpers/mysql.js';
 
 const getCites = {
-    GET: async (req, res) => {
-        const sql = (SQL`
+	GET: async (req, res) => {
+		const sql = SQL`
             SELECT
                 CT.*,
                 R.side,
@@ -19,67 +19,67 @@ const getCites = {
             wHERE C.name = ${req.params.caselist}
             AND LOWER(S.name) = LOWER(${req.params.school})
             AND LOWER(T.name) = LOWER(${req.params.team})
-        `);
-        if (req.query?.side && ['A', 'N'].indexOf(req.query?.side) > -1) {
-            sql.append(SQL`AND LOWER(R.side) = LOWER(${req.query?.side})`);
-        }
-        sql.append(SQL`
+        `;
+		if (req.query?.side && ['A', 'N'].indexOf(req.query?.side) > -1) {
+			sql.append(SQL`AND LOWER(R.side) = LOWER(${req.query?.side})`);
+		}
+		sql.append(SQL`
             ORDER BY CT.title
         `);
-        const cites = await query(sql);
+		const cites = await query(sql);
 
-        return res.status(200).json(cites);
-    },
+		return res.status(200).json(cites);
+	},
 };
 
 getCites.GET.apiDoc = {
-    summary: 'Returns list of cites for a team',
-    operationId: 'getCites',
-    parameters: [
-        {
-            in: 'path',
-            name: 'caselist',
-            description: 'Which caselist to return schools in',
-            required: true,
-            schema: { type: 'string' },
-        },
-        {
-            in: 'path',
-            name: 'school',
-            description: 'Which school to return teams in',
-            required: true,
-            schema: { type: 'string' },
-        },
-        {
-            in: 'path',
-            name: 'team',
-            description: 'Which team to return cites in',
-            required: true,
-            schema: { type: 'string' },
-        },
-        {
-            in: 'query',
-            name: 'side',
-            description: 'Which side to return cites for',
-            required: false,
-            schema: { type: 'string' },
-        },
-    ],
-    responses: {
-        200: {
-            description: 'Cites',
-            content: {
-                '*/*': {
-                    schema: {
-                        type: 'array',
-                        items: { $ref: '#/components/schemas/Cite' },
-                    },
-                },
-            },
-        },
-        default: { $ref: '#/components/responses/ErrorResponse' },
-    },
-    security: [{ cookie: [] }],
+	summary: 'Returns list of cites for a team',
+	operationId: 'getCites',
+	parameters: [
+		{
+			in: 'path',
+			name: 'caselist',
+			description: 'Which caselist to return schools in',
+			required: true,
+			schema: { type: 'string' },
+		},
+		{
+			in: 'path',
+			name: 'school',
+			description: 'Which school to return teams in',
+			required: true,
+			schema: { type: 'string' },
+		},
+		{
+			in: 'path',
+			name: 'team',
+			description: 'Which team to return cites in',
+			required: true,
+			schema: { type: 'string' },
+		},
+		{
+			in: 'query',
+			name: 'side',
+			description: 'Which side to return cites for',
+			required: false,
+			schema: { type: 'string' },
+		},
+	],
+	responses: {
+		200: {
+			description: 'Cites',
+			content: {
+				'*/*': {
+					schema: {
+						type: 'array',
+						items: { $ref: '#/components/schemas/Cite' },
+					},
+				},
+			},
+		},
+		default: { $ref: '#/components/responses/ErrorResponse' },
+	},
+	security: [{ cookie: [] }],
 };
 
 export default getCites;

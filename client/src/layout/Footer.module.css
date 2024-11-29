@@ -1,103 +1,109 @@
 .footer {
-    height: 30px;
-    padding: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    flex-wrap: nowrap;
-    background-color: var(--blue);
-    color: white;
-    font-size: 14px;
+	height: 30px;
+	padding: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	flex-wrap: nowrap;
+	background-color: var(--blue);
+	color: white;
+	font-size: 14px;
 }
 
 .footer a {
-    color: white;
-    text-decoration: underline;
+	color: white;
+	text-decoration: underline;
 }
 
 .spinner {
-    display: inline-block;
-    animation: fadeslideup 1s linear 0s 1;
+	display: inline-block;
+	animation: fadeslideup 1s linear 0s 1;
 }
 
 @keyframes fadeslideup {
-    0% {
-      opacity: 0.25;
-      -moz-transform: translateY(40%); 
-      transform: translateY(20%); 
-    }
-    25% {
-      opacity: 0.5;
-      -moz-transform: translateY(20%); 
-      transform: translateY(10%); 
-    }
-    50% {
-      opacity: 1;
-    }
-    75% {
-      opacity: 0.5;
-      -moz-transform: translateY(-20%);
-      transform: translateY(-20%);
-    }
-    100% {
-      opacity: 0.25;
-      -moz-transform: translateY(-40%);
-      transform: translateY(-40%);
-    }
+	0% {
+		opacity: 0.25;
+		-moz-transform: translateY(40%);
+		transform: translateY(20%);
+	}
+	25% {
+		opacity: 0.5;
+		-moz-transform: translateY(20%);
+		transform: translateY(10%);
+	}
+	50% {
+		opacity: 1;
+	}
+	75% {
+		opacity: 0.5;
+		-moz-transform: translateY(-20%);
+		transform: translateY(-20%);
+	}
+	100% {
+		opacity: 0.25;
+		-moz-transform: translateY(-40%);
+		transform: translateY(-40%);
+	}
 }
 
 .divider {
-    margin: 0px 10px;
+	margin: 0px 10px;
 }
 
 .ufo {
-    position: absolute;
-    left: 0;
-    width: 10%;
-    animation: horizontal 15s infinite linear;
+	position: absolute;
+	left: 0;
+	width: 10%;
+	animation: horizontal 15s infinite linear;
 }
 
 .ufo svg {
-    position: absolute;
-    bottom: -20px;
-    width: 100%;
-    fill: var(--white);
-    opacity: 0;
-    animation: vertical 1.5s alternate infinite ease-in-out, fadein 60s ease-in 600s infinite;
+	position: absolute;
+	bottom: -20px;
+	width: 100%;
+	fill: var(--white);
+	opacity: 0;
+	animation:
+		vertical 1.5s alternate infinite ease-in-out,
+		fadein 60s ease-in 600s infinite;
 }
 
 @keyframes fadein {
-  0% {
-      opacity: 0;
-  }
-  25% {
-    opacity: 0;
-  }
-  50% {
-      opacity: 1;
-  }
-  75% {
-    opacity: 0;
-  }
-  100% {
-      opacity: 0;
-   }
+	0% {
+		opacity: 0;
+	}
+	25% {
+		opacity: 0;
+	}
+	50% {
+		opacity: 1;
+	}
+	75% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 0;
+	}
 }
 
 @keyframes vertical {
-  to { transform: translatey(-20px);}
+	to {
+		transform: translatey(-20px);
+	}
 }
 
 @keyframes horizontal {
-  to { transform: translatex(900%);}
+	to {
+		transform: translatex(900%);
+	}
 }
 
 .mobile {
-  height: 60px;
-  flex-wrap: wrap;
+	height: 60px;
+	flex-wrap: wrap;
 }
 
 .mobile a {
-  display: inline-block;
-  margin: 5px;
+	display: inline-block;
+	margin: 5px;
 }

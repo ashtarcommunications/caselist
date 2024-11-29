@@ -2,8 +2,8 @@ import SQL from 'sql-template-strings';
 import { query } from '../../helpers/mysql.js';
 
 const getRecent = {
-    GET: async (req, res) => {
-        const sql = (SQL`
+	GET: async (req, res) => {
+		const sql = SQL`
             SELECT
                 R.round_id,
                 R.team_id,
@@ -25,33 +25,33 @@ const getRecent = {
                 AND C.archived = 0
             ORDER BY R.updated_at DESC
             LIMIT 50
-        `);
-        const recent = await query(sql);
+        `;
+		const recent = await query(sql);
 
-        return res.status(200).json(recent);
-    },
+		return res.status(200).json(recent);
+	},
 };
 
 getRecent.GET.apiDoc = {
-    summary: 'Returns recent modifications in a caselist',
-    operationId: 'getRecent',
-    parameters: [
-        {
-            in: 'path',
-            name: 'caselist',
-            description: 'Which caselist to get modifications for',
-            required: true,
-            schema: { type: 'string' },
-        },
-    ],
-    responses: {
-        200: {
-            description: 'Recent rounds',
-            content: { '*/*': { schema: { $ref: '#/components/schemas/Recent' } } },
-        },
-        default: { $ref: '#/components/responses/ErrorResponse' },
-    },
-    security: [{ cookie: [] }],
+	summary: 'Returns recent modifications in a caselist',
+	operationId: 'getRecent',
+	parameters: [
+		{
+			in: 'path',
+			name: 'caselist',
+			description: 'Which caselist to get modifications for',
+			required: true,
+			schema: { type: 'string' },
+		},
+	],
+	responses: {
+		200: {
+			description: 'Recent rounds',
+			content: { '*/*': { schema: { $ref: '#/components/schemas/Recent' } } },
+		},
+		default: { $ref: '#/components/responses/ErrorResponse' },
+	},
+	security: [{ cookie: [] }],
 };
 
 export default getRecent;

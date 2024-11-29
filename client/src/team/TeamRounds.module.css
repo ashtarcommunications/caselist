@@ -1,75 +1,75 @@
 .teamname {
-    margin-bottom: 0;
+	margin-bottom: 0;
 }
 
 .claim {
-    border-radius: 20px;
-    background-color: var(--lightblue);
-    color: var(--white);
-    font-size: 12px;
-    margin-left: 20px;
+	border-radius: 20px;
+	background-color: var(--lightblue);
+	color: var(--white);
+	font-size: 12px;
+	margin-left: 20px;
 }
 
 .claim svg {
-    margin-right: 5px;
+	margin-right: 5px;
 }
 
 .timestamp {
-    font-size: 10px;
-    color: var(--darkgray);
+	font-size: 10px;
+	color: var(--darkgray);
 }
 
 .buttons {
-    display: flex;
+	display: flex;
 }
 
 .side {
-    margin-right: 20px;
-    background-color: var(--white);
-    color: var(--darkgray);
+	margin-right: 20px;
+	background-color: var(--white);
+	color: var(--darkgray);
 }
 
 .side:hover {
-    background-color: var(--brightblue);
-    color: var(--white);
+	background-color: var(--brightblue);
+	color: var(--white);
 }
 
 .side:focus {
-    background-color: var(--white);
-    color: var(--brightblue);
-    border-bottom: 5px solid var(--brightblue);
-    background-image: none;
+	background-color: var(--white);
+	color: var(--brightblue);
+	border-bottom: 5px solid var(--brightblue);
+	background-image: none;
 }
 
 .selected-side {
-    background-color: var(--white);
-    color: var(--brightblue);
-    border-bottom: 5px solid var(--brightblue);
+	background-color: var(--white);
+	color: var(--brightblue);
+	border-bottom: 5px solid var(--brightblue);
 }
 
 .add-round {
-    margin-left: auto;
+	margin-left: auto;
 }
 
 .add-round button {
-    border-radius: 20px;
-    font-size: 14px !important;
-    background-color: var(--green);
-    color: var(--white);
+	border-radius: 20px;
+	font-size: 14px !important;
+	background-color: var(--green);
+	color: var(--white);
 }
 
 .mobile .buttons {
-    display: inline-block;
+	display: inline-block;
 }
 
 .mobile .add-round {
-    display: inline-block;
-    margin-top: 20px;
-    margin-left: 0;
+	display: inline-block;
+	margin-top: 20px;
+	margin-left: 0;
 }
 
 .showhistory {
-    font-size: 18px;
-    margin-left: 10px;
-    cursor: pointer;
+	font-size: 18px;
+	margin-left: 10px;
+	cursor: pointer;
 }

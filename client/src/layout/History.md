@@ -23,13 +23,14 @@ To solve these problems, what was needed was not a "wiki" per se, but a storehou
 So, I built one. The idea behind "structured data" is to provide a common format for tracking metadata about disclosure (which team did it come from, which round, which side, who was the opponent, is there an open source document available?, etc...). Rather than a mish-mash of poorly edited text, all disclosure could instead be easily organized, searched, and archived using the same system for everyone.
 
 At the time, there were very limited options for free, open source, self-hostable systems that would support structured data storage, including large-scale downloadable file management and community-based open editing, without extensive custom development. Ideally, the system needed to:
-* Support structured data storage and metadata
-* Allow customization to make it fit with the esoteric needs of the debate community without extensive programming
-* Be openly editable by anyone
-* Handle large numbers of open source documents
-* Allow for robust searching through all the data, including inside the text of uploaded Word documents (no easy feat)
-* Support many different caselists for different events/communities year-to-year
-* Have a built-in API to allow building integrations, e.g. with Verbatim and Tabroom
+
+- Support structured data storage and metadata
+- Allow customization to make it fit with the esoteric needs of the debate community without extensive programming
+- Be openly editable by anyone
+- Handle large numbers of open source documents
+- Allow for robust searching through all the data, including inside the text of uploaded Word documents (no easy feat)
+- Support many different caselists for different events/communities year-to-year
+- Have a built-in API to allow building integrations, e.g. with Verbatim and Tabroom
 
 After evaluating dozens of different wiki and CMS platforms, there was really only one that fit the bill at the time: XWiki. XWiki is a free, open source wiki platform designed for enterprise users. Crucially, it's extremely extensible and customizable (at least, as far as wiki systems go), and has at least some rudimentary support for storing structured data and handling file attachments.
 
