@@ -22,7 +22,7 @@
     "lint": "eslint . --max-warnings 0",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
-    "prepare": "husky"
+    "prepare": "husky || true"
   },
   "devDependencies": {
     "@speechanddebate/eslint-config-nsda": "^2.0.12",
