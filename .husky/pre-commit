@@ -1,4 +1,4 @@
 npm run format --workspaces --if-present
 npm run lint --workspaces --if-present
-npm run test --workspaces --if-present
+npm run test:ci --workspaces --if-present
 npm run build --workspaces --if-present
