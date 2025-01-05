@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax, no-await-in-loop, no-continue */
 /* istanbul ignore file */
 // Run from CLI like:
-// node --experimental-specifier-resolution=node -e 'import("./v1/controllers/download/weeklyArchives").then(m => m.weeklyArchives(true));'
+// node -e 'import("./v1/controllers/download/weeklyArchives.js").then(m => m.weeklyArchives(true));'
 // First parameter tells the script to kill the MySQL pool if running from the CLI
 import fs from 'fs';
 import cp from 'child_process';
