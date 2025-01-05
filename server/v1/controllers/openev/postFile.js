@@ -26,6 +26,7 @@ const postFile = {
 			HOU: 'Houston',
 			HSS: 'HSS',
 			JDI: 'JDI',
+			KKB: 'Kankee Briefs',
 			MGC: 'Mean Green',
 			UM7: 'Michigan',
 			UMC: 'Michigan Classic',
