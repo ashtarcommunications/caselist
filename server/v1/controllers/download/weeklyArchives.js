@@ -56,6 +56,7 @@ export const weeklyArchives = async (killPool = false) => {
 		);
 
 		let command;
+		let stream;
 
 		if (files.length > 0) {
 			files = files.map((f) => `./${f.opensource}`);
@@ -95,12 +96,13 @@ export const weeklyArchives = async (killPool = false) => {
 			}
 
 			try {
+				stream = fs.createReadStream(
+					`${config.UPLOAD_DIR}/weekly/${caselist.name}/${caselist.name}-all-${date}.zip`,
+				);
 				command = new PutObjectCommand({
 					Bucket: config.S3_BUCKET,
 					Key: `weekly/${caselist.name}/${caselist.name}-all-${date}.zip`,
-					Body: await fs.promises.readFile(
-						`${config.UPLOAD_DIR}/weekly/${caselist.name}/${caselist.name}-all-${date}.zip`,
-					),
+					Body: stream,
 				});
 				await client.send(command);
 				debugLogger.info(`Uploaded full archive to S3 for ${caselist.name}`);
@@ -208,12 +210,13 @@ export const weeklyArchives = async (killPool = false) => {
 			}
 
 			try {
+				stream = fs.createReadStream(
+					`${config.UPLOAD_DIR}/weekly/${caselist.name}/${caselist.name}-weekly-${date}.zip`,
+				);
 				command = new PutObjectCommand({
 					Bucket: config.S3_BUCKET,
 					Key: `weekly/${caselist.name}/${caselist.name}-weekly-${date}.zip`,
-					Body: await fs.promises.readFile(
-						`${config.UPLOAD_DIR}/weekly/${caselist.name}/${caselist.name}-weekly-${date}.zip`,
-					),
+					Body: stream,
 				});
 				await client.send(command);
 				debugLogger.info(`Uploaded weekly archive to S3 for ${caselist.name}`);
