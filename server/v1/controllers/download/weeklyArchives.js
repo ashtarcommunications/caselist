@@ -22,6 +22,7 @@ export const weeklyArchives = async (killPool = false) => {
 	const client = new S3Client({
 		endpoint: `https://${config.S3_ENDPOINT}`,
 		region: config.S3_REGION,
+		maxAttempts: 5,
 	});
 
 	const date = new Date().toISOString().slice(0, 19).split('T')[0];
