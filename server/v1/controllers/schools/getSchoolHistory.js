@@ -10,8 +10,7 @@ const getSchoolHistory = {
                 TH.updated_at,
                 U.display_name AS 'updated_by'
             FROM teams_history TH
-            INNER JOIN teams T ON T.team_id = TH.team_id
-            INNER JOIN schools S ON S.school_id = T.school_id
+            INNER JOIN schools S ON S.school_id = TH.school_id
             INNER JOIN caselists C ON C.caselist_id = S.caselist_id
             INNER JOIN users U ON U.user_id = TH.updated_by_id
             WHERE C.name = ${req.params.caselist}
