@@ -18,8 +18,8 @@ The Services are protected by copyright, trademark, and other US and foreign law
 
 You agree not to misuse the Services or help anyone else to do so. For example, you must not even try to do any of the following in connection with the Services:
 
-- bulk download uploaded content, whether manually or via automated means;
-  ​\* probe, scan, or test the vulnerability of any system or network;
+- download content in excess of set rate limits, whether manually or via automated means;
+- probe, scan, or test the vulnerability of any system or network;
 - breach or otherwise circumvent any security or authentication measures;
 - access, tamper with, or use non-public areas or parts of the Services, or shared areas of the Services you haven’t been invited to;
 - interfere with or disrupt any user, host, or network, for example by sending a virus, overloading, flooding, spamming, or mail-bombing any part of the Services;

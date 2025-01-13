@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax, no-await-in-loop, no-continue */
 /* istanbul ignore file */
 // Run from CLI like:
-// node --experimental-specifier-resolution=node -e 'import("./v1/controllers/download/weeklyArchives").then(m => m.weeklyArchives(true));'
+// node -e 'import("./v1/controllers/download/weeklyArchives.js").then(m => m.weeklyArchives(true));'
 // First parameter tells the script to kill the MySQL pool if running from the CLI
 import fs from 'fs';
 import cp from 'child_process';
@@ -22,6 +22,7 @@ export const weeklyArchives = async (killPool = false) => {
 	const client = new S3Client({
 		endpoint: `https://${config.S3_ENDPOINT}`,
 		region: config.S3_REGION,
+		maxAttempts: 5,
 	});
 
 	const date = new Date().toISOString().slice(0, 19).split('T')[0];
@@ -56,6 +57,7 @@ export const weeklyArchives = async (killPool = false) => {
 		);
 
 		let command;
+		let stream;
 
 		if (files.length > 0) {
 			files = files.map((f) => `./${f.opensource}`);
@@ -95,12 +97,13 @@ export const weeklyArchives = async (killPool = false) => {
 			}
 
 			try {
+				stream = fs.createReadStream(
+					`${config.UPLOAD_DIR}/weekly/${caselist.name}/${caselist.name}-all-${date}.zip`,
+				);
 				command = new PutObjectCommand({
 					Bucket: config.S3_BUCKET,
 					Key: `weekly/${caselist.name}/${caselist.name}-all-${date}.zip`,
-					Body: await fs.promises.readFile(
-						`${config.UPLOAD_DIR}/weekly/${caselist.name}/${caselist.name}-all-${date}.zip`,
-					),
+					Body: stream,
 				});
 				await client.send(command);
 				debugLogger.info(`Uploaded full archive to S3 for ${caselist.name}`);
@@ -208,12 +211,13 @@ export const weeklyArchives = async (killPool = false) => {
 			}
 
 			try {
+				stream = fs.createReadStream(
+					`${config.UPLOAD_DIR}/weekly/${caselist.name}/${caselist.name}-weekly-${date}.zip`,
+				);
 				command = new PutObjectCommand({
 					Bucket: config.S3_BUCKET,
 					Key: `weekly/${caselist.name}/${caselist.name}-weekly-${date}.zip`,
-					Body: await fs.promises.readFile(
-						`${config.UPLOAD_DIR}/weekly/${caselist.name}/${caselist.name}-weekly-${date}.zip`,
-					),
+					Body: stream,
 				});
 				await client.send(command);
 				debugLogger.info(`Uploaded weekly archive to S3 for ${caselist.name}`);
