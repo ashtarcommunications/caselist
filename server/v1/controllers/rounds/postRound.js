@@ -9,7 +9,7 @@ import config from '../../../config.js';
 const postRound = {
 	POST: async (req, res) => {
 		const [team] = await query(SQL`
-            SELECT C.archived, C.event
+            SELECT C.archived, C.event, T.team_id
             FROM teams T
             INNER JOIN schools S ON S.school_id = T.school_id
             INNER JOIN caselists C ON C.caselist_id = S.caselist_id
@@ -25,6 +25,22 @@ const postRound = {
 			return res
 				.status(403)
 				.json({ message: 'Caselist archived, no modifications allowed' });
+		}
+
+		const [existing] = await query(SQL`
+            SELECT COUNT(*) AS 'count'
+            FROM rounds R
+			WHERE team_id = ${team.team_id}
+			AND side = ${req.body.side?.trim()}
+			AND tournament = ${req.body.tournament?.trim()}
+			AND round = ${req.body.round?.trim()}
+        `);
+
+		if (existing.count > 0) {
+			return res.status(400).json({
+				message:
+					'Failed to create round, identical round found. Modify or delete the existing one first.',
+			});
 		}
 
 		let uploadDir;

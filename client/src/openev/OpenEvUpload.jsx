@@ -32,7 +32,7 @@ const OpenEvUpload = () => {
 
 	const {
 		register,
-		formState: { errors, isValid },
+		formState: { errors, isSubmitting, isValid },
 		handleSubmit,
 		setValue,
 		control,
@@ -218,7 +218,7 @@ const OpenEvUpload = () => {
 					<button
 						type="submit"
 						className={`pure-button ${styles.add}`}
-						disabled={!isValid || !fileContent}
+						disabled={isSubmitting || !isValid || !fileContent}
 					>
 						Upload
 					</button>

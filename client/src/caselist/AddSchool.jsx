@@ -24,7 +24,7 @@ const AddSchool = () => {
 
 	const {
 		setValue,
-		formState: { errors, isValid },
+		formState: { errors, isSubmitting, isValid },
 		handleSubmit,
 		reset,
 		control,
@@ -222,7 +222,7 @@ const AddSchool = () => {
 				<button
 					type="submit"
 					className={`${styles.add} pure-button`}
-					disabled={!isValid}
+					disabled={isSubmitting || !isValid}
 				>
 					Create New School
 				</button>

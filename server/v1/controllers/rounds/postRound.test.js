@@ -90,6 +90,39 @@ describe('POST /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds', (
 			.expect(400);
 	}, 10000);
 
+	it('should return a 400 for an identical round', async () => {
+		await query(SQL`
+			INSERT INTO rounds (team_id, side, tournament, round)
+			SELECT
+				T.team_id,
+				'A',
+				'Test Duplicate Round',
+				1
+			FROM teams T
+			INNER JOIN schools S ON S.school_id = T.school_id
+			INNER JOIN caselists C ON C.caselist_id = S.caselist_id
+				WHERE C.name = 'testcaselist'
+				AND S.name = 'testschool'
+				AND T.name = 'testteam'
+        `);
+
+		const round = {
+			side: 'A',
+			tournament: 'Test Duplicate Round',
+			round: '1',
+		};
+
+		await request(server)
+			.post(
+				`/v1/caselists/testcaselist/schools/testschool/teams/testteam/rounds`,
+			)
+			.set('Accept', 'application/json')
+			.set('Cookie', ['caselist_token=test'])
+			.send(round)
+			.expect('Content-Type', /json/)
+			.expect(400);
+	}, 10000);
+
 	it('should return a 403 for an archived team', async () => {
 		const round = {
 			side: 'A',
@@ -166,10 +199,10 @@ describe('POST /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds', (
             DELETE FROM cites_history WHERE title = 'Test Post Round'
         `);
 		await query(SQL`
-            DELETE FROM rounds WHERE tournament = 'Test Post Round'
+            DELETE FROM rounds WHERE tournament = 'Test Post Round' OR tournament = 'Test Duplicate Round'
         `);
 		await query(SQL`
-            DELETE FROM rounds_history WHERE tournament = 'Test Post Round'
+            DELETE FROM rounds_history WHERE tournament = 'Test Post Round' OR tournament = 'Test Duplicate Round'
         `);
 		try {
 			await fs.promises.rm(

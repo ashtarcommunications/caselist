@@ -23,7 +23,7 @@ const AddCite = ({ rounds, event, handleAddCite }) => {
 
 	const {
 		register,
-		formState: { isValid },
+		formState: { isSubmitting, isValid },
 		handleSubmit,
 		reset,
 		setValue,
@@ -109,6 +109,7 @@ const AddCite = ({ rounds, event, handleAddCite }) => {
 								type="submit"
 								className={`pure-button ${styles.add}`}
 								disabled={
+									isSubmitting ||
 									!isValid ||
 									cites[0].title?.length < 1 ||
 									cites[0].cites?.length < 1

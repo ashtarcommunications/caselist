@@ -36,7 +36,7 @@ const AddTeam = () => {
 		control,
 		setValue,
 		unregister,
-		formState: { errors, isValid },
+		formState: { errors, isSubmitting, isValid },
 	} = useForm({
 		mode: 'all',
 		defaultValues: {
@@ -332,7 +332,7 @@ const AddTeam = () => {
 				<button
 					className={`${styles['add-team-button']} pure-button`}
 					type="submit"
-					disabled={!isValid}
+					disabled={isSubmitting || !isValid}
 				>
 					Add
 				</button>

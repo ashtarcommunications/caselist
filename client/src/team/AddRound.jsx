@@ -38,7 +38,7 @@ const AddRound = () => {
 
 	const {
 		register,
-		formState: { errors, isValid },
+		formState: { errors, isSubmitting, isValid },
 		handleSubmit,
 		setValue,
 		control,
@@ -93,6 +93,8 @@ const AddRound = () => {
 	}, [watchFields, school, team, caselistData]);
 
 	// Add a default cite
+	// This runs twice and adds 2 default cites in dev mode because of React Strict Mode,
+	// but works fine in production
 	useEffect(() => {
 		if (fields.length < 1) {
 			append({ title: '', cites: '', open: true }, { shouldFocus: false });
@@ -509,7 +511,7 @@ const AddRound = () => {
 					<button
 						type="submit"
 						className={`pure-button ${styles.add}`}
-						disabled={!isValid || invalidCite}
+						disabled={isSubmitting || !isValid || invalidCite}
 					>
 						Add Round
 					</button>
