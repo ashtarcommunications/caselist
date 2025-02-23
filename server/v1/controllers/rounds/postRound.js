@@ -39,7 +39,7 @@ const postRound = {
 		if (existing.count > 0) {
 			return res.status(400).json({
 				message:
-					'Failed to create round, identical round found. Modify or delete the existing one first.',
+					'Identical round found, modify or delete the existing one first.',
 			});
 		}
 
