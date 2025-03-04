@@ -33,10 +33,15 @@ const postLogin = {
 		} else {
 			try {
 				const url = `${config.TABROOM_API_URL}/login`;
+				const base64 = Buffer.from(
+					`${config.TABROOM_API_USER_ID}:${config.TABROOM_API_KEY}`,
+				).toString('base64');
+
 				const response = await fetch(url, {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
+						Authorization: `Basic ${base64}`,
 					},
 					body: JSON.stringify({ username, password }),
 				});
