@@ -27,7 +27,7 @@ describe('GET /v1/caselists/{caselist}/schools/{school}/teams', () => {
 		assert.property(res.body[0], 'archived', 'archived property');
 	});
 
-	it('should anonymize names for an archived team', async () => {
+	it('should anonymize names, updated_by, and notes for an archived team', async () => {
 		const res = await request(server)
 			.get(`/v1/caselists/archivedcaselist/schools/archivedschool/teams`)
 			.set('Accept', 'application/json')
@@ -35,7 +35,6 @@ describe('GET /v1/caselists/{caselist}/schools/{school}/teams', () => {
 			.expect('Content-Type', /json/)
 			.expect(200);
 
-		assert.isUndefined(res.body[0].updated_by);
 		assert.isTrue(
 			res.body[0].debater1_first.includes('...'),
 			'Debater first anonymized',
@@ -44,6 +43,9 @@ describe('GET /v1/caselists/{caselist}/schools/{school}/teams', () => {
 			res.body[0].debater1_last.includes('...'),
 			'Debater last anonymized',
 		);
+
+		assert.isUndefined(res.body[0].updated_by);
+		assert.isUndefined(res.body[0].notes);
 	});
 
 	it('should return a 401 with no authorization cookie', async () => {

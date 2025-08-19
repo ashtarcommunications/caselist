@@ -29,7 +29,7 @@ describe('GET /v1/caselists/{caselist}/schools/{school}/teams/{team}', () => {
 		assert.property(res.body, 'updated_by', 'updated_by property');
 	});
 
-	it('should anonymize names and not return updated_by for an archived team', async () => {
+	it('should anonymize names and not return updated_by or notes for an archived team', async () => {
 		const res = await request(server)
 			.get(
 				`/v1/caselists/archivedcaselist/schools/archivedschool/teams/archivedteam`,
@@ -39,7 +39,6 @@ describe('GET /v1/caselists/{caselist}/schools/{school}/teams/{team}', () => {
 			.expect('Content-Type', /json/)
 			.expect(200);
 
-		assert.isUndefined(res.body.updated_by);
 		assert.isTrue(
 			res.body.debater1_first.includes('...'),
 			'Debater first anonymized',
@@ -48,6 +47,9 @@ describe('GET /v1/caselists/{caselist}/schools/{school}/teams/{team}', () => {
 			res.body.debater1_last.includes('...'),
 			'Debater last anonymized',
 		);
+
+		assert.isUndefined(res.body.updated_by);
+		assert.isUndefined(res.body.notes);
 	});
 
 	it('should return a 404 for a missing team', async () => {

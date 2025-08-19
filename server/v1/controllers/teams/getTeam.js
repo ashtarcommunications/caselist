@@ -47,6 +47,7 @@ const getTeam = {
 				? `${team.debater4_last.substr(0, 2)}.....`
 				: null;
 			delete team.updated_by;
+			delete team.notes;
 		}
 
 		return res.status(200).json(team);
