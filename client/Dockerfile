@@ -1,4 +1,4 @@
-FROM node:22.11.0 as base
+FROM node:22.12.0 as base
 WORKDIR /app
 
 COPY ./ ./
