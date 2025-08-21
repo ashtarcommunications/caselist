@@ -24,12 +24,14 @@ describe('FilesTable', () => {
 				year: startOfYear(),
 				camp: 'CNDI',
 				tags: '{"da":true,"cp":true}',
+				updated_at: '2023-10-01 12:00:00',
 			},
 		];
 		render(<FilesTable files={files} />);
 		assert.isOk(screen.queryByText(/Test.docx/), 'File link exists');
 		assert.isOk(screen.queryByText(/CNDI/), 'Camp column exists');
 		assert.isOk(screen.queryByText(/Counterplans/), 'Tag column exists');
+		assert.isOk(screen.queryByText(/10\/1\/2023/), 'Date column exists');
 
 		const trash = screen.queryByText(/Delete/);
 		assert.isOk(trash, 'Trash button exists');

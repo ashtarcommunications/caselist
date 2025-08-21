@@ -19,6 +19,7 @@ describe('GET /v1/openev', () => {
 		assert.property(res.body[0], 'camp', 'camp property');
 		assert.property(res.body[0], 'lab', 'lab property');
 		assert.property(res.body[0], 'tags', 'tags property');
+		assert.property(res.body[0], 'updated_at', 'updated_at property');
 	});
 
 	it('should filter openev by year', async () => {

@@ -5,6 +5,7 @@ import { useParams, Link } from 'wouter';
 import { startOfYear } from '@speechanddebate/nsda-js-utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import moment from 'moment';
 
 import { campAbbreviations, tagAbbreviations } from '../helpers/common.js';
 import { deleteOpenEvFile } from '../helpers/api.js';
@@ -142,6 +143,16 @@ const FilesTable = ({ files }) => {
 							))}
 						</p>
 					);
+				},
+			},
+			{
+				Header: 'Date',
+				accessor: 'updated_at',
+				Cell: (row) => {
+					return moment(
+						row.row?.original?.updated_at,
+						'YYYY-MM-DD HH:mm:ss',
+					).format('l');
 				},
 			},
 		],
