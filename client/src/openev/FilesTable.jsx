@@ -88,6 +88,7 @@ const FilesTable = ({ files }) => {
 			},
 			{
 				Header: 'Camp',
+				width: '100px',
 				accessor: 'camp',
 				Cell: (row) => {
 					return (
@@ -147,6 +148,7 @@ const FilesTable = ({ files }) => {
 			},
 			{
 				Header: 'Date',
+				width: '50px',
 				accessor: 'updated_at',
 				Cell: (row) => {
 					return moment(
