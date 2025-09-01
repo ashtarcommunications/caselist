@@ -95,6 +95,13 @@ describe('AddSchool', () => {
 				'Title case warning exists',
 			),
 		);
+
+		await waitFor(() =>
+			assert.isOk(
+				screen.queryByText(/Don't use words like/),
+				'Keyword warning exists',
+			),
+		);
 	});
 
 	it('Displays an error message on failure', async () => {

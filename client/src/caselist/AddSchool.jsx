@@ -28,6 +28,7 @@ const AddSchool = () => {
 		handleSubmit,
 		reset,
 		control,
+		watch,
 	} = useForm({
 		mode: 'all',
 		defaultValues: { name: '', state: '' },
@@ -40,6 +41,13 @@ const AddSchool = () => {
 	useEffect(() => {
 		nameRef?.current?.focus();
 	}, [nameRef]);
+
+	const name = watch('name');
+	const nameWarning =
+		name.toLowerCase().includes('school') ||
+		name.toLowerCase().includes('academy') ||
+		name.toLowerCase().includes('institute') ||
+		name.toLowerCase().includes('preparatory');
 
 	const fetchChapters = async () => {
 		// Don't refetch on subsequent clicks
@@ -195,6 +203,12 @@ const AddSchool = () => {
 					{errors.name?.type === 'minLength' && <p>At least 3 characters</p>}
 					{errors.name?.type === 'maxLength' && <p>Max 255 characters</p>}
 					{errors.name && <p>{errors.name?.message}</p>}
+					{nameWarning && (
+						<p>
+							Don&apos;t use words like School, Academy, Institute, Preparatory,
+							etc.
+						</p>
+					)}
 				</div>
 
 				{caselistData.level === 'hs' && (
