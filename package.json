@@ -1,33 +1,33 @@
 {
-  "name": "caselist",
-  "workspaces": [
-    "client",
-    "search",
-    "server",
-    "tutorial"
-  ],
-  "version": "1.0.0",
-  "type": "module",
-  "private": true,
-  "description": "Caselist",
-  "keywords": [],
-  "homepage": "https://paperlessdebate.com",
-  "author": "Aaron Hardy <support@paperlessdebate.com> (https://paperlessdebate.com)",
-  "license": "GPL3",
-  "main": "index.js",
-  "engines": {
-    "node": ">= 22.12.0"
-  },
-  "scripts": {
-    "lint": "eslint . --max-warnings 0",
-    "format": "prettier . --write",
-    "format:check": "prettier . --check",
-    "prepare": "husky || true"
-  },
-  "devDependencies": {
-    "@speechanddebate/eslint-config-nsda": "^2.0.12",
-    "eslint": "^8.57.0",
-    "husky": "^9.0.11",
-    "prettier": "3.2.5"
-  }
+	"name": "caselist",
+	"workspaces": [
+		"client",
+		"search",
+		"server",
+		"tutorial"
+	],
+	"version": "1.0.0",
+	"type": "module",
+	"private": true,
+	"description": "Caselist",
+	"keywords": [],
+	"homepage": "https://paperlessdebate.com",
+	"author": "Aaron Hardy <support@paperlessdebate.com> (https://paperlessdebate.com)",
+	"license": "GPL3",
+	"main": "index.js",
+	"engines": {
+		"node": ">= 22.12.0"
+	},
+	"scripts": {
+		"lint": "eslint . --max-warnings 0",
+		"format": "prettier . --write",
+		"format:check": "prettier . --check",
+		"prepare": "husky || true"
+	},
+	"devDependencies": {
+		"@speechanddebate/eslint-config-nsda": "^2.0.17",
+		"eslint": "^8.57.0",
+		"husky": "^9.0.11",
+		"prettier": "3.2.5"
+	}
 }

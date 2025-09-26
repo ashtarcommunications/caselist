@@ -161,7 +161,7 @@ const TeamList = () => {
 			isMobile,
 			caselistData.event,
 			caselistData.archived,
-			auth.user?.trusted,
+			auth,
 			handleDeleteTeamConfirm,
 		],
 	);

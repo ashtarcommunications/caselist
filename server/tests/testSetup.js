@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import testFixtures from './testFixtures.js';
 import testTeardown from './testTeardown.js';
 import { pool } from '../v1/helpers/mysql.js';
