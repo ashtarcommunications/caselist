@@ -22,7 +22,7 @@ describe('DELETE /v1/openev/{openev_id}', () => {
 		await request(server)
 			.delete(`/v1/openev/${newFile.insertId}`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=admin'])
 			.expect('Content-Type', /json/)
 			.expect(200);
 
@@ -45,7 +45,7 @@ describe('DELETE /v1/openev/{openev_id}', () => {
 		await request(server)
 			.delete(`/v1/openev/3`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=admin'])
 			.expect('Content-Type', /json/)
 			.expect(400);
 	});
@@ -54,7 +54,7 @@ describe('DELETE /v1/openev/{openev_id}', () => {
 		await request(server)
 			.delete(`/v1/openev/2`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=admin'])
 			.expect('Content-Type', /json/)
 			.expect(403);
 	});

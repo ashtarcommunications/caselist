@@ -144,7 +144,7 @@ const TeamList = () => {
 				accessor: (row) => row,
 				className: styles.center,
 				Cell: (row) =>
-					auth.user?.trusted && !caselistData.archived ? (
+					auth.user?.admin || (auth.user?.trusted && !caselistData.archived) ? (
 						<FontAwesomeIcon
 							className={styles.trash}
 							icon={faTrash}

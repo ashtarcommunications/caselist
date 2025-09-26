@@ -169,7 +169,7 @@ const CitesTable = ({
 				accessor: (row) => row,
 				className: styles.center,
 				Cell: (row) =>
-					auth.user?.trusted && !archived ? (
+					auth.user?.admin || (auth.user?.trusted && !archived) ? (
 						<FontAwesomeIcon
 							icon={faTrash}
 							id={row.row?.original?.cite_id}

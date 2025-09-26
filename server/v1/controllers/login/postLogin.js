@@ -76,6 +76,10 @@ const postLogin = {
             VALUES (${hash}, ${user.person_id}, ${req.ip}, DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 2 WEEK))
         `);
 
+		const [admin] = await query(SQL`
+			SELECT admin FROM users WHERE user_id = ${user.person_id}
+        `);
+
 		// Expire cookies in 2 weeks if "remember me" is checked and account is trusted,
 		// otherwise default to session cookie
 		// Express sets maxAge in milliseconds, not seconds
@@ -97,7 +101,7 @@ const postLogin = {
 			});
 		}
 
-		if (config.ADMINS?.includes(parseInt(user.uidNumber))) {
+		if (admin?.admin || config.ADMINS?.includes(parseInt(user.person_id))) {
 			res.cookie('caselist_admin', true, {
 				maxAge: remember && user.trusted ? 1000 * 60 * 60 * 24 * 14 : undefined,
 				httpOnly: false,
@@ -115,7 +119,7 @@ const postLogin = {
 			token: nonce,
 			expires,
 			trusted: user.trusted,
-			admin: config.ADMINS?.includes(parseInt(user.person_id)),
+			admin: admin?.admin || config.ADMINS?.includes(parseInt(user.person_id)),
 		});
 	},
 	'x-express-openapi-additional-middleware': [loginLimiter],

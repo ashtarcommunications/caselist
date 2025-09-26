@@ -4,8 +4,9 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
 	test: {
 		threads: false,
+		fileParallelism: false,
 		globals: true,
-		globalSetup: './tests/globalTestSetup.js',
+		setupFiles: './tests/testSetup.js',
 		coverage: {
 			reporter: ['text', 'html'],
 			exclude: ['node_modules/', 'src/setupTests.jsx'],

@@ -77,6 +77,7 @@ describe('RoundsTable', () => {
 
 	it('Should not render edit or delete icons for untrusted users', async () => {
 		auth.user.trusted = false;
+		auth.user.admin = false;
 		const mockHandleDeleteRoundConfirm = vi.fn();
 		const mockHandleToggleAll = vi.fn();
 		const mockHandleToggleReport = vi.fn();
@@ -108,9 +109,11 @@ describe('RoundsTable', () => {
 		assert.isNotOk(screen.queryByTestId('edit'), 'No edit icon');
 		assert.isNotOk(screen.queryByTestId('trash-round'), 'No delete icon');
 		auth.user.trusted = true;
+		auth.user.admin = true;
 	});
 
 	it('should not render edit or delete icons for archived caselists', async () => {
+		auth.user.admin = false;
 		const mockHandleDeleteRoundConfirm = vi.fn();
 		const mockHandleToggleAll = vi.fn();
 		const mockHandleToggleReport = vi.fn();
@@ -142,6 +145,7 @@ describe('RoundsTable', () => {
 		);
 		assert.isNotOk(screen.queryByTestId('edit'), 'No edit icon');
 		assert.isNotOk(screen.queryByTestId('trash-round'), 'No delete icon');
+		auth.user.admin = true;
 	});
 
 	it('should display a Collapse All button if all reports are open', async () => {

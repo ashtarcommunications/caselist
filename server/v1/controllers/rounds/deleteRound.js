@@ -28,7 +28,7 @@ const deleteRound = {
 		if (!round) {
 			return res.status(400).json({ message: 'Round not found' });
 		}
-		if (round.archived) {
+		if (round.archived && !req.admin) {
 			return res
 				.status(403)
 				.json({ message: 'Caselist archived, no modifications allowed' });

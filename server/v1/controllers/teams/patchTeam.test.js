@@ -11,7 +11,7 @@ describe('PATCH /v1/caselists/{caselist}/schools/{school}/teams/{team}', () => {
 		await request(server)
 			.patch(`/v1/caselists/testcaselist/schools/testschool/teams/testteam`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.send(update)
 			.expect('Content-Type', /json/)
 			.expect(200);
@@ -33,7 +33,7 @@ describe('PATCH /v1/caselists/{caselist}/schools/{school}/teams/{team}', () => {
 		await request(server)
 			.patch(`/v1/caselists/testcaselist/schools/testschool/teams/testteam`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.send(update)
 			.expect('Content-Type', /json/)
 			.expect(400);
@@ -45,7 +45,7 @@ describe('PATCH /v1/caselists/{caselist}/schools/{school}/teams/{team}', () => {
 		await request(server)
 			.patch(`/v1/caselists/testcaselist/schools/testschool/teams/missingteam`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.send(update)
 			.expect('Content-Type', /json/)
 			.expect(400);
@@ -59,7 +59,7 @@ describe('PATCH /v1/caselists/{caselist}/schools/{school}/teams/{team}', () => {
 				`/v1/caselists/archivedcaselist/schools/archivedschool/teams/archivedteam`,
 			)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.send(update)
 			.expect('Content-Type', /json/)
 			.expect(403);

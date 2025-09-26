@@ -11,7 +11,7 @@ describe('POST /v1/login', () => {
 		const res = await request(server)
 			.post(`/v1/login`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.send(body)
 			.expect('Content-Type', /json/)
 			.expect(201);
@@ -40,7 +40,7 @@ describe('POST /v1/login', () => {
 			await request(server)
 				.post(`/v1/login`)
 				.set('Accept', 'application/json')
-				.set('Cookie', ['caselist_token=test'])
+				.set('Cookie', ['caselist_token=user'])
 				.send(body)
 				.expect('Content-Type', /application/)
 				.expect(statusCode);

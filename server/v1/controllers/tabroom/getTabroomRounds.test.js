@@ -7,7 +7,7 @@ describe('GET /v1/tabroom/rounds', () => {
 		const res = await request(server)
 			.get(`/v1/tabroom/rounds?slug=/test`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.expect('Content-Type', /json/)
 			.expect(200);
 
@@ -25,7 +25,7 @@ describe('GET /v1/tabroom/rounds', () => {
 		const res = await request(server)
 			.get(`/v1/tabroom/rounds`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.expect('Content-Type', /json/)
 			.expect(200);
 

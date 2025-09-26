@@ -24,7 +24,7 @@ const deleteCite = {
 		if (!cite) {
 			return res.status(400).json({ message: 'Cite not found' });
 		}
-		if (cite.archived) {
+		if (cite.archived && !req.admin) {
 			return res
 				.status(403)
 				.json({ message: 'Caselist archived, no modifications allowed' });

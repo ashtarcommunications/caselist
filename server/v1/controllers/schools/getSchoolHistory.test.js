@@ -7,7 +7,7 @@ describe('GET /v1/caselists/{caselist}/schools/{school}/history', () => {
 		const res = await request(server)
 			.get(`/v1/caselists/testcaselist/schools/testschool/history`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.expect('Content-Type', /json/)
 			.expect(200);
 

@@ -7,7 +7,7 @@ describe('GET /v1/caselists', () => {
 		let res = await request(server)
 			.get(`/v1/caselists?archived=false`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.expect('Content-Type', /json/)
 			.expect(200);
 
@@ -21,7 +21,7 @@ describe('GET /v1/caselists', () => {
 		res = await request(server)
 			.get(`/v1/caselists?archived=true`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.expect('Content-Type', /json/)
 			.expect(200);
 

@@ -7,7 +7,7 @@ describe('GET /v1/openev', () => {
 		const res = await request(server)
 			.get(`/v1/openev`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.expect('Content-Type', /json/)
 			.expect(200);
 
@@ -26,7 +26,7 @@ describe('GET /v1/openev', () => {
 		const res = await request(server)
 			.get(`/v1/openev?year=2021`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.expect('Content-Type', /json/)
 			.expect(200);
 

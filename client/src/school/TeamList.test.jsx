@@ -122,6 +122,7 @@ describe('TeamList', () => {
 
 	it('Does not render trash icons without a trusted user', async () => {
 		auth.user.trusted = false;
+		auth.user.admin = false;
 		render(<TeamList />, {
 			route: '/:caselist/:school/:team',
 			path: '/testcaselist/testschool/testteam',
@@ -136,6 +137,7 @@ describe('TeamList', () => {
 
 		assert.isNotOk(screen.queryByTestId('trash'), 'No delete icon');
 		auth.user.trusted = true;
+		auth.user.admin = true;
 	});
 
 	afterEach(() => {

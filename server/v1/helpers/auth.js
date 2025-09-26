@@ -22,6 +22,11 @@ const auth = async (req) => {
 	if (session && session.length > 0) {
 		req.user_id = session[0].user_id;
 
+		const [admin] = await query(SQL`SELECT admin FROM users WHERE user_id = ${req.user_id}`);
+		if (admin?.admin) {
+			req.admin = true;
+		}
+
 		// Check account reputation for non-GET requests, block un-trusted users from modifications
 		if (
 			req.method !== 'OPTIONS' &&

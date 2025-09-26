@@ -9,7 +9,7 @@ describe('GET /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds', ()
 				`/v1/caselists/testcaselist/schools/testschool/teams/testteam/rounds`,
 			)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.expect('Content-Type', /json/)
 			.expect(200);
 
@@ -32,7 +32,7 @@ describe('GET /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds', ()
 				`/v1/caselists/testcaselist/schools/testschool/teams/testteam/rounds?side=A`,
 			)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.expect('Content-Type', /json/)
 			.expect(200);
 

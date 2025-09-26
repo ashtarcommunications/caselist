@@ -22,7 +22,7 @@ const deleteTeam = {
 		if (!team) {
 			return res.status(400).json({ message: 'Team not found' });
 		}
-		if (team.archived) {
+		if (team.archived && !req.admin) {
 			return res
 				.status(403)
 				.json({ message: 'Caselist archived, no modifications allowed' });

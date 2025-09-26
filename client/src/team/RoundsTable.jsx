@@ -168,7 +168,7 @@ const RoundsTable = ({
 				accessor: (row) => row,
 				className: styles.center,
 				Cell: (row) =>
-					auth.user?.trusted && !archived ? (
+					auth.user?.admin || (auth.user?.trusted && !archived) ? (
 						<>
 							<Link
 								to={`/${caselist}/${school}/${team}/edit/${row.row?.original?.round_id}`}

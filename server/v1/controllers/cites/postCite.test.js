@@ -16,7 +16,7 @@ describe('POST /v1/caselists/{caselist}/schools/{school}/teams/{team}/cites', ()
 				`/v1/caselists/testcaselist/schools/testschool/teams/testteam/cites`,
 			)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.send(cite)
 			.expect('Content-Type', /json/)
 			.expect(201);
@@ -43,7 +43,7 @@ describe('POST /v1/caselists/{caselist}/schools/{school}/teams/{team}/cites', ()
 				`/v1/caselists/testcaselist/schools/testschool/teams/testteam/cites`,
 			)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.send(cite)
 			.expect('Content-Type', /json/)
 			.expect(400);
@@ -60,7 +60,7 @@ describe('POST /v1/caselists/{caselist}/schools/{school}/teams/{team}/cites', ()
 				`/v1/caselists/archivedcaselist/schools/archivedschool/teams/archivedteam/cites`,
 			)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.send(cite)
 			.expect('Content-Type', /json/)
 			.expect(403);

@@ -14,7 +14,7 @@ describe('GET /v1/download', () => {
 		await request(server)
 			.get(`/v1/download?path=downloadtest`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.expect('Content-Type', /application/)
 			.expect(200);
 	});
@@ -33,7 +33,7 @@ describe('GET /v1/download', () => {
 			await request(server)
 				.get(`/v1/download?path=downloadtest`)
 				.set('Accept', 'application/json')
-				.set('Cookie', ['caselist_token=test'])
+				.set('Cookie', ['caselist_token=user'])
 				.expect('Content-Type', /application/)
 				.expect(statusCode);
 		}
@@ -43,7 +43,7 @@ describe('GET /v1/download', () => {
 		await request(server)
 			.get(`/v1/download?path=invalid`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.expect('Content-Type', /json/)
 			.expect(404);
 	});
@@ -59,5 +59,6 @@ describe('GET /v1/download', () => {
 	afterEach(async () => {
 		await fs.promises.rm(`${config.UPLOAD_DIR}/downloadtest`);
 		downloadLimiter.resetKey(1);
+		downloadLimiter.resetKey(2);
 	});
 });

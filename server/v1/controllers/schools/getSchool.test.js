@@ -7,7 +7,7 @@ describe('GET /v1/caselists/{caselist}/schools/{school}', () => {
 		const res = await request(server)
 			.get(`/v1/caselists/testcaselist/schools/testschool`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.expect('Content-Type', /json/)
 			.expect(200);
 
@@ -26,7 +26,7 @@ describe('GET /v1/caselists/{caselist}/schools/{school}', () => {
 		const res = await request(server)
 			.get(`/v1/caselists/archivedcaselist/schools/archivedschool`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.expect('Content-Type', /json/)
 			.expect(200);
 
@@ -37,7 +37,7 @@ describe('GET /v1/caselists/{caselist}/schools/{school}', () => {
 		await request(server)
 			.get(`/v1/caselists/testcaselist/schools/missing`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.expect('Content-Type', /json/)
 			.expect(404);
 	});

@@ -9,7 +9,7 @@ import { solrLogger, debugLogger } from '../../helpers/logger.js';
 
 const deleteFile = {
 	DELETE: async (req, res) => {
-		if (!config.ADMINS?.includes(req.user_id)) {
+		if (!req.admin) {
 			return res
 				.status(401)
 				.json({ message: 'Only admins can delete OpenEv files' });

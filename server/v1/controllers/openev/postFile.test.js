@@ -20,7 +20,7 @@ describe('POST /v1/openev', () => {
 		await request(server)
 			.post(`/v1/openev`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.send(body)
 			.expect('Content-Type', /json/)
 			.expect(201);
@@ -48,7 +48,7 @@ describe('POST /v1/openev', () => {
 		await request(server)
 			.post(`/v1/openev`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.send(body)
 			.expect('Content-Type', /json/)
 			.expect(400);

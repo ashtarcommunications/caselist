@@ -15,7 +15,7 @@ describe('POST /v1/caselists/{caselist}/schools', () => {
 		await request(server)
 			.post(`/v1/caselists/testcaselist/schools`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.send(school)
 			.expect('Content-Type', /json/)
 			.expect(201);
@@ -41,7 +41,7 @@ describe('POST /v1/caselists/{caselist}/schools', () => {
 		await request(server)
 			.post(`/v1/caselists/testcaselist/schools`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.send(school)
 			.expect('Content-Type', /json/)
 			.expect(400);
@@ -56,7 +56,7 @@ describe('POST /v1/caselists/{caselist}/schools', () => {
 		await request(server)
 			.post(`/v1/caselists/invalid/schools`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.send(school)
 			.expect('Content-Type', /json/)
 			.expect(400);
@@ -71,7 +71,7 @@ describe('POST /v1/caselists/{caselist}/schools', () => {
 		await request(server)
 			.post(`/v1/caselists/archivedcaselist/schools`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.send(school)
 			.expect('Content-Type', /json/)
 			.expect(403);

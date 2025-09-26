@@ -32,7 +32,7 @@ describe('DELETE /v1/caselists/{caselist}/schools/{school}/teams/{team}', () => 
 		await request(server)
 			.delete(`/v1/caselists/testcaselist/schools/testschool/teams/deleteteam`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.expect('Content-Type', /json/)
 			.expect(200);
 
@@ -89,7 +89,7 @@ describe('DELETE /v1/caselists/{caselist}/schools/{school}/teams/{team}', () => 
 		await request(server)
 			.delete(`/v1/caselists/testcaselist/schools/testschool/teams/missingteam`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.expect('Content-Type', /json/)
 			.expect(400);
 	});
@@ -100,9 +100,20 @@ describe('DELETE /v1/caselists/{caselist}/schools/{school}/teams/{team}', () => 
 				`/v1/caselists/archivedcaselist/schools/archivedschool/teams/archivedteam`,
 			)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.expect('Content-Type', /json/)
 			.expect(403);
+	});
+
+	it('should allow an admin to delete an archived team', async () => {
+		await request(server)
+			.delete(
+				`/v1/caselists/archivedcaselist/schools/archivedschool/teams/archivedteam`,
+			)
+			.set('Accept', 'application/json')
+			.set('Cookie', ['caselist_token=admin'])
+			.expect('Content-Type', /json/)
+			.expect(200);
 	});
 
 	it('should return a 401 with no authorization cookie', async () => {

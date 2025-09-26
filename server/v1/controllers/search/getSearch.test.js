@@ -8,7 +8,7 @@ describe('GET /v1/search', () => {
 		const res = await request(server)
 			.get(`/v1/search?shard=test&q=test`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.expect('Content-Type', /application/)
 			.expect(200);
 
@@ -47,7 +47,7 @@ describe('GET /v1/search', () => {
 			await request(server)
 				.get(`/v1/search?shard=test&q=test`)
 				.set('Accept', 'application/json')
-				.set('Cookie', ['caselist_token=test'])
+				.set('Cookie', ['caselist_token=user'])
 				.expect('Content-Type', /application/)
 				.expect(statusCode);
 		}
@@ -57,7 +57,7 @@ describe('GET /v1/search', () => {
 		await request(server)
 			.get(`/v1/search?q=!!!`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.expect('Content-Type', /json/)
 			.expect(400);
 	});
@@ -72,5 +72,6 @@ describe('GET /v1/search', () => {
 
 	afterEach(async () => {
 		searchLimiter.resetKey(1);
+		searchLimiter.resetKey(2);
 	});
 });

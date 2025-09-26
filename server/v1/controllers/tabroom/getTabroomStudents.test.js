@@ -7,7 +7,7 @@ describe('GET /v1/tabroom/students', () => {
 		const res = await request(server)
 			.get(`/v1/tabroom/students`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.expect('Content-Type', /json/)
 			.expect(200);
 

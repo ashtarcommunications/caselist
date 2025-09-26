@@ -39,7 +39,7 @@ describe('PUT /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{rou
 				`/v1/caselists/testcaselist/schools/testschool/teams/testteam/rounds/1`,
 			)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.send(round)
 			.expect('Content-Type', /json/)
 			.expect(200);
@@ -96,7 +96,7 @@ describe('PUT /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{rou
 				`/v1/caselists/testcaselist/schools/testschool/teams/testteam/rounds/1`,
 			)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.send(round)
 			.expect('Content-Type', /json/)
 			.expect(200);
@@ -158,7 +158,7 @@ describe('PUT /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{rou
 				`/v1/caselists/testcaselist/schools/testschool/teams/missingteam/rounds/4`,
 			)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.send(round)
 			.expect('Content-Type', /json/)
 			.expect(404);
@@ -180,7 +180,7 @@ describe('PUT /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{rou
 				`/v1/caselists/archivedcaselist/schools/archivedschool/teams/archivedteam/rounds/3`,
 			)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.send(round)
 			.expect('Content-Type', /json/)
 			.expect(403);

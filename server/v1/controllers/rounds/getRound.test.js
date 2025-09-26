@@ -9,7 +9,7 @@ describe('GET /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{rou
 				`/v1/caselists/testcaselist/schools/testschool/teams/testteam/rounds/1`,
 			)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.expect('Content-Type', /json/)
 			.expect(200);
 
@@ -34,7 +34,7 @@ describe('GET /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{rou
 				`/v1/caselists/testcaselist/schools/testschool/teams/testteam/rounds/4`,
 			)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.expect('Content-Type', /json/)
 			.expect(404);
 	});

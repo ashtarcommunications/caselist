@@ -2,11 +2,14 @@ import testFixtures from './testFixtures.js';
 import testTeardown from './testTeardown.js';
 import { pool } from '../v1/helpers/mysql.js';
 
-export const setup = async () => {
+beforeEach(async () => {
 	await testFixtures();
-};
+});
 
-export const teardown = async () => {
+afterEach(async () => {
 	await testTeardown();
+});
+
+afterAll(async () => {
 	await pool.end();
-};
+});

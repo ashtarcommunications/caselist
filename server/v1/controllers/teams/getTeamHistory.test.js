@@ -9,7 +9,7 @@ describe('GET /v1/caselists/{caselist}/schools/{school}/teams/{team}/history', (
 				`/v1/caselists/testcaselist/schools/testschool/teams/testteam/history`,
 			)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.expect('Content-Type', /json/)
 			.expect(200);
 

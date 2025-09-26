@@ -7,7 +7,7 @@ describe('GET /v1/caselists/{caselist}/schools/{school}/teams/{team}/cites', () 
 		const res = await request(server)
 			.get(`/v1/caselists/testcaselist/schools/testschool/teams/testteam/cites`)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.expect('Content-Type', /json/)
 			.expect(200);
 
@@ -33,7 +33,7 @@ describe('GET /v1/caselists/{caselist}/schools/{school}/teams/{team}/cites', () 
 				`/v1/caselists/testcaselist/schools/testschool/teams/testteam/cites?side=A`,
 			)
 			.set('Accept', 'application/json')
-			.set('Cookie', ['caselist_token=test'])
+			.set('Cookie', ['caselist_token=user'])
 			.expect('Content-Type', /json/)
 			.expect(200);
 
