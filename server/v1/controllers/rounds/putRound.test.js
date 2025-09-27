@@ -11,6 +11,7 @@ describe('PUT /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{rou
 		await query(SQL`
             UPDATE rounds set opensource = 'testcaselist/testschool/testteam/testschool-testteam-Aff-Test-Update-Round-Round-1.docx' WHERE round_id = 1
         `);
+		await query(SQL`DELETE FROM rounds_history WHERE round_id = 1`);
 		await fs.promises.mkdir(`${config.UPLOAD_DIR}`, { recursive: true });
 		await fs.promises.mkdir(
 			`${config.UPLOAD_DIR}/testcaselist/testschool/testteam`,
