@@ -144,8 +144,8 @@ const RoundsTable = ({
 								<>
 									<DownloadFile path={row.row?.original?.opensource} />
 									{row.row?.original?.opensource?.endsWith('.docx') && (
-										<Link
-											to={`/preview?path=${encodeURIComponent(row.row?.original?.opensource)}`}
+										<a
+											href={`/preview?path=${encodeURIComponent(row.row?.original?.opensource)}`}
 											target="_blank"
 											rel="noopener noreferrer"
 										>
@@ -155,7 +155,7 @@ const RoundsTable = ({
 												className={styles.preview}
 												data-testid="preview"
 											/>
-										</Link>
+										</a>
 									)}
 								</>
 							)}
@@ -266,8 +266,8 @@ const RoundsTable = ({
 									<span>Open Source:</span>
 									<DownloadFile path={row.row?.original?.opensource} />
 									{row.row?.original?.opensource?.endsWith('.docx') && (
-										<Link
-											to={`/preview?path=${encodeURIComponent(row.row?.original?.opensource)}`}
+										<a
+											href={`/preview?path=${encodeURIComponent(row.row?.original?.opensource)}`}
 											target="_blank"
 											rel="noopener noreferrer"
 										>
@@ -276,7 +276,7 @@ const RoundsTable = ({
 												title="Preview"
 												className={styles.preview}
 											/>
-										</Link>
+										</a>
 									)}
 								</p>
 							)}

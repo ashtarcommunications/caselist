@@ -62,9 +62,13 @@ const PreviewFile = () => {
 	return (
 		<>
 			<div className={styles.title}>
-				<h2>Previewing {filename}</h2>
+				<p>Previewing {filename}</p>
 				<DownloadFile path={path} text="Download" />
 			</div>
+			<p className={styles.note}>
+				Previews do not include formatting, underlining, or highlighting.
+				Download for the full file.
+			</p>
 			<div className={styles.preview}>
 				{/* eslint-disable-next-line react/no-danger */}
 				<div dangerouslySetInnerHTML={{ __html: html }} />

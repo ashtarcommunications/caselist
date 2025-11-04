@@ -19,3 +19,32 @@
 	justify-content: space-between;
 	align-items: center;
 }
+
+.note {
+	font-size: 0.75rem;
+	color: var(--darkgray);
+}
+
+.preview h1,
+.preview h2,
+.preview h3,
+.preview h4,
+.preview p {
+	color: var(--black);
+	font-weight: bold;
+}
+.preview h1 {
+	font-size: 2rem;
+}
+.preview h2 {
+	font-size: 1.5rem;
+}
+.preview h3 {
+	font-size: 1.2rem;
+}
+.preview h4 {
+	font-size: 1rem;
+}
+.preview p {
+	font-size: 1rem;
+}
