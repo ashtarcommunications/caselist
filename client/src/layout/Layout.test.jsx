@@ -46,6 +46,13 @@ describe('Layout', () => {
 		);
 	});
 
+	it('Optionally suppress rendering a sidebar', async () => {
+		render(<Layout suppressSidebar />);
+
+		const sidebar = screen.queryByText(/Schools/);
+		assert.isNull(sidebar, 'No sidebar rendered');
+	});
+
 	it('Does not render private route layout for non-logged-in users', async () => {
 		auth.user.loggedIn = false;
 		render(<Layout />);

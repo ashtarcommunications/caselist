@@ -37,6 +37,7 @@ import EditRound from './team/EditRound';
 import OpenEvHome from './openev/OpenEvHome';
 import OpenEvUpload from './openev/OpenEvUpload';
 import SearchResults from './search/SearchResults';
+import PreviewFile from './helpers/PreviewFile';
 
 const App = () => {
 	// Inject analytics script
@@ -108,6 +109,11 @@ const App = () => {
 							<Route path="/openev">
 								<Layout privateRoute openev>
 									<OpenEvHome />
+								</Layout>
+							</Route>
+							<Route path="/preview">
+								<Layout suppressSidebar privateRoute>
+									<PreviewFile />
 								</Layout>
 							</Route>
 							<Route path="/:caselist/:school/:team/edit/:round">

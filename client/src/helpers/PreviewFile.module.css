@@ -1,0 +1,21 @@
+.preview {
+	background-color: var(--lightgray);
+	padding: 2rem;
+	min-height: 100vh;
+	display: flex;
+	justify-content: center;
+}
+
+.preview > div {
+	background-color: var(--white);
+	padding: 2rem 4rem;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+	width: 8.5in;
+	min-height: 11in;
+}
+
+.title {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}

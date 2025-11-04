@@ -1,7 +1,50 @@
 import { createBrowserHistory } from 'history';
 import { vi } from 'vitest';
+import JSZip from 'jszip';
 
 export const history = createBrowserHistory();
+
+// Helper function to create a minimal valid .docx file
+const createMinimalDocx = async (content = 'Test Contents') => {
+	const zip = new JSZip();
+
+	// [Content_Types].xml - defines the content types in the package
+	zip.file(
+		'[Content_Types].xml',
+		`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+  <Default Extension="xml" ContentType="application/xml"/>
+  <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
+</Types>`,
+	);
+
+	// _rels/.rels - defines the relationships at the package level
+	zip.file(
+		'_rels/.rels',
+		`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
+</Relationships>`,
+	);
+
+	// word/document.xml - the main document content
+	zip.file(
+		'word/document.xml',
+		`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:body>
+    <w:p>
+      <w:r>
+        <w:t>${content}</w:t>
+      </w:r>
+    </w:p>
+  </w:body>
+</w:document>`,
+	);
+
+	return zip.generateAsync({ type: 'arraybuffer' });
+};
 
 export const login = vi
 	.fn()
@@ -164,7 +207,13 @@ export const addOpenEvFile = vi
 export const deleteOpenEvFile = vi
 	.fn()
 	.mockResolvedValue({ message: 'Successfully deleted file' });
-export const downloadFile = vi.fn().mockResolvedValue({ blob: () => true });
+export const downloadFile = vi.fn().mockImplementation(async () => {
+	const arrayBuffer = await createMinimalDocx('Test Contents');
+	return {
+		blob: () => new Blob([arrayBuffer]),
+		arrayBuffer: async () => arrayBuffer,
+	};
+});
 export const loadSearch = vi.fn().mockResolvedValue([
 	{
 		type: 'team',

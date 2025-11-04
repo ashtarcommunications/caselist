@@ -1,26 +1,16 @@
 import React from 'react';
-import { assert, vi } from 'vitest';
+import { assert } from 'vitest';
 
 import { wrappedRender as render, screen, waitFor } from '../setupTests';
 import { loadSearch } from '../helpers/api.js';
 
 import SearchResults from './SearchResults';
 
-// useSearch from wouter doesn't work in testing
-// https://github.com/molefrog/wouter/issues/447
-vi.mock('wouter', async () => {
-	const actual = await vi.importActual('wouter');
-	return {
-		...actual,
-		useSearch: () => 'q=search',
-	};
-});
-
 describe('SearchResults', () => {
 	it('Renders search results', async () => {
 		render(<SearchResults />, {
 			route: '/:caselist/:school/:team',
-			path: '/testcaselist/testschool/testteam',
+			path: '/testcaselist/testschool/testteam?q=search',
 		});
 		await waitFor(() =>
 			assert.isOk(screen.queryAllByText(/Search Results/), 'Renders a heading'),
@@ -47,7 +37,7 @@ describe('SearchResults', () => {
 		]);
 		render(<SearchResults />, {
 			route: '/:caselist/:school/:team',
-			path: '/testcaselist/testschool/testteam',
+			path: '/testcaselist/testschool/testteam?q=search',
 		});
 		await waitFor(() =>
 			assert.isOk(screen.queryByText(/Test Cite/), 'Renders a cite result'),
@@ -58,7 +48,7 @@ describe('SearchResults', () => {
 		]);
 		render(<SearchResults />, {
 			route: '/:caselist/:school/:team',
-			path: '/testcaselist/testschool/testteam',
+			path: '/testcaselist/testschool/testteam?q=search',
 		});
 		await waitFor(() =>
 			assert.isOk(screen.queryAllByText(/File/), 'Renders a file result'),
@@ -78,7 +68,7 @@ describe('SearchResults', () => {
 		loadSearch.mockImplementation(() => []);
 		render(<SearchResults />, {
 			route: '/:caselist',
-			path: '/testcaselist',
+			path: '/testcaselist?q=search',
 		});
 		await waitFor(() =>
 			assert.isOk(screen.queryByText(/No results/), 'No results warning'),
@@ -89,7 +79,7 @@ describe('SearchResults', () => {
 		loadSearch.mockRejectedValue({ message: 'Failed to load search results' });
 		render(<SearchResults />, {
 			route: '/:caselist',
-			path: '/testcaselist',
+			path: '/testcaselist?q=search',
 		});
 		await waitFor(() =>
 			assert.isOk(screen.queryByTestId('loader'), 'Renders a loader'),

@@ -52,6 +52,13 @@
 	text-align: center;
 }
 
+.preview {
+	color: var(--brightblue);
+	cursor: pointer;
+	margin: 0px 10px;
+	font-size: 18px;
+}
+
 .video {
 	color: var(--brightblue);
 	cursor: pointer;

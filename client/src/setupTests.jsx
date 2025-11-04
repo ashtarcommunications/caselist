@@ -26,7 +26,7 @@ export const wrappedRender = (component, options = {}) => {
 	return render(
 		<ProvideAuth>
 			<ProvideStore>
-				<Router hook={router.hook}>
+				<Router hook={router.hook} searchHook={router.searchHook}>
 					<Route path={options.route}>{component}</Route>
 				</Router>
 			</ProvideStore>

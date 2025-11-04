@@ -9,6 +9,7 @@ import {
 	faCalendarAlt,
 	faVideo,
 	faEdit,
+	faEye,
 } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
 import { displaySide, roundName } from '@speechanddebate/nsda-js-utils';
@@ -140,7 +141,23 @@ const RoundsTable = ({
 					return (
 						<>
 							{row.row?.original?.opensource && (
-								<DownloadFile path={row.row?.original?.opensource} />
+								<>
+									<DownloadFile path={row.row?.original?.opensource} />
+									{row.row?.original?.opensource?.endsWith('.docx') && (
+										<Link
+											to={`/preview?path=${encodeURIComponent(row.row?.original?.opensource)}`}
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											<FontAwesomeIcon
+												icon={faEye}
+												title="Preview"
+												className={styles.preview}
+												data-testid="preview"
+											/>
+										</Link>
+									)}
+								</>
 							)}
 							{row.row?.original?.video && (
 								<a
@@ -248,6 +265,19 @@ const RoundsTable = ({
 								<p>
 									<span>Open Source:</span>
 									<DownloadFile path={row.row?.original?.opensource} />
+									{row.row?.original?.opensource?.endsWith('.docx') && (
+										<Link
+											to={`/preview?path=${encodeURIComponent(row.row?.original?.opensource)}`}
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											<FontAwesomeIcon
+												icon={faEye}
+												title="Preview"
+												className={styles.preview}
+											/>
+										</Link>
+									)}
 								</p>
 							)}
 							{row.row?.original?.video && (
