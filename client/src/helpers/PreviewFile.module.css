@@ -28,23 +28,29 @@
 .preview h1,
 .preview h2,
 .preview h3,
-.preview h4,
-.preview p {
+.preview h4 {
 	color: var(--black);
 	font-weight: bold;
 }
+
 .preview h1 {
 	font-size: 2rem;
 }
+
 .preview h2 {
 	font-size: 1.5rem;
 }
+
 .preview h3 {
 	font-size: 1.2rem;
 }
+
 .preview h4 {
 	font-size: 1rem;
 }
+
 .preview p {
+	color: var(--black);
+	font-weight: normal;
 	font-size: 1rem;
 }
