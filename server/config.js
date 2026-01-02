@@ -47,7 +47,7 @@ const config = {
 if (process.env.NODE_ENV === 'production') {
 	config.COOKIE_DOMAIN = 'opencaselist.com';
 	config.LDAP_URL = 'ldaps://ldap.tabroom.com:636';
-	config.TABROOM_API_URL = 'https://api.tabroom.com/v1';
+	config.TABROOM_API_URL = 'https://masonapi.tabroom.com/v1';
 	config.ADMINS = [];
 }
 
