@@ -6,12 +6,25 @@ Depending on the circumstances, consider adding some time constraints to these q
 
 Make sure to update the ID's in the following queries to match the team you are restoring.
 
+Example for a single team:
+
 ```sql
 INSERT INTO teams (team_id, school_id, name, display_name, notes, debater1_first, debater1_last, debater2_first, debater2_last, created_by_id) SELECT team_id, school_id, name, display_name, notes, debater1_first, debater1_last, debater2_first, debater2_last, <id_of_last_legitimate_user> FROM teams_history where team_id = <team_id> and version = 8;
 
 INSERT INTO rounds (round_id, team_id, side, tournament, round, opponent, judge, report, opensource, video, tourn_id, created_by_id) SELECT round_id, team_id, side, tournament, round, opponent, judge, report, opensource, video, tourn_id, created_by_id FROM rounds_history WHERE team_id = <team_id> AND event = 'delete';
 
 INSERT INTO cites (cite_id, round_id, title, cites, created_by_id) SELECT cite_id, round_id, title, cites, created_by_id FROM cites_history WHERE round_id IN (SELECT DISTINCT round_id FROM rounds_history where team_id = <team_id> and event = 'delete') AND event = 'delete';
+```
+
+Example for a bulk deletion where you know the user ID
+
+```sql
+INSERT INTO teams (team_id, school_id, name, display_name, notes, debater1_first, debater1_last, debater2_first, debater2_last, created_by_id) SELECT team_id, school_id, name, display_name, notes, debater1_first, debater1_last, debater2_first, debater2_last, created_by_id FROM teams_history TH where TH.team_id IN (SELECT team_id FROM teams_history TH2 WHERE updated_by_id = <user_id_of_deleter> AND event = 'delete' AND updated_at > '<timestamp_of_deletion>')  and TH.version = (SELECT MAX(version) FROM teams_history TH3 WHERE TH3.team_id = TH.team_id AND TH3.event = 'delete');
+
+INSERT INTO rounds (round_id, team_id, side, tournament, round, opponent, judge, report, opensource, video, tourn_id, created_by_id) SELECT round_id, team_id, side, tournament, round, opponent, judge, report, opensource, video, tourn_id, created_by_id FROM rounds_history WHERE team_id IN (SELECT team_id FROM teams_history WHERE updated_by_id = <user_id_of_deleter> AND event = 'delete' AND updated_at > '<timestamp_of_deletion') AND event = 'delete';
+
+INSERT INTO cites (cite_id, round_id, title, cites, created_by_id) SELECT cite_id, round_id, title, cites, created_by_id FROM cites_history WHERE round_id IN (SELECT DISTINCT round_id FROM rounds_history where team_id IN (SELECT team_id FROM teams_history WHERE updated_by_id = <user_id_of_deleter> AND event = 'delete' AND updated_at > '<timestamp_of_deletion>') and event = 'delete') AND event = 'delete';
+
 ```
 
 You also have to restore deleted files on the file system. The following script will rename all files in the current directory that end with `-DELETED-vX.pdf` to remove the `-DELETED-vX` part of the filename.
