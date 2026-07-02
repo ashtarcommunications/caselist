@@ -140,6 +140,26 @@ describe('TeamList', () => {
 		auth.user.admin = true;
 	});
 
+	it('Does not render trash icons for a user who did not create the team', async () => {
+		auth.user.admin = false;
+		auth.user.user_id = 2;
+		render(<TeamList />, {
+			route: '/:caselist/:school/:team',
+			path: '/testcaselist/testschool/testteam',
+		});
+		await waitFor(() =>
+			assert.strictEqual(
+				store.fetchTeams.mock.calls.length,
+				1,
+				'Fetched teams',
+			),
+		);
+
+		assert.isNotOk(screen.queryByTestId('trash'), 'No delete icon');
+		auth.user.admin = true;
+		auth.user.user_id = 1;
+	});
+
 	afterEach(() => {
 		deleteTeam.mockClear();
 		store.fetchTeams.mockClear();

@@ -7,6 +7,7 @@ const getTeam = {
             SELECT
                 C.archived,
                 T.*,
+				S.created_by_id AS school_created_by_id,
                 U.display_name AS 'updated_by'
             FROM teams T
             INNER JOIN schools S ON S.school_id = T.school_id

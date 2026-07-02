@@ -26,6 +26,12 @@ describe('GET /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds', ()
 		assert.property(res.body[0], 'video', 'video property');
 		assert.property(res.body[0], 'tourn_id', 'tourn_id property');
 		assert.property(res.body[0], 'external_id', 'external_id property');
+		assert.property(res.body[0], 'created_by_id', 'created_by_id property');
+		assert.property(
+			res.body[0],
+			'team_created_by_id',
+			'team_created_by_id property',
+		);
 
 		res = await request(server)
 			.get(

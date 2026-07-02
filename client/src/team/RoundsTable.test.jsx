@@ -26,6 +26,7 @@ describe('RoundsTable', () => {
 						report: 'Test Report',
 						opensource: 'test/test.docx',
 						video: 'https://video.com',
+						created_by_id: 1,
 					},
 				]}
 				handleDeleteRoundConfirm={mockHandleDeleteRoundConfirm}
@@ -179,6 +180,45 @@ describe('RoundsTable', () => {
 		assert.isNotOk(screen.queryByTestId('edit'), 'No edit icon');
 		assert.isNotOk(screen.queryByTestId('trash-round'), 'No delete icon');
 		auth.user.admin = true;
+	});
+
+	it('Should not render edit or delete icons for users who did not create the round', async () => {
+		auth.user.admin = false;
+		auth.user.user_id = 2;
+		const mockHandleDeleteRoundConfirm = vi.fn();
+		const mockHandleToggleAll = vi.fn();
+		const mockHandleToggleReport = vi.fn();
+		render(
+			<RoundsTable
+				event="cx"
+				rounds={[
+					{
+						round_id: 1,
+						tournament: 'Test Tournament',
+						side: 'A',
+						round: '1',
+						opponent: 'Test Opponent',
+						judge: 'Test Judge',
+						report: 'Test Report',
+						opensource: 'test/test.docx',
+						video: 'https://video.com',
+						created_by_id: 1,
+						team_created_by_id: 1,
+					},
+				]}
+				handleDeleteRoundConfirm={mockHandleDeleteRoundConfirm}
+				handleToggleAll={mockHandleToggleAll}
+				handleToggleReport={mockHandleToggleReport}
+			/>,
+			{
+				route: '/:caselist/:school/:team',
+				path: '/testcaselist/testschool/testteam',
+			},
+		);
+		assert.isNotOk(screen.queryByTestId('edit'), 'No edit icon');
+		assert.isNotOk(screen.queryByTestId('trash-round'), 'No delete icon');
+		auth.user.admin = true;
+		auth.user.user_id = 1;
 	});
 
 	it('should display a Collapse All button if all reports are open', async () => {

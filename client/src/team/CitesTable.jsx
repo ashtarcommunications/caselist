@@ -168,8 +168,20 @@ const CitesTable = ({
 				disableSortBy: true,
 				accessor: (row) => row,
 				className: styles.center,
-				Cell: (row) =>
-					auth.user?.admin || (auth.user?.trusted && !archived) ? (
+				Cell: (row) => {
+					let canDelete = false;
+					if (auth.user?.admin) {
+						canDelete = true;
+					} else if (
+						auth.user?.trusted &&
+						!archived &&
+						(auth.user?.user_id === row.row?.original?.created_by_id ||
+							auth.user?.user_id === row.row?.original?.team_created_by_id)
+					) {
+						canDelete = true;
+					}
+
+					return canDelete ? (
 						<FontAwesomeIcon
 							icon={faTrash}
 							id={row.row?.original?.cite_id}
@@ -178,7 +190,8 @@ const CitesTable = ({
 							data-testid="trash-cite"
 							title="Delete cites"
 						/>
-					) : null,
+					) : null;
+				},
 			},
 		];
 	}, [
@@ -198,27 +211,49 @@ const CitesTable = ({
 				disableSortBy: true,
 				disableFilters: true,
 				accessor: (row) => row,
-				Cell: (row) => (
-					<>
-						<CiteCell
-							row={row}
-							event={event}
-							handleToggleCites={handleToggleCites}
-						/>
-						{!archived && (
-							<FontAwesomeIcon
-								icon={faTrash}
-								id={row.row?.original?.cite_id}
-								onClick={(e) => handleDeleteCiteConfirm(e)}
-								className={styles.trash}
-								title="Delete cites"
+				Cell: (row) => {
+					let canDelete = false;
+					if (auth.user?.admin) {
+						canDelete = true;
+					} else if (
+						auth.user?.trusted &&
+						!archived &&
+						(auth.user?.user_id === row.row?.original?.created_by_id ||
+							auth.user?.user_id === row.row?.original?.team_created_by_id)
+					) {
+						canDelete = true;
+					}
+
+					return (
+						<>
+							<CiteCell
+								row={row}
+								event={event}
+								handleToggleCites={handleToggleCites}
 							/>
-						)}
-					</>
-				),
+							{canDelete && (
+								<FontAwesomeIcon
+									icon={faTrash}
+									id={row.row?.original?.cite_id}
+									onClick={(e) => handleDeleteCiteConfirm(e)}
+									className={styles.trash}
+									title="Delete cites"
+								/>
+							)}
+						</>
+					);
+				},
 			},
 		],
-		[handleToggleCites, handleDeleteCiteConfirm, archived, event],
+		[
+			auth.user?.admin,
+			auth.user?.trusted,
+			auth.user?.user_id,
+			archived,
+			event,
+			handleToggleCites,
+			handleDeleteCiteConfirm,
+		],
 	);
 
 	if (cites.length === 0) {

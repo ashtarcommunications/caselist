@@ -143,8 +143,20 @@ const TeamList = () => {
 				disableFilters: true,
 				accessor: (row) => row,
 				className: styles.center,
-				Cell: (row) =>
-					auth.user?.admin || (auth.user?.trusted && !caselistData.archived) ? (
+				Cell: (row) => {
+					let canDelete = false;
+					if (auth.user?.admin) {
+						canDelete = true;
+					} else if (
+						auth.user?.trusted &&
+						!caselistData.archived &&
+						(auth.user?.user_id === row.row?.original?.created_by_id ||
+							auth.user?.user_id === row.row?.original?.school_created_by_id)
+					) {
+						canDelete = true;
+					}
+
+					return canDelete ? (
 						<FontAwesomeIcon
 							className={styles.trash}
 							icon={faTrash}
@@ -152,7 +164,8 @@ const TeamList = () => {
 							data-name={row.value?.name}
 							onClick={(e) => handleDeleteTeamConfirm(e)}
 						/>
-					) : null,
+					) : null;
+				},
 			},
 		],
 		[

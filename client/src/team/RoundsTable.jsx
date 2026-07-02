@@ -184,8 +184,20 @@ const RoundsTable = ({
 				disableFilters: true,
 				accessor: (row) => row,
 				className: styles.center,
-				Cell: (row) =>
-					auth.user?.admin || (auth.user?.trusted && !archived) ? (
+				Cell: (row) => {
+					let canModify = false;
+					if (auth.user?.admin) {
+						canModify = true;
+					} else if (
+						auth.user?.trusted &&
+						!archived &&
+						(auth.user?.user_id === row.row?.original?.created_by_id ||
+							auth.user?.user_id === row.row?.original?.team_created_by_id)
+					) {
+						canModify = true;
+					}
+
+					return canModify ? (
 						<>
 							<Link
 								to={`/${caselist}/${school}/${team}/edit/${row.row?.original?.round_id}`}
@@ -206,7 +218,8 @@ const RoundsTable = ({
 								onClick={(e) => handleDeleteRoundConfirm(e)}
 							/>
 						</>
-					) : null,
+					) : null;
+				},
 			},
 		],
 		[
@@ -233,12 +246,24 @@ const RoundsTable = ({
 				disableFilters: true,
 				accessor: (row) => row,
 				Cell: (row) => {
+					let canModify = false;
+					if (auth.user?.admin) {
+						canModify = true;
+					} else if (
+						auth.user?.trusted &&
+						!archived &&
+						(auth.user?.user_id === row.row?.original?.created_by_id ||
+							auth.user?.user_id === row.row?.original?.team_created_by_id)
+					) {
+						canModify = true;
+					}
+
 					return (
 						<div>
 							<p>Tournament: {row.row?.original?.tournament}</p>
 							<p>
 								<span>Round: {row.row?.original?.round}</span>
-								{!archived && (
+								{canModify && (
 									<>
 										<Link
 											to={`/${caselist}/${school}/${team}/edit/${row.row?.original?.round_id}`}
@@ -308,7 +333,16 @@ const RoundsTable = ({
 				},
 			},
 		],
-		[handleDeleteRoundConfirm, archived, caselist, school, team],
+		[
+			auth.user?.admin,
+			auth.user?.trusted,
+			auth.user?.user_id,
+			archived,
+			caselist,
+			school,
+			team,
+			handleDeleteRoundConfirm,
+		],
 	);
 
 	return (

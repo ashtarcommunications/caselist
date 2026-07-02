@@ -14,6 +14,8 @@ const deleteRound = {
             SELECT
                 C.archived,
                 R.opensource,
+				R.created_by_id,
+				T.created_by_id AS team_created_by_id,
                 (SELECT COALESCE(MAX(version), 0) + 1 FROM rounds_history RH WHERE RH.round_id = R.round_id) AS 'version'
             FROM rounds R
             INNER JOIN teams T on T.team_id = R.team_id
@@ -32,6 +34,16 @@ const deleteRound = {
 			return res
 				.status(403)
 				.json({ message: 'Caselist archived, no modifications allowed' });
+		}
+		if (
+			round.created_by_id !== req.user_id &&
+			round.team_created_by_id !== req.user_id &&
+			!req.admin
+		) {
+			return res.status(401).json({
+				message:
+					'Permission denied. Rounds can only be deleted by their creator or team owner',
+			});
 		}
 
 		if (round.opensource) {

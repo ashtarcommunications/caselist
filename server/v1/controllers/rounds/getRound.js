@@ -4,7 +4,8 @@ import { query } from '../../helpers/mysql.js';
 const getRound = {
 	GET: async (req, res) => {
 		const [round] = await query(SQL`
-            SELECT R.* FROM rounds R
+            SELECT R.*, T.created_by_id AS team_created_by_id
+			FROM rounds R
             INNER JOIN teams T ON T.team_id = R.team_id
             INNER JOIN schools S ON S.school_id = T.school_id
             INNER JOIN caselists C ON S.caselist_id = C.caselist_id

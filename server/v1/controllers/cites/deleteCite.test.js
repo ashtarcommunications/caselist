@@ -7,8 +7,8 @@ import server from '../../../index.js';
 describe('DELETE /v1/caselists/{caselist}/schools/{school}/teams/{team}/cites/{cite}', () => {
 	it('should delete a cite', async () => {
 		const newCite = await query(SQL`
-            INSERT INTO cites (round_id, title, cites) VALUES
-                (1, 'Delete Test Cite', 'Delete Test Cite');
+            INSERT INTO cites (round_id, title, cites, created_by_id) VALUES
+                (1, 'Delete Test Cite', 'Delete Test Cite', 2);
         `);
 
 		await request(server)
@@ -85,7 +85,29 @@ describe('DELETE /v1/caselists/{caselist}/schools/{school}/teams/{team}/cites/{c
 			.expect(401);
 	});
 
+	it('should return a 401 for users who did not create the cite', async () => {
+		const newCite = await query(SQL`
+            INSERT INTO cites (round_id, title, cites, created_by_id) VALUES
+                (1, 'Delete Test Cite', 'Delete Test Cite', 1);
+        `);
+		await query(SQL`
+			UPDATE teams SET created_by_id = 1 WHERE team_id = 1
+        `);
+
+		await request(server)
+			.delete(
+				`/v1/caselists/testcaselist/schools/testschool/teams/testteam/cites/${newCite.insertId}`,
+			)
+			.set('Accept', 'application/json')
+			.set('Cookie', ['caselist_token=user'])
+			.expect('Content-Type', /json/)
+			.expect(401);
+	});
+
 	afterEach(async () => {
+		await query(SQL`
+            DELETE FROM cites WHERE round_id = 1
+        `);
 		await query(SQL`
             DELETE FROM cites_history WHERE round_id = 1 AND title = 'Delete Test Cite'
         `);

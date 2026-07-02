@@ -8,7 +8,10 @@ import { solrLogger } from '../../helpers/logger.js';
 const deleteCite = {
 	DELETE: async (req, res) => {
 		const [cite] = await query(SQL`
-            SELECT C.archived
+            SELECT
+				C.archived,
+				CT.created_by_id,
+				T.created_by_id AS team_created_by_id
             FROM cites CT
             INNER JOIN rounds R ON R.round_id = CT.round_id
             INNER JOIN teams T on T.team_id = R.team_id
@@ -28,6 +31,16 @@ const deleteCite = {
 			return res
 				.status(403)
 				.json({ message: 'Caselist archived, no modifications allowed' });
+		}
+		if (
+			cite.created_by_id !== req.user_id &&
+			cite.team_created_by_id !== req.user_id &&
+			!req.admin
+		) {
+			return res.status(401).json({
+				message:
+					'Permission denied. Cites can only be deleted by their creator or team owner',
+			});
 		}
 
 		await query(SQL`

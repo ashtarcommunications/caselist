@@ -24,7 +24,7 @@ That URL is running Swagger UI, pointing to https://api.opencaselist.com/v1/docs
 
 It's a pretty standard NodeJS Express app using an OpenAPI middleware for request validation. All the route specifications are descibed in the `/v1/routes` folder.
 
-It ties in to the Tabroom LDAP server for authentication. In development, it sets up a mock that authorizes anything.
+It ties in to the Tabroom auth endpoint for authentication. In development, it sets up a mock that authorizes anything.
 
 Database access is with the mysql2 driver and uses `sql-template-strings` as a lightweight query builder.
 

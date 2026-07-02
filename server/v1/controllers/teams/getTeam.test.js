@@ -27,6 +27,12 @@ describe('GET /v1/caselists/{caselist}/schools/{school}/teams/{team}', () => {
 		assert.property(res.body, 'debater4_last', 'debater4_last property');
 		assert.property(res.body, 'archived', 'archived property');
 		assert.property(res.body, 'updated_by', 'updated_by property');
+		assert.property(res.body, 'created_by_id', 'created_by_id property');
+		assert.property(
+			res.body,
+			'school_created_by_id',
+			'school_created_by_id property',
+		);
 	});
 
 	it('should anonymize names and not return updated_by or notes for an archived team', async () => {

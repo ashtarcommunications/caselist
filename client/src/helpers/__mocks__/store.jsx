@@ -23,6 +23,7 @@ export const store = {
 			name: 'testschool',
 			display_name: 'Test School',
 			state: 'CO',
+			created_by_id: 1,
 		},
 	],
 	fetchSchool: vi.fn().mockResolvedValue({}),
@@ -32,6 +33,7 @@ export const store = {
 		display_name: 'Test School',
 		state: 'CO',
 		updated_by: 'Test User',
+		created_by_id: 1,
 	},
 	fetchTeams: vi.fn().mockResolvedValue([
 		{
@@ -40,6 +42,7 @@ export const store = {
 			display_name: 'Test Team',
 			debater1_first: 'Aaron',
 			debater1_last: 'Hardy',
+			created_by_id: 1,
 		},
 	]),
 	teams: [
@@ -51,6 +54,7 @@ export const store = {
 			debater1_last: 'Hardy',
 			debater2_first: 'Chris',
 			debater2_last: 'Palmer',
+			created_by_id: 1,
 		},
 	],
 	fetchOpenEvFiles: vi.fn().mockResolvedValue([

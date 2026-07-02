@@ -6,7 +6,8 @@ const getTeams = {
 		const sql = SQL`
             SELECT
                 C.archived,
-                T.*
+                T.*,
+				S.created_by_id AS school_created_by_id
             FROM teams T
             INNER JOIN schools S ON S.school_id = T.school_id
             INNER JOIN caselists C ON S.caselist_id = C.caselist_id

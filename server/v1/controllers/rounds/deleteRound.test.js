@@ -9,6 +9,9 @@ import server from '../../../index.js';
 describe('DELETE /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{round}', () => {
 	beforeEach(async () => {
 		await query(SQL`
+            DELETE FROM rounds WHERE tournament = 'Delete Round Tourn'
+        `);
+		await query(SQL`
             DELETE FROM rounds_history WHERE tournament = 'Delete Round Tourn'
         `);
 		await fs.promises.mkdir(`${config.UPLOAD_DIR}`, { recursive: true });
@@ -20,8 +23,8 @@ describe('DELETE /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{
 
 	it('should delete a round', async () => {
 		const newRound = await query(SQL`
-            INSERT INTO rounds (team_id, tournament, side, round, opensource) VALUES
-                (1, 'Delete Tourn', 'A', '1', 'testdeleteround.docx');
+            INSERT INTO rounds (team_id, tournament, side, round, opensource, created_by_id) VALUES
+                (1, 'Delete Round Tourn', 'A', '1', 'testdeleteround.docx', 2);
         `);
 		await query(SQL`
             INSERT INTO cites (round_id, title, cites) VALUES
@@ -130,6 +133,25 @@ describe('DELETE /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{
 			.expect(401);
 	});
 
+	it('should return a 401 for a user who did not create the round', async () => {
+		const newRound = await query(SQL`
+            INSERT INTO rounds (team_id, tournament, side, round, opensource, created_by_id) VALUES
+                (1, 'Delete Round Tourn', 'A', '1', 'testdeleteround.docx', 1);
+        `);
+		await query(SQL`
+			UPDATE teams SET created_by_id = 1 WHERE team_id = 1
+        `);
+
+		await request(server)
+			.delete(
+				`/v1/caselists/testcaselist/schools/testschool/teams/testteam/rounds/${newRound.insertId}`,
+			)
+			.set('Accept', 'application/json')
+			.set('Cookie', ['caselist_token=user'])
+			.expect('Content-Type', /json/)
+			.expect(401);
+	});
+
 	afterEach(async () => {
 		try {
 			let files = await fs.promises.readdir(config.UPLOAD_DIR);
@@ -141,6 +163,9 @@ describe('DELETE /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{
 			// Do Nothing
 		}
 
+		await query(SQL`
+            DELETE FROM rounds WHERE tournament = 'Delete Round Tourn'
+        `);
 		await query(SQL`
             DELETE FROM rounds_history WHERE tournament = 'Delete Round Tourn'
         `);

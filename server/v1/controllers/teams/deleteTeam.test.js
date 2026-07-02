@@ -17,8 +17,8 @@ describe('DELETE /v1/caselists/{caselist}/schools/{school}/teams/{team}', () => 
 
 	it('should delete a team', async () => {
 		const newTeam = await query(SQL`
-            INSERT INTO teams (school_id, name, display_name, debater1_first, debater1_last) VALUES
-                (1, 'deleteteam', 'Test Delete Team', 'Test', 'Test');
+            INSERT INTO teams (school_id, name, display_name, debater1_first, debater1_last, created_by_id) VALUES
+                (1, 'deleteteam', 'Test Delete Team', 'Test', 'Test', 2);
         `);
 		const newRound = await query(SQL`
             INSERT INTO rounds (team_id, tournament, side, round, opensource) VALUES
@@ -133,6 +133,19 @@ describe('DELETE /v1/caselists/{caselist}/schools/{school}/teams/{team}', () => 
 			.expect(401);
 	});
 
+	it('should return a 401 for user who did not create the team', async () => {
+		await query(SQL`
+            INSERT INTO teams (school_id, name, display_name, debater1_first, debater1_last, created_by_id) VALUES
+                (1, 'deleteteam', 'Test Delete Team', 'Test', 'Test', 1);
+        `);
+		await request(server)
+			.delete(`/v1/caselists/testcaselist/schools/testschool/teams/deleteteam`)
+			.set('Accept', 'application/json')
+			.set('Cookie', ['caselist_token=user'])
+			.expect('Content-Type', /json/)
+			.expect(401);
+	});
+
 	afterEach(async () => {
 		try {
 			let files = await fs.promises.readdir(config.UPLOAD_DIR);
@@ -143,6 +156,9 @@ describe('DELETE /v1/caselists/{caselist}/schools/{school}/teams/{team}', () => 
 		} catch (err) {
 			// Do Nothing
 		}
+		await query(SQL`
+            DELETE FROM teams WHERE name = 'deleteteam'
+        `);
 		await query(SQL`
             DELETE FROM teams_history WHERE school_id = 1 AND event <> 'test'
         `);

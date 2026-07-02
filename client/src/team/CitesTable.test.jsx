@@ -128,4 +128,36 @@ describe('CitesTable', () => {
 		assert.isNotOk(screen.queryByTestId('trash-cite'), 'No delete icon');
 		auth.user.admin = true;
 	});
+
+	it('should not render a delete icon for users without permission', async () => {
+		auth.user.admin = false;
+		auth.user.user_id = 2;
+		const mockHandleDeleteCiteConfirm = vi.fn();
+		const mockHandleToggleCites = vi.fn();
+		render(
+			<CitesTable
+				archived
+				cites={[
+					{
+						cite_id: 1,
+						title: 'Title',
+						cites: 'Cites',
+						tournament: 'Tournament',
+						side: 'A',
+						round: '1',
+						opponent: 'Opponent',
+						judge: 'Judge',
+						citesopen: true,
+						created_by_id: 2,
+						team_created_by_id: 2,
+					},
+				]}
+				handleDeleteCiteConfirm={mockHandleDeleteCiteConfirm}
+				handleToggleCites={mockHandleToggleCites}
+			/>,
+		);
+		assert.isNotOk(screen.queryByTestId('trash-cite'), 'No delete icon');
+		auth.user.admin = true;
+		auth.user.user_id = 1;
+	});
 });

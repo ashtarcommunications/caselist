@@ -26,6 +26,12 @@ describe('GET /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{rou
 		assert.property(res.body, 'video', 'video property');
 		assert.property(res.body, 'tourn_id', 'tourn_id property');
 		assert.property(res.body, 'external_id', 'external_id property');
+		assert.property(res.body, 'created_by_id', 'created_by_id property');
+		assert.property(
+			res.body,
+			'team_created_by_id',
+			'team_created_by_id property',
+		);
 	});
 
 	it('should return a 404 on a missing round', async () => {

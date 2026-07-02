@@ -10,7 +10,11 @@ import log from '../log/insertEventLog.js';
 const deleteTeam = {
 	DELETE: async (req, res) => {
 		const [team] = await query(SQL`
-            SELECT C.archived, T.team_id
+            SELECT
+                C.archived,
+                T.team_id,
+                T.created_by_id,
+                S.created_by_id AS school_created_by_id
             FROM teams T
             INNER JOIN schools S ON S.school_id = T.school_id
             INNER JOIN caselists C ON C.caselist_id = S.caselist_id
@@ -26,6 +30,16 @@ const deleteTeam = {
 			return res
 				.status(403)
 				.json({ message: 'Caselist archived, no modifications allowed' });
+		}
+		if (
+			team.created_by_id !== req.user_id &&
+			team.school_created_by_id !== req.user_id &&
+			!req.admin
+		) {
+			return res.status(401).json({
+				message:
+					'Permission denied. Teams can only be deleted by their creator or school owner',
+			});
 		}
 
 		await query(SQL`

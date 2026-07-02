@@ -230,6 +230,34 @@ describe('PUT /v1/caselists/{caselist}/schools/{school}/teams/{team}/rounds/{rou
 			.expect(401);
 	});
 
+	it('should return a 401 for user who did not create the round', async () => {
+		await query(SQL`
+			UPDATE rounds set created_by_id = 1 WHERE round_id = 1
+		`);
+		await query(SQL`
+			UPDATE teams set created_by_id = 1 WHERE team_id = 1
+		`);
+		const round = {
+			side: 'N',
+			tournament: 'Test Update Round',
+			round: '2',
+			opponent: 'Update',
+			judge: 'Update',
+			report: 'Update',
+			opensource: null,
+			video: 'Update',
+		};
+		await request(server)
+			.put(
+				`/v1/caselists/testcaselist/schools/testschool/teams/testteam/rounds/1`,
+			)
+			.set('Accept', 'application/json')
+			.set('Cookie', ['caselist_token=user'])
+			.send(round)
+			.expect('Content-Type', /json/)
+			.expect(401);
+	});
+
 	afterEach(async () => {
 		try {
 			await query(SQL`

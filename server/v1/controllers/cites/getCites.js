@@ -6,6 +6,7 @@ const getCites = {
 		const sql = SQL`
             SELECT
                 CT.*,
+				T.created_by_id AS team_created_by_id,
                 R.side,
                 R.tournament,
                 R.round,

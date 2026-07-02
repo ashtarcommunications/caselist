@@ -4,7 +4,7 @@ import { query } from '../../helpers/mysql.js';
 const getRounds = {
 	GET: async (req, res) => {
 		const sql = SQL`
-            SELECT R.*
+            SELECT R.*, T.created_by_id AS team_created_by_id
             FROM rounds R 
             INNER JOIN teams T ON T.team_id = R.team_id
             INNER JOIN schools S ON S.school_id = T.school_id

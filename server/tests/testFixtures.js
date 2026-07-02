@@ -16,9 +16,9 @@ const testFixtures = async () => {
     `);
 
 	await query(SQL`
-        INSERT INTO teams (team_id, school_id, display_name, name, notes, debater1_first, debater1_last, debater2_first, debater2_last) VALUES
-            (1, 1, 'Test Team', 'testteam', 'Sample Notes', 'Aaron', 'Hardy', 'Chris', 'Palmer'),
-            (2, 2, 'Archived Team', 'archivedteam', 'Sample Notes', 'Aaron', 'Hardy', 'Chris', 'Palmer');
+        INSERT INTO teams (team_id, school_id, display_name, name, notes, debater1_first, debater1_last, debater2_first, debater2_last, created_by_id) VALUES
+            (1, 1, 'Test Team', 'testteam', 'Sample Notes', 'Aaron', 'Hardy', 'Chris', 'Palmer', 2),
+            (2, 2, 'Archived Team', 'archivedteam', 'Sample Notes', 'Aaron', 'Hardy', 'Chris', 'Palmer', 2);
     `);
 
 	await query(SQL`
@@ -27,10 +27,10 @@ const testFixtures = async () => {
     `);
 
 	await query(SQL`
-        INSERT INTO rounds (round_id, team_id, side, tournament, round, opponent, judge, report, opensource, tourn_id, external_id) VALUES
-            (1, 1, 'A', 'Test Tournament', '1', 'Evil Empire XX', 'Hardy', 'Report', 'test.docx', 1234, 1234),
-            (2, 1, 'N', 'Test Tournament', '2', 'Evil Empire YY', 'Hardy', 'Report', 'test.docx', 1234, 1234),
-            (3, 2, 'A', 'Archived Round', '1', 'Evil Empire XX', 'Hardy', 'Report', 'test.docx', 1234, 1234);
+        INSERT INTO rounds (round_id, team_id, side, tournament, round, opponent, judge, report, opensource, tourn_id, external_id, created_by_id) VALUES
+            (1, 1, 'A', 'Test Tournament', '1', 'Evil Empire XX', 'Hardy', 'Report', 'test.docx', 1234, 1234, 2),
+            (2, 1, 'N', 'Test Tournament', '2', 'Evil Empire YY', 'Hardy', 'Report', 'test.docx', 1234, 1234, 2),
+            (3, 2, 'A', 'Archived Round', '1', 'Evil Empire XX', 'Hardy', 'Report', 'test.docx', 1234, 1234, 2);
     `);
 
 	await query(SQL`
@@ -39,10 +39,10 @@ const testFixtures = async () => {
     `);
 
 	await query(SQL`
-        INSERT INTO cites (cite_id, round_id, title, cites) VALUES
-            (1, 1, 'Test Aff Title', '# Aff Cites'),
-            (2, 2, 'Test Neg Title', '# Neg Cites'),
-            (3, 3, 'Archived Cite', '# Archived Cite');
+        INSERT INTO cites (cite_id, round_id, title, cites, created_by_id) VALUES
+            (1, 1, 'Test Aff Title', '# Aff Cites', 2),
+            (2, 2, 'Test Neg Title', '# Neg Cites', 2),
+            (3, 3, 'Archived Cite', '# Archived Cite', 2);
     `);
 
 	await query(SQL`

@@ -18,6 +18,11 @@ describe('GET /v1/caselists/{caselist}/schools/{school}/teams/{team}/cites', () 
 		assert.property(res.body[0], 'cites', 'cites property');
 		assert.property(res.body[0], 'created_at', 'created_at property');
 		assert.property(res.body[0], 'created_by_id', 'created_by_id property');
+		assert.property(
+			res.body[0],
+			'team_created_by_id',
+			'team_created_by_id property',
+		);
 		assert.property(res.body[0], 'updated_at', 'updated_at property');
 		assert.property(res.body[0], 'updated_by_id', 'updated_by_id property');
 		assert.property(res.body[0], 'side', 'side property');
