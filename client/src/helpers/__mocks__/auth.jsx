@@ -5,7 +5,13 @@ import { vi } from 'vitest';
 export const AuthContext = createContext();
 
 export const auth = {
-	user: { token: 'token', loggedIn: true, trusted: true, admin: true },
+	user: {
+		token: 'token',
+		loggedIn: true,
+		trusted: true,
+		admin: true,
+		user_id: 1,
+	},
 	handleLogin: vi.fn().mockResolvedValue(true),
 	handleLogout: vi.fn().mockResolvedValue(true),
 };

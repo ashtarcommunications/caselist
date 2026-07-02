@@ -184,7 +184,7 @@ describe('RoundsTable', () => {
 
 	it('Should not render edit or delete icons for users who did not create the round', async () => {
 		auth.user.admin = false;
-		auth.user.user_id = 2;
+		auth.user.userId = 2;
 		const mockHandleDeleteRoundConfirm = vi.fn();
 		const mockHandleToggleAll = vi.fn();
 		const mockHandleToggleReport = vi.fn();
@@ -218,7 +218,7 @@ describe('RoundsTable', () => {
 		assert.isNotOk(screen.queryByTestId('edit'), 'No edit icon');
 		assert.isNotOk(screen.queryByTestId('trash-round'), 'No delete icon');
 		auth.user.admin = true;
-		auth.user.user_id = 1;
+		auth.user.userId = 1;
 	});
 
 	it('should display a Collapse All button if all reports are open', async () => {

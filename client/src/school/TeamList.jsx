@@ -150,8 +150,8 @@ const TeamList = () => {
 					} else if (
 						auth.user?.trusted &&
 						!caselistData.archived &&
-						(auth.user?.user_id === row.row?.original?.created_by_id ||
-							auth.user?.user_id === row.row?.original?.school_created_by_id)
+						(auth.user?.userId === row.row?.original?.created_by_id ||
+							auth.user?.userId === row.row?.original?.school_created_by_id)
 					) {
 						canDelete = true;
 					}

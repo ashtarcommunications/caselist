@@ -15,8 +15,9 @@ export const ProvideAuth = ({ children }) => {
 	const token = Cookies.get('caselist_token');
 	const trusted = Cookies.get('caselist_trusted');
 	const admin = Cookies.get('caselist_admin');
+	const userId = Cookies.get('caselist_user_id');
 	if (token && !user?.loggedIn) {
-		setUser({ loggedIn: true, token, trusted, admin });
+		setUser({ loggedIn: true, token, trusted, admin, userId });
 	}
 
 	const handleLogin = async (username, password, remember) => {
@@ -27,10 +28,17 @@ export const ProvideAuth = ({ children }) => {
 				token: response.token,
 				trusted: response.trusted,
 				admin: response.admin,
+				userId: response.userId,
 			});
 			return true;
 		} catch (err) {
-			setUser({ loggedIn: false, token: null, trusted: null, admin: null });
+			setUser({
+				loggedIn: false,
+				token: null,
+				trusted: null,
+				admin: null,
+				userId: null,
+			});
 			throw err;
 		}
 	};
@@ -53,9 +61,26 @@ export const ProvideAuth = ({ children }) => {
 				path: '/',
 				domain: '.opencaselist.com',
 			});
-			setUser({ loggedIn: false, token: null, trusted: null, admin: null });
+			Cookies.remove('caselist_user_id');
+			Cookies.remove('caselist_user_id', {
+				path: '/',
+				domain: '.opencaselist.com',
+			});
+			setUser({
+				loggedIn: false,
+				token: null,
+				trusted: null,
+				admin: null,
+				userId: null,
+			});
 		} catch (err) {
-			setUser({ loggedIn: false, token: null, trusted: null, admin: null });
+			setUser({
+				loggedIn: false,
+				token: null,
+				trusted: null,
+				admin: null,
+				userId: null,
+			});
 		}
 	};
 

@@ -191,8 +191,8 @@ const RoundsTable = ({
 					} else if (
 						auth.user?.trusted &&
 						!archived &&
-						(auth.user?.user_id === row.row?.original?.created_by_id ||
-							auth.user?.user_id === row.row?.original?.team_created_by_id)
+						(auth.user?.userId === row.row?.original?.created_by_id ||
+							auth.user?.userId === row.row?.original?.team_created_by_id)
 					) {
 						canModify = true;
 					}
@@ -252,8 +252,8 @@ const RoundsTable = ({
 					} else if (
 						auth.user?.trusted &&
 						!archived &&
-						(auth.user?.user_id === row.row?.original?.created_by_id ||
-							auth.user?.user_id === row.row?.original?.team_created_by_id)
+						(auth.user?.userId === row.row?.original?.created_by_id ||
+							auth.user?.userId === row.row?.original?.team_created_by_id)
 					) {
 						canModify = true;
 					}
@@ -336,7 +336,7 @@ const RoundsTable = ({
 		[
 			auth.user?.admin,
 			auth.user?.trusted,
-			auth.user?.user_id,
+			auth.user?.userId,
 			archived,
 			caselist,
 			school,

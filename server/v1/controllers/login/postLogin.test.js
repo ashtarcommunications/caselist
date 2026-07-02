@@ -19,6 +19,7 @@ describe('POST /v1/login', () => {
 		assert.property(res.body, 'token', 'Token property');
 		assert.property(res.body, 'expires', 'Expires property');
 		assert.property(res.body, 'trusted', 'Trusted property');
+		assert.property(res.body, 'userId', 'User ID property');
 		assert.property(res.body, 'admin', 'Admin property');
 	});
 

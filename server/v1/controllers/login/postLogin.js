@@ -91,6 +91,14 @@ const postLogin = {
 			domain: config.COOKIE_DOMAIN,
 		});
 
+		res.cookie('caselist_user_id', user.person_id, {
+			maxAge: remember && user.trusted ? 1000 * 60 * 60 * 24 * 14 : undefined,
+			httpOnly: false,
+			path: '/',
+			sameSite: 'Lax',
+			domain: config.COOKIE_DOMAIN,
+		});
+
 		if (user.trusted) {
 			res.cookie('caselist_trusted', true, {
 				maxAge: remember && user.trusted ? 1000 * 60 * 60 * 24 * 14 : undefined,
@@ -119,6 +127,7 @@ const postLogin = {
 			token: nonce,
 			expires,
 			trusted: user.trusted,
+			userId: user.person_id,
 			admin: admin?.admin || config.ADMINS?.includes(parseInt(user.person_id)),
 		});
 	},
