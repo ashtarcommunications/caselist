@@ -39,6 +39,7 @@ const postFile = {
 			NDI: 'NDI',
 			NHSI: 'Northwestern',
 			SSDI: 'Samford',
+			SA: 'Sonoma Academy',
 			SCDI: 'SCDI',
 			UMKC: 'UMKC',
 			UTNIF: 'UTNIF',
