@@ -10,7 +10,7 @@
 	"license": "GPL3",
 	"main": "index.js",
 	"engines": {
-		"node": ">= 22.12.0"
+		"node": ">= 24.18.0"
 	},
 	"scripts": {
 		"start": "NODE_ENV='production' NODE_OPTIONS='--max_old_space_size=8000' node --use_strict index.js",
