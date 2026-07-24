@@ -1,5 +1,15 @@
 # Frequently Asked Questions
 
+## Why can't I delete a round/team?
+
+Due to a rising number of abuse and vandalism incidents, you can no longer delete rounds or teams from other people's pages. Here are the rules:
+
+* If you created it, you can delete it
+* If you created the team, you can delete rounds for that team
+* If you created the school, you can delete teams for that school
+
+If you want something deleted, ask the person that posted it. If your partner, coach, or teammate posted something to a shared page, ask them to delete it.
+
 ## I'm using the correct Tabroom username/password, but it won't let me log in
 
 Log in on Tabroom.com, change your password (you can change it right back), and then try logging in on the caselist again. Sometimes Tabroom's user database gets out of sync (it's very old and creaky), and changing your password forces it to sync back up.

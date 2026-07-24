@@ -1,5 +1,6 @@
 import React from 'react';
 import Markdown from 'react-markdown';
+import { Link } from 'wouter';
 
 import { useStore } from '../helpers/store';
 
@@ -43,6 +44,11 @@ const CaselistHome = () => {
 				<p>
 					On your school home page, you can create new teams by using the form
 					at the bottom.
+				</p>
+
+				<p>
+					Read the <Link to="/faq">FAQ</Link> for information on deleting posted
+					content.
 				</p>
 
 				<p>

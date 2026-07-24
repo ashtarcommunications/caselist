@@ -40,7 +40,7 @@ const Footer = () => {
 					Contact
 				</a>
 				<span className={styles.divider}> | </span>
-				<a href="/faq">FAQ</a>
+				<Link to="/faq">FAQ</Link>
 				<span className={styles.divider}> | </span>
 				<span>Created by </span>
 				<span>
