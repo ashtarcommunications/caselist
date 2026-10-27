@@ -42,7 +42,7 @@ import PreviewFile from './helpers/PreviewFile';
 const App = () => {
 	// Inject analytics script
 	useScript(import.meta.env.VITE_ANALYTICS_URL, {
-		domain: import.meta.env.VITE_DOMAIN,
+		goatcounter: import.meta.env.VITE_DOMAIN,
 	});
 
 	return (
