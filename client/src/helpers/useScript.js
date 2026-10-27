@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 
 const useScript = (url, data = {}) => {
 	useEffect(() => {
-		if (import.meta.env.NODE_ENV !== 'production' || !url) {
+		if (!import.meta.env.PROD || !url) {
 			return;
 		}
 
